@@ -34,7 +34,7 @@ export default {
         icon: String,
         menuItems: Array,
         slug: String,
-        color: { type: String, default: "secondary" },
+        color: { type: String, default: "primary" },
         isOffsetX: { type: Boolean, default: false },
         isOffsetY: { type: Boolean, default: true },
         isOpenOnHover: { type: Boolean, default: false },
@@ -52,3 +52,8 @@ export default {
     },
 }
 </script>
+<style>
+.v-btn{
+    border-radius: none !important;
+}
+</style>

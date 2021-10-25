@@ -243,7 +243,7 @@ export default {
 <style lang="scss" scoped>
     *{
         text-transform: none !important;
-        font-family:'Poppins', sans-serif  !important; 
+        font-family:'Montserrat', sans-serif  !important;
     }
     // .v-dialog .v-card {
     //     overflow-y: visible !important;

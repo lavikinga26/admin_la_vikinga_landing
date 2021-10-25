@@ -57,7 +57,7 @@ export default {
 }
   *{
     text-transform: none !important;
-    font-family:'Poppins', sans-serif  !important; 
+    font-family:'Montserrat', sans-serif  !important; 
   }
   .ritekhela-subheader:before {
     content: '';

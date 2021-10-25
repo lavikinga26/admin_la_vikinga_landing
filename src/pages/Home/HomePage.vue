@@ -38,6 +38,6 @@ export default {
 <style>
     *{
         text-transform: none !important;
-        font-family:'Poppins', sans-serif  !important; 
+        font-family:'Montserrat', sans-serif  !important;
     }
 </style>
