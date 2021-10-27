@@ -9,5 +9,8 @@ export default {
         configuration(){
             return callAPI('get', 'api/v1/configuration/configuration');
         },
+        menu_header(){
+            return callAPI('get', 'api/v1/landing/menu');
+        },
     },
 }
