@@ -3,8 +3,6 @@ import App from './App.vue'
 import vuetify from './plugins/vuetify';
 // import VueFilterDateFormat from '@vuejs-community/vue-filter-date-format';
 import VueCountdownTimer from 'vuejs-countdown-timer';
-
-
 // FILTERS
 import './filters/capitalize'
 import './filters/lowercase'
