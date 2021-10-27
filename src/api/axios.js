@@ -1,5 +1,6 @@
 import axios from "axios";
-const baseURL = 'http://admin-lavikinga.bytesoluciones.test/';
+// const baseURL = 'http://admin-lavikinga.bytesoluciones.test/';
+const baseURL = 'http://admin_la_vikinga.test/'
 const headers = { 
     'Accept': 'aplicaition/json' ,
     'Content-Type': 'application/json'
