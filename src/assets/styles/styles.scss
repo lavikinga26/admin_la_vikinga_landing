@@ -4,7 +4,6 @@
 $color: #555555;
 $white: #ffffff;
 
-
 @font-face {
     font-family: 'Gotham';
     src: url('../fonts/GothamBook.ttf');
@@ -19,6 +18,18 @@ $white: #ffffff;
     font-family: 'MachProCondBold';
     src: url('../fonts/machprocondbold.otf');
 }
+
+
+
+$font-family:'Gotham';
+
+.v-application {
+  [class*='text-'] {
+    font-family: $font-family !important;
+  }
+  font-family: $font-family !important;
+}
+
 
 /** FIN FONTS **/
 

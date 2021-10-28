@@ -1,53 +1,136 @@
 <template>
   <v-footer dark padless>
-    <v-card flat tile class="primary white--text text-center">
-      <div class="ritekhela-footer-widget">
-        <div class="container">
-            <div class="row">
-                <aside class="widget col-md-4 widget_about_info">
-                    <a href="/"><img src="@/assets/img/footer_logo.png" alt="" style="max-width: 500px;"></a>
-                </aside>
-                <aside class="widget col-md-4 widget_about_info">
-                    <div class="footer_widget_title"> <h2>INFORMACIÓN DE CONTACTO</h2> </div>
-                    <ul>
-                        <template v-if="data_config">
-                            <li>
-                                <v-icon small class="white--text">mdi-map-marker</v-icon>
-                                <span class="text-min">{{data_config.address}}</span>
-                            </li>
-                            <li>
-                                <v-icon small class="white--text">mdi-phone</v-icon>
-                                <span class="text-min">{{data_config.phone}}</span>
-                            </li>
-                            <li>
-                                <v-icon small class="white--text">mdi-email</v-icon>
-                                <span class="text-min">{{data_config.email}}</span>
-                            </li>
-                        </template>
-                    </ul>
-                </aside>
-                <aside class="widget col-md-4">
-                </aside>
-            </div>
-            <div class="row">
-                <aside class="col-12">
-                    <template v-if="data_config">
-                        <social-section :data_config="data_config"></social-section>
-                    </template>
-                </aside>
-            </div>
+    <v-card flat tile class="white text-center py-5">
+
+  <!-- Footer -->
+    <!-- Grid container -->
+    <div class="container">
+      
+        <div class="d-flex flex-row justify-center my-2" align="center">
+            <img style="width: 150px;" src="@/assets/img/logo_vikinga_icon.png" alt="Logo" />
         </div>
-    </div>
-    <div class="ritekhela-copyright">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12" style="font-size: 15px;">
-                    <p><a href="#" target="_blank" style="color: #fff;">La Vikinga © 2021. All Rights Reserved.</a></p>
-                    <a href="#" class="ritekhela-back-top"><v-icon small class="white--text">mdi-chevron-up</v-icon></a>
-                </div>
-            </div>
+
+      <!-- Section: Social -->
+      <section class="text-center mb-5">
+        <v-btn
+              color="secondary"
+              fab
+              x-small
+              dark mx-1
+              class="elevation-0"
+            >
+              <v-icon>mdi-facebook</v-icon>
+        </v-btn>
+        <v-btn
+              color="secondary"
+              fab
+              x-small
+              dark  mx-1
+              class="elevation-0"
+        >
+              <v-icon>mdi-instagram</v-icon>
+        </v-btn>
+        <v-btn
+              color="secondary"
+              fab
+              x-small
+              dark mx-1
+              class="elevation-0"
+            >
+              <v-icon>mdi-youtube</v-icon>
+        </v-btn>
+        <v-btn
+              color="secondary"
+              fab
+              x-small
+              dark mx-1
+              class="elevation-0"
+            >
+              <v-icon>mdi-twitter</v-icon>
+        </v-btn>
+      </section>
+      <!-- Section: Social -->
+      <!-- Section: Links -->
+      <section class="mt-5">
+        <!-- Grid row-->
+        <div class="row text-center d-flex justify-center pt-5">
+          <!-- Grid column -->
+          <div class="col-md-2">
+            <v-btn
+              text
+              color="secondary"
+            >
+              Inscripciones
+            </v-btn>
+          </div>
+          <!-- Grid column -->
+
+          <!-- Grid column -->
+          <div class="col-md-2">
+            <v-btn
+              text
+              color="secondary"
+            >
+              Gym Virtual
+            </v-btn>
+          </div>
+          <!-- Grid column -->
+
+          <!-- Grid column -->
+          <div class="col-md-2">
+            <v-btn
+              text
+              color="secondary"
+            >
+              Staff
+            </v-btn>
+          </div>
+          <!-- Grid column -->
+
+          <!-- Grid column -->
+          <div class="col-md-2">
+            <v-btn
+              text
+              color="secondary"
+            >
+              Calendario
+            </v-btn>
+          </div>
+
+          <div class="col-md-2">
+            <v-btn
+              text
+              color="secondary"
+            >
+              Tienda
+            </v-btn>
+          </div>
+
+          <!-- Grid column -->
+          <div class="col-md-2">
+            <v-btn
+              text
+              color="secondary"
+            >
+              Info
+            </v-btn>
+          </div>
+          <!-- Grid column -->
+          <!-- Grid column -->
         </div>
+        <!-- Grid row-->
+      </section>
     </div>
+    <!-- Grid container -->
+
+    <!-- Copyright -->
+    <div
+         class="text-center p-3"
+         style="color: grey; font-size: 0.7rem;"
+         >
+      © 2021 La Vikinga - TODOS LOS DERECHOS RESERVADOS. DESARROLLADO POR BYTESOLUCIONES
+    </div>
+    <!-- Copyright -->
     </v-card>
   </v-footer>
 </template>
@@ -87,28 +170,7 @@ export default {
 };
 </script>
 <style>
-.text-min{
-    font-size: 13px;
-}
-.footer_widget_title h2 {
-    display: inline-block;
-    color: #ffffff;
-    margin-bottom: 0px;
-    text-transform: capitalize;
-    font-size: 20px;
-    font-weight: 600;
-    padding: 0px 15px;
-    border-radius: 80px;
-    border-left: 0px solid !important;
-    border-right: 0px solid !important;
-    margin-top: 30px;
-}
-.widget_about_info ul li i {
-    float: left;
-    padding: 12px;
-    font-size: 15px;
-    border-right: 1px solid rgba(0, 0, 0, 0.25);
-    margin-right: 5px !important;
-    width: 40px;
+.v-btn{
+  margin-right: 5px !important;
 }
 </style>
