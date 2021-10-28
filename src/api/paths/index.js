@@ -12,5 +12,8 @@ export default {
         menu_header(){
             return callAPI('get', 'api/v1/landing/menu');
         },
+        frequent_questions(){
+            return callAPI('get', 'api/v1/configuration/frequent-questions');
+        },
     },
 }

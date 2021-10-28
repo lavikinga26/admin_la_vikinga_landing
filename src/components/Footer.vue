@@ -53,70 +53,82 @@
       <!-- Section: Links -->
       <section class="mt-5">
         <!-- Grid row-->
-        <div class="row text-center d-flex justify-center pt-5">
+        <div class=" text-center d-flex justify-center  justify-space-between  align-center pt-5">
           <!-- Grid column -->
-          <div class="col-md-2">
+          <div>
             <v-btn
               text
               color="secondary"
             >
-              Inscripciones
+              INSCRIPCIONES
             </v-btn>
           </div>
           <!-- Grid column -->
-
+          <div><span style="color: #E30E4F"> | </span></div>
           <!-- Grid column -->
-          <div class="col-md-2">
+          <div>
             <v-btn
               text
               color="secondary"
             >
-              Gym Virtual
+              GYM VIRTUAL
             </v-btn>
           </div>
           <!-- Grid column -->
-
+          <div><span style="color: #E30E4F"> | </span></div>
           <!-- Grid column -->
-          <div class="col-md-2">
+          <div>
             <v-btn
               text
               color="secondary"
             >
-              Staff
+              SATFF
             </v-btn>
           </div>
           <!-- Grid column -->
-
+          <div><span style="color: #E30E4F"> | </span></div>
           <!-- Grid column -->
-          <div class="col-md-2">
+          <div>
             <v-btn
               text
               color="secondary"
             >
-              Calendario
+              CALENDARIO
             </v-btn>
           </div>
-
-          <div class="col-md-2">
+          <!-- Grid column -->
+          <div><span style="color: #E30E4F"> | </span></div>
+          <!-- Grid column -->
+          <div>
             <v-btn
               text
               color="secondary"
             >
-              Tienda
+              TIENDA
             </v-btn>
           </div>
-
           <!-- Grid column -->
-          <div class="col-md-2">
+          <div><span style="color: #E30E4F"> | </span></div>
+          <div>
             <v-btn
               text
               color="secondary"
             >
-              Info
+              INFO
             </v-btn>
           </div>
           <!-- Grid column -->
+          <div><span style="color: #E30E4F"> | </span></div>
+          <div>
+            <v-btn
+              text
+              color="secondary"
+            >
+              INFO
+            </v-btn>
+          </div>
           <!-- Grid column -->
+          <div><span style="color: #E30E4F"> | </span></div>
         </div>
         <!-- Grid row-->
       </section>

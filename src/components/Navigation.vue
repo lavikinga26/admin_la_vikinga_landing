@@ -57,11 +57,21 @@
           ></dan-menu>
           <v-btn text :to="item.slug"
             v-else
-            :key="i" medium class="px-2">
-            <span class="ma-3">{{item.name}}</span>
+            :key="i" medium class="px-1">
+            <span class="ma-2">{{item.name}}</span>
           </v-btn>
-
+          <span v-if="i < items.length-1" style="color: #0b233f" v-bind:key="i+100"> | </span>
         </template>
+        <v-btn color="secondary"
+            depressed
+            class="px-2 rounded-pill">
+            <span class="ma-3">INCIAR SESIÓN</span>
+        </v-btn>
+        <v-btn color="secondary"
+            icon
+            class="px-2 rounded-pill">
+            <v-icon>mdi-shopping-outline</v-icon>
+        </v-btn>
       </div>
     </v-toolbar>
   </div>
