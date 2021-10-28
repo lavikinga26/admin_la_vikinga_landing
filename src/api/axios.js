@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseURL = 'http://lavikinga.bytesoluciones.com/';
+const baseURL = 'https://lavikinga.bytesoluciones.com/';
 // const baseURL = 'http://admin-lavikinga.bytesoluciones.test/';
 const headers = { 
     'Accept': 'aplicaition/json' ,
