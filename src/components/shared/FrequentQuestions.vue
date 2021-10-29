@@ -1,5 +1,5 @@
 <template>
-    <div class="py-5 mx-auto" style="max-width:900px">
+    <div class="py-5 mx-auto" style="max-width:900px; min-height: 450px">
         <v-expansion-panels dark accordion>
             <v-expansion-panel
             v-for="(item,i) in 5"
