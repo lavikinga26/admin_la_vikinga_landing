@@ -22,6 +22,16 @@ export const routes = [{
       component: () => import(/* webpackChunkName: "blank" */ '../pages/Home/HomePage.vue'),
     },
     {
+      path: '/inscripciones',
+      name: 'inscripciones',
+      component: () => import(/* webpackChunkName: "blank" */ '../pages/Plans/PlansPage.vue'),
+    },
+    {
+      path: '/staff',
+      name: 'staff',
+      component: () => import(/* webpackChunkName: "blank" */ '../pages/Staff/StaffPage.vue'),
+    },
+    {
         path: '*',
         name: 'error',
         component: () => import(/* webpackChunkName: "error" */ '../components/NotFound.vue'),
