@@ -6,7 +6,9 @@
             <v-spacer></v-spacer>
         </div>
         <div class="d-flex flex-row justify-center my-2" align="center">
-            <img style="width: 150px;" src="@/assets/img/logo.png" alt="Logo" />
+            <router-link to="/">
+                <img style="width: 150px;" src="@/assets/img/logo.png" alt="Logo" />
+            </router-link>
         </div>
 
         <navigation :color="'white'" :flat="flat" />

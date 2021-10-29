@@ -7,11 +7,14 @@
                 </div>
             </div>
         </div>
-        <div class="container-fluid pt-3 mt-n5">
-            <div class="row mt-4">
+        <div class="container-fluid">
+            <div class="row">
                 <div class="col-2">
+
                 </div>
-                <div class="col-4">
+                <div class="col-4 form-div">
+                    <p class="tit_h2_pink text_entrena">ES HORA DE COMENZAR EL DESAFÍO</p>
+                    <h3 style="color: #E30E4F; font-weight:100;">DEJANOS UN MENSAJE Y TE BRINDAREMOS INFORMACION</h3>
                     <v-form>
                         <v-row>
                             <v-col cols="12" sm="12">
@@ -47,10 +50,8 @@
                         </v-row>
                     </v-form>
                 </div>
-                <div class="col-4">
-
-                </div>
-                <div class="col-2">
+                <div class="col-6 parent-div">
+                    <img src="@/assets/img/img_carousel_1.png" alt="" class="">
                 </div>
             </div>
         </div>
@@ -94,4 +95,14 @@ export default {
 </script>
 
 <style>
+.parent-div img {
+   height: 100%;
+   width: 100%;
+}
+.form-div {
+    text-align: center;
+    top: 50%;
+    left: 1%;
+    right: 1%;
+}
 </style>
