@@ -15,9 +15,6 @@ export default {
         frequent_questions(){
             return callAPI('get', 'api/v1/configuration/frequent-questions');
         },
-        sponsors(){
-            return callAPI('get', 'api/v1/club/sponsors');
-        },
     },
 
 }

@@ -387,6 +387,15 @@ body{
     -webkit-filter: grayscale(0);
 }
 
+
+.input_txtnumber input[type='number'] {
+    -moz-appearance:textfield;
+}
+.input_txtnumber input::-webkit-outer-spin-button,
+.input_txtnumber input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
 @media only screen and (min-width: 960px) {
   .navbar .navbar-nav .nav-item .nav-link {
     padding: 0 0.5em;
