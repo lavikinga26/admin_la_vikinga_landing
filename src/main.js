@@ -26,7 +26,9 @@ Vue.use(VueCountdownTimer);
 // Vue.use(VueFilterDateFormat);
 
 Vue.component('custom-breadcrumbs', require('./components/shared/CustomBreadcrumbs.vue').default);
-Vue.component('newsletter', require('./components/shared/NewsLetter.vue').default);
+Vue.component('sponsors-section', require('./components/shared/Sponsors.vue').default);
+Vue.component('frequent-questions', require('./components/shared/FrequentQuestions.vue').default);
+
 Vue.prototype.$API = API;
 Vue.config.productionTip = false;
 

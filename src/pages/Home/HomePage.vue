@@ -95,27 +95,17 @@
         </div>
 
         <frequent-questions></frequent-questions>
-
-        <div class="container-fluid bg_blue pt-3 pb-5">
-            <div class="row mt-4">
-                <div class="col-md-12 text-center">
-                    <p class="tit_h1_pink text_entrena">MARCAS ALIADAS</p>
-                    <img src="assets/images/logos_marcas.png" alt="" class="img-fluid logos_aliados">
-                </div>
-            </div>
-        </div>
-
+        <sponsors-section></sponsors-section>
     </div>
 </template>
 
 <script>
-import PlansSlider from './components/PlansSlider.vue'
-import FrequentQuestions from '../../components/shared/FrequentQuestions.vue'
+import PlansSlider from './components/PlansSlider.vue';
+
 export default {
     name: "App",
     components: { 
         PlansSlider,
-        FrequentQuestions,
      },
 
     data: () => ({
