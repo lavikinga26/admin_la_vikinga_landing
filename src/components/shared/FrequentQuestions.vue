@@ -2,19 +2,28 @@
     <div class="py-5 mx-auto" style="max-width:900px; min-height: 450px">
         <v-expansion-panels dark accordion>
             <v-expansion-panel
-            v-for="(item,i) in 5"
-            :key="i"
             class="elevation-0"
             >
-            <v-expansion-panel-header class="secondary white--text">
-                Item
-            </v-expansion-panel-header>
-            <v-expansion-panel-content  class="white black--text py-3">
-                <div>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                </div>
-                
-            </v-expansion-panel-content>
+                <v-expansion-panel-header class="secondary white--text">
+                ¿Qué es La Vikinga?
+                </v-expansion-panel-header>
+                <v-expansion-panel-content  class="white black--text py-3">
+                    <div>
+                        ¡Hola chic@s! Ahora que está de moda todo esto de la gordo fobia, quiero contarles como ha sido mi experiencia en todos estos años. Desde pequeña he tenido sobrepeso y he sido feliz porque cuando eres niña en ese momento solo te importa jugar.
+                    </div>
+                </v-expansion-panel-content>
+            </v-expansion-panel>
+            <v-expansion-panel
+            class="elevation-0"
+            >
+                <v-expansion-panel-header class="secondary white--text">
+                ¿Como Funciona?
+                </v-expansion-panel-header>
+                <v-expansion-panel-content  class="white black--text py-3">
+                    <div>
+                        Tienes que poner el producto en el carrito y procesar la compra. Después, te pedirá los datos de facturación y te pedirá un email y una contraseña. Es muy importante que te acuerdes de lo que pones porque será tu usuario de acceso a la plataforma.
+                    </div>
+                </v-expansion-panel-content>
             </v-expansion-panel>
         </v-expansion-panels>
     </div>  

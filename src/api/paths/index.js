@@ -5,7 +5,7 @@ export default {
         return callAPI('get', 'api/user/');
     },
     
-    landing:{
+    configuration:{
         configuration(){
             return callAPI('get', 'api/v1/configuration/configuration');
         },
@@ -15,9 +15,25 @@ export default {
         frequent_questions(){
             return callAPI('get', 'api/v1/configuration/frequent-questions');
         },
-        sponsors(){
-            return callAPI('get', 'api/v1/club/sponsors');
+        getBaseUrl(){
+            return callAPI('get', 'api/v1/shop/get-base-url');
         },
     },
 
+    team:{
+        staff(){
+            return callAPI('get', 'api/v1/team/staff');
+        },
+        sponsors(){
+            return callAPI('get', 'api/v1/team/sponsors');
+        },
+    },
+    plans:{
+        category(){
+            return callAPI('get', 'api/v1/plans/category');
+        },
+        list(){
+            return callAPI('get', 'api/v1/plans/list');
+        },
+    }
 }

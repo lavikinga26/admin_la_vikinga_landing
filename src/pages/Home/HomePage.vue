@@ -36,7 +36,11 @@
                         
                     </p>
                     <p>
-                        <a href="#" class="btn btn_pink">COMPRAR AHORA</a>
+                        <v-btn color="secondary"
+                            depressed
+                            class="px-2">
+                            <span class="ma-3">COMPRAR AHORA</span>
+                        </v-btn>
                     </p>
                 </div>
                 <div class="col-3">
@@ -68,7 +72,11 @@
                 <div class="col-4 d-sm-none d-md-block"></div>
                 <div class="col-md-4 col-sm-12 text-center text_suplementacion">
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis perferendis minus delectus cum molestiae cupiditate aspernatur explicabo nisi ratione error. Est, expedita modi itaque ex asperiores minus eveniet ratione dolores?</p>
-                    <a href="#" class="btn btn_pink">COMPRAR AHORA</a>
+                    <v-btn color="secondary"
+                        depressed
+                        class="px-2">
+                        <span class="ma-3">COMPRAR AHORA</span>
+                    </v-btn>
                 </div>
                 <div class="col-4 d-sm-none d-md-block"></div>
             </div>

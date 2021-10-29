@@ -161,7 +161,7 @@ export default {
     async menu(){
       let vm = this;
       try{
-        const data = await this.$API.landing.menu_header();
+        const data = await this.$API.configuration.menu_header();
         vm.items = data.data.data;
       }
       catch(e){

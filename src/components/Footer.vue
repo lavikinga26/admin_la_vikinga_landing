@@ -171,7 +171,7 @@ export default {
     methods:{
         async getConfiguracion(){
             try{
-                const data = await this.$API.landing.configuration();
+                const data = await this.$API.configuration.configuration();
                 this.data_config = data.data.data;
             }
             catch(e){
