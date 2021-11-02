@@ -18,9 +18,10 @@ import store from "./store";
 /**STYLE */
 require("./assets/styles/styles.scss");
 
-import axios from "axios";
 import API from "./api";
 
+import { Form } from 'vform';
+window.Form = Form; 
 
 Vue.use(VueCountdownTimer);
 // Vue.use(VueFilterDateFormat);

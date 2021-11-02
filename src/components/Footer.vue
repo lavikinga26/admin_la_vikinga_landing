@@ -154,11 +154,8 @@
 </style>
 
 <script>
-import SocialSection from "../components/shared/SocialSection.vue";
-
 export default {
     components: {
-        SocialSection,
     },
     data: function () {
         return {

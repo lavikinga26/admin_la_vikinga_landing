@@ -35,5 +35,10 @@ export default {
         list(){
             return callAPI('get', 'api/v1/plans/list');
         },
+    },
+    contact:{
+        saveContactInfo(){
+            return callAPI('post', 'api/v1/contact/save-contact-info');
+        },
     }
 }

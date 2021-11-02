@@ -17,18 +17,20 @@
                     <div class="form-div">
                         <p class="tit_h2_pink text_entrena">ES HORA DE COMENZAR EL DESAFÍO</p>
                         <h3 style="color: #E30E4F; font-weight:100;">DEJANOS UN MENSAJE Y TE BRINDAREMOS INFORMACION</h3>
-                        <v-form ref="contactForm" v-model="validContactForm" @submit.prevent="saveReg()" lazy-validation>
+                        <v-form ref="contactForm" v-model="validContactForm" @submit.prevent="saveContactInfo()" lazy-validation>
                             <v-row>
                                 <v-col cols="12" sm="12">
                                     <v-text-field
                                         v-model="contactForm.name"
                                         label="NOMBRES Y APELLIDOS"
                                         :rules="requiredRules"
+                                        autocomplete="off"
                                     ></v-text-field>
                                     <v-text-field
                                         v-model="contactForm.email"
                                         label="EMAIL"
                                         :rules="emailRules"
+                                        autocomplete="off"
                                     ></v-text-field>
                                     <v-text-field
                                         v-model="contactForm.phone"
@@ -37,17 +39,18 @@
                                         class="input_txtnumber"
                                         min="0"
                                         :rules="requiredRules"
+                                        autocomplete="off"
                                     ></v-text-field>
                                     <v-select
                                         v-model="contactForm.id_plan"
                                         label="ME INTERESA EL PLAN"
-                                        :rules="requiredRules"
                                         no-data-text="Planes no disponibles"
                                     ></v-select>
                                     <v-text-field
                                         v-model="contactForm.message"
                                         label="MENSAJE"
                                         :rules="requiredRules"
+                                        autocomplete="off"
                                     ></v-text-field>
                                 </v-col>
                             </v-row>
@@ -71,17 +74,37 @@
 
         <sponsors-section></sponsors-section>
         <frequent-questions></frequent-questions>
+
+
+        <v-dialog v-model="dialogSuccess" max-width="30%" transition="dialog-top-transition">
+            <v-card>
+                <v-card-title>
+                    <span class="headline">Información Enviada!</span>
+                </v-card-title>
+                <v-card-text>
+                    <span>{{dialogMessage}}</span>
+                    <v-card-actions>
+                        <v-col class="text-center">
+                            <v-btn @click="dialogSuccess = false" color="primary" dark><b>Aceptar</b></v-btn>
+                        </v-col>
+                    </v-card-actions>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
 <script>
 export default {
     data: () => ({
-        validContactForm: false,
-        contactForm: {
+        dialogSuccess: false,
+        dialogMessage: '',
 
-        },
-        
+        validContactForm: false,
+        contactForm: new Form({
+
+        }),
+
         requiredRules: [
             v => !!v || 'Campo Obligatorio'
         ],
@@ -90,6 +113,28 @@ export default {
             v => /.+@.+\..+/.test(v) || 'Correo Electrónico Invalido',
         ],
     }),
+    methods:{
+        async saveContactInfo(){
+            if(this.$refs.contactForm.validate()){
+
+                this.$store.commit('loader',true);
+                try{
+                    const response = await this.$API.contact.saveContactInfo(this.contactForm);
+                    this.dialogMessage = response.data.data.message;
+                    this.dialogSuccess = true;
+
+                    this.$refs.contactForm.reset();
+                    this.contactForm.reset();
+
+                } catch(e){
+                    console.error(e);
+
+                } finally {
+                    this.$store.commit('loader',false);
+                }
+            }
+        }
+    }
 }
 </script>
 

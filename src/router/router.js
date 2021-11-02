@@ -28,8 +28,8 @@ export const routes = [{
     name: 'staff',
     component: () => import(/* webpackChunkName: "blank" */ '../pages/Staff/StaffPage.vue'),
 }, {
-    path: '/contactanos',
-    name: 'contactanos',
+    path: '/contacto',
+    name: 'contacto',
     component: () => import(/* webpackChunkName: "blank" */ '../pages/Contact/ContactPage.vue'),
 }, {
     path: '*',
