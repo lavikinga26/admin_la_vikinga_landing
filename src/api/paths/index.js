@@ -37,8 +37,8 @@ export default {
         },
     },
     contact:{
-        saveContactInfo(){
-            return callAPI('post', 'api/v1/contact/save-contact-info');
+        saveContactInfo(data){
+            return callAPI('post', 'api/v1/contact/save-contact-info', { data: data });
         },
     }
 }

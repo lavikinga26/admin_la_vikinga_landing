@@ -3,10 +3,16 @@
         <div class="container-fluid bg_pink pt-3 pb-5">
             <div class="row mt-4">
                 <div class="col-md-12 text-center">
+                    <div class="inline-block">
+                        <span style="color:white; vertical-align: middle;"><b>INICIO</b></span>&nbsp;
+                        <img src="@/assets/img/lista_icon.png" style="max-width: 20px; filter: brightness(0) invert(1); vertical-align: middle;">
+                    </div>
+                    
                     <p class="tit_h1_white text_entrena">CONTACTO</p>
                 </div>
             </div>
         </div>
+
         <table>
             <tr>
                 <th style="width: 50%;"></th>
@@ -42,6 +48,9 @@
                                         autocomplete="off"
                                     ></v-text-field>
                                     <v-select
+                                        :items="list_plans"
+                                        item-text="title"
+                                        item-value="id"
                                         v-model="contactForm.id_plan"
                                         label="ME INTERESA EL PLAN"
                                         no-data-text="Planes no disponibles"
@@ -102,8 +111,13 @@ export default {
 
         validContactForm: false,
         contactForm: new Form({
-
+            name: null,
+            email: null,
+            phone: null,
+            id_plan: null,
+            message: null,
         }),
+        list_plans: [],
 
         requiredRules: [
             v => !!v || 'Campo Obligatorio'
@@ -113,7 +127,20 @@ export default {
             v => /.+@.+\..+/.test(v) || 'Correo Electrónico Invalido',
         ],
     }),
+    mounted() {
+        this.getListPlans();
+    },
     methods:{
+        async getListPlans(){
+            try {
+                const response = await this.$API.plans.list();
+                this.list_plans = response.data.data;
+                this.contactForm.id_plan = this.list_plans[0].id;
+
+            } catch (e) {
+                console.error(e);
+            } 
+        },
         async saveContactInfo(){
             if(this.$refs.contactForm.validate()){
 
@@ -148,6 +175,9 @@ export default {
     top: 50%;
     left: 1%;
     right: 1%;
+}
+.inline-block {
+   display: inline-block;
 }
 
 table {
