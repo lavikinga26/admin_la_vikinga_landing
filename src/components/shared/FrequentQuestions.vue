@@ -1,5 +1,12 @@
 <template>
     <div class="py-5 mx-auto" style="max-width:900px; min-height: 450px">
+        <div class="container-fluid pt-3 pb-5">
+            <div class="row mt-4">
+                <div class="col-md-12 text-center">
+                    <p class="tit_h1_pink text_entrena">PREGUNTAS FRECUENTES</p>
+                </div>
+            </div>
+        </div>
         <v-expansion-panels dark accordion>
             <v-expansion-panel
             class="elevation-0"

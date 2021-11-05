@@ -12,7 +12,7 @@
                 </div>
             </div>
         </div>
-
+        
         <table>
             <tr>
                 <th style="width: 50%;"></th>
@@ -20,7 +20,7 @@
             </tr>
             <tr>
                 <td style="text-align: center; padding-right:50px; padding-left:50px;">
-                    <div class="form-div">
+                    <div class="centered-cell">
                         <p class="tit_h2_pink text_entrena">ES HORA DE COMENZAR EL DESAFÍO</p>
                         <h3 style="color: #E30E4F; font-weight:100;">DEJANOS UN MENSAJE Y TE BRINDAREMOS INFORMACION</h3>
                         <v-form ref="contactForm" v-model="validContactForm" @submit.prevent="saveContactInfo()" lazy-validation>
@@ -74,7 +74,7 @@
                     </div>
                 </td>
                 <td>
-                    <div class="parent-div">
+                    <div class="parent-size">
                         <img src="@/assets/img/img_carousel_1.png" alt="" class="">
                     </div>
                 </td>
@@ -166,11 +166,11 @@ export default {
 </script>
 
 <style>
-.parent-div img {
+.parent-size img {
    height: 100%;
    width: 100%;
 }
-.form-div {
+.centered-cell {
     text-align: center;
     top: 50%;
     left: 1%;

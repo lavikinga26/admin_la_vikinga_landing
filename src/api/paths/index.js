@@ -32,8 +32,16 @@ export default {
         list(){
             return callAPI('get', 'api/v1/plans/list');
         },
-        category(){
-            return callAPI('get', 'api/v1/plans/category');
+        categories(){
+            return callAPI('get', 'api/v1/plans/categories');
+        },
+    },
+    workouts:{
+        list(){
+            return callAPI('get', 'api/v1/workouts/list');
+        },
+        categories(){
+            return callAPI('get', 'api/v1/workouts/categories');
         },
     },
     contact:{

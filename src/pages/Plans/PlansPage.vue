@@ -106,7 +106,7 @@ export default {
         async categoryList(){
             let vm = this;
             try{
-                const data = await this.$API.plans.category();
+                const data = await this.$API.plans.categories();
                 vm.categories = data.data.data;
                 vm.$store.commit('loader',false);
                 console.log(vm.data)
