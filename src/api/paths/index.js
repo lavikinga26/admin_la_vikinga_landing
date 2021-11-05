@@ -29,11 +29,11 @@ export default {
         },
     },
     plans:{
-        category(){
-            return callAPI('get', 'api/v1/plans/category');
-        },
         list(){
             return callAPI('get', 'api/v1/plans/list');
+        },
+        category(){
+            return callAPI('get', 'api/v1/plans/category');
         },
     },
     contact:{
