@@ -1,12 +1,24 @@
 <template>
     <div>
-        <div class="container-fluid bg_pink inscripciones">
+        <!--<div class="container-fluid bg_pink inscripciones">
             <div class="row">
                 <div class="col-12 text-center">
                     <h1 class="tit_h1_white">INSCRIPCIONES</h1>
                 </div>
             </div>
-        </div> 
+        </div> -->
+        <div class="container-fluid bg_pink pt-3 pb-5">
+            <div class="row mt-4">
+                <div class="col-md-12 text-center">
+                    <div class="inline-block">
+                        <span style="color:white; vertical-align: middle;"><b>INICIO</b></span>&nbsp;
+                        <img src="@/assets/img/lista_icon.png" style="max-width: 20px; filter: brightness(0) invert(1); vertical-align: middle;">
+                    </div>
+                    
+                    <p class="tit_h1_white text_entrena">INSCRIPCIONES</p>
+                </div>
+            </div>
+        </div>
 
         <div class="container mt-4">
             <div class="row justify-center m-4">

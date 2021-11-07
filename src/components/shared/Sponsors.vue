@@ -1,10 +1,18 @@
 <template>
     <div>
         <div class="container-fluid bg_blue pt-3 pb-5">
-            <div class="row mt-4">
+            <div class="mt-4">
                 <div class="col-md-12 text-center">
                     <p class="tit_h1_pink text_entrena">MARCAS ALIADAS</p>
-                    <img src="assets/images/logos_marcas.png" alt="" class="img-fluid logos_aliados">
+                </div>
+
+                
+                <div ref="" class="flex-wrap d-flex justify-center align-center px-5">
+                    <div v-for="item in data_reg" :key="item.name" class="ma-5 align-center">
+                        <v-img contain v-if="item.file_path" :src="base_url + item.file_path.path + item.file_path.filename" max-width="120px" max-height="80px" class="ma-3" style="border-radius:10px; margin-right: auto !important; margin-left: auto !important;"></v-img>
+                        <v-img contain v-else :src="base_url + empty_url" max-width="120px" max-height="80px" class="ma-3" style="border-radius:10px; margin-right: auto !important; margin-left: auto !important;"></v-img>
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -20,17 +28,17 @@ export default {
     }),
 
     created() {
-        // this.getBaseUrl();
-        // this.getRegistros();
+        this.getBaseUrl();
+        this.getRegistros();
     },
 
     watch: {
     },
 
     methods: {
-        /*async getBaseUrl(){
+        async getBaseUrl(){
             try{
-                const data = await this.$API.shop.getBaseUrl();
+                const data = await this.$API.configuration.getBaseUrl();
                 this.base_url = data.data;
             }
             catch(e){
@@ -39,13 +47,13 @@ export default {
         },
         async getRegistros(){
             try{
-                const data = await this.$API.club.sponsors();
+                const data = await this.$API.team.sponsors();
                 this.data_reg = data.data.data;
             }
             catch(e){
                 console.error(e);
             }
-        }*/
+        }
     },
 };
 </script>

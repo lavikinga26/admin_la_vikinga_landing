@@ -20,57 +20,46 @@
             >
                 <v-card
                 color="primary"
-                class="ma-4"
-                height="800"
+                class="ma-4 card-outter"
+                height="740"
                 width="300"
                 @click="toggle"
                 >
-                <v-row
-                    class="fill-height"
-                    align="center"
-                    justify="center"
-                >
-                    <v-scale-transition>
-                        <div class="item">
-                            <div class="blog-entry" style="margin: 0px 50px !important;">
-                                <!--<a href="#" class="block-20 d-flex align-items-start" >
-                                    <img :src="base_url + item.file_path.path + item.file_path.filename" alt="">
-                                </a>-->
-                                <div>
-                                    <v-img
-                                        lazy-src="https://picsum.photos/id/11/10/6"
-                                        max-height="400"
-                                        max-width="250"
-                                        :src="base_url + item.file_path.path + item.file_path.filename"
-                                    ></v-img>
-                                </div>
-                                <div class="text p-2 bd_desc_carousel">
-                                    <ul>
-                                        <li>{{item.title}}</li>
-                                        <li>{{item.description}}</li>
-                                    </ul>
-                                    <p class="price_carousel text-center">
-                                        S/. {{item.cost}}
-                                    </p>
-                                    <p class="text-center">
-                                    <v-btn color="secondary"
-                                        depressed
-                                        class="px-2">
-                                        <span class="ma-3">COMPRAR AHORA</span>
-                                    </v-btn>
-                                    </p>
+                    <v-img
+                        lazy-src="https://picsum.photos/id/11/10/6"
+                        max-height="400"
+                        :src="base_url + item.file_path.path + item.file_path.filename"
+                    ></v-img>
+                    <v-card-text 
+                        max-height="200">
+                            <div class="item">
+                                <div class="blog-entry">
+                                    <div class="text p-2 bd_desc_carousel">
+                                        <ul>
+                                            <li>{{item.description}}</li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                    <v-icon
-                        v-if="active"
-                        color="white"
-                        size="48"
-                        v-text="'mdi-close-circle-outline'"
-                    ></v-icon>
-                    </v-scale-transition>
-                </v-row>
+                    </v-card-text>
+                    <v-card-actions class="card-actions mb-8">
+                        <v-row align="center">
+                            <v-col cols="12" align="center" class="py-0">
+                                <span class="price_carousel text-center" style="font-family: 'MachProCondBold' !important;">
+                                    S/. {{item.cost}}
+                                </span>  
+                            </v-col>
+                            <v-col cols="12" align="center">
+                                <v-btn color="secondary"
+                                    depressed
+                                    large
+                                    class="px-2">
+                                    <span class="ma-3">COMPRAR AHORA</span>
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                        
+                    </v-card-actions>
                 </v-card>
             </v-slide-item>
             </v-slide-group>
@@ -124,3 +113,17 @@
     },
 }
 </script>
+
+<style>
+.card-outter {
+    position: relative;
+    padding-bottom: 50px;
+}
+.card-actions {
+    position: absolute;
+    bottom: 0;
+}
+.price_carousel{
+    font-family: "MachProCondBold" !important;
+}
+</style>

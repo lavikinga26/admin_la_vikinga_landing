@@ -33,7 +33,7 @@
     <v-toolbar
       light
       elevation="0"
-      class="ma-5"
+      class="ma-4"
     >
       <!--<v-toolbar-title>
             <router-link to="/inicio">
@@ -46,32 +46,43 @@
         class="mr-4"
         v-if="isXs"
       />
-      <div v-else>
-
-        <template
-          v-for="(item, i) in items">
-          <dan-menu
-            v-bind:key="i"
-            v-if="item.menu.length>0"
-            :name='item.name' :slug="item.slug" :menu-items='item.menu' @dan-menu-click='onMenuItemClick'
-          ></dan-menu>
-          <v-btn text :to="item.slug"
-            v-else
-            :key="i" medium class="px-1">
-            <span class="ma-2">{{item.name}}</span>
+      <div v-else class="d-flex justify-space-between align-center" style="width: 100%;">
+        <div>
+          <template
+            v-for="(item, i) in items">
+            <dan-menu
+              v-bind:key="i"
+              v-if="item.menu.length>0"
+              :name='item.name' :slug="item.slug" :menu-items='item.menu' @dan-menu-click='onMenuItemClick'
+            ></dan-menu> 
+            <v-btn text :href="item.slug" target="_blank"
+              v-else-if="item.slug.includes('https://')"
+              :key="i" medium class="px-1"
+              small>
+              <span class="ma-2">{{item.name}}</span>
+            </v-btn>
+            <v-btn text :to="item.slug"
+              v-else
+              small
+              :key="i" medium class="px-1">
+              <span class="ma-2">{{item.name}}</span>
+            </v-btn>
+            <span v-if="i < items.length-1" style="color: #0b233f; font-size: 0.9rem;" v-bind:key="i+100"> | </span>
+          </template>
+        </div>
+        <div>
+          <v-btn color="secondary"
+              depressed
+              small
+              class="px-2 rounded-pill">
+              <span class="ma-3">INCIAR SESIÓN</span>
           </v-btn>
-          <span v-if="i < items.length-1" style="color: #0b233f" v-bind:key="i+100"> | </span>
-        </template>
-        <v-btn color="secondary"
-            depressed
-            class="px-2 rounded-pill">
-            <span class="ma-3">INCIAR SESIÓN</span>
-        </v-btn>
-        <v-btn color="secondary"
-            icon
-            class="px-2 rounded-pill">
-            <v-icon>mdi-shopping-outline</v-icon>
-        </v-btn>
+          <v-btn color="secondary"
+              icon
+              class="px-2 rounded-pill">
+              <v-icon>mdi-shopping-outline</v-icon>
+          </v-btn>
+        </div>
       </div>
     </v-toolbar>
   </div>
@@ -209,7 +220,5 @@ export default {
     will-change: transform;
     box-shadow: 0px 5px 5px -3px rgb(0 0 0 / 20%), 0px 8px 10px 1px rgb(0 0 0 / 14%), 0px 3px 14px 2px rgb(0 0 0 / 12%);
     border-radius: 0px !important;
-    border-top: 5px solid #004A8D;
-    border-bottom: 2px solid #004A8D;
   }
 </style>

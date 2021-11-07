@@ -1,13 +1,13 @@
 <template>
     <v-app>
-        <div class="primary secondary--text d-flex flex-row py-2 px-15" align="center">
+        <div class="secondary--text d-flex flex-row py-2 px-15" align="center" style="background: #0B152A;">
             <v-spacer></v-spacer>
             <span>¡ENTRENA DESDE CUALQUIER PARTE DEL MUNDO!</span>
             <v-spacer></v-spacer>
         </div>
         <div class="d-flex flex-row justify-center my-2" align="center">
             <router-link to="/">
-                <img style="width: 150px;" src="@/assets/img/logo.png" alt="Logo" />
+                <img style="width: 130px;" src="@/assets/img/logo.png" alt="Logo" />
             </router-link>
         </div>
 
