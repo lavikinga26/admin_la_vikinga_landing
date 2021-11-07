@@ -29,11 +29,19 @@ export default {
         },
     },
     plans:{
-        category(){
-            return callAPI('get', 'api/v1/plans/category');
-        },
         list(){
             return callAPI('get', 'api/v1/plans/list');
+        },
+        categories(){
+            return callAPI('get', 'api/v1/plans/categories');
+        },
+    },
+    workouts:{
+        list(){
+            return callAPI('get', 'api/v1/workouts/list');
+        },
+        categories(){
+            return callAPI('get', 'api/v1/workouts/categories');
         },
     },
     contact:{

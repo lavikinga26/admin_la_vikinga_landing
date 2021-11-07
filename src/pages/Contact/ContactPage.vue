@@ -158,11 +158,11 @@ export default {
 </script>
 
 <style>
-.parent-div img {
+.parent-size img {
    height: 100%;
    width: 100%;
 }
-.form-div {
+.centered-cell {
     text-align: center;
     top: 50%;
     left: 1%;
