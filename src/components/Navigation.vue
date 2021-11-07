@@ -74,12 +74,23 @@
           <v-btn color="secondary"
               depressed
               small
-              class="px-2 rounded-pill">
+              class="px-2 rounded-pill"
+              link
+              to="/auth/iniciar-sesion">
               <span class="ma-3">INCIAR SESIÓN</span>
           </v-btn>
           <v-btn color="secondary"
               icon
-              class="px-2 rounded-pill">
+              class="px-2 rounded-pill"
+              link
+              to="/cuenta/mi-perfil">
+              <v-icon>mdi-account-circle-outline</v-icon>
+          </v-btn>
+          <v-btn color="secondary"
+              icon
+              class="px-2 rounded-pill"
+              link
+              to="/carrito">
               <v-icon>mdi-shopping-outline</v-icon>
           </v-btn>
         </div>

@@ -1,5 +1,5 @@
 <template>
-    <div style="position: relative;margin-bottom: 15px;">
+    <!--<div style="position: relative;margin-bottom: 15px;">
         <div class="primary white--text ritekhela-subheader">
             <v-row no-gutters class="pa-1 px-4">
                 <v-col cols="12" sm="12" md="8" class="pa-3 my-auto">
@@ -13,6 +13,18 @@
                     </v-breadcrumbs>
                 </v-col>
             </v-row>
+        </div>
+    </div>-->
+    <div class="container-fluid bg_pink pt-3 pb-5">
+        <div class="row mt-4">
+            <div class="col-md-12 text-center">
+                <div class="inline-block">
+                    <span style="color:white; vertical-align: middle;"><b>INICIO</b></span>&nbsp;
+                    <img src="@/assets/img/lista_icon.png" style="max-width: 20px; filter: brightness(0) invert(1); vertical-align: middle;">
+                </div>
+                
+                <p class="tit_h1_white text_entrena">CONTACTO</p>
+            </div>
         </div>
     </div>
 </template>

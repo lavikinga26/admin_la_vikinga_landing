@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import UserRoutes from './user.routes'
+import AuthRoutes from './auth.routes'
+
 Vue.use(Router)
 
 const isAutheticated = async() =>{
@@ -35,7 +38,16 @@ export const routes = [{
     path: '/contactanos',
     name: 'contactanos',
     component: () => import(/* webpackChunkName: "blank" */ '../pages/Contact/ContactPage.vue'),
-}, {
+},{
+    path: '/carrito',
+    name: 'carrito',
+    component: () => import(/* webpackChunkName: "blank" */ '../pages/Shop/CartPage.vue'),
+}, 
+
+...UserRoutes,
+...AuthRoutes,
+
+{
     path: '*',
     name: 'error',
     component: () => import(/* webpackChunkName: "error" */ '../components/NotFound.vue'),

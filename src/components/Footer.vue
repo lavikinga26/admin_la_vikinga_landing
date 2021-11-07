@@ -6,7 +6,7 @@
     <!-- Grid container -->
     <div class="container">
       
-        <div class="d-flex flex-row justify-center my-2" align="center">
+        <div class="d-flex flex-row justify-center my-2 " align="center">
             <img style="width: 150px;" src="@/assets/img/logo_vikinga_icon.png" alt="Logo" />
         </div>
 
@@ -53,7 +53,7 @@
       <!-- Section: Links -->
       <section class="mt-5">
         <!-- Grid row-->
-        <div class=" text-center d-flex justify-center  justify-space-between  align-center pt-5">
+        <div class=" text-center d-flex justify-center  justify-space-around flex-wrap justify-space-between  align-center pt-5">
           <!-- Grid column -->
           <div>
             <v-btn
@@ -127,8 +127,6 @@
               INFO
             </v-btn>
           </div>
-          <!-- Grid column -->
-          <div><span style="color: #E30E4F"> | </span></div>
         </div>
         <!-- Grid row-->
       </section>
