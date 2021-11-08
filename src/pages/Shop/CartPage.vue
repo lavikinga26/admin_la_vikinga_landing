@@ -24,7 +24,7 @@
                                                 width="150"
                                                 contain
                                                 class="rounded mr-4"
-                                                :src="'https://picsum.photos/id/11/10/6'"
+                                                :src="'http://admin-lavikinga.bytesoluciones.test/storage/uploads/plan_files/10292021191704617c48b0573bf.jpg'"
                                             ></v-img>
                                         </div>
                                         <div class="font-weight-bold flex-grow-1" style="max-width: 30%; min-width: 30%;">
@@ -236,23 +236,16 @@ export default {
         text: 'Cart'
       }],
 
-      discount: 10,
+      discount: 0,
       tab: null,
       valid: false,
       cart: [{
-            title: 'Leave the road T-shirt',
+            title: 'DESAFÍO BIOHACKING TV',
             image: '1.png',
             images: ['1.png', '2.png', '3.png', '4.png', '5.png'],
-            price: 25,
+            price: 195.00,
             quantity: 1,
             priceCompare: null
-        }, {
-            title: 'Creative T-Shirt',
-            image: '2.png',
-            images: ['2.png', '6.png', '3.png', '4.png', '5.png'],
-            price: 22,
-            quantity: 2,
-            priceCompare: 30
         }]
     }
   },
