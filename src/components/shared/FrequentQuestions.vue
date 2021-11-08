@@ -7,7 +7,11 @@
                 </div>
             </div>
         </div>
-        <v-expansion-panels dark accordion>
+        <v-expansion-panels 
+            dark 
+            accordion
+            v-model="panel"    
+        >
             <v-expansion-panel
             class="elevation-0"
             >
@@ -35,3 +39,12 @@
         </v-expansion-panels>
     </div>  
 </template>
+<script>
+export default {
+    data: () => ({
+      panel: 0,
+      disabled: false,
+      readonly: false,
+    }),
+}
+</script>

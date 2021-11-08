@@ -14,11 +14,11 @@
         </div>
         <v-row>
             <v-col cols="12" md="6" sm="12" class="pa-15">
-                <div class="form-div ml-15 p-5">
+                <div class="form-div ml-auto p-5" style="width: 75%">
                     <p class="tit_h2_pink text_entrena">!ES HORA DE COMENZAR EL DESAFÍO¡</p>
-                    <h3 style="color: #E30E4F; font-weight:100;">DEJANOS UN MENSAJE Y TE BRINDAREMOS INFORMACION</h3>
+                    <h4 style="color: #E30E4F; font-weight:100;">DEJANOS UN MENSAJE Y TE BRINDAREMOS INFORMACION</h4>
                     <v-form ref="contactForm" v-model="validContactForm" @submit.prevent="saveContactInfo()" lazy-validation>
-                        <v-row>
+                        <v-row class="mt-10">
                             <v-col cols="12" sm="12">
                                 <v-text-field
                                     v-model="contactForm.name"
@@ -69,7 +69,7 @@
             </v-col>
             <v-col cols="12" md="6" sm="12" >
                 <div class="parent-div">
-                    <img src="@/assets/img/img_carousel_1.png" alt="" class="">
+                    <img src="@/assets/img/img_carousel_1.png" alt="" class="" style="width: 100%">
                 </div>
             </v-col>
         </v-row>

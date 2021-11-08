@@ -58,70 +58,66 @@
           <div>
             <v-btn
               text
+              small
               color="secondary"
             >
               INSCRIPCIONES
             </v-btn>
           </div>
           <!-- Grid column -->
-          <div><span style="color: #E30E4F"> | </span></div>
+          <div><span style="color: #E30E4F; font-size: 0.9rem;"> | </span></div>
           <!-- Grid column -->
           <div>
             <v-btn
               text
+              small
               color="secondary"
             >
               GYM VIRTUAL
             </v-btn>
           </div>
           <!-- Grid column -->
-          <div><span style="color: #E30E4F"> | </span></div>
+          <div><span style="color: #E30E4F; font-size: 0.9rem;"> | </span></div>
           <!-- Grid column -->
           <div>
             <v-btn
               text
+              small
               color="secondary"
             >
               SATFF
             </v-btn>
           </div>
           <!-- Grid column -->
-          <div><span style="color: #E30E4F"> | </span></div>
+          <div><span style="color: #E30E4F; font-size: 0.9rem;"> | </span></div>
           <!-- Grid column -->
           <div>
             <v-btn
               text
+              small
               color="secondary"
             >
               CALENDARIO
             </v-btn>
           </div>
           <!-- Grid column -->
-          <div><span style="color: #E30E4F"> | </span></div>
+          <div><span style="color: #E30E4F; font-size: 0.9rem;"> | </span></div>
           <!-- Grid column -->
           <div>
             <v-btn
               text
+              small
               color="secondary"
             >
               TIENDA
             </v-btn>
           </div>
           <!-- Grid column -->
-          <div><span style="color: #E30E4F"> | </span></div>
+          <div><span style="color: #E30E4F; font-size: 0.9rem;"> | </span></div>
           <div>
             <v-btn
               text
-              color="secondary"
-            >
-              INFO
-            </v-btn>
-          </div>
-          <!-- Grid column -->
-          <div><span style="color: #E30E4F"> | </span></div>
-          <div>
-            <v-btn
-              text
+              small
               color="secondary"
             >
               INFO

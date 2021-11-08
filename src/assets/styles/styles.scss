@@ -83,6 +83,12 @@ $font-family:'Gotham';
     background: #E30E4F;
 }
 
+.divider{
+    border-top: 1px solid #E30E4F;
+}
+.txt_uppercase{
+    text-transform: uppercase !important;
+}
 body{
     background: #F1F1F1;
     font-family: 'Gotham';
@@ -126,13 +132,13 @@ body{
 .tit_h1_pink{
     font-family: 'MachProCondBold';
     color: #E30E4F;
-    font-size: 5em;
+    font-size: 4.5em;
 }
 
 .tit_h1_staff_pink{
     font-family: 'MachProCondBold';
     color: #E30E4F;
-    font-size: 3em;
+    font-size: 2.5em;
 }
 
 .tit_h2_pink{
@@ -162,6 +168,15 @@ body{
     line-height: 1em;
 }
 
+.tit_h3_team_pink{
+    font-family: 'MachProCondBold';
+    color: #E30E4F;
+    font-size: 2em;
+}
+.txt_staff_description{
+    font-size: 0.8rem;
+    color: grey;
+}
 .mt-n5 {
     margin-top: -24rem !important;
 }
