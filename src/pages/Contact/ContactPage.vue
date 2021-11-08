@@ -68,7 +68,7 @@
                 </div>
             </v-col>
             <v-col cols="12" md="6" sm="12" >
-                <div class="parent-div">
+                <div class="parent-size">
                     <img src="@/assets/img/img_carousel_1.png" alt="" class="" style="width: 100%">
                 </div>
             </v-col>

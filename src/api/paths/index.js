@@ -37,8 +37,8 @@ export default {
         },
     },
     workouts:{
-        list(){
-            return callAPI('get', 'api/v1/workouts/list');
+        list(id){
+            return callAPI('get', 'api/v1/workouts/list/'+id);
         },
         categories(){
             return callAPI('get', 'api/v1/workouts/categories');

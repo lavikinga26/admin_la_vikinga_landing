@@ -1,5 +1,6 @@
 <template>
     <div>
+        <!-- Encabezado -->
         <div class="container-fluid bg_pink pt-3 pb-5">
             <div class="row mt-4">
                 <div class="col-md-12 text-center">
@@ -12,7 +13,6 @@
                 </div>
             </div>
         </div>
-
         <div class="container-fluid pt-3 pb-5">
             <div class="row mt-4">
                 <div class="col-md-12 text-center">
@@ -20,20 +20,52 @@
                 </div>
             </div>
         </div>
-        
         <div class="d-flex flex-row justify-center my-2" align="center">
+            <v-spacer></v-spacer>
             <v-toolbar light elevation="0">
                 <template v-for="(item, i) in list_categories">
                     <v-btn :key="i"
-                        color="#E30E4F"
+                        @click="getListWorkout(item)"
                         :text="true"
                         :outlined="false"
-                        tile>
+                        tile
+                        color="#E30E4F">
                         {{item.name}}
                     </v-btn>
                 </template>
             </v-toolbar>
         </div>
+        <!-- Fin -->
+
+        <!-- Contenido -->
+        <!-- <iframe src="https://player.vimeo.com/video/403530213" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe> -->
+
+        <div class="container mt-10">
+            <v-row>
+                <v-col cols="12" md="4" sm="4" v-for="(item, i) in list_workout" :key="i">
+                    <div class="parent-size">
+                        <img
+                            src="https://picsum.photos/id/11/10/6"
+                            style="width: 100%"
+                            class="img_staff"
+                        >
+                    </div>
+                    <div class="text-center">
+                        <p class="tit_h3_team_blue">{{item.title}}</p>
+                        <v-btn
+                            tile
+                            color="#E30E4F"
+                            dark
+                            large>
+                            VER AHORA
+                        </v-btn>
+                    </div>
+                    <br>
+                    <br>
+                </v-col>
+            </v-row>
+        </div>
+        <!-- Fin -->
         
         <div class="container-fluid bg_blue pt-3 pb-5">
             <table>
@@ -63,6 +95,7 @@
 export default {
     data: () => ({
         list_categories: [],
+        list_workout: [],
     }),
     mounted() {
         this.getListCategories();
@@ -72,12 +105,22 @@ export default {
             try{
                 const response = await this.$API.workouts.categories();
                 this.list_categories = response.data.data;
+                this.getListWorkout(this.list_categories[0]);
             }
             catch(e){
                 console.error(e);
             }
         },
-    },
+        async getListWorkout(item){
+            try{
+                const response    = await this.$API.workouts.list(item.id);
+                this.list_workout = response.data.data;
+            }
+            catch(e){
+                console.error(e);
+            }
+        }
+    }
 }
 </script>
 
@@ -94,5 +137,10 @@ export default {
     top: 50%;
     left: 1%;
     right: 1%;
+}
+
+.parent-size img {
+   height: 100%;
+   width: 100%;
 }
 </style>
