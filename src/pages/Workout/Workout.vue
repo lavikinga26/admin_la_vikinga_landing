@@ -38,17 +38,18 @@
         <!-- Fin -->
 
         <!-- Contenido -->
-        <!-- <iframe src="https://player.vimeo.com/video/403530213" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe> -->
-
         <div class="container mt-10">
             <v-row>
                 <v-col cols="12" md="4" sm="4" v-for="(item, i) in list_workout" :key="i">
                     <div class="parent-size">
-                        <img
+                        <!-- <img
                             src="https://picsum.photos/id/11/10/6"
                             style="width: 100%"
-                            class="img_staff"
-                        >
+                            class="img_staff"> -->
+        
+                        <div contenteditable="true"
+                            v-html="item.video_url">
+                        </div>
                     </div>
                     <div class="text-center">
                         <p class="tit_h3_team_blue">{{item.title}}</p>
@@ -115,6 +116,8 @@ export default {
             try{
                 const response    = await this.$API.workouts.list(item.id);
                 this.list_workout = response.data.data;
+
+                console.log(this.list_workout);
             }
             catch(e){
                 console.error(e);
@@ -137,10 +140,5 @@ export default {
     top: 50%;
     left: 1%;
     right: 1%;
-}
-
-.parent-size img {
-   height: 100%;
-   width: 100%;
 }
 </style>
