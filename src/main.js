@@ -28,6 +28,7 @@ Vue.use(VueCountdownTimer);
 
 Vue.component('custom-breadcrumbs', require('./components/shared/CustomBreadcrumbs.vue').default);
 Vue.component('sponsors-section', require('./components/shared/Sponsors.vue').default);
+Vue.component('phones-photos', require('./components/shared/PhonePhotos.vue').default);
 Vue.component('frequent-questions', require('./components/shared/FrequentQuestions.vue').default);
 
 Vue.prototype.$API = API;
