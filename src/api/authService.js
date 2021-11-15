@@ -4,15 +4,21 @@ const baseURL = 'http://admin-lavikinga.bytesoluciones.test/';
 // const baseURL = 'http://admin_la_vikinga.test/';
 const headers = { 
     'Accept': 'aplicaition/json' ,
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin' :'*',
 };
-const withCredentials = false;
+const withCredentials = true;
 
 const instance = axios.create({
     baseURL,
     headers,
     withCredentials
 });
+
+//if(localStorage.getItem('user_token')){
+    instance.defaults.headers.common['Authorization'] =  'Bearer '+ localStorage.getItem('user_token');
+//}
+
 
 const call = async (_type, _endpoint, _body) => {
 
@@ -37,10 +43,24 @@ const call = async (_type, _endpoint, _body) => {
 }
 
 
-async function callAPI(type, endpoint, options = {}) {
+async function callAuthAPI(type, endpoint, options = {}) {
     try {
         var data;
-        data = await call(type, endpoint, options.data);
+        /*if (options.csrf_cookie) {*/
+            await instance
+              .get('sanctum/csrf-cookie')
+              .then(async(response) => {
+                  console.log(response)
+                data = await call(type, endpoint, options.data);
+              });
+        /*} else {
+            if(options.data){
+              options.data._token = token.content;
+            }
+            data = await call(type, endpoint, options.data);
+        }*/
+        /*var data;
+        data = await call(type, endpoint, options.data);*/
     } 
     catch (error) {
         throw error;
@@ -48,4 +68,4 @@ async function callAPI(type, endpoint, options = {}) {
     return data;
 }
 
-export default callAPI;
+export default callAuthAPI;

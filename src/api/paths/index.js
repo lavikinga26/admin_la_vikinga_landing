@@ -1,9 +1,9 @@
 import callAPI from "@/api/axios"
 
 export default {
-    getUser(){
+    /*getUser(){
         return callAPI('get', 'api/user/');
-    },
+    },*/
     
     configuration:{
         configuration(){
@@ -48,5 +48,15 @@ export default {
         saveContactInfo(data){
             return callAPI('post', 'api/v1/contact/save-contact-info', { data: data });
         },
-    }
+    },
+
+    
+    user:{
+        login(data){
+            return callAPI('post', 'api/v1/auth/login', { data: data });
+        },
+        register(data){
+            return callAPI('post', 'api/v1/auth/register', { data: data });
+        },
+    },
 }

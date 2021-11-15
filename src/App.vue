@@ -4,6 +4,9 @@
             <v-spacer></v-spacer>
             <span>¡ENTRENA DESDE CUALQUIER PARTE DEL MUNDO!</span>
             <v-spacer></v-spacer>
+                <v-btn small class="transparent white--text" elevation="0" @click="loginUserDialog=true;">
+                    <v-icon>mdi-account</v-icon><span class="mr-0">Iniciar Sesión</span>
+                </v-btn>
         </div>
         <div class="d-flex flex-row justify-center my-2" align="center">
             <router-link to="/">

@@ -119,12 +119,22 @@ export default {
         setTimeout(()=>{ 
             this.$store.commit('loader',false);
         }, 5000);
+        this.getUser();
     },
 
     watch: {
     },
 
     methods: {
+        async getUser(){
+            try{
+                const data = await this.$API.auth.auth();
+                console.log(data)
+            }
+            catch(e){
+                console.error(e);
+            } 
+        },
     },
 };
 </script>
