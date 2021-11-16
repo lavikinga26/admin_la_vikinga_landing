@@ -16,18 +16,19 @@
         <div class="container-fluid pt-3 pb-5">
             <div class="row mt-4">
                 <div class="col-md-12 text-center">
-                    <p v-if="$refs.myCalendar" class="tit_h2_pink text_entrena">{{ $refs.myCalendar.title }}</p>
+                    <div id="calendar_title" v-if="$refs.myCalendar" class="tit_h2_pink text_entrena">
+                        {{ $refs.myCalendar.title }}
+                    </div>
                 </div>
             </div>
         </div>
         <!-- Fin -->
-
+        
         <!-- Contenido -->
         <div class="container mt-10">
             <v-row>
                 <v-col>
                     <v-sheet height="64">
-                        <v-sheet height="64">
                         <v-toolbar flat>
                             <v-btn outlined class="mr-4" color="grey darken-2" @click="dateFocus = ''">
                                 Hoy
@@ -37,6 +38,7 @@
                             <v-btn fab text small color="grey darken-2" @click="$refs.myCalendar.prev()">
                                 <v-icon small>mdi-chevron-left</v-icon>
                             </v-btn>
+                            <v-spacer></v-spacer>
                             <v-btn fab text small color="grey darken-2" @click="$refs.myCalendar.next()">
                                 <v-icon small>mdi-chevron-right</v-icon>
                             </v-btn>
@@ -62,7 +64,6 @@
                                 </v-list>
                             </v-menu>
                         </v-toolbar>
-                    </v-sheet>
                     </v-sheet>
                     <v-sheet height="600">
                         <v-calendar
@@ -166,5 +167,8 @@ export default {
 </script>
 
 <style>
+#calendar_title {
+  text-transform: uppercase !important;
+}
 
 </style>

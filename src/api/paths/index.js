@@ -46,7 +46,7 @@ export default {
     },
     calendar:{
         listEvents(){
-            return callAPI('get', 'api/v1/calendar-events/list/');
+            return callAPI('get', 'api/v1/calendar-events/listEvents');
         },
     },
     contact:{
