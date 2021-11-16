@@ -31,14 +31,18 @@ export const routes = [{
     name: 'staff',
     component: () => import(/* webpackChunkName: "blank" */ '../pages/Staff/StaffPage.vue'),
 }, {
+    path: '/calendario',
+    name: 'calendario',
+    component: () => import(/* webpackChunkName: "blank" */ '../pages/Calendar/CalendarPage.vue'),
+}, {
     path: '/entrenamiento',
     name: 'entrenamiento',
     component: () => import(/* webpackChunkName: "blank" */ '../pages/Workout/Workout.vue'),
 }, {
-    path: '/contactanos',
-    name: 'contactanos',
+    path: '/contacto',
+    name: 'contacto',
     component: () => import(/* webpackChunkName: "blank" */ '../pages/Contact/ContactPage.vue'),
-},{
+}, {
     path: '/carrito',
     name: 'carrito',
     component: () => import(/* webpackChunkName: "blank" */ '../pages/Shop/CartPage.vue'),

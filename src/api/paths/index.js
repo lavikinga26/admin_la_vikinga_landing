@@ -44,6 +44,11 @@ export default {
             return callAPI('get', 'api/v1/workouts/categories');
         },
     },
+    calendar:{
+        listEvents(){
+            return callAPI('get', 'api/v1/calendar-events/list/');
+        },
+    },
     contact:{
         saveContactInfo(data){
             return callAPI('post', 'api/v1/contact/save-contact-info', { data: data });
