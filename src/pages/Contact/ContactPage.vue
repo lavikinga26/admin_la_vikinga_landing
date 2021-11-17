@@ -3,18 +3,15 @@
         <div class="container-fluid bg_pink pt-3 pb-5">
             <div class="row mt-4">
                 <div class="col-md-12 text-center">
-                    <div class="inline-block">
-                        <span style="color:white; vertical-align: middle;"><b>INICIO</b></span>&nbsp;
-                        <img src="@/assets/img/lista_icon.png" style="max-width: 20px; filter: brightness(0) invert(1); vertical-align: middle;">
-                    </div>
-                    
+                    <span style="color:white; vertical-align: middle;"><b>INICIO</b></span>&nbsp;
+                    <img src="@/assets/img/lista_icon.png" style="max-width: 20px; filter: brightness(0) invert(1); vertical-align: middle;">
                     <p class="tit_h1_white text_entrena">CONTACTO</p>
                 </div>
             </div>
         </div>
         <v-row>
             <v-col cols="12" md="6" sm="12" class="pa-15">
-                <div class="form-div ml-auto p-5" style="width: 75%">
+                <div class="form-div ml-auto p-5">
                     <p class="tit_h2_pink text_entrena">!ES HORA DE COMENZAR EL DESAFÍO¡</p>
                     <h4 style="color: #E30E4F; font-weight:100;">DEJANOS UN MENSAJE Y TE BRINDAREMOS INFORMACION</h4>
                     <v-form ref="contactForm" v-model="validContactForm" @submit.prevent="saveContactInfo()" lazy-validation>
@@ -58,19 +55,19 @@
                             </v-col>
                         </v-row>
                         <br>
-                        <v-btn color="#E30E4F"  type="submit" :disabled="!validContactForm"
-                            tile
-                            outlined
-                            large>
-                            ENVIAR
-                        </v-btn>
+                        <div class="text-center">
+                            <v-btn color="#E30E4F"  type="submit" :disabled="!validContactForm"
+                                tile
+                                outlined
+                                large>
+                                ENVIAR
+                            </v-btn>
+                        </div>
                     </v-form>
                 </div>
             </v-col>
             <v-col cols="12" md="6" sm="12" >
-                <div class="parent-size">
-                    <img src="@/assets/img/img_carousel_1.png" alt="" class="" style="width: 100%">
-                </div>
+                <img src="@/assets/img/img_carousel_1.png" alt="" class="" style="width: 100%">
             </v-col>
         </v-row>
         <sponsors-section></sponsors-section>
@@ -156,25 +153,3 @@ export default {
     }
 }
 </script>
-
-<style>
-.parent-size img {
-   height: 100%;
-   width: 100%;
-}
-.centered-cell {
-    text-align: center;
-    top: 50%;
-    left: 1%;
-    right: 1%;
-}
-.inline-block {
-   display: inline-block;
-}
-
-table {
-  width: 100%;
-  margin-top:-3.5px;
-  margin-bottom:-7.5px;
-}
-</style>
