@@ -72,6 +72,7 @@
         </div>
         <div>
           <v-btn color="secondary"
+              v-if="!isLogged"
               depressed
               small
               class="px-2 rounded-pill"
@@ -80,6 +81,7 @@
               <span class="ma-3">INCIAR SESIÓN</span>
           </v-btn>
           <v-btn color="secondary"
+              v-if="isLogged"
               icon
               class="px-2 rounded-pill"
               link
@@ -87,12 +89,20 @@
               <v-icon>mdi-account-circle-outline</v-icon>
           </v-btn>
           <v-btn color="secondary"
-              icon
-              class="px-2 rounded-pill"
-              link
-              to="/carrito">
-              <v-icon>mdi-shopping-outline</v-icon>
+            icon
+            class="px-2 rounded-pill"
+            link
+            to="/carrito">
+            <v-badge
+              color="secondary"
+              :content="cartCount"
+              :value="cartCount"
+              overlap
+            >
+                <v-icon>mdi-shopping-outline</v-icon>
+            </v-badge>
           </v-btn>
+          
         </div>
       </div>
     </v-toolbar>
@@ -118,56 +128,6 @@ export default {
     drawer: null,
     isXs: false,
     items: [],
-     fileMenuItems: [
-      {
-        name: "Menu Item 1",
-        action: () => {
-          console.log("menu-item-1");
-        }
-      },
-      { isDivider: true },
-      { name: "Menu Item 2" },
-      {
-        name: "Sub 1",
-        menu: [
-          { name: "1.1" },
-          { name: "1.2" },
-          {
-            name: "Sub-menu 2",
-            menu: [
-              { name: "2.1" },
-              { name: "2.2" },
-              {
-                name: "Sub-menu 3",
-                menu: [
-                  { name: "3.1" },
-                  { name: "3.2" },
-                  {
-                    name: "Sub-menu 4",
-                    menu: [{ name: "4.1" }, { name: "4.2" }, { name: "4.3" }]
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-
-      { name: "Menu Item 3" },
-      { isDivider: true },
-      {
-        name: "Menu Item 4",
-        action: () => {
-          console.log("menu-item-4");
-        }
-      },
-      {
-        name: "Menu Item 5",
-        action: () => {
-          console.log("menu-item-5");
-        }
-      }
-    ]
   }),
   props: {
     color: String,
@@ -198,6 +158,17 @@ export default {
     }
   },
 
+  computed: {
+      isLogged() {
+          return this.$store.getters.isLoggedIn;
+      },
+      StoreCart() {
+        return this.$store.getters.StoreCart;
+      },
+      cartCount() {
+        return this.StoreCart.length;
+      },
+  },
   watch: {
     isXs(value) {
       if (!value) {

@@ -35,6 +35,9 @@ export default {
         categories(){
             return callAPI('get', 'api/v1/plans/categories');
         },
+        read(id){
+            return callAPI('get', 'api/v1/plan/'+id);
+        },
     },
     workouts:{
         list(id){

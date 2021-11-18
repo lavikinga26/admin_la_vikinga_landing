@@ -26,6 +26,10 @@ export const routes = [{
     path: '/inscripciones',
     name: 'inscripciones',
     component: () => import(/* webpackChunkName: "blank" */ '../pages/Plans/PlansPage.vue'),
+},, {
+    path: '/plan/:slug',
+    name: 'plan',
+    component: () => import(/* webpackChunkName: "blank" */ '../pages/Plans/PlanPage.vue'),
 }, {
     path: '/staff',
     name: 'staff',

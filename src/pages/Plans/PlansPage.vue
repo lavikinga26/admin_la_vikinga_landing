@@ -61,7 +61,9 @@
                         lazy-src="https://picsum.photos/id/11/10/6"
                         max-height="400"
                         max-width="250"
+                        class="rounded plan"
                         :src="base_url + plan.file_path.path + plan.file_path.filename"
+                        @click="goToPlan(plan.identifier)"
                     ></v-img>
 
                     <!--<v-img v-if="item.file_path" :src="base_url + item.file_path.path + item.file_path.filename" max-width="100px" max-height="80px" class="ma-3" style="border-radius:50%; min-height: 150px; min-width: 150px;"></v-img>
@@ -88,7 +90,6 @@ export default {
     
     mounted() {
         let vm = this;
-        vm.slug = this.$route.params.slug;
         vm.$store.commit('loader',true);
         vm.getBaseUrl();
         vm.categoryList();
@@ -130,6 +131,7 @@ export default {
         },
         async list(){
             let vm = this;
+            vm.$store.commit('loader',true);
             try{
                 const data = await this.$API.plans.list();
                 vm.plans = data.data.data;
@@ -141,6 +143,9 @@ export default {
                 console.error(e);
                 vm.$store.commit('loader',false);
             }
+        },
+        goToPlan(identifier){
+            this.$router.push({ path: '/plan/'+identifier });
         }
     },
 }
@@ -148,5 +153,8 @@ export default {
 <style>
   .fb-btn.v-btn--outlined {
     border: 3px solid #E30E4F;
+  }
+  .plan{
+      cursor: pointer;
   }
 </style>

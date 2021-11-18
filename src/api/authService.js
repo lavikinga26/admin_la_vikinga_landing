@@ -16,7 +16,7 @@ const instance = axios.create({
 });
 
 //if(localStorage.getItem('user_token')){
-    instance.defaults.headers.common['Authorization'] =  'Bearer '+ localStorage.getItem('user_token');
+    instance.defaults.headers.common['Authorization'] =  'Bearer '+ localStorage.getItem('token');
 //}
 
 
@@ -50,7 +50,6 @@ async function callAuthAPI(type, endpoint, options = {}) {
             await instance
               .get('sanctum/csrf-cookie')
               .then(async(response) => {
-                  console.log(response)
                 data = await call(type, endpoint, options.data);
               });
         /*} else {

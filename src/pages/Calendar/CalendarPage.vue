@@ -28,7 +28,7 @@
         <div class="container mt-10">
             <v-row>
                 <v-col>
-                    <v-sheet height="64">
+                    <!--<v-sheet height="64">
                         <v-toolbar flat>
                             <v-btn outlined class="mr-4" color="grey darken-2" @click="dateFocus = ''">
                                 Hoy
@@ -64,7 +64,7 @@
                                 </v-list>
                             </v-menu>
                         </v-toolbar>
-                    </v-sheet>
+                    </v-sheet>-->
                     <v-sheet height="600">
                         <v-calendar
                             ref="myCalendar"

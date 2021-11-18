@@ -4,9 +4,6 @@
             <v-spacer></v-spacer>
             <span>¡ENTRENA DESDE CUALQUIER PARTE DEL MUNDO!</span>
             <v-spacer></v-spacer>
-                <v-btn small class="transparent white--text" elevation="0" @click="loginUserDialog=true;">
-                    <v-icon>mdi-account</v-icon><span class="mr-0">Iniciar Sesión</span>
-                </v-btn>
         </div>
         <div class="d-flex flex-row justify-center my-2" align="center">
             <router-link to="/">
@@ -33,67 +30,6 @@
             </v-scale-transition>
         </v-main>
         <foote />
-
-        <!-- Login User Dialog -->
-        <v-dialog v-model="loginUserDialog" max-width="400px" transition="dialog-top-transition">
-            <v-card>
-                <div style="position: relative; width: 400px; heigth: 400px;">
-                    <v-btn small absolute top right dark @click="loginUserDialog = false" color="#004a8d" class="elevation-0">
-                        <v-icon>
-                            mdi-close
-                        </v-icon>
-                    </v-btn>
-                </div>
-                <v-card-title>
-                    <span class="headline"><b>INICIAR SESIÓN</b></span>
-                </v-card-title>
-                <v-card-text>
-                    <v-form ref="loginForm" v-model="validLoginForm" @submit.prevent="loginUser()" lazy-validation>
-                        <v-row>
-                            <v-col>
-                                <v-text-field v-model="loginForm.email" placeholder="Email" :rules="emailRules" outlined background-color="white" autocomplete="off"></v-text-field>
-                                <v-text-field v-model="loginForm.password" placeholder="Contraseña" :rules="[rules.required]" type="password" outlined background-color="white" autocomplete="off"></v-text-field>
-                            </v-col>
-                        </v-row>
-                        <v-card-actions>
-                            <v-btn type="submit" :disabled="!validLoginForm" color="#990000" dark block><b>Iniciar Sesión</b></v-btn>
-                        </v-card-actions>
-                    </v-form>
-                </v-card-text>
-            </v-card>
-        </v-dialog>
-        <!-- Fin -->
-        <!-- Sigin User Dialog -->
-        <v-dialog v-model="signupUserDialog" max-width="400px" transition="dialog-top-transition">
-            <v-card>
-                <div style="position: relative; width: 400px; heigth: 400px;">
-                    <v-btn small absolute top right dark @click="signupUserDialog = false" color="#004a8d" class="elevation-0">
-                        <v-icon>
-                            mdi-close
-                        </v-icon>
-                    </v-btn>
-                </div>
-                <v-card-title>
-                    <span class="headline"><b>REGISTRARME</b></span>
-                </v-card-title>
-                <v-card-text>
-                    <v-form ref="signupForm" v-model="validSignupForm" @submit.prevent="siginUser()" lazy-validation>
-                        <v-row>
-                            <v-col>
-                                <v-text-field v-model="signupForm.name" placeholder="Nombre" :rules="[rules.required]" outlined background-color="white" autocomplete="off"></v-text-field>
-                                <v-text-field v-model="signupForm.email" placeholder="Email" :rules="emailRules" outlined background-color="white" autocomplete="off"></v-text-field>
-                                <v-text-field v-model="signupForm.password" placeholder="Contraseña" :rules="[rules.required]" outlined background-color="white" type="password" autocomplete="off"></v-text-field>
-                            </v-col>
-                        </v-row>
-                        <v-card-actions>
-                            <!-- <v-btn color="blue darken-1" text @click="signupUserDialog = false">Cancelar</v-btn> -->
-                            <v-btn type="submit" :disabled="!signupUserDialog" color="#990000" dark block><b>Registrarme</b></v-btn>
-                        </v-card-actions>
-                    </v-form>
-                </v-card-text>
-            </v-card>
-        </v-dialog>
-        <!-- Fin -->
         <loader></loader>
     </v-app>
 </template>
@@ -157,7 +93,6 @@ export default {
             this.flat = true;
         }
     },
-
     methods: {
         onScroll(e) {
             if (typeof window === "undefined") return;

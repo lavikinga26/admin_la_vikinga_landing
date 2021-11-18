@@ -16,25 +16,39 @@
             <div style="width: 30%; margin: auto; text-align: center; padding-top: 200px; height: 100%;">
                 <h2 class="tit_h1_white">UNA VIKINGA NO ABANDONA</h2>
                 <div class="ma-auto rounded-xl pa-10" style="width: 450px; background: rgba(255,255,255,0.5); text-align: left;">
-                    <div class="sub_h2_white_login" >USUARIO</div>
-                    <v-text-field
-                        solo
-                    ></v-text-field>
-                    <div class="sub_h2_white_login" >CONTRASEÑA</div>
-                    <v-text-field
-                        solo
-                    ></v-text-field>
-                    <div class="d-flex align-center">
-                        <span class="white--text" style="font-size: 0.8rem">OLVIDE MI CONTRASEÑA</span>
-                        <v-spacer></v-spacer>
-                        <v-btn
-                            depressed
-                            color="secondary"
-                            class="ml-5"
-                            >
-                                ENTRAR
-                        </v-btn>
-                    </div>
+                    <v-form
+                        ref="loginForm"
+                        v-model="valid"
+                        lazy-validation
+                    >
+                        <div class="sub_h2_white_login" >USUARIO</div>
+                        <v-text-field
+                            solo
+                            type="email"
+                            :rules="emailRules"
+                            v-model="loginForm.email"
+                        ></v-text-field>
+                        <div class="sub_h2_white_login" >CONTRASEÑA</div>
+                        <v-text-field
+                            solo
+                            type="password"
+                            :rules="rules"
+                            v-model="loginForm.password"
+                        ></v-text-field>
+                        <div class="d-flex align-center">
+                            <a class="white--text" style="font-size: 0.8rem">OLVIDE MI CONTRASEÑA</a>
+                            <v-spacer></v-spacer>
+                            <v-btn
+                                depressed
+                                color="secondary"
+                                class="ml-5"
+                                :disabled="!valid"
+                                @click="loginUser"
+                                >
+                                    ENTRAR
+                            </v-btn>
+                        </div>
+                    </v-form>
                 </div>
             </div>
         </div>
@@ -43,5 +57,65 @@
 <script>
 export default {
     
+    data: (e) => ({
+        fab: null,
+        color: "",
+        flat: null,
+
+        //--- User Login/Signup ---
+        logged_user: null,
+        logged_user_token: null,
+
+        loginUserDialog: false,
+        validLoginForm: false,
+        loginForm: {
+            token_name: '',
+        },
+        //--- End ---
+
+        //--- Form Rules ---
+        rules: [
+           v => !!v || 'Campo obligatorio',
+        ],
+        emailRules: [
+            (v) => !!v || 'Campo obligatorio',
+            (v) => /.+@.+\..+/.test(v) || 'Correo Electrónico debe ser válido'
+        ],
+        //--- End ---
+        valid: true,
+    }),
+
+    methods:{
+        getLoggedUser(){
+            if(localStorage.getItem('token')){
+                this.logged_user = JSON.parse(localStorage.getItem('user_data'));
+                this.logged_user_token = localStorage.getItem('token');
+            }
+        },
+        signOut(){
+            window.localStorage.clear();
+            this.$router.go();
+        },
+        async loginUser(){
+            if(this.$refs.loginForm.validate()){
+                this.$store.commit('loader',true);
+                try {
+                    this.loginForm.token_name = "LaVikinga2021";
+                    const response = await this.$API.user.login(this.loginForm);
+                    console.log(response)
+                    const user = response.data.data.user;
+                    const token = response.data.data.token;
+
+                    localStorage.setItem('user_data', JSON.stringify(user));
+                    localStorage.setItem('token', token);
+                    this.$store.commit('loader',false);
+                    
+                    //this.$router.go();
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+        },
+    }
 }
 </script>

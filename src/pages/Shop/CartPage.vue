@@ -4,7 +4,7 @@
             <v-card elevation="0">
                 <v-tabs v-model="tab" :show-arrows="false" background-color="primary" dark>
                     <v-tab to="#carrito">Carrito</v-tab>
-                    <v-tab to="#pago">Pago</v-tab>
+                    <v-tab to="#pago"  v-if="cart.length > 0">Pago</v-tab>
                 </v-tabs>
 
                 <v-tabs-items v-model="tab">
@@ -13,7 +13,7 @@
                             <v-col cols="12">
                                 <div v-if="cart.length === 0">
                                     <v-divider></v-divider>
-                                    <div class="text-h5 pa-5 text-center">Empty Cart</div>
+                                    <div class="text-h5 pa-5 text-center">Carrito Vacío</div>
                                     <v-divider></v-divider>
                                 </div>
                                 <div v-for="(item, index) in cart" :key="index" class="my-2">
@@ -27,27 +27,28 @@
                                                 :src="'http://admin-lavikinga.bytesoluciones.test/storage/uploads/plan_files/10292021191704617c48b0573bf.jpg'"
                                             ></v-img>
                                         </div>
-                                        <div class="font-weight-bold flex-grow-1" style="max-width: 30%; min-width: 30%;">
-                                            {{ item.title }}
+                                        <div class="flex-grow-1" style="max-width: 30%; min-width: 30%; font-size: 0.9rem;">
+                                            <div class="text-overline">SKU: {{ item.code }}</div> {{ item.title }}
                                         </div>
-                                        <div class="d-none d-sm-block flex-grow-1 mx-1 mx-sm-4">
-                                            <div class="text-overline">Precio:</div> {{ item.price | formatCurrency }}
+                                        <div class="d-none d-sm-block flex-grow-1 mx-1 mx-sm-4" style="font-size: 0.9rem;">
+                                            <div class="text-overline">Precio:</div> {{item.currency}}{{ item.price | formatCurrency }}
                                         </div>
-                                        <div class="mx-1 mx-sm-4 flex-grow-1">
+                                        <div class="mx-1 mx-sm-4 flex-grow-1" style="font-size: 0.9rem;">
                                             <v-select
                                                 v-model="item.quantity"
                                                 :items="[1, 2, 3, 4, 5]"
-                                                :label="'Cantidad'"
+                                                :label="'CANT.'"
                                                 outlined
                                                 hide-details
                                                 dense
+                                                class="mt-4"
                                                 style="max-width: 80px;"
                                             ></v-select>
                                         </div>
-                                        <div class="mx-1 mx-sm-4 flex-grow-1">
-                                            <div class="text-overline">Total:</div>{{ (item.price * item.quantity)  | formatCurrency }}
+                                        <div class="mx-1 mx-sm-4 flex-grow-1" style="font-size: 0.9rem;">
+                                            <div class="text-overline">Total:</div>{{item.currency}}{{ (item.price * item.quantity)  | formatCurrency }}
                                         </div>
-                                        <v-btn icon @click="cart.splice(index, 1)">
+                                        <v-btn icon @click="cart.splice(index, 1); removeItem(index)">
                                             <v-icon>mdi-close</v-icon>
                                         </v-btn>
                                     </div>
@@ -61,10 +62,10 @@
                                 </div>-->
                             </v-col>
                         </v-row>
-                        <v-row>
+                        <v-row v-if="cart.length > 0">
                             <v-spacer></v-spacer>
                             <v-col cols="12" md="6" sm="12" class="pa-10">
-                                <h2 class="text-uppercase">TOTAL DEL CARRITO</h2>
+                                <h3 class="text-uppercase">TOTAL DEL CARRITO</h3>
                                 <div class="d-flex text-h6 my-6">
                                     <div class="text-uppercase">Total:</div>
                                     <v-spacer></v-spacer>
@@ -99,6 +100,7 @@
                                                     label="Nombre"
                                                     required
                                                     outlined
+                                                    v-model="order.name"
                                                 ></v-text-field>
                                             </v-col>
                                             <v-col
@@ -110,6 +112,7 @@
                                                     label="Apellidos"
                                                     required
                                                     outlined
+                                                    v-model="order.lastname"
                                                 ></v-text-field>
                                             </v-col>
                                             <v-col
@@ -117,11 +120,20 @@
                                                 md="12"
                                                 class="pa-0 px-1"
                                             >
-                                                <v-text-field
+                                                <!--<v-text-field
                                                     label="País"
                                                     required
                                                     outlined
-                                                ></v-text-field>
+                                                    v-model="order.country"
+                                                ></v-text-field>-->
+                                                <v-select
+                                                    :items="countries"
+                                                    label="País"
+                                                    outlined
+                                                    v-model="order.country"
+                                                    item-text="country"
+                                                    item-value="country"
+                                                ></v-select>
                                             </v-col>
                                             <v-col
                                                 cols="12"
@@ -132,6 +144,7 @@
                                                     label="Dirección"
                                                     required
                                                     outlined
+                                                    v-model="order.address"
                                                 ></v-text-field>
                                             </v-col>
                                             <v-col
@@ -143,6 +156,7 @@
                                                     label="Ciudad"
                                                     required
                                                     outlined
+                                                    v-model="order.city"
                                                 ></v-text-field>
                                             </v-col>
                                             <v-col
@@ -154,28 +168,33 @@
                                                     label="Correo Electrónico"
                                                     required
                                                     outlined
+                                                    v-model="order.email"
                                                 ></v-text-field>
                                             </v-col>
                                             <v-col
                                                 cols="12"
                                                 md="6"
                                                 class="pa-0 px-1"
+                                                v-if="!isLogged"
                                             >
                                                 <v-text-field
                                                     label="Crear contraseña"
-                                                    required
                                                     outlined
+                                                    v-model="this.order.password"
+                                                    :rules="rules"
                                                 ></v-text-field>
                                             </v-col>
                                             <v-col
                                                 cols="12"
                                                 md="6"
                                                 class="pa-0 px-1"
+                                                v-if="!isLogged"
                                             >
                                                 <v-text-field
                                                     label="Confirmar contraseña"
-                                                    required
                                                     outlined
+                                                    v-model="this.order.confirmPassword"
+                                                    :rules="rules"
                                                 ></v-text-field>
                                             </v-col>
                                         </v-row>
@@ -192,7 +211,7 @@
                                         <div class="mr-15">{{ subtotal | formatCurrency }}</div>
                                     </div>
                                     <v-divider class="my-2"></v-divider>
-                                    <div v-if="discount" class="d-flex">
+                                    <div class="d-flex">
                                         <div class="ml-15">DESCUENTOS:</div>
                                         <v-spacer></v-spacer>
                                         <div class="mr-15">- {{ discount | formatCurrency }}</div>
@@ -224,46 +243,86 @@
     </div>
 </template>
 <script>
+import axios from "axios";
 export default {
-  data() {
-    return {
-      isLoading: false,
-      breadcrumbs: [{
-        text: 'Ecommerce',
-        disabled: false,
-        to: '/ecommerce/list'
-      }, {
-        text: 'Cart'
-      }],
+    data() {
+        return {
+            isLoading: false,
+            breadcrumbs: [{
+                text: 'Ecommerce',
+                disabled: false,
+                to: '/ecommerce/list'
+            }, {
+                text: 'Cart'
+            }],
 
-      discount: 0,
-      tab: null,
-      valid: false,
-      cart: [{
-            title: 'DESAFÍO BIOHACKING TV',
-            image: '1.png',
-            images: ['1.png', '2.png', '3.png', '4.png', '5.png'],
-            price: 195.00,
-            quantity: 1,
-            priceCompare: null
-        }]
-    }
-  },
-  computed: {
-    subtotal() {
-      let total = 0
+            discount: 0,
+            tab: null,
+            valid: false,
+            cart: [],
 
-      this.cart.forEach((c) => {
-        total += c.quantity * c.price
-      })
-
-      return total
+            order:{
+                password:'',
+                confirmPassword:''
+            },
+            rules: [
+                v => !!v || 'Campo obligatorio',
+            ],
+            countries:[]
+        }
     },
-    total() {
-      const total = this.subtotal - this.discount
+    computed: {
+        subtotal() {
+            let total = 0
 
-      return total < 0 ? 0 : total
+            this.cart.forEach((c) => {
+                total += c.quantity * Number(c.price)
+            })
+
+            return total
+        },
+        total() {
+            const total = this.subtotal - this.discount
+
+            return total < 0 ? 0 : total
+        },
+        isLogged() {
+            return this.$store.getters.isLoggedIn;
+        },
+    },
+    mounted(){
+        this.list();
+        this.getUser();
+        this.getCountry();
+    },
+    methods:{
+        list(){
+            this.cart = this.$store.getters.StoreCart;
+        },
+        removeItem(index){
+            this.$store.dispatch("removeItem", index);
+        },
+        async getUser(){
+            if(this.$store.getters.isLoggedIn){
+                try{
+                    const data = await this.$API.auth.auth();
+                    this.order = Object.assign({}, data.data);
+                    console.log(this.order)
+                }
+                catch(e){
+                    console.error(e);
+                } 
+            }
+        },
+        async getCountry(){
+            try{
+                const data = await axios.get('https://countriesnow.space/api/v0.1/countries/');
+                this.countries = data.data.data;
+            }
+            catch(e){
+                console.error(e);
+            } 
+        },
     }
-  }
 }
 </script>

@@ -16,7 +16,7 @@
             <v-slide-item
                 v-for="(item, n) in plans"
                 :key="n"
-                v-slot="{ active, toggle }"
+                v-slot="{ s, toggle }"
             >
                 <v-card
                 color="primary"
