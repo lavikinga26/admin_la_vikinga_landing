@@ -33,7 +33,7 @@
     <v-toolbar
       light
       elevation="0"
-      class="ma-4"
+      class="mx-4"
     >
       <!--<v-toolbar-title>
             <router-link to="/inicio">
@@ -80,14 +80,47 @@
               to="/auth/iniciar-sesion">
               <span class="ma-3">INCIAR SESIÓN</span>
           </v-btn>
-          <v-btn color="secondary"
-              v-if="isLogged"
-              icon
-              class="px-2 rounded-pill"
-              link
-              to="/cuenta/mi-perfil">
-              <v-icon>mdi-account-circle-outline</v-icon>
-          </v-btn>
+          <v-menu offset-y
+                  v-if="isLogged"
+                  min-width="200px"
+                  class="secondary white--text">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn color="secondary"
+                  icon
+                  class="px-2 rounded-pill"
+                  v-bind="attrs"
+                  v-on="on">
+                  <v-icon>mdi-account-circle-outline</v-icon>
+              </v-btn>
+            </template>
+            <v-list class="secondary white--text">
+              <v-list-item
+                  link
+                  class="white--text"
+                  to="/cuenta/mi-perfil">
+                <v-list-item-title
+                  class="white--text">Mi Perfil</v-list-item-title>
+              </v-list-item>
+              <v-divider class="white"></v-divider>
+              <v-list-item
+                  link
+                  class="white--text"
+                  to="/cuenta/mis-ordenes">
+                <v-list-item-title
+                  class="white--text">Mis Ordenes</v-list-item-title>
+              </v-list-item>
+              <v-divider class="white"></v-divider>
+              <v-list-item
+                  link
+                  class="white--text"
+                  to="/gym-virtual/agenda">
+                <v-list-item-title
+                  class="white--text">Gym Virtual</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+
+          
           <v-btn color="secondary"
             icon
             class="px-2 rounded-pill"

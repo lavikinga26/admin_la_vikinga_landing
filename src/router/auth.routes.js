@@ -1,3 +1,4 @@
+import GymVirtualRoutes from '../pages/GymVirtual/routes'
 export default [
     {
         path: '/auth/iniciar-sesion',
@@ -6,5 +7,13 @@ export default [
     {
         path: '/auth/registrarse',
         component: () => import(/* webpackChunkName: "auth-signup" */ '../pages/Auth/RegisterPage.vue'),
-    }
+    },
+    
+    {
+        path: '/gym-virtual',
+        component: () => import(/* webpackChunkName: "apps-email" */ '../pages/GymVirtual/GymVirtualPage.vue'),
+        children: [
+        ...GymVirtualRoutes
+        ]
+    },
 ]

@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import UserRoutes from './user.routes'
 import AuthRoutes from './auth.routes'
 
+
 Vue.use(Router)
 
 const isAutheticated = async() =>{
@@ -26,7 +27,7 @@ export const routes = [{
     path: '/inscripciones',
     name: 'inscripciones',
     component: () => import(/* webpackChunkName: "blank" */ '../pages/Plans/PlansPage.vue'),
-},, {
+}, {
     path: '/plan/:slug',
     name: 'plan',
     component: () => import(/* webpackChunkName: "blank" */ '../pages/Plans/PlanPage.vue'),

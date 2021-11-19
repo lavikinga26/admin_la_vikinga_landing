@@ -18,6 +18,16 @@ export default {
         getBaseUrl(){
             return callAPI('get', 'api/v1/shop/get-base-url');
         },
+        getTypeInvoice(){
+            return callAPI('get', 'api/v1/configuration/type-invoices');
+        },
+        getTypeDocument(type){
+            return callAPI('get', 'api/v1/configuration/type-documents/'+type);
+        },
+        getPaymentMethods(){
+            return callAPI('get', 'api/v1/configuration/payment-methods');
+        },
+        
     },
 
     team:{
@@ -67,4 +77,11 @@ export default {
             return callAPI('post', 'api/v1/auth/register', { data: data });
         },
     },
+
+    order:{
+        register(data){
+            return callAPI('post', 'api/v1/order/create', { data: data });
+        },
+        
+    }
 }

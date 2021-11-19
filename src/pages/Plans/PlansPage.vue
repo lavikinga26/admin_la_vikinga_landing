@@ -57,15 +57,26 @@
                     sm="4"
                     align="center"
                 >
-                    <v-img
-                        lazy-src="https://picsum.photos/id/11/10/6"
-                        max-height="400"
+                    <v-hover
+                        v-slot="{ hover }"
+                        close-delay="200"
+                    >
+                        <v-card
+                        :elevation="hover ? 16 : 2"
+                        :class="{ 'on-hover': hover }"
                         max-width="250"
-                        class="rounded plan"
-                        :src="base_url + plan.file_path.path + plan.file_path.filename"
-                        @click="goToPlan(plan.identifier)"
-                    ></v-img>
-
+                        
+                        >
+                            <v-img
+                                lazy-src="https://picsum.photos/id/11/10/6"
+                                max-height="400"
+                                max-width="250"
+                                class="rounded plan"
+                                :src="base_url + plan.file_path.path + plan.file_path.filename"
+                                @click="goToPlan(plan.identifier)"
+                            ></v-img>
+                        </v-card>
+                    </v-hover>
                     <!--<v-img v-if="item.file_path" :src="base_url + item.file_path.path + item.file_path.filename" max-width="100px" max-height="80px" class="ma-3" style="border-radius:50%; min-height: 150px; min-width: 150px;"></v-img>
                     <v-img v-else :src="base_url + empty_url" max-width="100px" max-height="80px" class="ma-3" style="border-radius:50%; min-height: 150px; min-width: 150px;"></v-img>-->
                 </v-col>

@@ -81,7 +81,6 @@
                                 </v-btn>
                             </v-col>
                         </v-row>
-
                     </v-tab-item>
 
                     <v-tab-item value="pago" class="pa-4">
@@ -90,7 +89,8 @@
                                 <h2 style="font-weight: 100;">DETALLES DE ORDEN</h2>
                                 <v-form v-model="valid">
                                     <v-container class="mt-10">
-                                        <v-row>
+                                        <!--form order-->
+                                        <v-row v-show="!payment">
                                             <v-col
                                                 cols="12"
                                                 md="6"
@@ -113,6 +113,33 @@
                                                     required
                                                     outlined
                                                     v-model="order.lastname"
+                                                ></v-text-field>
+                                            </v-col>
+                                            
+                                            <v-col
+                                                cols="12"
+                                                md="6"
+                                                class="pa-0 px-1"
+                                            >
+                                                <v-select
+                                                    :items="documents"
+                                                    label="Tipo Documento"
+                                                    outlined
+                                                    v-model="order.id_document_type"
+                                                    item-text="type_document"
+                                                    item-value="id"
+                                                ></v-select>
+                                            </v-col>
+                                            <v-col
+                                                cols="12"
+                                                md="6"
+                                                class="pa-0 px-1"
+                                            >
+                                                <v-text-field
+                                                    label="Nro. Documento"
+                                                    required
+                                                    outlined
+                                                    v-model="order.nro_doc"
                                                 ></v-text-field>
                                             </v-col>
                                             <v-col
@@ -197,7 +224,84 @@
                                                     :rules="rules"
                                                 ></v-text-field>
                                             </v-col>
+
+                                            <v-col
+                                                cols="12"
+                                                md="12"
+                                                class="pa-0 px-1"
+                                            >
+                                                <v-checkbox
+                                                color="primary"
+                                                v-model="order.had_invoice"
+                                                :label="`Solicitar Factura`"
+                                                ></v-checkbox>
+                                            </v-col>
+            
                                         </v-row>
+                                        <!--end form order-->
+
+                                        <!--form invoice-->
+                                        <v-row v-if="order.had_invoice" v-show="!payment">
+                                            <v-col
+                                                cols="12"
+                                                md="6"
+                                                class="pa-0 px-1"
+                                            >
+                                                <v-text-field
+                                                    label="RUC"
+                                                    required
+                                                    outlined
+                                                    v-model="order.inv_doc"
+                                                ></v-text-field>
+                                            </v-col>
+                                            <v-col
+                                                cols="12"
+                                                md="6"
+                                                class="pa-0 px-1"
+                                            >
+                                                <v-text-field
+                                                    label="Razón Social"
+                                                    required
+                                                    outlined
+                                                    v-model="order.inv_business_name"
+                                                ></v-text-field>
+                                            </v-col>
+                                            <v-col
+                                                cols="12"
+                                                md="12"
+                                                class="pa-0 px-1"
+                                            >
+                                                <v-text-field
+                                                    label="Dirección fiscal"
+                                                    required
+                                                    outlined
+                                                    v-model="order.inv_address"
+                                                ></v-text-field>
+                                            </v-col>
+                                        </v-row>
+                                        <!--end form invoice-->
+
+                                        <!--form payment-->
+                                        <v-row v-show="payment">
+                                            <v-col
+                                                cols="12"
+                                                md="6"
+                                                class="pa-0 px-1"
+                                            >
+                                                <v-radio-group
+                                                v-model="order.id_payment_method"
+                                                column
+                                                >
+                                                <v-radio
+                                                    v-for="(item, index) in paymentMethods"
+                                                    :key="'pm_'+index"
+                                                    :label="item.name"
+                                                    :value="item.id"
+                                                ></v-radio>
+                                                </v-radio-group>
+                                            </v-col>
+                                        </v-row>
+                                        <!--end form invoice-->
                                     </v-container>
                                 </v-form>
                             </v-col>
@@ -229,6 +333,7 @@
                                         class="mt-8"
                                         x-large
                                         :disabled="cart.length === 0"
+                                        @click="paymentProcess()"
                                     >
                                         <v-icon left>mdi-cart-outline</v-icon>
                                         Continuar Pago
@@ -262,13 +367,19 @@ export default {
             cart: [],
 
             order:{
+                country: 'Peru',
                 password:'',
-                confirmPassword:''
+                confirmPassword:'',
+                had_invoice: false,
             },
             rules: [
                 v => !!v || 'Campo obligatorio',
             ],
-            countries:[]
+            countries:[],
+            documents:[],
+            paymentMethods:[],
+
+            payment: false,
         }
     },
     computed: {
@@ -294,6 +405,8 @@ export default {
         this.list();
         this.getUser();
         this.getCountry();
+        this.getTypeDocument();
+        this.getPaymentMethods();
     },
     methods:{
         list(){
@@ -304,22 +417,71 @@ export default {
         },
         async getUser(){
             if(this.$store.getters.isLoggedIn){
+                this.$store.commit('loader',true);
                 try{
                     const data = await this.$API.auth.auth();
                     this.order = Object.assign({}, data.data);
+                    this.order.had_invoice = false;
+                    this.order = JSON.parse(JSON.stringify(this.order));
                     console.log(this.order)
+                    this.$store.commit('loader',false);
                 }
                 catch(e){
+                    this.$store.commit('loader',false);
                     console.error(e);
                 } 
             }
         },
         async getCountry(){
+            this.$store.commit('loader',true);
             try{
                 const data = await axios.get('https://countriesnow.space/api/v0.1/countries/');
                 this.countries = data.data.data;
+                this.$store.commit('loader',false);
             }
             catch(e){
+                this.$store.commit('loader',false);
+                console.error(e);
+            } 
+        },
+        async getTypeDocument(type = 2){
+            this.$store.commit('loader',true);
+            try{
+                const data = await this.$API.configuration.getTypeDocument(type);
+                this.documents = data.data.data;
+                this.$store.commit('loader',false);
+            }
+            catch(e){
+                this.$store.commit('loader',false);
+                console.error(e);
+            } 
+        },
+        async getPaymentMethods(){
+            this.$store.commit('loader',true);
+            try{
+                const data = await this.$API.configuration.getPaymentMethods();
+                this.paymentMethods = data.data.data;
+                this.$store.commit('loader',false);
+            }
+            catch(e){
+                this.$store.commit('loader',false);
+                console.error(e);
+            } 
+        },
+        paymentProcess(){
+            this.payment = true;
+        },
+
+
+        
+        async getPaymentMethods(){
+            this.$store.commit('loader',true);
+            try{
+                const data = await this.$API.order.register(this.order);
+                this.$store.commit('loader',false);
+            }
+            catch(e){
+                this.$store.commit('loader',false);
                 console.error(e);
             } 
         },

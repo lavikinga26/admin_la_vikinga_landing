@@ -16,23 +16,28 @@
         <div class="container mt-4">
             <v-row>
                 <v-col cols="12" md="6">
-
+                    <v-img
+                        lazy-src="https://picsum.photos/id/11/10/6"
+                        max-height="400"
+                        :src="base_url + plan.file_path.path + plan.file_path.filename"
+                    ></v-img>
                 </v-col>
                 <v-col cols="12" md="6">
                     <div style="min-height: 490px;" class="pa-10">
-                        <h2 class="tit_h1_pink">PLAN VIKINGA</h2>
-                        <h4 class="mb-10 white--text" style="letter-spacing: 5px;">12 MESES</h4>
-                        <div class="grey--text text--lighten-2 desc_plan py-10">
+                        <h2 class="tit_h1_pink" style="line-height: 1em">{{plan.title}}</h2>
+                        <h4 class="mb-10 white--text" style="letter-spacing: 5px;">{{plan.months}} MESES</h4>
+                        <div class="grey--text text--lighten-2 desc_plan py-5 mb-5">
                             <ul>
-                                <li>dskhjdsfh</li>
-                                <li>dskhjdsfh</li>
-                                <li>dskhjdsfh</li>
-                                <li>dskhjdsfh</li>
-                                <li>dskhjdsfh</li>
+                                <li>{{plan.description}}</li>
                             </ul>
                         </div>
+                        <div class="my-4">
+                            <span class="price_carousel text-center" style="font-family: 'MachProCondBold' !important;">
+                                S/. {{plan.cost}}
+                            </span>  
+                        </div>
                         <v-btn
-                            class="ma-2 fb-btn"
+                            class="my-2 fb-btn"
                             color="secondary"
                             outlined
                             @click="addToCart"
@@ -82,6 +87,7 @@ export default {
         },
         async getPlan(){
             let vm = this;
+            vm.$store.commit('loader',true);
             try{
                 const data = await this.$API.plans.read(vm.slug);
                 console.log(data.data.data)
