@@ -1,17 +1,24 @@
 //@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css');
 $color: #555555;
 $white: #ffffff;
 
 @font-face {
-    font-family: 'Gotham';
-    src: url('../fonts/GothamBook.ttf');
+    /*font-family: 'Gotham';
+    src: url('../fonts/GothamBook.ttf'); */
+
+    font-family: 'Montserrat';
+    src: url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 }
 
 @font-face {
-    font-family: 'GothamBold';
-    src: url('../fonts/GothamBold.ttf');
+    /*font-family: 'GothamBold';
+    src: url('../fonts/GothamBold.ttf');*/
+
+    font-family: 'MontserratBold';
+    src: url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
 }
 
 @font-face {
@@ -41,7 +48,7 @@ $white: #ffffff;
     background: #555; 
   }
 
-$font-family:'Gotham';
+$font-family:'Montserrat';
 
 .v-application {
   [class*='text-'] {
@@ -91,7 +98,7 @@ $font-family:'Gotham';
 }
 body{
     background: #F1F1F1;
-    font-family: 'Gotham';
+    font-family: 'Montserrat';
 }
 
 .top_bar_blue{
@@ -118,13 +125,13 @@ body{
 }
 
 .sub_h2_white{
-    font-family: 'GothamBold';
+    font-family: 'Montserrat';
     color: #fff;
     font-size: 1em;
 }
 
 .sub_h2_black{
-    font-family: 'GothamBold';
+    font-family: 'Montserrat';
     color: #333333;
     font-size: 1em;
 }
@@ -149,7 +156,7 @@ body{
 
 
 .tit_h2_staff_pink{
-    font-family: 'GothamBold';
+    font-family: 'Montserrat';
     color: #E30E4F;
     font-size: 2em;
 }
@@ -200,7 +207,7 @@ body{
 .btn_pink{
     background: #E30E4F;
     color: #fff;
-    font-family: 'Gotham';
+    font-family: 'Montserrat';
 }
 
 .btn_pink:hover{
@@ -221,7 +228,7 @@ body{
 }
 
 .txt_video{
-    font-family: 'Gotham';
+    font-family: 'Montserrat';
     font-weight: 300;
     padding: 20px 80px;
 }
@@ -339,13 +346,13 @@ body{
 .bd_desc_carousel ul li{
     color: #fff;
     list-style-image: url(../img/lista_icon.png);
-    font-family: 'Gotham';
+    font-family: 'Montserrat';
 }
 
 .desc_plan ul li{
     color: #fff;
     list-style-image: url(../img/lista_icon.png);
-    font-family: 'Gotham';
+    font-family: 'Montserrat';
 }
 
 .price_carousel{
@@ -375,7 +382,7 @@ body{
     display: inline-block;
     margin-bottom: 5px;
     padding:10px;
-    font-family: 'Gotham';
+    font-family: 'Montserrat';
 }
 .filtering span:last-child {
     margin: 0;

@@ -51,6 +51,10 @@ export const routes = [{
     path: '/carrito',
     name: 'carrito',
     component: () => import(/* webpackChunkName: "blank" */ '../pages/Shop/CartPage.vue'),
+},  {
+    path: '/confirmar-pago/:hash',
+    name: 'payment',
+    component: () => import(/* webpackChunkName: "blank" */ '../pages/Shop/PaymentPage.vue'),
 }, 
 
 ...UserRoutes,

@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-container>
-            <v-card elevation="0">
+            <!--<v-card elevation="0" min-height="500">-->
                 <v-tabs v-model="tab" :show-arrows="false" background-color="primary" dark>
                     <v-tab to="#carrito">Carrito</v-tab>
                     <v-tab to="#pago"  v-if="cart.length > 0">Pago</v-tab>
@@ -18,7 +18,7 @@
                                 </div>
                                 <div v-for="(item, index) in cart" :key="index" class="my-2">
                                     <v-divider v-if="index !== 0" class="my-3"></v-divider>
-                                    <div class="d-flex align-center justify-center font-weight-bold">
+                                    <div class="d-flex align-center justify-center">
                                         <div class="d-none d-md-block">
                                             <v-img
                                                 width="150"
@@ -46,7 +46,7 @@
                                             ></v-select>
                                         </div>
                                         <div class="mx-1 mx-sm-4 flex-grow-1" style="font-size: 0.9rem;">
-                                            <div class="text-overline">Total:</div>{{item.currency}}{{ (item.price * item.quantity)  | formatCurrency }}
+                                            <div class="text-overline">Total:</div>{{item.currency}} {{ (item.price * item.quantity)  | formatCurrency }}
                                         </div>
                                         <v-btn icon @click="cart.splice(index, 1); removeItem(index)">
                                             <v-icon>mdi-close</v-icon>
@@ -62,14 +62,15 @@
                                 </div>-->
                             </v-col>
                         </v-row>
+                        <v-divider></v-divider>
                         <v-row v-if="cart.length > 0">
                             <v-spacer></v-spacer>
-                            <v-col cols="12" md="6" sm="12" class="pa-10">
+                            <v-col cols="12" md="5" sm="12" class="pa-10">
                                 <h3 class="text-uppercase">TOTAL DEL CARRITO</h3>
                                 <div class="d-flex text-h6 my-6">
                                     <div class="text-uppercase">Total:</div>
                                     <v-spacer></v-spacer>
-                                    <div>{{ total | formatCurrency}}</div>
+                                    <div>S/. {{ total | formatCurrency}}</div>
                                 </div>
                                 <v-btn 
                                     color="secondary"
@@ -86,11 +87,13 @@
                     <v-tab-item value="pago" class="pa-4">
                         <v-row>
                             <v-col cols="12" md="7">
-                                <h2 style="font-weight: 100;">DETALLES DE ORDEN</h2>
-                                <v-form v-model="valid">
-                                    <v-container class="mt-10">
+                                <h2 style="font-weight: 100;">{{formTitle}}</h2>
+                                <v-container>
+                                    <v-form 
+                                    ref="form_invoice" 
+                                    v-model="valid">
                                         <!--form order-->
-                                        <v-row v-show="!payment">
+                                        <v-row v-show="!payment"  class="mt-10">
                                             <v-col
                                                 cols="12"
                                                 md="6"
@@ -98,7 +101,7 @@
                                             >
                                                 <v-text-field
                                                     label="Nombre"
-                                                    required
+                                                    :rules="rules"
                                                     outlined
                                                     v-model="order.name"
                                                 ></v-text-field>
@@ -110,7 +113,7 @@
                                             >
                                                 <v-text-field
                                                     label="Apellidos"
-                                                    required
+                                                    :rules="rules"
                                                     outlined
                                                     v-model="order.lastname"
                                                 ></v-text-field>
@@ -122,6 +125,7 @@
                                                 class="pa-0 px-1"
                                             >
                                                 <v-select
+                                                    :rules="rules"
                                                     :items="documents"
                                                     label="Tipo Documento"
                                                     outlined
@@ -137,7 +141,7 @@
                                             >
                                                 <v-text-field
                                                     label="Nro. Documento"
-                                                    required
+                                                    :rules="rules"
                                                     outlined
                                                     v-model="order.nro_doc"
                                                 ></v-text-field>
@@ -147,15 +151,10 @@
                                                 md="12"
                                                 class="pa-0 px-1"
                                             >
-                                                <!--<v-text-field
-                                                    label="País"
-                                                    required
-                                                    outlined
-                                                    v-model="order.country"
-                                                ></v-text-field>-->
                                                 <v-select
                                                     :items="countries"
                                                     label="País"
+                                                    :rules="rules"
                                                     outlined
                                                     v-model="order.country"
                                                     item-text="country"
@@ -169,7 +168,7 @@
                                             >
                                                 <v-text-field
                                                     label="Dirección"
-                                                    required
+                                                    :rules="rules"
                                                     outlined
                                                     v-model="order.address"
                                                 ></v-text-field>
@@ -181,7 +180,7 @@
                                             >
                                                 <v-text-field
                                                     label="Ciudad"
-                                                    required
+                                                    :rules="rules"
                                                     outlined
                                                     v-model="order.city"
                                                 ></v-text-field>
@@ -193,7 +192,7 @@
                                             >
                                                 <v-text-field
                                                     label="Correo Electrónico"
-                                                    required
+                                                    :rules="rules"
                                                     outlined
                                                     v-model="order.email"
                                                 ></v-text-field>
@@ -207,7 +206,8 @@
                                                 <v-text-field
                                                     label="Crear contraseña"
                                                     outlined
-                                                    v-model="this.order.password"
+                                                    type="password"
+                                                    v-model="order.password"
                                                     :rules="rules"
                                                 ></v-text-field>
                                             </v-col>
@@ -220,9 +220,19 @@
                                                 <v-text-field
                                                     label="Confirmar contraseña"
                                                     outlined
-                                                    v-model="this.order.confirmPassword"
+                                                    type="password"
+                                                    v-model="order.confirmPassword"
                                                     :rules="rules"
                                                 ></v-text-field>
+                                            </v-col>
+                                            
+                                            <v-col
+                                                cols="12"
+                                                md="12"
+                                                class="pa-0 px-1"
+                                                v-if="!isLogged"
+                                            >
+                                                ¿Ya tienes una cuenta? <a href='/auth/iniciar-sesion' style="color: #e30e4f; text-decoration: underline">Inicia Sesión</a>
                                             </v-col>
 
                                             <v-col
@@ -244,24 +254,24 @@
                                         <v-row v-if="order.had_invoice" v-show="!payment">
                                             <v-col
                                                 cols="12"
-                                                md="6"
+                                                md="4"
                                                 class="pa-0 px-1"
                                             >
                                                 <v-text-field
                                                     label="RUC"
-                                                    required
+                                                    :rules="rules"
                                                     outlined
                                                     v-model="order.inv_doc"
                                                 ></v-text-field>
                                             </v-col>
                                             <v-col
                                                 cols="12"
-                                                md="6"
+                                                md="8"
                                                 class="pa-0 px-1"
                                             >
                                                 <v-text-field
                                                     label="Razón Social"
-                                                    required
+                                                    :rules="rules"
                                                     outlined
                                                     v-model="order.inv_business_name"
                                                 ></v-text-field>
@@ -273,58 +283,141 @@
                                             >
                                                 <v-text-field
                                                     label="Dirección fiscal"
-                                                    required
+                                                    :rules="rules"
                                                     outlined
                                                     v-model="order.inv_address"
                                                 ></v-text-field>
                                             </v-col>
                                         </v-row>
                                         <!--end form invoice-->
+                                    </v-form>
 
+                                    <v-form 
+                                    ref="form_payment" 
+                                    v-model="valid2">
                                         <!--form payment-->
                                         <v-row v-show="payment">
                                             <v-col
                                                 cols="12"
-                                                md="6"
+                                                md="12"
                                                 class="pa-0 px-1"
                                             >
+                                                <v-card class="ma-3">
+                                                    <v-card-title>
+                                                        <h5>Detalle de Facturación</h5>
+                                                        <v-btn
+                                                        icon
+                                                        @click="payment=false;"
+                                                        >
+                                                            <v-icon>mdi-square-edit-outline</v-icon>
+                                                        </v-btn>
+                                                    </v-card-title>
+                                                    <v-card-subtitle v-if="!order.had_invoice">
+                                                        <div>{{order.name+' '+order.lastname}}</div>
+                                                        <div>{{order.email}}</div>
+                                                        <div>{{order.address+', '+order.city+', '+order.country}}</div>
+                                                    </v-card-subtitle>
+                                                    <v-card-subtitle v-else>
+                                                        <div>{{order.inv_business_name}}</div>
+                                                        <div>RUC: {{order.inv_doc}}</div>
+                                                        <div>{{order.inv_address}}</div>
+                                                    </v-card-subtitle>
+                                                </v-card>
+                                                <v-divider class="my-7"></v-divider>
+                                                <h4 style="font-weight: 100;" class="mx-3">Seleccione método de pago</h4>
                                                 <v-radio-group
                                                 v-model="order.id_payment_method"
                                                 column
+                                                color="secondary"
+                                                class="mt-0"
+                                                :rules="rules"
                                                 >
-                                                <v-radio
-                                                    v-for="(item, index) in paymentMethods"
-                                                    :key="'pm_'+index"
-                                                    :label="item.name"
-                                                    :value="item.id"
-                                                ></v-radio>
+                                                <template v-for="(item, index) in paymentMethods">
+                                                    <v-card :key="'pm_'+index" class="ma-3 pa-3">
+                                                        <div class="d-flex align-center">    
+                                                            <div>
+                                                                <v-radio
+                                                                    :value="item.id"
+                                                                    color="secondary"
+                                                                ></v-radio>
+                                                            </div>
+                                                            <div>
+                                                                <h4>{{item.name}}</h4>
+                                                                <p style="font-size: 0.8rem; margin-bottom: 0px;">
+                                                                    {{item.description}}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </v-card>
+                                                </template>
+                                                
                                                 </v-radio-group>
                                             </v-col>
                                         </v-row>
                                         <!--end form invoice-->
+                                    </v-form>
                                     </v-container>
-                                </v-form>
                             </v-col>
 
                             <v-col cols="12" md="5">
-                                <v-card class="pa-2" elevation="0">
+                                <v-card class="pa-5 px-7" elevation="0" color="grey lighten-3">
                                     <div class="text-h5 mb-6">Resumen</div>
-                                    <div class="d-flex">
-                                        <div class="ml-15">SUBTOTAL:</div>
-                                        <v-spacer></v-spacer>
-                                        <div class="mr-15">{{ subtotal | formatCurrency }}</div>
+                                    <div class="my-5">
+                                        <v-simple-table class="transparent">
+                                            <template v-slot:default>
+                                            <tbody>
+                                                <tr
+                                                v-for="(item, index) in cart" :key="'tb_'+index"
+                                                >
+                                                    <td class="pl-0 pr-2">
+                                                        <v-img
+                                                            width="100"
+                                                            height="80"
+                                                            cover
+                                                            class="rounded mr-4"
+                                                            :src="'http://admin-lavikinga.bytesoluciones.test/storage/uploads/plan_files/10292021191704617c48b0573bf.jpg'"
+                                                        ></v-img>
+                                                    </td>
+                                                    <td class="pl-0 pr-2">{{ item.title }}</td>
+                                                    <td class="pr-0 pl-2">S/. {{ (item.price * item.quantity)  | formatCurrency }}</td>
+                                                </tr>
+                                            </tbody>
+                                            </template>
+                                        </v-simple-table>
                                     </div>
                                     <v-divider class="my-2"></v-divider>
                                     <div class="d-flex">
-                                        <div class="ml-15">DESCUENTOS:</div>
+                                        <div>Subtotal:</div>
                                         <v-spacer></v-spacer>
-                                        <div class="mr-15">- {{ discount | formatCurrency }}</div>
+                                        <div>S/. {{ subtotal | formatCurrency }}</div>
                                     </div>
                                     <v-divider class="my-2"></v-divider>
-                                    <div class="d-flex text-h6">
-                                        <div class="text-uppercase ml-15">Total:</div>
+                                    <div class="d-flex">
+                                        <div>Descuento:</div>
                                         <v-spacer></v-spacer>
-                                        <div class="mr-15">{{ total | formatCurrency  }}</div>
+                                        <div>S/. - {{ discount | formatCurrency }}</div>
+                                    </div>
+                                    <v-divider class="my-2"></v-divider>
+                                    <div class="d-flex py-2">
+                                        <v-text-field
+                                            outlined
+                                            height="40"
+                                            background-color="grey lighten-2"
+                                            placeholder="CUPÓN"
+                                            hide-details=""
+                                        ></v-text-field>
+                                        <v-btn
+                                        color="grey"
+                                        dark
+                                        elevation="0"
+                                        height="55"
+                                        class="mr-0"
+                                        >APLICAR</v-btn>
+                                    </div>
+                                    <div class="d-flex text-h6 pt-3">
+                                        <div>Total:</div>
+                                        <v-spacer></v-spacer>
+                                        <div>S/. {{ total | formatCurrency  }}</div>
                                     </div>
                                     <v-btn
                                         large
@@ -343,7 +436,16 @@
                         </v-row>
                     </v-tab-item>
                 </v-tabs-items>
-            </v-card>
+            <!--</v-card>-->
+            <v-snackbar
+                v-model="toast.toast"
+                :timeout="toast.timeout"
+                :color="toast.color"
+                dark
+                >
+                {{ toast.message }}
+            </v-snackbar>
+    
         </v-container>
     </div>
 </template>
@@ -364,6 +466,7 @@ export default {
             discount: 0,
             tab: null,
             valid: false,
+            valid2: false,
             cart: [],
 
             order:{
@@ -380,6 +483,13 @@ export default {
             paymentMethods:[],
 
             payment: false,
+
+            toast:{
+                toast: false,
+                message: '',
+                timeout: 3000,
+                color: "success"
+            }
         }
     },
     computed: {
@@ -400,17 +510,20 @@ export default {
         isLogged() {
             return this.$store.getters.isLoggedIn;
         },
+        formTitle () {
+            return this.payment ?'Detalles de pago' : 'Detalles de orden' 
+        },
     },
     mounted(){
         this.list();
         this.getUser();
         this.getCountry();
         this.getTypeDocument();
-        this.getPaymentMethods();
     },
     methods:{
         list(){
             this.cart = this.$store.getters.StoreCart;
+            console.log(this.cart );
         },
         removeItem(index){
             this.$store.dispatch("removeItem", index);
@@ -468,16 +581,36 @@ export default {
                 console.error(e);
             } 
         },
+
         paymentProcess(){
-            this.payment = true;
+            if(this.payment){
+                if(this.$refs.form_payment.validate()){
+                    this.createOrder();
+                }
+                else{
+                    return;
+                }
+            }
+            else{
+                if(this.$refs.form_invoice.validate()){
+                    this.getPaymentMethods();
+                    this.payment = true;
+                }
+                else{
+                    return;
+                }
+            }
         },
-
-
         
-        async getPaymentMethods(){
+        async createOrder(){
             this.$store.commit('loader',true);
             try{
+                this.order.discount = this.discount
+                this.order.total = this.total
+                this.order.subtotal = this.subtotal;
+                this.order.detail = this.cart;
                 const data = await this.$API.order.register(this.order);
+                this.openToastAlert(true, 'Orden creada correctamente', 'primary');
                 this.$store.commit('loader',false);
             }
             catch(e){
@@ -485,6 +618,14 @@ export default {
                 console.error(e);
             } 
         },
+
+        openToastAlert(open, message, color){
+            this.toast = {
+                toast: open,
+                message: message, 
+                color: color
+            }
+        }
     }
 }
 </script>

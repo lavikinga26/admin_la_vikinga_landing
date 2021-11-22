@@ -82,6 +82,9 @@ export default {
         register(data){
             return callAPI('post', 'api/v1/order/create', { data: data });
         },
-        
+        payment(id){
+            return callAPI('get', 'api/v1/order/payment/'+id );
+            
+        }
     }
 }

@@ -102,6 +102,7 @@ export default {
         addToCart() {
             this.$store.commit('loader',true);
             let item = {
+                id: this.plan.id,
                 title: this.plan.title,
                 code: this.plan.code,
                 image: this.base_url + this.plan.file_path.path + this.plan.file_path.filename,
