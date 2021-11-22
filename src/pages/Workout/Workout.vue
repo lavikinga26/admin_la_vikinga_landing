@@ -23,16 +23,14 @@
         <div class="d-flex flex-row justify-center my-2" align="center">
             <v-spacer></v-spacer>
             <v-toolbar light elevation="0">
-                <template v-for="(item, i) in list_categories">
-                    <v-btn :key="i"
-                        @click="getListWorkout(item)"
-                        :text="true"
-                        :outlined="false"
-                        tile
-                        color="#E30E4F">
-                        {{item.name}}
-                    </v-btn>
-                </template>
+                <v-btn v-for="(item, i) in list_categories" :key="i"
+                    @click="filterListWorkout(item)"
+                    :text="category_id!=item.id"
+                    :outlined="category_id==item.id"
+                    tile
+                    color="#E30E4F">
+                    {{item.name}}
+                </v-btn>
             </v-toolbar>
         </div>
         <!-- Fin -->
@@ -75,7 +73,9 @@
 <script>
 export default {
     data: () => ({
+        category_id: 0,
         list_categories: [],
+        temp_list_workout: [],
         list_workout: [],
     }),
     mounted() {
@@ -83,24 +83,34 @@ export default {
     },
     methods:{
         async getListCategories(){
+            this.$store.commit('loader',true);
+
             try{
                 const response = await this.$API.workouts.categories();
                 this.list_categories = response.data.data;
-                this.getListWorkout(this.list_categories[0]);
+                this.getListWorkout();
+            }
+            catch(e){
+                console.error(e);
+            } finally {
+                this.$store.commit('loader', false);
+            }
+        },
+        async getListWorkout(){
+            try{
+                const response    = await this.$API.workouts.list();
+                this.temp_list_workout = response.data.data;
+                this.filterListWorkout(this.list_categories[0]);
             }
             catch(e){
                 console.error(e);
             }
         },
-        async getListWorkout(item){
-            try{
-                const response    = await this.$API.workouts.list(item.id);
-                this.list_workout = response.data.data;
-            }
-            catch(e){
-                console.error(e);
-            }
-        }
+        filterListWorkout(item){
+            this.category_id = item.id;
+            const filtered_list = this.temp_list_workout;
+            this.list_workout = filtered_list.filter(obj => obj.category_id == item.id);
+        },
     }
 }
 </script>

@@ -50,8 +50,8 @@ export default {
         },
     },
     workouts:{
-        list(id){
-            return callAPI('get', 'api/v1/workouts/list/'+id);
+        list(){
+            return callAPI('get', 'api/v1/workouts/list');
         },
         categories(){
             return callAPI('get', 'api/v1/workouts/categories');
