@@ -400,6 +400,7 @@
                                     <v-divider class="my-2"></v-divider>
                                     <div class="d-flex py-2">
                                         <v-text-field
+                                            class="rounded-0"
                                             outlined
                                             height="40"
                                             background-color="grey lighten-2"
@@ -410,8 +411,8 @@
                                         color="grey"
                                         dark
                                         elevation="0"
-                                        height="55"
-                                        class="mr-0"
+                                        height="56"
+                                        class="mr-0 rounded-0"
                                         >APLICAR</v-btn>
                                     </div>
                                     <div class="d-flex text-h6 pt-3">

@@ -64,11 +64,11 @@
                             {{n}}
                         </div>
                         <div class="pa-4">
-                            <h5>YOGA PRINCIPIANTES</h5>
+                            <h5>FUERZA PRINCIPIANTES</h5>
                             <p class="mb-3" style="font-size: 0.7rem"> VER VIDEO</p>
-                            <h5>ENTRENAMIENTO PRINCIPIANTES</h5>
+                            <h5>FUERZA AVANZADO</h5>
                             <p class="mb-3" style="font-size: 0.7rem"> VER VIDEO</p>
-                            <h5>TALLER NUTRICIÓN</h5>
+                            <h5>TALLER: NUTRICIÓN</h5>
                         </div>
                         <!--<v-row
                             class="fill-height"

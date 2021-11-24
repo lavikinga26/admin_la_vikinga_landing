@@ -44,18 +44,18 @@
                         color="grey lighten-5"
                         class="my-3 mx-4"
                         elevation="3"
-                        min-height="280"
+                        min-height="250"
                         max-width="1000"
                         >
-                            <div class="primary white--text pa-3 px-15">
-                                YOGA PRINCIPIANTES 2
+                            <div class="primary white--text text-left pa-3 px-15">
+                                ENTRENAMIENTO FUERZA PRINCIPIANTES
                             </div>
                             <v-card-text>
-                                <v-row height="280">
+                                <v-row height="250">
                                     <v-col cols="12" md="4" class="pa-4" align-items="center">
                                         <v-img
-                                            src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-                                            height="200px"
+                                            src="https://i.vimeocdn.com/video/1216681987-4743218d2221b42f2acba382eceedf59e3a83c91aade0ff4b264a3deb6b2a295-d_640"
+                                            height="180px"
                                             width="270"
                                             class="ma-auto"
                                         >
@@ -66,8 +66,36 @@
                                             </v-row>
                                         </v-img>
                                     </v-col>
-                                    <v-col cols="12" md="8">
-
+                                    <v-col cols="12" md="8" class="text-left align-center d-flex">
+                                        <v-container>
+                                            <h3>ENTRENAMIENTO BRAZOS</h3>
+                                            <div>HORA: 07:00 AM</div>
+                                            <v-row class="my-3">
+                                                <v-col cols="12" md="4">
+                                                    <h5>TIEMPO:</h5>
+                                                    <div>1:00 HR APROX.</div>
+                                                </v-col>
+                                                <v-col cols="12" md="4">
+                                                    <h5>ENFOQUE:</h5>
+                                                    <div>BRAZOS</div>
+                                                </v-col>
+                                                <v-col cols="12" md="4">
+                                                    <h5>MATERIAL:</h5>
+                                                    <div>MANCUERNAS</div>
+                                                </v-col>
+                                            </v-row>
+                                            <v-btn
+                                            tile
+                                            color="light-blue lighten-2"
+                                            class="rounded"
+                                            dark
+                                            >
+                                                <v-icon left>
+                                                    mdi-video
+                                                </v-icon>
+                                                Entrar a clase
+                                            </v-btn>
+                                        </v-container>
                                     </v-col>
                                 </v-row>
                             </v-card-text>
@@ -82,14 +110,14 @@
                         min-height="280"
                         max-width="1000"
                         >
-                            <div class="primary white--text pa-3 px-15">
-                                YOGA AVANZADO 2
+                            <div class="primary white--text text-left pa-3 px-15">
+                                ENTRENAMIENTO FUERZA AVANZADO
                             </div>
                             <v-card-text>
                                 <v-row height="280">
                                     <v-col cols="12" md="4" class="pa-4" align-items="center">
                                         <v-img
-                                            src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+                                            src="https://i.vimeocdn.com/video/1216681987-4743218d2221b42f2acba382eceedf59e3a83c91aade0ff4b264a3deb6b2a295-d_640"
                                             height="200px"
                                             width="270"
                                             class="ma-auto"
@@ -101,8 +129,38 @@
                                             </v-row>
                                         </v-img>
                                     </v-col>
-                                    <v-col cols="12" md="8">
-
+                                    <v-col cols="12" md="8" class="text-left align-center d-flex">
+                                        <v-container>
+                                            <h3>ENTRENAMIENTO PIERNAS</h3>
+                                            <div>HORA: 07:00 AM</div>
+                                            
+                                            <v-row class="my-3">
+                                                <v-col cols="12" md="4">
+                                                    <h5>TIEMPO:</h5>
+                                                    <div>1:00 HR APROX.</div>
+                                                </v-col>
+                                                <v-col cols="12" md="4">
+                                                    <h5>ENFOQUE:</h5>
+                                                    <div>PIERNAS</div>
+                                                </v-col>
+                                                <v-col cols="12" md="4">
+                                                    <h5>MATERIAL:</h5>
+                                                    <div>MANCUERNAS</div>
+                                                </v-col>
+                                            </v-row>
+                                            
+                                            <v-btn
+                                            tile
+                                            color="light-blue lighten-2"
+                                            class="mt-5 rounded"
+                                            dark
+                                            >
+                                                <v-icon left>
+                                                    mdi-video
+                                                </v-icon>
+                                                Entrar a clase
+                                            </v-btn>
+                                        </v-container>
                                     </v-col>
                                 </v-row>
                             </v-card-text>
@@ -117,14 +175,14 @@
                         min-height="280"
                         max-width="1000"
                         >
-                            <div class="secondary white--text pa-3 px-15">
-                                YOGA PRINCIPIANTES 2
+                            <div class="secondary white--text text-left pa-3 px-15">
+                                TALLER: NUTRICION
                             </div>
                             <v-card-text>
                                 <v-row height="280">
                                     <v-col cols="12" md="4" class="pa-4" align-items="center">
                                         <v-img
-                                            src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+                                            src="https://i.vimeocdn.com/video/1216681987-4743218d2221b42f2acba382eceedf59e3a83c91aade0ff4b264a3deb6b2a295-d_640"
                                             height="200px"
                                             width="270"
                                             class="ma-auto"
@@ -136,8 +194,38 @@
                                             </v-row>
                                         </v-img>
                                     </v-col>
-                                    <v-col cols="12" md="8">
-
+                                    <v-col cols="12" md="8" class="text-left align-center d-flex">
+                                        <v-container >
+                                            <h3>LA NUTRICION EN EL ENTRENAMIENTO</h3>
+                                            <div>HORA: 4:00 PM</div>
+                                            
+                                            <v-row class="my-3">
+                                                <v-col cols="12" md="4">
+                                                    <h5>TIEMPO:</h5>
+                                                    <div>1:00 HR APROX.</div>
+                                                </v-col>
+                                                <v-col cols="12" md="4">
+                                                    <h5>ENFOQUE:</h5>
+                                                    <div>TALLER</div>
+                                                </v-col>
+                                                <v-col cols="12" md="4">
+                                                    <h5>MATERIAL:</h5>
+                                                    <div>-</div>
+                                                </v-col>
+                                            </v-row>
+                                            
+                                            <v-btn
+                                            tile
+                                            color="light-blue lighten-2"
+                                            class="mt-5 rounded"
+                                            dark
+                                            >
+                                                <v-icon left>
+                                                    mdi-video
+                                                </v-icon>
+                                                Entrar a clase
+                                            </v-btn>
+                                        </v-container>
                                     </v-col>
                                 </v-row>
                             </v-card-text>
