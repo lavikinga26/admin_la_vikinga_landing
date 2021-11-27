@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import UserRoutes from './user.routes'
 import AuthRoutes from './auth.routes'
 
+import store from '../store';
 
 Vue.use(Router)
 
@@ -78,14 +79,23 @@ const router = new Router({
         return { x: 0, y: 0 }
     },
     routes
-})
+});
 
 
 /**
  * Before each route update
  */
 router.beforeEach((to, from, next) => {
-    return next()
+    //return next()
+    if(to.matched.some(record => record.meta.requiresAuth)) {
+        if (store.getters.isLoggedIn) {
+          next()
+          return
+        }
+        next('/auth/iniciar-sesion')
+    } else {
+        next()
+    }
 })
 
 /**

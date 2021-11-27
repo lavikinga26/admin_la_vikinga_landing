@@ -4,9 +4,11 @@ export default [{
 },{
   path: 'agenda',
   name: 'apps-agenda',
-  component: () => import(/* webpackChunkName: "apps-email-inbox" */ '@/pages/GymVirtual/pages/AgendaPage.vue')
+  component: () => import(/* webpackChunkName: "apps-email-inbox" */ '@/pages/GymVirtual/pages/AgendaPage.vue'),
+  meta: { requiresAuth: true }
 },{
   path: 'calendario',
   name: 'apps-calendario',
-  component: () => import(/* webpackChunkName: "apps-email-inbox" */ '@/pages/GymVirtual/pages/CalendarPage.vue')
+  component: () => import(/* webpackChunkName: "apps-email-inbox" */ '@/pages/GymVirtual/pages/CalendarPage.vue'),
+  meta: { requiresAuth: true }
 },]

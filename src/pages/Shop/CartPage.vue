@@ -613,6 +613,7 @@ export default {
                 const data = await this.$API.order.register(this.order);
                 this.openToastAlert(true, 'Orden creada correctamente', 'primary');
                 this.$store.commit('loader',false);
+                this.$router.push({ path: '/auth/iniciar-sesion' });
             }
             catch(e){
                 this.$store.commit('loader',false);
