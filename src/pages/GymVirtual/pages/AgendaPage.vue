@@ -2,7 +2,7 @@
     <div>
         <v-container>
             <div class="text-center my-3">
-                <h1>AGENDA</h1>
+                <h1>MI AGENDA</h1>
             </div>
             <div class="text-center py-5">
                 <v-sheet

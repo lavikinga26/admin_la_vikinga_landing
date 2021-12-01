@@ -1,7 +1,7 @@
 <template>
     <div class="my-5">
         <div class="d-flex  justify-space-between align-center">
-            <div class="tit_h1_staff_pink text_entrena txt_uppercase">INFORMACIÓN DE ENTRENAMIENTO</div>
+            <div class="tit_h1_staff_pink text_entrena txt_uppercase">MI REGISTRO</div>
             <v-spacer></v-spacer>
             <v-select class="rounded-pill customm-select"
                 :items="months"

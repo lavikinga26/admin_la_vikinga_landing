@@ -108,10 +108,14 @@ export default {
 
                     localStorage.setItem('user_data', JSON.stringify(user));
                     localStorage.setItem('token', token);
-                    this.$store.commit('loader',false);
-                    this.$router.push({ path: '/gym-virtual/calendario' });
+                    setTimeout(()=>{ 
+                        this.$store.commit('loader',false);
+                        this.$router.push({ path: '/gym-virtual/calendario' });
+                    }, 3000);
+                    
                     //this.$router.go();
                 } catch (e) {
+                    this.$store.commit('loader',false);
                     console.log(e);
                 }
             }

@@ -13,7 +13,7 @@
                 :to="'/gym-virtual/calendario'"
             >
                 <!--<v-icon>mdi-calendar-blank-outline</v-icon>-->
-                CALENDARIO
+                MI CALENDARIO
             </v-btn>
             <span style="color: #fff; font-size: 0.9rem;"> | </span>
             <v-btn 
@@ -23,7 +23,7 @@
                 :to="'/gym-virtual/agenda'"
             >
                 <!--<v-icon>mdi-view-agenda-outline</v-icon>-->
-                AGENDA
+                MI AGENDA
             </v-btn>
             <span style="color: #fff; font-size: 0.9rem;"> | </span>
             <v-btn 

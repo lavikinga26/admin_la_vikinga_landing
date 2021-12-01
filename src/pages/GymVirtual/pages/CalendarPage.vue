@@ -14,8 +14,8 @@
                     show-arrows
                     >
                     <v-slide-item
-                        v-for="n in ['NOVIEMBRE','DICIEMBRE','ENERO']"
-                        :key="n"
+                        v-for="(n, index) in planMonths"
+                        :key="'month_'+index"
                         v-slot="{ active, toggle }"
                     >
                         <v-btn
@@ -28,7 +28,7 @@
                         rounded
                         @click="toggle"
                         >
-                        {{ n }}
+                        {{ months[n._month - 1] }}
                         </v-btn>
                     </v-slide-item>
                     </v-slide-group>
@@ -48,8 +48,8 @@
                 show-arrows
                 >
                 <v-slide-item
-                    v-for="n in ['LUNES 01', 'MARTES 02','MIERCOLES 03','JUEVES 04','VIERNES 05','SABADO 06','DOMINGO 07','LUNES 08','MARTES 09','MIERCOLES 10']"
-                    :key="n"
+                    v-for="(n, index) in planSections"
+                    :key="'section_'+index"
                     v-slot="{ active, toggle }"
                 >
                     <v-card
@@ -61,29 +61,23 @@
                     @click="toggle"
                     >
                         <div class="primary white--text text-center py-2">
-                            {{n}}
+                            {{n.name | uppercase}}
                         </div>
-                        <div class="pa-4">
+                        <!--<div class="pa-4">
                             <h5>FUERZA PRINCIPIANTES</h5>
                             <p class="mb-3" style="font-size: 0.7rem"> VER VIDEO</p>
                             <h5>FUERZA AVANZADO</h5>
                             <p class="mb-3" style="font-size: 0.7rem"> VER VIDEO</p>
                             <h5>TALLER: NUTRICIÓN</h5>
+                        </div>-->
+
+                        <div class="pa-4">
+                            <section v-for="(activity, index) in n.activities" :key="'activity_'+index">
+                                <h5>{{activity.name}}</h5>
+                                <p class="mb-3" style="font-size: 0.7rem"> VER VIDEO</p>
+                            </section>
                         </div>
-                        <!--<v-row
-                            class="fill-height"
-                            align="center"
-                            justify="center"
-                        >
-                            <v-scale-transition>
-                            <v-icon
-                                v-if="active"
-                                color="white"
-                                size="48"
-                                v-text="'mdi-close-circle-outline'"
-                            ></v-icon>
-                            </v-scale-transition>
-                        </v-row>-->
+
                         <v-card-actions class="card-actions text-center">
                             <v-row align="center">
                                 <v-col cols="12" align="center">
@@ -106,11 +100,60 @@
     </div>
 </template>
 <script>
-  export default {
+export default {
     data: () => ({
-      model: null,
+        model: null,
+        months: ['ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO','JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE'],
+        planMonths: [],
+        planSections: []
     }),
-  }
+
+    mounted() {
+        let vm = this;
+        vm.$store.commit('loader',true);
+        vm.getBaseUrl();
+        vm.calendar();
+        vm.schedule();
+    },
+
+    methods:{
+        async getBaseUrl(){
+            try{
+                const data = await this.$API.configuration.getBaseUrl();
+                this.base_url = data.data;
+            }
+            catch(e){
+                console.error(e);
+            } 
+        },
+        async calendar(){
+            let vm = this;
+            try{
+                const data = await this.$API.gymVirtual.calendar();
+                console.log(data.data)
+                vm.planMonths = data.data.data;
+                vm.$store.commit('loader',false);
+            }
+            catch(e){
+                console.error(e);
+                vm.$store.commit('loader',false);
+            }
+        },
+        async schedule(){
+            let vm = this;
+            try{
+                const data = await this.$API.gymVirtual.schedule();
+                console.log(data.data)
+                vm.planSections = data.data.data;
+                vm.$store.commit('loader',false);
+            }
+            catch(e){
+                console.error(e);
+                vm.$store.commit('loader',false);
+            }
+        }
+    }
+}
 </script>
 <style>
 .card-actions {

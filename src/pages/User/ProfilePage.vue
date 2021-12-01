@@ -6,8 +6,9 @@
             </div>
             <v-tabs v-model="userProfileTabs" :show-arrows="false" color="#E30E4F" background-color="transparent" dark>
                 <v-tab to="#tabs-info-personal"><b>INFORMACIÓN PERSONAL</b></v-tab>
-                <v-tab to="#tabs-info-workout"><b>ENTRENAMIENTO</b></v-tab>
-                <v-tab to="#tabs-info-health"><b>SALUD</b></v-tab>
+                <v-tab to="#tabs-info-health"><b>HISTORIA CLÍNICA</b></v-tab>
+                <v-tab to="#tabs-info-progress"><b>MI REGISTRO</b></v-tab>
+                <v-tab to="#tabs-info-workout"><b>MI ENTRENAMIENTO</b></v-tab>
             </v-tabs>
             <v-tabs-items v-model="userProfileTabs" id="custom-tab-items">
                 <v-tab-item value="tabs-info-personal">
@@ -15,16 +16,18 @@
                         <profile-card></profile-card>
                     </v-card>
                 </v-tab-item>
-                <v-tab-item value="tabs-info-workout">
+                <v-tab-item value="tabs-info-health">
+                    <health-card></health-card>
+                </v-tab-item>
+                <v-tab-item value="tabs-info-progress">
                     <v-card class="my-10 rounded-xl pa-10">
                         <activity-card></activity-card>
                     </v-card>
+                </v-tab-item>
+                <v-tab-item value="tabs-info-workout">
                     <v-card class="my-10 rounded-xl pa-10">
                         <workout-card></workout-card>
                     </v-card>
-                </v-tab-item>
-                <v-tab-item value="tabs-info-health">
-                    <health-card></health-card>
                 </v-tab-item>
             </v-tabs-items>
         </v-container>
