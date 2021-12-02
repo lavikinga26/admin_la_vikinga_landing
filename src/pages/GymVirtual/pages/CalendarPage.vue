@@ -39,7 +39,7 @@
             <v-sheet
                 class="mx-auto transparent"
                 elevation="0"
-                max-width="1300"
+                max-width="100%"
             >
                 <v-slide-group
                 v-model="model"
