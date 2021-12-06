@@ -16,6 +16,7 @@
                                     <div class="text-h5 pa-5 text-center">Carrito Vacío</div>
                                     <v-divider></v-divider>
                                 </div>
+                                
                                 <div v-for="(item, index) in cart" :key="index" class="my-2">
                                     <v-divider v-if="index !== 0" class="my-3"></v-divider>
                                     <div class="d-flex align-center justify-center">
@@ -350,8 +351,16 @@
                                                         </div>
                                                     </v-card>
                                                 </template>
-                                                
                                                 </v-radio-group>
+
+                                                <v-card class="ma-3 pa-3">
+                                                    <div class="d-flex align-center">
+                                                        <v-btn @click="abrirPayme()">Abrir Payme</v-btn>
+                                                    </div>
+
+                                                    <div id="demo" class="d-flex">
+                                                    </div>
+                                                </v-card>
                                             </v-col>
                                         </v-row>
                                         <!--end form invoice-->
@@ -452,6 +461,7 @@
 </template>
 <script>
 import axios from "axios";
+
 export default {
     data() {
         return {
@@ -520,6 +530,11 @@ export default {
         this.getUser();
         this.getCountry();
         this.getTypeDocument();
+
+        /** Importamos Pay-me */
+        let paymeScript = document.createElement('script')
+        paymeScript.setAttribute('src', 'https://alignet-flex-demo.s3.amazonaws.com/flex-capture.min.js')
+        document.head.appendChild(paymeScript)
     },
     methods:{
         list(){
@@ -627,7 +642,111 @@ export default {
                 message: message, 
                 color: color
             }
+        },
+
+        reqCallback(response) {
+            console.log("vueeeee");
+            console.log(response);
+        },
+
+        abrirPayme(){
+            var payRequest = {
+                "action": "authorize",
+                "transaction": {
+                    "currency": "604",
+                    "amount": "100000",
+                    "meta": {
+                        "internal_operation_number": Math.floor(Date.now()).toString().substring(7),
+                        "description": "Descripcion de la transaccion",
+                        "additional_fields": {
+                            "reserverd1": "Prueba valor reservado 1"
+                        }
+                    }
+                },
+                "address": {
+                    "billing": {
+                        "first_name": "Juan",
+                        "last_name": "Perez",
+                        "email": "jperez@gmail.com",
+                        "phone": {
+                            "country_code": "51",
+                            "subscriber": "987654321"
+                        },
+                        "location": {
+                            "line_1": "Mi casa",
+                            "line_2": "Mi casa",
+                            "city": "LIMA",
+                            "state": "LIMA",
+                            "country": "PE",
+                            "zip_code": "18"
+                        }
+                    },
+                    "shipping": {
+                        "first_name": "Juan",
+                        "last_name": "Perez",
+                        "email": "jperez@gmail.com",
+                        "phone": {
+                            "country_code": "51",
+                            "subscriber": "987654321"
+                        },
+                        "location": {
+                            "line_1": "Mi casa",
+                            "line_2": "Mi casa",
+                            "city": "LIMA",
+                            "state": "LIMA",
+                            "country": "PE",
+                            "zip_code": "18"
+                        }
+                    }
+                },
+                "card_holder": [
+                    {
+                        "first_name": "Juan",
+                        "last_name": "Perez",
+                        "email_address": "jperez@gmail.com",
+                        "identity_document_country": "PE",
+                        "identity_document_type": "DNI",
+                        "identity_document_identifier": "87654321"
+                    }
+                ]
+            };
+
+            var token_key = "meQQw27S6i661bE6TnWWaYDmdwNQdJWNwe0HtD5HrL5H0hXTPdqWQjTTLAoTZKmX";
+
+            var capture = new FlexCapture({
+                "key": token_key,
+                "payload": payRequest,
+                "additionalFields": []
+            });
+
+            capture.init(document.querySelector('#demo'), this.reqCallback); 
         }
     }
 }
 </script>
+
+<style>
+.flex-capture .field > input{
+    outline:none;
+    margin-left: 2em;
+    border-bottom: 1px solid #626262;
+}
+
+.flex-capture .field > input:focus{
+    outline: none;
+    margin-left: 2em;
+    border-bottom: 1px solid #e30e4f;
+}
+
+.flex-capture .field{
+    margin-top: .5em;
+}
+
+.flex-capture .submit > button{
+    background: #e30e4f;
+    padding: 10px;
+    color: #fff;
+    border-radius: 8px;
+    margin-top: 1em;
+}
+</style>
