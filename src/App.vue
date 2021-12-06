@@ -33,7 +33,9 @@
         <loader></loader>
     </v-app>
 </template>
-
+<style>
+  @import 'https://alignet-flex-demo.s3.amazonaws.com/css/flex-capture.css';
+</style>
 <script>
 import navigation from "./components/Navigation";
 import foote from "./components/Footer";
