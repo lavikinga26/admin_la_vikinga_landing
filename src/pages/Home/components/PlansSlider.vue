@@ -103,7 +103,7 @@
                 vm.plans = data.data.data;
                 vm.temp_plans = data.data.data;
                 vm.$store.commit('loader',false);
-                console.log(vm.data)
+                console.log( data.data.data)
             }
             catch(e){
                 console.error(e);

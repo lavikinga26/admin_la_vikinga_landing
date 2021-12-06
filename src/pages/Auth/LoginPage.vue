@@ -110,7 +110,8 @@ export default {
                     localStorage.setItem('token', token);
                     setTimeout(()=>{ 
                         this.$store.commit('loader',false);
-                        this.$router.push({ path: '/gym-virtual/calendario' });
+                        window.location.replace('/cuenta/mi-perfil');
+                        //this.$router.push({ path: '/gym-virtual/calendario' });
                     }, 3000);
                     
                     //this.$router.go();

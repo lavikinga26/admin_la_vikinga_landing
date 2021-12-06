@@ -1,6 +1,7 @@
 <template>
     <div>
-        <div class="container-fluid mt-2 px-0  bg_slider" id="slider">
+        <home-slider></home-slider>
+        <!--<div class="container-fluid mt-2 px-0  bg_slider" id="slider">
             <div class="row g-0">
                 <div class="col-12">
                         <h2 class="tit_h1_white text_slide ms-5">ACEPTAR PARA</h2>
@@ -14,7 +15,7 @@
                         </v-btn>
                 </div>
             </div>
-        </div>
+        </div>-->
 
         <plans-slider></plans-slider>
 
@@ -58,15 +59,63 @@
 
                 <div class="col-12">
                     
+                    <v-slide-group
+                    class="pa-4"
+                    center-active
+                    show-arrows
+                    >
+                        <v-slide-item
+                            v-for="n in 7"
+                            :key="n"
+                            v-slot="{ active }"
+                        >
+                            <v-hover v-slot="{ hover }">
+                                <v-card
+                                :color="active ? 'primary' : 'grey lighten-1'"
+                                class="ma-4"
+                                height="300px"
+                                width="230"
+                                >
+                                    <v-img
+                                        :src="require(`@/assets/img/multimedia/STAFF/STAFF_${n}.jpg`)"
+                                        gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                                        height="300px"
+                                    >
+                                    <!--class="img_staff"-->
+                                        <v-expand-transition>
+                                            <div
+                                                v-if="hover"
+                                                class="d-flex transition-fast-in-fast-out primary v-card--reveal text-h2 white--text"
+                                                style="height: 100%;"
+                                            >
+                                                <div class="text-center" >
+                                                    <img src="@/assets/img/isotipo.png" alt="" style="width: 50px" class="my-10">
+                                                    <h5 style="font-family: 'MachProCondBold';
+                                                    color: #E30E4F;
+                                                    font-size: 1.3rem; line-height: 1em;">NOMBRE Y APELLIDO</h5>
+                                                    <p style="font-size: 0.6rem;line-height: 1rem;">ENTRENADOR</p>
+                                                    <p style="font-size: 0.8rem;line-height: 1rem;" class="px-2">
+                                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, optio tempora voluptatem error, suscipit alias voluptas eligendi natus sequi libero.
+                                                    </p>
+                                                </div>
+                                                
+                                            </div>
+                                        </v-expand-transition>
+
+                                    </v-img>
+                                </v-card>
+                            </v-hover>
+                        </v-slide-item>
+                    </v-slide-group>
                 </div>
             </div>
         </div>
 
-        <div class="container-fluid mt-5 bg_suplementacion">
+        <div class="container-fluid mt-15 bg_suplementacion" style="height: 800px;">
             <div class="row">
                 <div class="col-12 text-center suplementacion_titulo">
-                    <img src="assets/images/isotipo.png" alt="">
-                    <p class="tit_h1_white text-center">SUPLEMENTACIÓN<br/>DEPORTIVA</p>
+                    <img src="@/assets/img/isotipo.png" alt="" style="width: 90px" class="my-15">
+                    <p class="tit_h1_white text-center" style="font-family: 'MachProCondBold' !important;">SUPLEMENTACIÓN<br/>DEPORTIVA</p>
                 </div>
 
                 <div class="col-4 d-sm-none d-md-block"></div>
@@ -81,18 +130,40 @@
                 <div class="col-4 d-sm-none d-md-block"></div>
             </div>
         </div>
-
         <div class="container-fluid bg_blue pt-3">
-            <div class="row mt-4">
+            <div class="row mt-4  mt-5">
                 <div class="col-md-6 text-center">
-                    <img src="assets/images/isotipo.png" alt="">
+                    <img src="@/assets/img/isotipo.png" alt="">
                     <p class="tit_h1_pink text_entrena">ENTRENA<br/>DONDE<br/>QUIERAS</p>
                 </div>
                 <div class="col-md-6">
-                    <img src="assets/images/img_celulares.png" alt="" class="img-fluid">
+
+
+                    <div class="d-flex align-center" style="margin-bottom: -80px;">
+                        <div style="margin-right: -35px;">
+                            <div class="iphone iphone1">
+                                <div class="screen"></div>
+                            </div>
+                        </div>
+                        <div style="z-index: 100;">
+                            <div class="iphone iphone2" style="width: 220px;">
+                                <div class="screen" style="height: 445px;"></div>
+                            </div>
+                        </div>
+                        <div style="margin-left: -35px;">
+                            <div class="iphone iphone3">
+                                <div class="screen"></div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
+
+
+        <div style="height:100px"></div>
+
 
         <frequent-questions></frequent-questions>
         <sponsors-section></sponsors-section>
@@ -100,12 +171,14 @@
 </template>
 
 <script>
+import HomeSlider from './components/HomeSlider.vue';
 import PlansSlider from './components/PlansSlider.vue';
 
 export default {
     name: "App",
     components: { 
         PlansSlider,
+        HomeSlider,
      },
 
     data: () => ({
@@ -135,7 +208,38 @@ export default {
         /*font-family:'Montserrat', sans-serif  !important;*/
     }
 
+    .iphone {
+        width: 200px;
+        background: #000;
+        
+        position: relative;
+        border-radius: 35px;
+    }
+    .iphone .screen {
+        background:url('~@/assets/img/multimedia/mobile.png') no-repeat;
+        height: 405px;
+        width: 100%;
+        background: url(/img/mobile.80461c2b.png) no-repeat;
+        background-size: 100%;
+    }
 
+    .iphone1{
+        background:url('~@/assets/img/multimedia/ENTRENA_DONDE_QUIERAS/DESAFIO_7.jpg') no-repeat;
+        background-size: cover;
+        background-position: center;
+    }
+    .iphone2{
+        background:url('~@/assets/img/multimedia/ENTRENA_DONDE_QUIERAS/DESAFIO_5.jpg') no-repeat;
+        background-size: cover;
+        background-position: center;
+    }
+    .iphone3{
+        background:url('~@/assets/img/multimedia/ENTRENA_DONDE_QUIERAS/DESAFIO_6.jpg') no-repeat;
+        background-size: cover;
+        background-position: center;
+    }
+
+/*
 
 .vueperslides__arrow {color: #333;}
 .vueperslides__bullet {border-color: #E73C7E;box-shadow: none;}
@@ -154,5 +258,5 @@ export default {
 
 .offset-slide--last .vueperslides__track-inner {
   transform: translate3d(-133.33%, 0, 0) !important;
-}
+}*/
 </style>

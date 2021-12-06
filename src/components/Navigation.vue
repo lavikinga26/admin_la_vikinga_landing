@@ -117,6 +117,14 @@
                 <v-list-item-title
                   class="white--text">Gym Virtual</v-list-item-title>
               </v-list-item>
+              <v-divider class="white"></v-divider>
+              <v-list-item
+                  link
+                  class="white--text"
+                  to="/cuenta/mis-ordenes">
+                <v-list-item-title
+                  class="white--text">Cerrar Sesión</v-list-item-title>
+              </v-list-item>
             </v-list>
           </v-menu>
 

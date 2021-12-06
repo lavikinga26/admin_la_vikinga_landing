@@ -111,6 +111,8 @@ body{
 
 .bg_blue{
     background: #0B152A;
+    background: rgb(11,21,42);
+    background: linear-gradient(347deg, #0b152a 0%, #0d1b37 100%);
 }
 
 .bg_blue_desafio{
@@ -162,7 +164,7 @@ body{
 }
 
 .tit_h1_white{
-    font-family: 'MachProCondBold';
+    font-family: 'MachProCondBold' !important;
     color: #fff;
     font-size: 4em;
     line-height: 1em;
@@ -234,7 +236,8 @@ body{
 }
 
 .bg_suplementacion{
-    background: url('../img/bg_2.jpg') no-repeat center center fixed; 
+    //background: url('../img/multimedia/SUPLEMENTACION_DEPORTIVA/DESAFIO_4.jpg') no-repeat top center;// fixed; 
+    background: linear-gradient(to bottom, rgb(0 0 0 / 52%), rgb(0 0 0 / 73%)),url(/img/DESAFIO_4.fdfa6bfc.jpg) no-repeat top center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
