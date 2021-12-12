@@ -20,10 +20,10 @@
                         <v-flex xs12>
                             <v-row align="center">
                                 <v-col cols="12" md="5" xl="8">
-                                <h2 class="display-2 font-weight-bold mb-4 white--text">Lorem ipsum dolor sit amet </h2>
+                                <h2 class="display-2 font-weight-bold mb-4 white--text" style="font-family: 'MachProCondBold'!important;">ACEPTA PARA TRANSFORMAR</h2>
                                 <h3 class="font-weight-light white--text">
                                     
-                                    consectetur adipisicing elit. Quasi mollitia sunt veniam? Alias autem numquam adipisci, iure qui quam consectetur laudantium eligendi sapiente praesentium tenetur rerum natus deserunt eaque aut.
+                                    ¡Una VIKINGA no abandona!
                                 </h3>
                                 <v-btn
                                     rounded
