@@ -1,17 +1,21 @@
 <template>
     <div class="my-5">
-        <div class="d-flex  justify-space-between align-center">
-            <div class="tit_h1_staff_pink text_entrena txt_uppercase">MI REGISTRO</div>
-            <v-spacer></v-spacer>
-            <v-select class="rounded-pill customm-select"
-                :items="months"
-                filled
-                background-color="pink lighten-5"
-                hide-details
-                label="SELECCIONA EL MES"
-            ></v-select>
-        </div>
-        <div class="my-10">
+        <v-card class="my-10 rounded-xl pa-10">
+            <v-row>
+                <v-col>
+                    <div class="tit_h1_staff_pink text_entrena txt_uppercase mb-6">Planilla de Registro de Pesos</div>
+                </v-col>
+                <v-col class="text-right">
+                    <v-select class="rounded-pill customm-select"
+                        :items="months"
+                        filled
+                        background-color="pink lighten-5"
+                        hide-details
+                        label="SELECCIONA EL MES"
+                    ></v-select>
+                </v-col>
+            </v-row>
+            
             <v-row>
                 <v-col cols="12" md="2" sm="12">
                     <div class="rounded-xl secondary text--white px-8 py-5 mb-6" style="height: 100px; width:150px">
@@ -90,7 +94,7 @@
                     </v-row>
                 </v-col>
             </v-row>
-        </div>
+        </v-card>
     </div>
 </template>
 <script>
