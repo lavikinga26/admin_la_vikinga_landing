@@ -422,6 +422,7 @@
                                         elevation="0"
                                         height="56"
                                         class="mr-0 rounded-0"
+                                        @click="aplicarCupon()"
                                         >APLICAR</v-btn>
                                     </div>
                                     <div class="d-flex text-h6 pt-3">
