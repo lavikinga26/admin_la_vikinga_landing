@@ -11,74 +11,83 @@
 
                         <v-col cols="12" md="8" sm="12"><span style="font-size: 0.9em;">Hipertensión Arterial o prob cardiovasculares</span></v-col>
                         <v-col cols="12" md="4" sm="12">
-                            <v-checkbox
+                            <v-switch
                                 v-model="infoHealth.question1"
+                                :label="`${infoHealth.question1 != true ? 'No' : 'Si'}`"
                                 hide-details
-                            ></v-checkbox>
+                            ></v-switch>
                         </v-col>
 
                         <v-col cols="12" md="8" sm="12"><span style="font-size: 0.9em;">Acidez, Reflujo, Gastritis Crónica, náuseas, vómitos</span></v-col>
                         <v-col cols="12" md="4" sm="12">
-                            <v-checkbox
+                            <v-switch
                                 v-model="infoHealth.question2"
+                                :label="`${infoHealth.question2 != true ? 'No' : 'Si'}`"
                                 hide-details
-                            ></v-checkbox>
+                            ></v-switch>
                         </v-col>
                         
                         <v-col cols="12" md="8" sm="12"><span style="font-size: 0.9em;">Celiaquía, colon irritable, hemorroides, constipación</span></v-col>
                         <v-col cols="12" md="4" sm="12">
-                            <v-checkbox
+                            <v-switch
                                 v-model="infoHealth.question3"
+                                :label="`${infoHealth.question3 != true ? 'No' : 'Si'}`"
                                 hide-details
-                            ></v-checkbox>
+                            ></v-switch>
                         </v-col>
 
                         <v-col cols="12" md="8" sm="12"><span style="font-size: 0.9em;">¿Problemas renales? Cálculos, insuficiencia, incontinencia</span></v-col>
                         <v-col cols="12" md="4" sm="12">
-                            <v-checkbox
+                            <v-switch
                                 v-model="infoHealth.question4"
+                                :label="`${infoHealth.question4 != true ? 'No' : 'Si'}`"
                                 hide-details
-                            ></v-checkbox>
+                            ></v-switch>
                         </v-col>
 
                         <v-col cols="12" md="8" sm="12"><span style="font-size: 0.9em;">¿Alergias a alimentos o medicamentos? ¿Asma?</span></v-col>
                         <v-col cols="12" md="4" sm="12">
-                            <v-checkbox
+                            <v-switch
                                 v-model="infoHealth.question5"
+                                :label="`${infoHealth.question5 != true ? 'No' : 'Si'}`"
                                 hide-details
-                            ></v-checkbox>
+                            ></v-switch>
                         </v-col>
 
                         <v-col cols="12" md="8" sm="12"><span style="font-size: 0.9em;">Diabetes no Insulino Dependiente o insulinodependiente</span></v-col>
                         <v-col cols="12" md="4" sm="12">
-                            <v-checkbox
+                            <v-switch
                                 v-model="infoHealth.question6"
+                                :label="`${infoHealth.question6 != true ? 'No' : 'Si'}`"
                                 hide-details
-                            ></v-checkbox>
+                            ></v-switch>
                         </v-col>
 
                         <v-col cols="12" md="8" sm="12"><span style="font-size: 0.9em;">Hipotiroidismo o hipertiroidismo</span></v-col>
                         <v-col cols="12" md="4" sm="12">
-                            <v-checkbox
+                            <v-switch
                                 v-model="infoHealth.question7"
+                                :label="`${infoHealth.question7 != true ? 'No' : 'Si'}`"
                                 hide-details
-                            ></v-checkbox>
+                            ></v-switch>
                         </v-col>
 
                         <v-col cols="12" md="8" sm="12"><span style="font-size: 0.9em;">Menopausia o Andropausia?</span></v-col>
                         <v-col cols="12" md="4" sm="12">
-                            <v-checkbox
+                            <v-switch
                                 v-model="infoHealth.question8"
+                                :label="`${infoHealth.question8 != true ? 'No' : 'Si'}`"
                                 hide-details
-                            ></v-checkbox>
+                            ></v-switch>
                         </v-col>
 
                         <v-col cols="12" md="8" sm="12"><span style="font-size: 0.9em;">Lesiones actuales o previas</span></v-col>
                         <v-col cols="12" md="4" sm="12">
-                            <v-checkbox
+                            <v-switch
                                 v-model="infoHealth.question9"
+                                :label="`${infoHealth.question9 != true ? 'No' : 'Si'}`"
                                 hide-details
-                            ></v-checkbox>
+                            ></v-switch>
                         </v-col>
 
                         <v-col cols="12" md="8" sm="12"><span style="font-size: 0.9em;">Otro. Descríbalo por favor:</span></v-col>
@@ -105,26 +114,26 @@
 
                         <v-col cols="12" md="8" sm="12"><span style="font-size: 0.9em;">Glucemia (azúcar en sangre)</span></v-col>
                         <v-col cols="12" md="4" sm="12">
-                            <v-checkbox hide-details
-                            ></v-checkbox>
+                            <v-switch hide-details
+                            ></v-switch>
                         </v-col>
 
                         <v-col cols="12" md="8" sm="12"><span style="font-size: 0.9em;">Colesterol * triglicéridos * LDL HDL</span></v-col>
                         <v-col cols="12" md="4" sm="12">
-                            <v-checkbox hide-details
-                            ></v-checkbox>
+                            <v-switch hide-details
+                            ></v-switch>
                         </v-col>
 
                         <v-col cols="12" md="8" sm="12"><span style="font-size: 0.9em;">Ácido Úrico, urea y creatinina</span></v-col>
                         <v-col cols="12" md="4" sm="12">
-                            <v-checkbox hide-details
-                            ></v-checkbox>
+                            <v-switch hide-details
+                            ></v-switch>
                         </v-col>
 
                         <v-col cols="12" md="8" sm="12"><span style="font-size: 0.9em;">Sodio, potasio, calcio</span></v-col>
                         <v-col cols="12" md="4" sm="12">
-                            <v-checkbox hide-details
-                            ></v-checkbox>
+                            <v-switch hide-details
+                            ></v-switch>
                         </v-col>
 
                         <v-col cols="12" md="8" sm="12"><span style="font-size: 0.9em;">Otros: (TSH, T3, T4)</span></v-col>
@@ -164,8 +173,9 @@ export default {
     },
     methods: {
         configHealthQuestions(){
-            this.infoHealth = JSON.parse(this.business_partner.partner_information.info_health);
-            console.log(this.infoHealth);
+            if(this.business_partner.partner_information.info_health){
+                this.infoHealth = JSON.parse(this.business_partner.partner_information.info_health);
+            }
         }
     }
 }
