@@ -13,19 +13,39 @@
             </v-tabs>
             <v-tabs-items v-model="userProfileTabs" id="custom-tab-items">
                 <v-tab-item value="tabs-info-personal">
-                    <profile-card></profile-card>
+                    <profile-card
+                        v-if="base_url && business_partner"
+                        :base_url.sync="base_url"
+                        :business_partner.sync="business_partner"
+                    ></profile-card>
                 </v-tab-item>
                 <v-tab-item value="tabs-info-health">
-                    <health-card></health-card>
+                    <health-card 
+                        v-if="base_url && business_partner"
+                        :base_url.sync="base_url"
+                        :business_partner.sync="business_partner"
+                    ></health-card>
                 </v-tab-item>
                 <v-tab-item value="tabs-info-progress">
-                    <activity-card></activity-card>
+                    <activity-card 
+                        v-if="base_url && business_partner"
+                        :base_url.sync="base_url"
+                        :business_partner.sync="business_partner"
+                    ></activity-card>
                 </v-tab-item>
                 <v-tab-item value="tabs-info-nutrition">
-                    <nutrition-card></nutrition-card>
+                    <nutrition-card
+                        v-if="base_url && business_partner"
+                        :base_url.sync="base_url"
+                        :business_partner.sync="business_partner"
+                    ></nutrition-card>
                 </v-tab-item>
                 <v-tab-item value="tabs-info-training">
-                    <workout-card></workout-card>
+                    <workout-card
+                        v-if="base_url && business_partner"
+                        :base_url.sync="base_url"
+                        :business_partner.sync="business_partner"
+                    ></workout-card>
                 </v-tab-item>
             </v-tabs-items>
         </v-container>
@@ -47,12 +67,43 @@ export default {
     },
     data: () => ({
         userProfileTabs: 0,
-
         base_url: '',
+        business_partner: null,
     }),
-    watch: {
+    created() {
+        this.getBaseUrl();
+        this.getLoggedUser();
     },
     methods: {
+        async getBaseUrl(){
+            try{
+                const data = await this.$API.configuration.getBaseUrl();
+                this.base_url = data.data;
+            }
+            catch(e){
+                console.error(e);
+            } 
+        },
+        async getBusinessPartner(id){
+            try{
+                const response = await this.$API.business_partner.getPartner(id);
+                this.business_partner = Object.assign(response.data.data[0]);
+
+            }
+            catch(e){
+                console.error(e);
+            } 
+        },
+        getLoggedUser(){
+            if(localStorage.getItem('token')){
+                this.logged_user = JSON.parse(localStorage.getItem('user_data'));
+                this.logged_user_token = localStorage.getItem('token');
+
+                this.getBusinessPartner(this.logged_user.id);
+            }
+        },
+    },
+    watch: {
     },
 }
 </script>

@@ -16,7 +16,7 @@ export default {
             return callAPI('get', 'api/v1/configuration/frequent-questions');
         },
         getBaseUrl(){
-            return callAPI('get', 'api/v1/shop/get-base-url');
+            return callAPI('get', 'api/v1/configuration/get-base-url');
         },
         getTypeInvoice(){
             return callAPI('get', 'api/v1/configuration/type-invoices');
@@ -28,6 +28,20 @@ export default {
             return callAPI('get', 'api/v1/configuration/payment-methods');
         },
         
+    },
+
+    user:{
+        login(data){
+            return callAPI('post', 'api/v1/auth/login', { data: data });
+        },
+        register(data){
+            return callAPI('post', 'api/v1/auth/register', { data: data });
+        },
+    },
+    business_partner:{
+        getPartner(id){
+            return callAPI('get', 'api/v1/business-partner/get-partner/'+id);
+        },
     },
 
     team:{
@@ -67,17 +81,7 @@ export default {
             return callAPI('post', 'api/v1/contact/save-contact-info', { data: data });
         },
     },
-
     
-    user:{
-        login(data){
-            return callAPI('post', 'api/v1/auth/login', { data: data });
-        },
-        register(data){
-            return callAPI('post', 'api/v1/auth/register', { data: data });
-        },
-    },
-
     order:{
         register(data){
             return callAPI('post', 'api/v1/order/create', { data: data });
