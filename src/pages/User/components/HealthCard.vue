@@ -114,31 +114,44 @@
 
                         <v-col cols="12" md="8" sm="12"><span style="font-size: 0.9em;">Glucemia (azúcar en sangre)</span></v-col>
                         <v-col cols="12" md="4" sm="12">
-                            <v-switch hide-details
+                            <v-switch
+                                v-model="infoHealth.question11"
+                                :label="`${infoHealth.question11 != true ? 'No' : 'Si'}`"
+                                hide-details
                             ></v-switch>
                         </v-col>
 
                         <v-col cols="12" md="8" sm="12"><span style="font-size: 0.9em;">Colesterol * triglicéridos * LDL HDL</span></v-col>
                         <v-col cols="12" md="4" sm="12">
-                            <v-switch hide-details
+                            <v-switch
+                                v-model="infoHealth.question12"
+                                :label="`${infoHealth.question12 != true ? 'No' : 'Si'}`"
+                                hide-details
                             ></v-switch>
                         </v-col>
 
                         <v-col cols="12" md="8" sm="12"><span style="font-size: 0.9em;">Ácido Úrico, urea y creatinina</span></v-col>
                         <v-col cols="12" md="4" sm="12">
-                            <v-switch hide-details
+                            <v-switch
+                                v-model="infoHealth.question13"
+                                :label="`${infoHealth.question13 != true ? 'No' : 'Si'}`"
+                                hide-details
                             ></v-switch>
                         </v-col>
 
                         <v-col cols="12" md="8" sm="12"><span style="font-size: 0.9em;">Sodio, potasio, calcio</span></v-col>
                         <v-col cols="12" md="4" sm="12">
-                            <v-switch hide-details
+                            <v-switch
+                                v-model="infoHealth.question14"
+                                :label="`${infoHealth.question14 != true ? 'No' : 'Si'}`"
+                                hide-details
                             ></v-switch>
                         </v-col>
 
-                        <v-col cols="12" md="8" sm="12"><span style="font-size: 0.9em;">Otros: (TSH, T3, T4)</span></v-col>
+                        <v-col cols="12" md="8" sm="12"><span style="font-size: 0.9em;">Otros:</span></v-col>
                         <v-col cols="12" md="4" sm="12">
                             <v-text-field
+                                v-model="infoHealth.question15"
                                 class="ma-0 pt-0"
                                 hide-details
                                 single-line
@@ -169,10 +182,10 @@ export default {
         },
     }),
     created(){
-        this.configHealthQuestions();
+        this.configHealthInfo();
     },
     methods: {
-        configHealthQuestions(){
+        configHealthInfo(){
             if(this.business_partner.partner_information.info_health){
                 this.infoHealth = JSON.parse(this.business_partner.partner_information.info_health);
             }

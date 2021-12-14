@@ -84,7 +84,7 @@ export default {
                 console.error(e);
             } 
         },
-        async getBusinessPartner(id){
+        async getPartnerData(id){
             try{
                 const response = await this.$API.business_partner.getPartner(id);
                 this.business_partner = Object.assign(response.data.data[0]);
@@ -99,7 +99,7 @@ export default {
                 this.logged_user = JSON.parse(localStorage.getItem('user_data'));
                 this.logged_user_token = localStorage.getItem('token');
 
-                this.getBusinessPartner(this.logged_user.id);
+                this.getPartnerData(this.logged_user.id);
             }
         },
     },
