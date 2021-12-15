@@ -53,8 +53,8 @@
         <div class="container-fluid mt-5">
             <div class="row">
                 <div class="col-12 text-center">
-                    <h2 class="sub_h2_black">CONOCE A NUESTROS</h2>
-                    <h1 class="tit_h1_pink">ENTRENADORES</h1>
+                    <h2 class="sub_h2_black">CONOCE A NUESTRO</h2>
+                    <h1 class="tit_h1_pink">STAFF</h1>
                 </div>
 
                 <div class="col-12">

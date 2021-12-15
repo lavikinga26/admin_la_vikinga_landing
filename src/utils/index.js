@@ -1,4 +1,28 @@
+const KEY_LENGHT= 3;
 const UTILS = {
+    chrypter: {
+      encode(val) {
+        let key = UTILS.str.rand(KEY_LENGHT)
+        return window.base64.encode(val+key)
+      },
+      decode(val) {
+      
+        let str = window.base64.decode(val)
+        return str.substring(0,str.length-KEY_LENGHT);
+      },
+      
+    },
+    str:{
+      rand(length) {
+        var result           = '';
+        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < length; i++ ) {
+          result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+      }
+    },
     filters: {
         only_numbers($event) {
             let keyCode = $event.keyCode ? $event.keyCode : $event.which;

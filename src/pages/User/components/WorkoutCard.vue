@@ -70,6 +70,16 @@
 </template>
 <script>
 export default {
+    props:{
+        base_url: {
+            type: String,
+            default: null,
+        },
+        business_partner: {
+            type: Object,
+            default: null,
+        },
+    },
     data: () => ({
 
     }),

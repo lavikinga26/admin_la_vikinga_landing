@@ -131,7 +131,7 @@
                                                     label="Tipo Documento"
                                                     outlined
                                                     v-model="order.id_document_type"
-                                                    item-text="type_document"
+                                                    item-text="name"
                                                     item-value="id"
                                                 ></v-select>
                                             </v-col>
@@ -344,9 +344,12 @@
                                                             </div>
                                                             <div>
                                                                 <h4>{{item.name}}</h4>
-                                                                <p style="font-size: 0.8rem; margin-bottom: 0px;">
+                                                                <!--<p style="font-size: 0.8rem; margin-bottom: 0px;">
                                                                     {{item.description}}
-                                                                </p>
+                                                                </p>-->
+                                                                <div style="font-size: 0.8rem; margin-bottom: 0px;"
+                                                                    v-html="item.description">
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </v-card>

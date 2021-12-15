@@ -71,10 +71,13 @@
                                 lazy-src="https://picsum.photos/id/11/10/6"
                                 max-height="400"
                                 max-width="250"
-                                class="rounded plan"
+                                class="rounded plan white--text align-end"
                                 :src="base_url + plan.file_path.path + plan.file_path.filename"
                                 @click="goToPlan(plan.identifier)"
-                            ></v-img>
+              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                            >
+                            <v-card-title v-text="plan.title"></v-card-title>
+                            </v-img>
                         </v-card>
                     </v-hover>
                     <!--<v-img v-if="item.file_path" :src="base_url + item.file_path.path + item.file_path.filename" max-width="100px" max-height="80px" class="ma-3" style="border-radius:50%; min-height: 150px; min-width: 150px;"></v-img>
@@ -96,6 +99,7 @@ export default {
         plans:[],
         temp_plans:[],
         base_url: '',
+        name:['DESAFÍO EXPERIENCIA', 'DESAFÍO BRONCE','DESAFÍO EXPERIENCIA']
     }),
 
     

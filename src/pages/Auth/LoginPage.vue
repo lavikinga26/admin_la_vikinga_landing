@@ -12,7 +12,7 @@
                 </div>
             </div>
         </div>
-        <div class="bg_slider" style="height: 800px; width:100%">
+        <div class="bg_login" style="height: 800px; width:100%">
             <div style="width: 30%; margin: auto; text-align: center; padding-top: 200px; height: 100%;">
                 <h2 class="tit_h1_white">UNA VIKINGA NO ABANDONA</h2>
                 <div class="ma-auto rounded-xl pa-10" style="width: 450px; background: rgba(255,255,255,0.5); text-align: left;">

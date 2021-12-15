@@ -5,9 +5,12 @@
                 <v-col cols="12" md="3" sm="12" align="center">
                     <div>
                         <v-avatar class="profile rounded-circle" color="grey" size="164" tile>
-                            <v-img src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg"></v-img>
+                            <v-img 
+                                v-if="business_partner.file_path" 
+                                :src="base_url + business_partner.file_path.path + business_partner.file_path.filename">
+                            </v-img>
                         </v-avatar>
-                        <h3 class="mx-10 my-5"><b>HOLA VIKINGA_012</b></h3>
+                        <h3 class="mx-10 my-5"><b>{{business_partner.name}} {{business_partner.lastname}}</b></h3>
                     </div>
                 </v-col>
                 <v-col cols="12" md="9" sm="12" class="px-15">
@@ -17,6 +20,7 @@
                             <v-col cols="12" md="4" sm="12"><span style="font-size: 0.9em;">NOMBRES</span></v-col>
                             <v-col cols="12" md="8" sm="12">
                                 <v-text-field
+                                    v-model="business_partner.name"
                                     class="ma-0 pt-0"
                                     hide-details
                                     single-line
@@ -26,6 +30,7 @@
                             <v-col cols="12" md="4" sm="12"><span style="font-size: 0.9em;">APELLIDOS</span></v-col>
                             <v-col cols="12" md="8" sm="12">
                                 <v-text-field
+                                    v-model="business_partner.lastname"
                                     class="ma-0 pt-0"
                                     hide-details
                                     placeholder="Ingresa aquí tu apellido completo"
@@ -34,14 +39,25 @@
                             <v-col cols="12" md="4" sm="12"><span style="font-size: 0.9em;">DNI</span></v-col>
                             <v-col cols="12" md="8" sm="12">
                                 <v-text-field
+                                    v-model="business_partner.nro_doc"
                                     class="ma-0 pt-0"
                                     hide-details
                                     placeholder="Ingresa aquí tu DNI"
                                 ></v-text-field>
                             </v-col>
+                            <v-col cols="12" md="4" sm="12"><span style="font-size: 0.9em;">Teléfono</span></v-col>
+                            <v-col cols="12" md="8" sm="12">
+                                <v-text-field
+                                    v-model="business_partner.phone"
+                                    class="ma-0 pt-0"
+                                    hide-details
+                                    placeholder="Ingresa aquí tu Teléfono"
+                                ></v-text-field>
+                            </v-col>
                             <v-col cols="12" md="4" sm="12"><span style="font-size: 0.9em;">EDAD</span></v-col>
                             <v-col cols="12" md="8" sm="12">
                                 <v-text-field
+                                    v-model="infoPersonal.age"
                                     class="ma-0 pt-0"
                                     hide-details
                                     placeholder="Ingresa aquí tu edad"
@@ -113,3 +129,31 @@
         </v-card>
     </div>
 </template>
+<script>
+export default {
+    props:{
+        base_url: {
+            type: String,
+            default: null,
+        },
+        business_partner: {
+            type: Object,
+            default: null,
+        },
+    },
+    data: () => ({
+        infoPersonal:{
+        },
+    }),
+    created(){
+        this.configPersonalInfo();
+    },
+    methods: {
+        configPersonalInfo(){
+            if(this.business_partner.partner_information.info_personal){
+                this.infoPersonal = JSON.parse(this.business_partner.partner_information.info_personal);
+            }
+        }
+    }
+}
+</script>

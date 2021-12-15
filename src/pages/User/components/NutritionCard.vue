@@ -15,40 +15,45 @@
                                 offset-y
                                 min-width="auto">
                                 <template v-slot:activator="{ on, attrs }">
-                                    <v-text-field label="Fecha Fin" prepend-icon="mdi-calendar"
+                                    <v-text-field prepend-icon="mdi-calendar"
                                         v-model="formatTestDate"
                                         v-bind="attrs"
                                         v-on="on"
                                         readonly
                                     ></v-text-field>
                                 </template>
-                                <v-date-picker no-title v-model="nutritionForm.testDate" @input="menuTestDate = false" locale="es-ES"></v-date-picker>
+                                <v-date-picker no-title v-model="infoNutrition.test_date" @input="menuTestDate = false" locale="es-ES"></v-date-picker>
                             </v-menu>
                         </v-col>
                     </v-row>
 
                     <span style="font-size: 0.9em;">¿Toma Medicación o esta en tratamientos? Descríbala y para qué:</span>
                     <v-text-field
+                        v-model="infoNutrition.question1"
                         class="ma-0 pt-0"
                         single-line
                     ></v-text-field>
                     <span style="font-size: 0.9em;">¿Toma algún suplemento? ¿Cuál? ¿Para qué?</span>
                     <v-text-field
+                        v-model="infoNutrition.question2"
                         class="ma-0 pt-0"
                         single-line
                     ></v-text-field>
                     <span style="font-size: 0.9em;">Tipo de alimentación:</span>
                     <v-text-field
+                        v-model="infoNutrition.question3"
                         class="ma-0 pt-0"
                         single-line
                     ></v-text-field>
                     <span style="font-size: 0.9em;">¿Cuántas comidas realiza al día?</span>
                     <v-text-field
+                        v-model="infoNutrition.question4"
                         class="ma-0 pt-0"
                         single-line
                     ></v-text-field>
                     <span style="font-size: 0.9em;">¿Presenta intolerancias o alergias alimentarias? Descríbalas </span>
                     <v-text-field
+                        v-model="infoNutrition.question5"
                         class="ma-0 pt-0"
                         single-line
                     ></v-text-field>
@@ -60,13 +65,31 @@
 
 <script>
 export default {
+    props:{
+        base_url: {
+            type: String,
+            default: null,
+        },
+        business_partner: {
+            type: Object,
+            default: null,
+        },
+    },
     data: () => ({
         menuTestDate: false,
-        nutritionForm: {
-            testDate: null,
+        infoNutrition:{
+            test_date: null,
         },
     }),
+    created(){
+        this.configNutritionInfo();
+    },
     methods:{
+        configNutritionInfo(){
+            if(this.business_partner.partner_information.info_nutrition){
+                this.infoNutrition = JSON.parse(this.business_partner.partner_information.info_nutrition);
+            }
+        },
         //--- Date Formatting ---
         formatDate (date) {
             if (!date) return null
@@ -79,7 +102,7 @@ export default {
     computed: {
         formatTestDate: {
             get: function () {
-                return this.formatDate(this.nutritionForm.testDate);
+                return this.formatDate(this.infoNutrition.test_date);
             },
             set: function (newValue) {
                 return this.formatDate(newValue);
