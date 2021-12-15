@@ -415,14 +415,15 @@
                                             background-color="grey lighten-2"
                                             placeholder="CUPÓN"
                                             hide-details=""
+                                            v-model="coupon"
                                         ></v-text-field>
                                         <v-btn
-                                        color="grey"
-                                        dark
-                                        elevation="0"
-                                        height="56"
-                                        class="mr-0 rounded-0"
-                                        @click="aplicarCupon()"
+                                            color="grey"
+                                            dark
+                                            elevation="0"
+                                            height="56"
+                                            class="mr-0 rounded-0"
+                                            @click="aplicarCupon()"
                                         >APLICAR</v-btn>
                                     </div>
                                     <div class="d-flex text-h6 pt-3">
@@ -480,7 +481,7 @@ export default {
             valid: false,
             valid2: false,
             cart: [],
-
+            coupon: null,
             order:{
                 country: 'Peru',
                 password:'',
@@ -538,6 +539,15 @@ export default {
         document.head.appendChild(paymeScript)
     },
     methods:{
+        async aplicarCupon(){
+            try{
+                const data = await this.$API.coupon.validate({cupon: this.coupon});
+                console.log(data);
+            }catch(e){
+                this.$store.commit('loader',false);
+                console.error(e);
+            }
+        },
         list(){
             this.cart = this.$store.getters.StoreCart;
             console.log(this.cart );

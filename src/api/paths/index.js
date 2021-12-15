@@ -86,5 +86,11 @@ export default {
             return callAPI('get', 'api/v1/order/payment/'+id );
             
         }
+    },
+
+    coupon:{
+        validate(data){
+            return callAPI('post', 'api/v1/coupon/validate', { data: data });
+        },
     }
 }
