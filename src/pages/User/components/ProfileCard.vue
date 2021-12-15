@@ -45,9 +45,19 @@
                                     placeholder="Ingresa aquí tu DNI"
                                 ></v-text-field>
                             </v-col>
+                            <v-col cols="12" md="4" sm="12"><span style="font-size: 0.9em;">Teléfono</span></v-col>
+                            <v-col cols="12" md="8" sm="12">
+                                <v-text-field
+                                    v-model="business_partner.phone"
+                                    class="ma-0 pt-0"
+                                    hide-details
+                                    placeholder="Ingresa aquí tu Teléfono"
+                                ></v-text-field>
+                            </v-col>
                             <v-col cols="12" md="4" sm="12"><span style="font-size: 0.9em;">EDAD</span></v-col>
                             <v-col cols="12" md="8" sm="12">
                                 <v-text-field
+                                    v-model="infoPersonal.age"
                                     class="ma-0 pt-0"
                                     hide-details
                                     placeholder="Ingresa aquí tu edad"
@@ -132,6 +142,18 @@ export default {
         },
     },
     data: () => ({
+        infoPersonal:{
+        },
     }),
+    created(){
+        this.configPersonalInfo();
+    },
+    methods: {
+        configPersonalInfo(){
+            if(this.business_partner.partner_information.info_personal){
+                this.infoPersonal = JSON.parse(this.business_partner.partner_information.info_personal);
+            }
+        }
+    }
 }
 </script>
