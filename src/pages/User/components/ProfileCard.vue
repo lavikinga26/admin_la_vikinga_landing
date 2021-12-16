@@ -1,7 +1,7 @@
 <template>
     <div class="my-5">
         <v-card class="my-10 rounded-xl pa-10">
-            <v-form ref="profileForm" v-model="validProfileForm" @submit.prevent="saveProfileReg()" lazy-validation>
+            <v-form ref="profileForm" v-model="validProfileForm" @submit.prevent="updateProfileInfo()" lazy-validation>
                 <v-row>
                     <v-col cols="12" md="3" sm="12" align="center">
                         <v-avatar class="profile rounded-circle" color="grey" size="164" tile>
@@ -114,6 +114,7 @@
                         </v-row>
                     </v-col>
                 </v-row>
+                <br>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn type="submit" color="primary" :disabled="!validProfileForm">Guardar</v-btn>
@@ -152,14 +153,15 @@ export default {
                 this.infoPersonal = JSON.parse(this.business_partner.partner_information.info_personal);
             }
         },
-        async saveProfileReg(){
+        async updateProfileInfo(){
             try {
                 this.$store.commit('loader', true);
 
                 this.profileForm.info_personal  = JSON.stringify(this.infoPersonal);
+                const response = await this.$API.business_partner.updateProfileInfo(this.business_partner.id, this.profileForm);
 
             } catch (e) {
-                UTILS.toastr.error("Ups! Ocurrió un error", this);
+                // UTILS.toastr.error("Ups! Ocurrió un error", this);
                 console.error(e);
 
             } finally {

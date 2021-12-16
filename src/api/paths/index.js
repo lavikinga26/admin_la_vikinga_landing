@@ -42,6 +42,21 @@ export default {
         getPartner(id){
             return callAPI('get', 'api/v1/business-partner/get-partner/'+id);
         },
+        updateProfileInfo(id, data){
+            return callAPI('post', 'api/v1/business-partner/update-profile-info/'+id, {data: data});
+        },
+        updateHealthInfo(id, data){
+            return callAPI('post', 'api/v1/business-partner/update-health-info/'+id, {data: data});
+        },
+        updateProgressInfo(id, data){
+            return callAPI('post', 'api/v1/business-partner/update-progress-info/'+id, {data: data});
+        },
+        updateNutritionInfo(id, data){
+            return callAPI('post', 'api/v1/business-partner/update-nutrition-info/'+id, {data: data});
+        },
+        updateTrainingInfo(id, data){
+            return callAPI('post', 'api/v1/business-partner/update-training-info/'+id, {data: data});
+        },
     },
 
     team:{
