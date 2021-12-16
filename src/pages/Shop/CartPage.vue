@@ -419,6 +419,7 @@
                                             placeholder="CUPÓN"
                                             hide-details=""
                                             v-model="coupon"
+                                            :disabled="couponDisabled"
                                         ></v-text-field>
                                         <v-btn
                                             color="grey"
@@ -505,7 +506,8 @@ export default {
                 message: '',
                 timeout: 3000,
                 color: "success"
-            }
+            },
+            couponDisabled:false,
         }
     },
     computed: {
@@ -542,10 +544,36 @@ export default {
         document.head.appendChild(paymeScript)
     },
     methods:{
+        showToast(msg,color){
+            this.toast.color = color;
+            this.toast.message = msg;
+            this.toast.toast = true;
+        },
         async aplicarCupon(){
             try{
-                const data = await this.$API.coupon.validate({cupon: this.coupon});
-                console.log(data);
+                const response = await this.$API.coupon.validate({cupon: this.coupon});
+                if(response.data.available === true){
+                    let data = response.data;
+                    if(data.id_plan === null){
+                        this.discount = (data.discount_type == 1) ? this.subtotal * (data.discount/100) : this.subtotal - data.discount; 
+                    }else{
+                        let index = this.cart.findIndex((elem) => elem.id == data.id_plan);
+                        if(index == -1){
+                            this.showToast("No valido para los productos de este carrito","red");
+                        }else{
+                            if(this.couponDisabled != true){
+                                this.discount = (data.discount_type == 1) ? this.cart[index].price * (data.discount/100) :  this.cart[index].price - data.discount;
+                                this.couponDisabled = true;
+                                this.showToast("Cupón valido","success");
+                            }
+                        }
+                    }
+
+                }else{
+                    this.toast.color = "red";
+                    this.toast.message = response.data.msg;
+                    this.toast.toast = true;
+                }
             }catch(e){
                 this.$store.commit('loader',false);
                 console.error(e);
