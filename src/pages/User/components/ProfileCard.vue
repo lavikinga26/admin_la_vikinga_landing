@@ -11,6 +11,7 @@
                             </v-img>
                         </v-avatar>
                         <h3 class="mx-10 my-5"><b>{{profileForm.name}} {{profileForm.lastname}}</b></h3>
+                        <v-btn @click="profileImgDialog = true" color="pink" dark>Cambiar Foto</v-btn>
                     </v-col>
                     <v-col cols="12" md="9" sm="12" class="px-15">
                         <div class="tit_h1_staff_pink text_entrena txt_uppercase mb-6">MI INFORMACIÓN PERSONAL</div>
@@ -121,6 +122,40 @@
                 </v-card-actions>
             </v-form>
         </v-card>
+
+        <!-- Profile Image Dialog -->
+        <v-dialog v-model="profileImgDialog" max-width="40%">
+            <v-card>
+                <v-card-title>
+                    <span class="headline">Cambiar Foto de Perfil</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-row>
+                        <v-col>
+                            <v-file-input label="Subir Imagen (máx 200kb)"
+                                accept="image/*"
+                                ref="file"
+                                @change="onFileChange"
+                                :rules="rules.file_size_200kb"
+                            ></v-file-input>
+                            <v-img :src="img_url"
+                                contain
+                                max-height="300"
+                                max-width="600"
+                            />
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+                <br>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="profileImgDialog = false">Cancelar</v-btn>
+                    <v-btn color="primary" @click="uploadProfilePhoto(profileForm.id)">Guardar</v-btn>
+                    <v-spacer></v-spacer>
+                </v-card-actions> 
+            </v-card>
+        </v-dialog>
+        <!-- Fin -->
     </div>
 </template>
 <script>
@@ -142,9 +177,22 @@ export default {
         },
         infoPersonal:{
         },
+
+        profileImgDialog: false,
+        img_file: null,
+        img_url: null,
+
+        //--- Form Rules ---
+        rules: {
+            file_size_200kb: [
+                value => !value || value.size < 200000 || 'El archivo debe pesar menos de 200 kb!',
+            ],
+        },
+        //--- End ---
     }),
     created(){
         this.configPersonalInfo();
+        this.img_url = this.base_url+"/images/default-profile-picture.png";
     },
     methods: {
         configPersonalInfo(){
@@ -166,6 +214,65 @@ export default {
 
             } finally {
                 this.$store.commit('loader', false);
+            }
+        },
+
+
+        //--- Upload Image Functions ---
+        onFileChange(file) {
+            if (!file) {
+                this.img_file = null;
+                this.img_url = this.base_url+"/images/default-profile-picture.png";
+
+                return;
+            }
+
+            this.img_file = this.$refs.file.lazyValue;
+            this.img_url = URL.createObjectURL(this.img_file);
+        },
+        async uploadProfilePhoto(id) {
+
+            try {
+                this.$store.commit('loader', true);
+
+                
+                let formData = new FormData();
+                formData.append('id', id);
+                formData.append('file', this.profileForm.img_file);
+                const response = await this.$API.business_partner.uploadProfilePhoto(formData);
+                console.log(response);
+
+            } catch (e) {
+                // UTILS.toastr.error("Ups! Ocurrió un error", this);
+                console.error(e);
+
+            } finally {
+                this.$store.commit('loader', false);
+            }
+
+            // axios.post('/files/upload-affiliate-file',
+            //     formData,
+            //     {
+            //         headers: {
+            //             'Content-Type': 'multipart/form-data'
+            //         }
+            //     }
+
+            // ).then(function(data) {
+            //     // console.log(data);
+            // }.bind(this)).catch(function(e) {
+            //     console.log(e);
+            // });
+        },
+        //--- End ---
+    },
+    watch:{
+        profileImgDialog(){
+            if(!this.profileImgDialog){
+                // console.log('Dialog is closing');
+                this.img_file = null;
+                this.$refs.file.lazyValue = null;
+                this.img_url = this.base_url+"/images/default-profile-picture.png";
             }
         },
     }

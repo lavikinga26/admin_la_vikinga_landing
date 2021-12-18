@@ -6,12 +6,16 @@
                     <div class="tit_h1_staff_pink text_entrena txt_uppercase mb-6">Planilla de Registro de Pesos</div>
                 </v-col>
                 <v-col class="text-right">
-                    <v-select class="rounded-pill customm-select"
-                        :items="months"
-                        filled
+                    <v-select label="SELECCIONA EL MES"
+                        :items="months_list"
+                        item-text="name"
+                        item-value="id"
+                        @change="setActivityInfo"
+
+                        class="rounded-pill customm-select"
                         background-color="pink lighten-5"
+                        filled
                         hide-details
-                        label="SELECCIONA EL MES"
                     ></v-select>
                 </v-col>
             </v-row>
@@ -110,12 +114,27 @@ export default {
         },
     },
     data: () => ({
-        months: [],
-        base_url: '',
+        months_list: [
+            {id: 1, name:'Enero'},
+            {id: 2, name:'Febrero'},
+            {id: 3, name:'Marzo'},
+            {id: 4, name:'Abril'},
+            {id: 5, name:'Mayo'},
+            {id: 6, name:'Junio'},
+            {id: 7, name:'Julio'},
+            {id: 8, name:'Agosto'},
+            {id: 9, name:'Septiembre'},
+            {id: 10, name:'Octubre'},
+            {id: 11, name:'Noviembre'},
+            {id: 12, name:'Diciembre'},
+        ],
     }),
     watch: {
     },
     methods: {
+        setActivityInfo(){
+
+        },
     },
 }
 </script>
