@@ -19,8 +19,9 @@ import store from "./store";
 require("./assets/styles/styles.scss");
 
 import API from "./api";
-
+import { baseURL } from './api/axios';
 import { Form } from 'vform';
+
 window.Form = Form; 
 
 Vue.use(VueCountdownTimer);
@@ -45,6 +46,7 @@ Vue.filter("truncate", function(value, length) {
 });
 
 Vue.prototype.$baseAdminURL = 'baseAdminURL';
+Vue.prototype.$baseURL = baseURL;
 
 
 new Vue({

@@ -114,5 +114,10 @@ export default {
         validate(data){
             return callAPI('post', 'api/v1/coupon/validate', { data: data });
         },
+    },
+    sliders:{
+        list(){
+            return callAPI('get','api/v1/slider/list');
+        }
     }
 }
