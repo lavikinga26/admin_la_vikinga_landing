@@ -14,25 +14,15 @@
         >
             <v-expansion-panel
             class="elevation-0"
+            v-for="(question, index) in questions"
+            :key="'question_'+index"
             >
                 <v-expansion-panel-header class="secondary white--text">
-                ¿Qué es La Vikinga?
+                {{question.question}}
                 </v-expansion-panel-header>
                 <v-expansion-panel-content  class="white black--text py-3">
                     <div>
-                        ¡Hola chic@s! Ahora que está de moda todo esto de la gordo fobia, quiero contarles como ha sido mi experiencia en todos estos años. Desde pequeña he tenido sobrepeso y he sido feliz porque cuando eres niña en ese momento solo te importa jugar.
-                    </div>
-                </v-expansion-panel-content>
-            </v-expansion-panel>
-            <v-expansion-panel
-            class="elevation-0"
-            >
-                <v-expansion-panel-header class="secondary white--text">
-                ¿Como Funciona?
-                </v-expansion-panel-header>
-                <v-expansion-panel-content  class="white black--text py-3">
-                    <div>
-                        Tienes que poner el producto en el carrito y procesar la compra. Después, te pedirá los datos de facturación y te pedirá un email y una contraseña. Es muy importante que te acuerdes de lo que pones porque será tu usuario de acceso a la plataforma.
+                        {{question.answer}}
                     </div>
                 </v-expansion-panel-content>
             </v-expansion-panel>
@@ -45,6 +35,21 @@ export default {
       panel: 0,
       disabled: false,
       readonly: false,
+      questions: []
     }),
+    mounted(){
+        this.getFrequentQuestions();
+    },
+    methods:{
+        async getFrequentQuestions(){
+            try{
+                const data = await this.$API.configuration.frequent_questions();
+                this.questions = data.data.data;
+            }
+            catch(e){
+                console.error(e);
+            } 
+        },
+    },
 }
 </script>

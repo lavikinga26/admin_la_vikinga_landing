@@ -41,10 +41,14 @@ export const routes = [{
     name: 'calendario',
     component: () => import(/* webpackChunkName: "blank" */ '../pages/Calendar/CalendarPage.vue'),
 }, {
-    path: '/entrenamiento',
-    name: 'entrenamiento',
+    path: '/biblioteca',
+    name: 'biblioteca',
     component: () => import(/* webpackChunkName: "blank" */ '../pages/Workout/Workout.vue'),
 }, {
+    path: '/la-vikinga',
+    name: 'la-vikinga',
+    component: () => import(/* webpackChunkName: "blank" */ '../pages/Info/InformationPage.vue'),
+},  {
     path: '/contacto',
     name: 'contacto',
     component: () => import(/* webpackChunkName: "blank" */ '../pages/Contact/ContactPage.vue'),
@@ -56,6 +60,18 @@ export const routes = [{
     path: '/confirmar-pago/:hash',
     name: 'payment',
     component: () => import(/* webpackChunkName: "blank" */ '../pages/Shop/PaymentPage.vue'),
+},  {
+    path: '/terminos-condiciones',
+    name: 'terminsconditions',
+    component: () => import(/* webpackChunkName: "blank" */ '../pages/TermsConditions/TermsConditionsPage.vue'),
+}, {
+    path: '/politica-privacidad',
+    name: 'politicaprivacidad',
+    component: () => import(/* webpackChunkName: "blank" */ '../pages/TermsConditions/PrivatePolicyPage.vue'),
+},  {
+    path: '/preguntas-frecuentes',
+    name: 'preguntasfrecuentes',
+    component: () => import(/* webpackChunkName: "blank" */ '../pages/FrequentQuestions/FrequentQuestionsPage.vue'),
 }, 
 
 ...UserRoutes,
