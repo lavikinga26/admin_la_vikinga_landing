@@ -27,7 +27,17 @@ export default {
         getPaymentMethods(){
             return callAPI('get', 'api/v1/configuration/payment-methods');
         },
+        getInformation(){
+            return callAPI('get', 'api/v1/la-vikinga/information');
+        },
+        termsConditions(){
+            return callAPI('get', 'api/v1/terms-conditions');
+        },
+        privacyPolicy(){
+            return callAPI('get', 'api/v1/privacy-policy');
+        }
         
+
     },
 
     user:{
