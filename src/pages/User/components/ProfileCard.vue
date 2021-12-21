@@ -159,7 +159,12 @@
     </div>
 </template>
 <script>
+import axios from "axios";
+
 export default {
+    components: {
+        axios,
+    },
     props:{
         base_url: {
             type: String,
@@ -232,15 +237,13 @@ export default {
         },
         async uploadProfilePhoto(id) {
 
-            try {
+            /*try {
                 this.$store.commit('loader', true);
 
-                
                 let formData = new FormData();
                 formData.append('id', id);
                 formData.append('file', this.profileForm.img_file);
-                const response = await this.$API.business_partner.uploadProfilePhoto(formData);
-                console.log(response);
+                const response = await this.$API.business_partner.uploadProfilePhoto();
 
             } catch (e) {
                 // UTILS.toastr.error("Ups! Ocurrió un error", this);
@@ -248,21 +251,24 @@ export default {
 
             } finally {
                 this.$store.commit('loader', false);
-            }
+            }*/
 
-            // axios.post('/files/upload-affiliate-file',
-            //     formData,
-            //     {
-            //         headers: {
-            //             'Content-Type': 'multipart/form-data'
-            //         }
-            //     }
+            let formData = new FormData();
+            formData.append('id', id);
+            formData.append('file', this.profileForm.img_file);
+            axios.post(this.base_url + '/files/upload-affiliate-file',
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
 
-            // ).then(function(data) {
-            //     // console.log(data);
-            // }.bind(this)).catch(function(e) {
-            //     console.log(e);
-            // });
+            ).then(function(data) {
+                console.log(data);
+            }.bind(this)).catch(function(e) {
+                console.log(e);
+            });
         },
         //--- End ---
     },
