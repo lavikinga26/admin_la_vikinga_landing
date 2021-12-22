@@ -12,7 +12,7 @@
                 <div class="col-4 d-sm-none d-md-block"></div>
                 <div class="col-md-4 col-sm-12 text-center text_suplementacion">
                     <p>{{subtitle}}</p>
-                    <v-btn color="secondary"
+                    <v-btn v-show="buttonTitle != null && buttonAction != null" color="secondary"
                         :href="buttonAction"
                         depressed
                         class="px-2">
