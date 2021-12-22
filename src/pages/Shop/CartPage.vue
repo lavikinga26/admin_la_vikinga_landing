@@ -82,7 +82,16 @@
                                     Finalizar Compra
                                 </v-btn>
                             </v-col>
+                            
                         </v-row>
+                        <v-card class="ma-3 pa-3">
+                                                    <div class="d-flex align-center">
+                                                        <v-btn @click="abrirPayme()">Abrir Payme</v-btn>
+                                                    </div>
+
+                                                    <div id="demo" class="d-flex">
+                                                    </div>
+                                                </v-card>
                     </v-tab-item>
 
                     <v-tab-item value="pago" class="pa-4">
@@ -356,14 +365,7 @@
                                                 </template>
                                                 </v-radio-group>
 
-                                                <v-card class="ma-3 pa-3">
-                                                    <div class="d-flex align-center">
-                                                        <v-btn @click="abrirPayme()">Abrir Payme</v-btn>
-                                                    </div>
-
-                                                    <div id="demo" class="d-flex">
-                                                    </div>
-                                                </v-card>
+                                                
                                             </v-col>
                                         </v-row>
                                         <!--end form invoice-->
@@ -537,6 +539,7 @@ export default {
         this.getUser();
         this.getCountry();
         this.getTypeDocument();
+        //this.reqCallback("asd");
 
         /** Importamos Pay-me */
         let paymeScript = document.createElement('script')
@@ -686,58 +689,23 @@ export default {
             }
         },
 
-        reqCallback(response) {
-            console.log("vueeeee");
-            console.log(response);
+        async reqCallback(response) {
+            try{
+                const data = await this.$API.payme.saveToken(response);
+            }catch(e){
+                //this.$store.commit('loader',false);
+                console.error(e);
+            } 
         },
 
         abrirPayme(){
-            var payRequest = {
-                "action": "authorize",
-                "transaction": {
-                    "currency": "604",
-                    "amount": "100000",
+            var tokenRequest = {
+                    "action": "tokenize",
+                    "transaction": {
                     "meta": {
                         "internal_operation_number": Math.floor(Date.now()).toString().substring(7),
-                        "description": "Descripcion de la transaccion",
                         "additional_fields": {
-                            "reserverd1": "Prueba valor reservado 1"
-                        }
-                    }
-                },
-                "address": {
-                    "billing": {
-                        "first_name": "Juan",
-                        "last_name": "Perez",
-                        "email": "jperez@gmail.com",
-                        "phone": {
-                            "country_code": "51",
-                            "subscriber": "987654321"
-                        },
-                        "location": {
-                            "line_1": "Mi casa",
-                            "line_2": "Mi casa",
-                            "city": "LIMA",
-                            "state": "LIMA",
-                            "country": "PE",
-                            "zip_code": "18"
-                        }
-                    },
-                    "shipping": {
-                        "first_name": "Juan",
-                        "last_name": "Perez",
-                        "email": "jperez@gmail.com",
-                        "phone": {
-                            "country_code": "51",
-                            "subscriber": "987654321"
-                        },
-                        "location": {
-                            "line_1": "Mi casa",
-                            "line_2": "Mi casa",
-                            "city": "LIMA",
-                            "state": "LIMA",
-                            "country": "PE",
-                            "zip_code": "18"
+                            "user_id": "USER_0001"
                         }
                     }
                 },
@@ -745,19 +713,20 @@ export default {
                     {
                         "first_name": "Juan",
                         "last_name": "Perez",
-                        "email_address": "jperez@gmail.com",
-                        "identity_document_country": "PE",
+                        "email_address": "prueba@token.com",
+                        "identity_document_country": "PER",
                         "identity_document_type": "DNI",
                         "identity_document_identifier": "87654321"
                     }
                 ]
             };
+        
 
             var token_key = "meQQw27S6i661bE6TnWWaYDmdwNQdJWNwe0HtD5HrL5H0hXTPdqWQjTTLAoTZKmX";
 
             var capture = new FlexCapture({
                 "key": token_key,
-                "payload": payRequest,
+                "payload": tokenRequest,
                 "additionalFields": []
             });
 

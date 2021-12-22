@@ -1,71 +1,142 @@
 <template>
     <div class="my-5">
-        <v-card class="my-10 rounded-xl pa-10">
-            <v-row>
-                <v-col>
-                    <div class="tit_h1_staff_pink text_entrena txt_uppercase mb-6">PLANILLA DE REGISTROS DE PESOS EJERCICIOS MULTIARTICULARES</div>
-                    <v-row>
-                        <v-col cols="12" md="2" sm="12">
-                            <div class="rounded-lg grey lighten-3 text--white px-8 py-10 mb-6" style="width:150px">
-                                <v-row>
-                                    <v-col cols="12" class="py-2 px-0 my-0 secondary--text" style="border-bottom: 1.5px solid;font-size: 0.9rem !important;">LUNES</v-col>
-                                    <v-col cols="12" class="py-2 px-0 my-0 secondary--text" style="border-bottom: 1.5px solid;font-size: 0.9rem !important;">MARTES</v-col>
-                                    <v-col cols="12" class="py-2 px-0 my-0 secondary--text" style="border-bottom: 1.5px solid;font-size: 0.9rem !important;">MIERCOLES</v-col>
-                                    <v-col cols="12" class="py-2 px-0 my-0 secondary--text" style="border-bottom: 1.5px solid;font-size: 0.9rem !important;">JUEVES</v-col>
-                                    <v-col cols="12" class="py-2 px-0 my-0 secondary--text" style="border-bottom: 1.5px solid;font-size: 0.9rem !important;">VIERNES</v-col>
-                                    <v-col cols="12" class="py-2 px-0 my-0 secondary--text" style="border-bottom: 1.5px solid;font-size: 0.9rem !important;">SABADO</v-col>
-                                    <v-col cols="12" class="py-2 px-0 my-0 secondary--text" style="border-bottom: 1.5px solid;font-size: 0.9rem !important;">DOMINGO</v-col>
-                                </v-row>
+        <v-form ref="progressForm" v-model="validTrainingForm" @submit.prevent="updateTrainingInfo()" lazy-validation>
+            <v-card class="my-10 rounded-xl pa-10">
+                <v-row>
+                    <v-col>
+                        <div class="tit_h1_staff_pink text_entrena txt_uppercase mb-6">PLANILLA DE REGISTROS DE PESOS EJERCICIOS MULTIARTICULARES</div>
+                        <v-row>
+                            <v-col cols="12" md="12" sm="12" class="px-5">
+                                <div class="d-flex">
+                                    <v-spacer></v-spacer>
+                                    <div class="d-flex align-center" style="font-size: 0.75rem !important;">
+                                        SELECCIONA EL MES 
+                                        <v-select
+                                            v-model="training_month"
+                                            :items="months_list"
+                                            item-text="name"
+                                            item-value="id"
 
-                            </div>
-                        </v-col>
-                        <v-col cols="12" md="10" sm="12" class="px-5">
-                            <div class="d-flex">
-                                <v-spacer></v-spacer>
-                                <div class="d-flex align-center" style="font-size: 0.75rem !important;">
-                                    SELECCIONA EL MES 
-                                    <v-select
-                                        style="width: 100px;"
-                                        class="ml-3"
-                                        color="secondary"
-                                        item-color="secondary"
-                                        :items="[]"
-                                    ></v-select>
-                                </div>
-                                <div class="d-flex align-center" style="font-size: 0.75rem !important;">
-                                    SELECCIONA LA SEMANA
-                                    <v-select
-                                        style="width: 100px;"
-                                        class="ml-3"
-                                        color="secondary"
-                                        item-color="secondary"
-                                        :items="[]"
-                                    ></v-select>
-                                </div>
-                            </div>
-
-                            <div class="d-flex flex-wrap">
-                                <div style="width:20%" class="pa-2" v-for="(item, index) in [1,2,3,4,5,6,7,8,9,10]" :key="index">
-                                    <div class="rounded-lg pink lighten-5 pa-5">
-                                        <h5 class="secondary--text"><b>BLACK SQUAT</b></h5>
-                                        <v-text-field
-                                            class="ma-0 py-0"
-                                            placeholder="PESO"
-                                            hide-details
-                                        ></v-text-field>
-                                        <v-text-field
-                                            class="ma-0 py-0"
-                                            placeholder="COMENTARIOS"
-                                            hide-details
-                                        ></v-text-field>
+                                            style="width: 100px;"
+                                            class="ml-3"
+                                            color="secondary"
+                                            item-color="secondary"
+                                        ></v-select>
                                     </div>
                                 </div>
-                            </div>
-                        </v-col>
-                    </v-row>
-                </v-col>
-            </v-row>
-        </v-card>
+
+                                <div class="d-flex flex-wrap">
+                                    <!-- <div style="width:20%" class="pa-2" v-for="(item, index) in [1,2,3,4,5,6,7,8,9,10]" :key="index">
+                                        <div class="rounded-lg pink lighten-5 pa-5">
+                                            <h5 class="secondary--text"><b>BLACK SQUAT</b></h5>
+                                            <v-text-field
+                                                class="ma-0 py-0"
+                                                placeholder="PESO"
+                                                hide-details
+                                            ></v-text-field>
+                                            <v-text-field
+                                                class="ma-0 py-0"
+                                                placeholder="COMENTARIOS"
+                                                hide-details
+                                            ></v-text-field>
+                                        </div>
+                                    </div> -->
+                                    <div style="width:20%" class="pa-2">
+                                        <div class="rounded-lg pink lighten-5 pa-5">
+                                            <h5 class="secondary--text"><b>BLACK SQUAT</b></h5>
+                                            <v-text-field
+                                                v-model="infoTraining[training_month].q1_weight"
+                                                class="ma-0 py-0"
+                                                placeholder="PESO"
+                                                hide-details
+                                            ></v-text-field>
+                                            <v-text-field
+                                                v-model="infoTraining[training_month].q1_comments"
+                                                class="ma-0 py-0"
+                                                placeholder="COMENTARIOS"
+                                                hide-details
+                                            ></v-text-field>
+                                        </div>
+                                    </div>
+                                    <div style="width:20%" class="pa-2">
+                                        <div class="rounded-lg pink lighten-5 pa-5">
+                                            <h5 class="secondary--text"><b>BLACK SQUAT</b></h5>
+                                            <v-text-field
+                                                v-model="infoTraining[training_month].q2_weight"
+                                                class="ma-0 py-0"
+                                                placeholder="PESO"
+                                                hide-details
+                                            ></v-text-field>
+                                            <v-text-field
+                                                v-model="infoTraining[training_month].q2_comments"
+                                                class="ma-0 py-0"
+                                                placeholder="COMENTARIOS"
+                                                hide-details
+                                            ></v-text-field>
+                                        </div>
+                                    </div>
+                                    <div style="width:20%" class="pa-2">
+                                        <div class="rounded-lg pink lighten-5 pa-5">
+                                            <h5 class="secondary--text"><b>BLACK SQUAT</b></h5>
+                                            <v-text-field
+                                                v-model="infoTraining[training_month].q3_weight"
+                                                class="ma-0 py-0"
+                                                placeholder="PESO"
+                                                hide-details
+                                            ></v-text-field>
+                                            <v-text-field
+                                                v-model="infoTraining[training_month].q3_comments"
+                                                class="ma-0 py-0"
+                                                placeholder="COMENTARIOS"
+                                                hide-details
+                                            ></v-text-field>
+                                        </div>
+                                    </div>
+                                    <div style="width:20%" class="pa-2">
+                                        <div class="rounded-lg pink lighten-5 pa-5">
+                                            <h5 class="secondary--text"><b>BLACK SQUAT</b></h5>
+                                            <v-text-field
+                                                v-model="infoTraining[training_month].q4_weight"
+                                                class="ma-0 py-0"
+                                                placeholder="PESO"
+                                                hide-details
+                                            ></v-text-field>
+                                            <v-text-field
+                                                v-model="infoTraining[training_month].q4_comments"
+                                                class="ma-0 py-0"
+                                                placeholder="COMENTARIOS"
+                                                hide-details
+                                            ></v-text-field>
+                                        </div>
+                                    </div>
+                                    <div style="width:20%" class="pa-2">
+                                        <div class="rounded-lg pink lighten-5 pa-5">
+                                            <h5 class="secondary--text"><b>BLACK SQUAT</b></h5>
+                                            <v-text-field
+                                                v-model="infoTraining[training_month].q5_weight"
+                                                class="ma-0 py-0"
+                                                placeholder="PESO"
+                                                hide-details
+                                            ></v-text-field>
+                                            <v-text-field
+                                                v-model="infoTraining[training_month].q5_comments"
+                                                class="ma-0 py-0"
+                                                placeholder="COMENTARIOS"
+                                                hide-details
+                                            ></v-text-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </v-col>
+                        </v-row>
+                    </v-col>
+                </v-row>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn type="submit" color="primary" :disabled="!validTrainingForm">Guardar</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-form>
     </div>
 </template>
 <script>
@@ -81,14 +152,54 @@ export default {
         },
     },
     data: () => ({
+        validTrainingForm: false,
+        trainingForm:{
+            info_training: null,
+        },
+        infoTraining:[
+            {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+        ],
 
+        training_month: 0,
+        months_list: [
+            {id: 0, name:'Enero'},
+            {id: 1, name:'Febrero'},
+            {id: 2, name:'Marzo'},
+            {id: 3, name:'Abril'},
+            {id: 4, name:'Mayo'},
+            {id: 5, name:'Junio'},
+            {id: 6, name:'Julio'},
+            {id: 7, name:'Agosto'},
+            {id: 8, name:'Septiembre'},
+            {id: 9, name:'Octubre'},
+            {id: 10, name:'Noviembre'},
+            {id: 11, name:'Diciembre'},
+        ],
     }),
-    watch: {
+    created(){
+        this.configTrainingInfo();
     },
     methods: {
+        configTrainingInfo(){
+            if(this.business_partner.partner_information.info_training){
+                this.infoTraining = JSON.parse(this.business_partner.partner_information.info_training);
+            }
+        },
+        async updateTrainingInfo (){
+            try {
+                this.$store.commit('loader', true);
+
+                this.trainingForm.info_training = JSON.stringify(this.infoTraining);
+                const response = await this.$API.business_partner.updateTrainingInfo(this.business_partner.id, this.trainingForm);
+
+            } catch (e) {
+                // UTILS.toastr.error("Ups! Ocurrió un error", this);
+                console.error(e);
+
+            } finally {
+                this.$store.commit('loader', false);
+            }
+        },
     },
 }
 </script>
-<style>
-
-</style>

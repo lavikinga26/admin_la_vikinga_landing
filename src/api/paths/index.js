@@ -67,9 +67,9 @@ export default {
         updateTrainingInfo(id, data){
             return callAPI('post', 'api/v1/business-partner/update-training-info/'+id, {data: data});
         },
-        uploadProfilePhoto(data){
-            return callAPI('post', 'api/v1/business-partner/upload-profile-photo/', {data: data});
-        },
+        // uploadProfilePhoto(data){
+        //     return callAPI('post', 'api/v1/business-partner/upload-profile-photo/', {data: data});
+        // },
     },
 
     team:{
@@ -128,6 +128,16 @@ export default {
     sliders:{
         list(){
             return callAPI('get','api/v1/slider/list');
+        }
+    },
+    informative:{
+        get(){
+            return callAPI('get','api/v1/informative');
+        }
+    },
+    payme:{
+        saveToken(data){
+            return callAPI('post', 'api/v1/payme/saveToken', { data: data });
         }
     }
 }
