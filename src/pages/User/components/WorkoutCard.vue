@@ -43,7 +43,7 @@
                                     </div> -->
                                     <div style="width:20%" class="pa-2">
                                         <div class="rounded-lg pink lighten-5 pa-5">
-                                            <h5 class="secondary--text"><b>BLACK SQUAT</b></h5>
+                                            <h5 class="secondary--text"><b>BACK SQUAT</b></h5>
                                             <v-text-field
                                                 v-model="infoTraining[training_month].q1_weight"
                                                 class="ma-0 py-0"
@@ -60,7 +60,7 @@
                                     </div>
                                     <div style="width:20%" class="pa-2">
                                         <div class="rounded-lg pink lighten-5 pa-5">
-                                            <h5 class="secondary--text"><b>BLACK SQUAT</b></h5>
+                                            <h5 class="secondary--text"><b>FRONT SQUAT</b></h5>
                                             <v-text-field
                                                 v-model="infoTraining[training_month].q2_weight"
                                                 class="ma-0 py-0"
@@ -77,7 +77,7 @@
                                     </div>
                                     <div style="width:20%" class="pa-2">
                                         <div class="rounded-lg pink lighten-5 pa-5">
-                                            <h5 class="secondary--text"><b>BLACK SQUAT</b></h5>
+                                            <h5 class="secondary--text"><b>SUMO SQUAT</b></h5>
                                             <v-text-field
                                                 v-model="infoTraining[training_month].q3_weight"
                                                 class="ma-0 py-0"
@@ -94,7 +94,7 @@
                                     </div>
                                     <div style="width:20%" class="pa-2">
                                         <div class="rounded-lg pink lighten-5 pa-5">
-                                            <h5 class="secondary--text"><b>BLACK SQUAT</b></h5>
+                                            <h5 class="secondary--text"><b>PESO MUERTO</b></h5>
                                             <v-text-field
                                                 v-model="infoTraining[training_month].q4_weight"
                                                 class="ma-0 py-0"
@@ -111,7 +111,7 @@
                                     </div>
                                     <div style="width:20%" class="pa-2">
                                         <div class="rounded-lg pink lighten-5 pa-5">
-                                            <h5 class="secondary--text"><b>BLACK SQUAT</b></h5>
+                                            <h5 class="secondary--text"><b>PESO MUERTO RUMANO</b></h5>
                                             <v-text-field
                                                 v-model="infoTraining[training_month].q5_weight"
                                                 class="ma-0 py-0"
@@ -120,6 +120,92 @@
                                             ></v-text-field>
                                             <v-text-field
                                                 v-model="infoTraining[training_month].q5_comments"
+                                                class="ma-0 py-0"
+                                                placeholder="COMENTARIOS"
+                                                hide-details
+                                            ></v-text-field>
+                                        </div>
+                                    </div>
+
+                                    <div style="width:20%" class="pa-2">
+                                        <div class="rounded-lg pink lighten-5 pa-5">
+                                            <h5 class="secondary--text"><b>HIP THRUST</b></h5>
+                                            <v-text-field
+                                                v-model="infoTraining[training_month].q6_weight"
+                                                class="ma-0 py-0"
+                                                placeholder="PESO"
+                                                hide-details
+                                            ></v-text-field>
+                                            <v-text-field
+                                                v-model="infoTraining[training_month].q6_comments"
+                                                class="ma-0 py-0"
+                                                placeholder="COMENTARIOS"
+                                                hide-details
+                                            ></v-text-field>
+                                        </div>
+                                    </div>
+                                    <div style="width:20%" class="pa-2">
+                                        <div class="rounded-lg pink lighten-5 pa-5">
+                                            <h5 class="secondary--text"><b>LUNGES CON BARRA</b></h5>
+                                            <v-text-field
+                                                v-model="infoTraining[training_month].q7_weight"
+                                                class="ma-0 py-0"
+                                                placeholder="PESO"
+                                                hide-details
+                                            ></v-text-field>
+                                            <v-text-field
+                                                v-model="infoTraining[training_month].q7_comments"
+                                                class="ma-0 py-0"
+                                                placeholder="COMENTARIOS"
+                                                hide-details
+                                            ></v-text-field>
+                                        </div>
+                                    </div>
+                                    <div style="width:20%" class="pa-2">
+                                        <div class="rounded-lg pink lighten-5 pa-5">
+                                            <h5 class="secondary--text"><b>BENCH PRESS</b></h5>
+                                            <v-text-field
+                                                v-model="infoTraining[training_month].q8_weight"
+                                                class="ma-0 py-0"
+                                                placeholder="PESO"
+                                                hide-details
+                                            ></v-text-field>
+                                            <v-text-field
+                                                v-model="infoTraining[training_month].q8_comments"
+                                                class="ma-0 py-0"
+                                                placeholder="COMENTARIOS"
+                                                hide-details
+                                            ></v-text-field>
+                                        </div>
+                                    </div>
+                                    <div style="width:20%" class="pa-2">
+                                        <div class="rounded-lg pink lighten-5 pa-5">
+                                            <h5 class="secondary--text"><b>SHOULDER PRESS</b></h5>
+                                            <v-text-field
+                                                v-model="infoTraining[training_month].q9_weight"
+                                                class="ma-0 py-0"
+                                                placeholder="PESO"
+                                                hide-details
+                                            ></v-text-field>
+                                            <v-text-field
+                                                v-model="infoTraining[training_month].q9_comments"
+                                                class="ma-0 py-0"
+                                                placeholder="COMENTARIOS"
+                                                hide-details
+                                            ></v-text-field>
+                                        </div>
+                                    </div>
+                                    <div style="width:20%" class="pa-2">
+                                        <div class="rounded-lg pink lighten-5 pa-5">
+                                            <h5 class="secondary--text"><b>REMO CON BARRA</b></h5>
+                                            <v-text-field
+                                                v-model="infoTraining[training_month].q10_weight"
+                                                class="ma-0 py-0"
+                                                placeholder="PESO"
+                                                hide-details
+                                            ></v-text-field>
+                                            <v-text-field
+                                                v-model="infoTraining[training_month].q10_comments"
                                                 class="ma-0 py-0"
                                                 placeholder="COMENTARIOS"
                                                 hide-details

@@ -237,13 +237,13 @@ export default {
         },
         async uploadProfilePhoto(id) {
 
-            /*try {
+            try {
                 this.$store.commit('loader', true);
 
                 let formData = new FormData();
                 formData.append('id', id);
                 formData.append('file', this.profileForm.img_file);
-                const response = await this.$API.business_partner.uploadProfilePhoto();
+                const response = await this.$API.business_partner.uploadProfilePhoto(formData);
 
             } catch (e) {
                 // UTILS.toastr.error("Ups! Ocurrió un error", this);
@@ -251,24 +251,7 @@ export default {
 
             } finally {
                 this.$store.commit('loader', false);
-            }*/
-
-            let formData = new FormData();
-            formData.append('id', id);
-            formData.append('file', this.profileForm.img_file);
-            axios.post(this.base_url + '/files/upload-affiliate-file',
-                formData,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                }
-
-            ).then(function(data) {
-                console.log(data);
-            }.bind(this)).catch(function(e) {
-                console.log(e);
-            });
+            }
         },
         //--- End ---
     },
