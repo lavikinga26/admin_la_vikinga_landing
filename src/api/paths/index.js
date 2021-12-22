@@ -67,9 +67,9 @@ export default {
         updateTrainingInfo(id, data){
             return callAPI('post', 'api/v1/business-partner/update-training-info/'+id, {data: data});
         },
-        // uploadProfilePhoto(data){
-        //     return callAPI('post', 'api/v1/business-partner/upload-profile-photo/', {data: data});
-        // },
+        uploadProfilePhoto(data){
+            return callAPI('post', 'api/v1/business-partner/upload-profile-photo/', {data: data});
+        },
     },
 
     team:{
