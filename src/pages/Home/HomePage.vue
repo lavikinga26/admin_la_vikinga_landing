@@ -35,7 +35,7 @@
 
         <staff-slider></staff-slider>
 
-        <div class="container-fluid mt-15 bg_suplementacion" style="height: 800px;">
+        <!-- <div class="container-fluid mt-15 bg_suplementacion" style="height: 800px;">
             <div class="row">
                 <div class="col-12 text-center suplementacion_titulo">
                     <img src="@/assets/img/isotipo.png" alt="" style="width: 90px" class="my-15">
@@ -53,7 +53,8 @@
                 </div>
                 <div class="col-4 d-sm-none d-md-block"></div>
             </div>
-        </div>
+        </div> -->
+        <InformativeSection/>
 
         <phone-photos></phone-photos>
         <frequent-questions></frequent-questions>
@@ -66,6 +67,7 @@ import HomeSlider from './components/HomeSlider.vue';
 import PlansSlider from './components/PlansSlider.vue';
 import StaffSlider from './components/StaffSlider.vue';
 import PhonePhotos from '../../components/shared/PhonePhotos.vue';
+import InformativeSection from './components/InformativeSection.vue';
 
 export default {
     name: "App",
@@ -73,7 +75,8 @@ export default {
         PlansSlider,
         HomeSlider,
         StaffSlider,
-        PhonePhotos
+        PhonePhotos,
+        InformativeSection
      },
 
     data: () => ({

@@ -129,5 +129,10 @@ export default {
         list(){
             return callAPI('get','api/v1/slider/list');
         }
+    },
+    informative:{
+        get(){
+            return callAPI('get','api/v1/informative');
+        }
     }
 }
