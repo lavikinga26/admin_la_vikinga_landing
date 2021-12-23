@@ -150,7 +150,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" text @click="profileImgDialog = false">Cancelar</v-btn>
-                    <v-btn color="primary" @click="uploadProfilePhoto(profileForm.id)">Guardar</v-btn>
+                    <v-btn color="primary" @click="uploadProfilePhoto()">Guardar</v-btn>
                     <v-spacer></v-spacer>
                 </v-card-actions> 
             </v-card>
@@ -234,12 +234,12 @@ export default {
             this.img_file = this.$refs.file.lazyValue;
             this.img_url = URL.createObjectURL(this.img_file);
         },
-        async uploadProfilePhoto(id) {
+        async uploadProfilePhoto() {
             try {
                 this.$store.commit('loader', true);
 
                 let formData = new FormData();
-                formData.append('id', id);
+                formData.append('id', this.business_partner.id);
                 formData.append('file', this.img_file);
                 const response = await this.$API.business_partner.uploadProfilePhoto(formData);
                 this.$router.go();

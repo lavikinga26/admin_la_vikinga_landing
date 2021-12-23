@@ -91,6 +91,11 @@
                                     <v-icon x-large >mdi-cloud-upload-outline</v-icon>
                                 </v-btn>
                                 <br>
+                                <v-img v-if="infoProgress[progress_month].frontal_file"
+                                    :src="base_url + infoProgress[progress_month].frontal_file"
+                                    contain
+                                    max-height="400"
+                                />
                             </v-col>
                             <v-col cols="6">
                                 <span style="font-size: 0.9em;">FOTO LATERAL</span>
@@ -105,6 +110,11 @@
                                     <v-icon x-large >mdi-cloud-upload-outline</v-icon>
                                 </v-btn>
                                 <br>
+                                <v-img v-if="infoProgress[progress_month].lateral_file"
+                                    :src="base_url + infoProgress[progress_month].lateral_file"
+                                    contain
+                                    max-height="400"
+                                />
                             </v-col>
                         </v-row>
                     </v-col>
@@ -115,7 +125,8 @@
                 </v-card-actions>
             </v-card>
         </v-form>
-        <!-- Profile Image Dialog -->
+
+        <!-- Body Picture Dialog -->
         <v-dialog v-model="bodyPictureDialog" max-width="40%">
             <v-card>
                 <v-card-title>
@@ -149,7 +160,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" text @click="bodyPictureDialog = false">Cancelar</v-btn>
-                    <v-btn color="primary" @click="uploadProfilePhoto()">Guardar</v-btn>
+                    <v-btn color="primary" @click="uploadBodyPicture()">Guardar</v-btn>
                     <v-spacer></v-spacer>
                 </v-card-actions> 
             </v-card>
@@ -224,6 +235,7 @@ export default {
 
                 this.progressForm.info_progress = JSON.stringify(this.infoProgress);
                 const response = await this.$API.business_partner.updateProgressInfo(this.business_partner.id, this.progressForm);
+                this.$router.go();
 
             } catch (e) {
                 // UTILS.toastr.error("Ups! Ocurrió un error", this);
@@ -246,14 +258,24 @@ export default {
             this.img_file = this.file_flag != 1 ? this.$refs.frontal_file.lazyValue : this.$refs.lateral_file.lazyValue;
             this.img_url = URL.createObjectURL(this.img_file);
         },
-        async uploadProfilePhoto() {
+        async uploadBodyPicture() {
             try {
                 this.$store.commit('loader', true);
 
                 let formData = new FormData();
+                formData.append('id', this.business_partner.id);
                 formData.append('file', this.img_file);
-                const response = await this.$API.business_partner.uploadProfilePhoto(formData);
-                this.$router.go();
+                const response = await this.$API.business_partner.uploadBodyPicture(formData);
+                var file_entry = response.data.data;
+                console.log(file_entry);
+                if(this.file_flag != 1){
+                    this.infoProgress[this.progress_month].id_frontal_file = file_entry.id;
+                    this.infoProgress[this.progress_month].frontal_file    = file_entry.path + file_entry.filename;
+                } else {
+                    this.infoProgress[this.progress_month].id_lateral_file = file_entry.id;
+                    this.infoProgress[this.progress_month].lateral_file    = file_entry.path + file_entry.filename;
+                }
+                this.updateProgressInfo();
 
             } catch (e) {
                 // UTILS.toastr.error("Ups! Ocurrió un error", this);
