@@ -212,7 +212,6 @@ export default {
 
                 this.profileForm.info_personal  = JSON.stringify(this.infoPersonal);
                 const response = await this.$API.business_partner.updateProfileInfo(this.business_partner.id, this.profileForm);
-
             } catch (e) {
                 // UTILS.toastr.error("Ups! Ocurrió un error", this);
                 console.error(e);
@@ -236,14 +235,14 @@ export default {
             this.img_url = URL.createObjectURL(this.img_file);
         },
         async uploadProfilePhoto(id) {
-
             try {
                 this.$store.commit('loader', true);
 
                 let formData = new FormData();
                 formData.append('id', id);
-                formData.append('file', this.profileForm.img_file);
+                formData.append('file', this.img_file);
                 const response = await this.$API.business_partner.uploadProfilePhoto(formData);
+                this.$router.go();
 
             } catch (e) {
                 // UTILS.toastr.error("Ups! Ocurrió un error", this);
@@ -252,6 +251,7 @@ export default {
             } finally {
                 this.$store.commit('loader', false);
             }
+
         },
         //--- End ---
     },
