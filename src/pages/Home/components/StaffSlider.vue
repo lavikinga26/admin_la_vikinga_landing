@@ -96,7 +96,6 @@
                 const data = await this.$API.team.staff();
                 vm.staff = data.data.data;
                 vm.$store.commit('loader',false);
-                console.log( data.data.data)
             }
             catch(e){
                 console.error(e);
