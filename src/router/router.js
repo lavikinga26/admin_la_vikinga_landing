@@ -72,6 +72,10 @@ export const routes = [{
     path: '/preguntas-frecuentes',
     name: 'preguntasfrecuentes',
     component: () => import(/* webpackChunkName: "blank" */ '../pages/FrequentQuestions/FrequentQuestionsPage.vue'),
+}, {
+    path: '/testimonios',
+    name: 'testimonios',
+    component: () => import(/* webpackChunkName: "blank" */ '../pages/Testimonial/TestimonialPage.vue'),
 }, 
 
 ...UserRoutes,

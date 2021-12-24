@@ -138,5 +138,10 @@ export default {
         get(){
             return callAPI('get','api/v1/informative');
         }
-    }
+    },
+    testimonials:{
+        get(){
+            return callAPI('get','api/v1/testimonials');
+        }
+    },
 }
