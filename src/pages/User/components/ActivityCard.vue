@@ -81,7 +81,7 @@
                             <v-col cols="6">
                                 <span style="font-size: 0.9em;">FOTO FRONTAL</span>
                                 <v-btn 
-                                    @click="bodyPictureDialog = true; file_flag = 0"
+                                    @click="bodyPictureDialog = true; bodypic_flag = 0"
                                     color="pink lighten-5 text-center"
                                     class="widt:100%"
                                     depressed
@@ -100,7 +100,7 @@
                             <v-col cols="6">
                                 <span style="font-size: 0.9em;">FOTO LATERAL</span>
                                 <v-btn
-                                    @click="bodyPictureDialog = true; file_flag = 1"
+                                    @click="bodyPictureDialog = true; bodypic_flag = 1"
                                     color="pink lighten-5 text-center"
                                     class="widt:100%"
                                     depressed
@@ -119,6 +119,7 @@
                         </v-row>
                     </v-col>
                 </v-row>
+                <br>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn type="submit" color="primary" :disabled="!validProgressForm">Guardar</v-btn>
@@ -130,25 +131,25 @@
         <v-dialog v-model="bodyPictureDialog" max-width="40%">
             <v-card>
                 <v-card-title>
-                    <span class="headline" v-if="file_flag == 0">Subir Foto Frontal</span>
-                    <span class="headline" v-if="file_flag == 1">Subir Foto Lateral</span>
+                    <span class="headline" v-if="bodypic_flag == 0">Subir Foto Frontal</span>
+                    <span class="headline" v-if="bodypic_flag == 1">Subir Foto Lateral</span>
                 </v-card-title>
                 <v-card-text>
                     <v-row>
                         <v-col>
-                            <v-file-input label="Subir Imagen (máx 200kb)" v-if="file_flag == 0"
+                            <v-file-input label="Subir Imagen (máx 200kb)" v-if="bodypic_flag == 0"
                                 accept="image/*"
                                 ref="frontal_file"
-                                @change="onFileChange"
+                                @change="onBodyFileChange"
                                 :rules="rules.file_size_200kb"
                             ></v-file-input>
-                            <v-file-input label="Subir Imagen (máx 200kb)" v-if="file_flag == 1"
+                            <v-file-input label="Subir Imagen (máx 200kb)" v-if="bodypic_flag == 1"
                                 accept="image/*"
                                 ref="lateral_file"
-                                @change="onFileChange"
+                                @change="onBodyFileChange"
                                 :rules="rules.file_size_200kb"
                             ></v-file-input>
-                            <v-img :src="img_url"
+                            <v-img :src="bodypic_url"
                                 contain
                                 max-height="300"
                                 max-width="600"
@@ -206,10 +207,9 @@ export default {
         ],
 
         bodyPictureDialog: false,
-        file_flag: 0,
-        img_url: null,
-        img_file: null,
-
+        bodypic_flag: 0,
+        bodypic_url: null,
+        bodypic_file: null,
 
         //--- Form Rules ---
         rules: {
@@ -221,7 +221,7 @@ export default {
     }),
     created(){
         this.configProgressInfo();
-        this.img_url = this.base_url+"/images/default-profile-picture.png";
+        this.bodypic_url = this.base_url+"/images/default-image.png";
     },
     methods: {
         configProgressInfo(){
@@ -247,16 +247,16 @@ export default {
         },
 
         //--- Upload Pictures Functions ---
-        onFileChange(file) {
+        onBodyFileChange(file) {
             if (!file) {
-                this.img_file = null;
-                this.img_url = this.base_url+"/images/default-profile-picture.png";
+                this.bodypic_file = null;
+                this.bodypic_url = this.base_url+"/images/default-image.png";
 
                 return;
             }
 
-            this.img_file = this.file_flag != 1 ? this.$refs.frontal_file.lazyValue : this.$refs.lateral_file.lazyValue;
-            this.img_url = URL.createObjectURL(this.img_file);
+            this.bodypic_file = this.bodypic_flag != 1 ? this.$refs.frontal_file.lazyValue : this.$refs.lateral_file.lazyValue;
+            this.bodypic_url = URL.createObjectURL(this.bodypic_file);
         },
         async uploadBodyPicture() {
             try {
@@ -264,11 +264,11 @@ export default {
 
                 let formData = new FormData();
                 formData.append('id', this.business_partner.id);
-                formData.append('file', this.img_file);
+                formData.append('file', this.bodypic_file);
                 const response = await this.$API.business_partner.uploadBodyPicture(formData);
                 var file_entry = response.data.data;
-                console.log(file_entry);
-                if(this.file_flag != 1){
+                
+                if(this.bodypic_flag != 1){
                     this.infoProgress[this.progress_month].id_frontal_file = file_entry.id;
                     this.infoProgress[this.progress_month].frontal_file    = file_entry.path + file_entry.filename;
                 } else {
@@ -292,7 +292,7 @@ export default {
         bodyPictureDialog(){
             if(!this.bodyPictureDialog){
                 // console.log('Dialog is closing');
-                this.img_file = null;
+                this.bodypic_file = null;
                 if(this.$refs.frontal_file){
                     this.$refs.frontal_file.lazyValue = null;
                 }
@@ -300,7 +300,7 @@ export default {
                     this.$refs.lateral_file.lazyValue = null;
                 }
                 
-                this.img_url = this.base_url+"/images/default-profile-picture.png";
+                this.bodypic_url = this.base_url+"/images/default-image.png";
             }
         },
     }
