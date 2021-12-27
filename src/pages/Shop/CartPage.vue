@@ -25,7 +25,7 @@
                                                 width="150"
                                                 contain
                                                 class="rounded mr-4"
-                                                :src="'http://admin-lavikinga.bytesoluciones.test/storage/uploads/plan_files/10292021191704617c48b0573bf.jpg'"
+                                                :src="item.image"
                                             ></v-img>
                                         </div>
                                         <div class="flex-grow-1" style="max-width: 30%; min-width: 30%; font-size: 0.9rem;">
@@ -78,6 +78,7 @@
                                     x-large
                                     block
                                     class="widt:100%"
+                                    href="#pago"
                                 >
                                     Finalizar Compra
                                 </v-btn>
@@ -381,13 +382,13 @@
                                                 <tr
                                                 v-for="(item, index) in cart" :key="'tb_'+index"
                                                 >
-                                                    <td class="pl-0 pr-2">
+                                                    <td class="pl-0 pr-0">
                                                         <v-img
                                                             width="100"
                                                             height="80"
                                                             cover
-                                                            class="rounded mr-4"
-                                                            :src="'http://admin-lavikinga.bytesoluciones.test/storage/uploads/plan_files/10292021191704617c48b0573bf.jpg'"
+                                                            class="rounded mr-0"
+                                                            :src="item.image"
                                                         ></v-img>
                                                     </td>
                                                     <td class="pl-0 pr-2">{{ item.title }}</td>
