@@ -94,6 +94,9 @@ export default {
         read(id){
             return callAPI('get', 'api/v1/plan/'+id);
         },
+        category(id){
+            return callAPI('get', 'api/v1/plans/category/'+id);
+        }
     },
     workouts:{
         list(){

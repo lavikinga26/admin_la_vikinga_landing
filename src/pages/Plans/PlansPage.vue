@@ -43,11 +43,26 @@
                         :key="i"
                         :outlined="category==item.id"
                         :text="category!=item.id"
-                        @click="category=item.id;filtering();"
+                        @click="category=item.id;category_info=item.description;category_slug=item.slug;filtering();"
                         >
                         <span style="text-transform: uppercase !important;">{{item.name}}</span>
                     </v-btn>
                 </div>
+            </div>
+            <div v-if="category!=0" style="text-align:center;" class="mb-10">
+                <div class="d-flex justify-center" >
+                    <div style="width: 70%; text-align:center;">
+                        {{category_info}}
+                    </div>
+                </div>
+                <v-btn
+                    class="ma-2 fb-btn"
+                    color="secondary"
+                    text
+                    @click="goToCategory()"
+                    >
+                    Ver más
+                </v-btn>
             </div>
             <v-row>
                 <v-col
@@ -74,7 +89,7 @@
                                 class="rounded plan white--text align-end"
                                 :src="base_url + plan.file_path.path + plan.file_path.filename"
                                 @click="goToPlan(plan.identifier)"
-              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                                gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                             >
                             <v-card-title v-text="plan.title"></v-card-title>
                             </v-img>
@@ -95,6 +110,8 @@ export default {
 
     data: () => ({
         category: 0,
+        category_info: '',
+        category_slug: '',
         categories: [],
         plans:[],
         temp_plans:[],
@@ -161,6 +178,9 @@ export default {
         },
         goToPlan(identifier){
             this.$router.push({ path: '/plan/'+identifier });
+        },
+        goToCategory(){
+            this.$router.push({ path: '/inscripciones/'+this.category_slug });
         }
     },
 }
