@@ -510,6 +510,7 @@ export default {
                 color: "success"
             },
             couponDisabled:false,
+            card_data: [],
         }
     },
     computed: {
@@ -691,7 +692,9 @@ export default {
 
         async reqCallback(response) {
             try{
-                const data = await this.$API.payme.saveToken(response);
+                this.card_data = response;
+                console.log(this.card_data);
+                const data = await this.$API.payme.saveToken(this.card_data);
             }catch(e){
                 //this.$store.commit('loader',false);
                 console.error(e);
