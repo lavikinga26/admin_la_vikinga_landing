@@ -25,7 +25,7 @@
                 <v-col cols="12" md="6">
                     <div style="min-height: 490px;" class="pa-10">
                         <h2 class="tit_h1_pink" style="line-height: 1em">{{plan.title}}</h2>
-                        <h4 class="mb-10 white--text" style="letter-spacing: 5px;">{{plan.months}} MESES</h4>
+                        <h4 class="mb-10 white--text" style="letter-spacing: 5px;">{{plan.months}} SEMANAS</h4>
                         <div class="grey--text text--lighten-2 desc_plan py-5 mb-5">
                             <ul>
                                 <li>{{plan.description}}</li>
