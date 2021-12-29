@@ -75,6 +75,8 @@
                             v-model="infoProgress[progress_month].question7"
                             label="MESES DEL ENTRENAMIENTO"
                         ></v-text-field>
+
+                        <v-btn color="pink" @click="physicTimelineDialog = true;" dark block>Línea de Tiempo</v-btn>
                     </v-col>
                     <v-col cols="12" md="6" sm="12" class="px-4">
                         <v-row>
@@ -167,6 +169,14 @@
             </v-card>
         </v-dialog>
         <!-- Fin -->
+        <!-- Body Picture Dialog -->
+        <v-dialog v-model=" physicTimelineDialog" max-width="40%">
+            <v-card>
+                <v-card-title>
+                    <span class="headline">Línea de Tiempo</span>
+                </v-card-title>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 <script>
@@ -210,6 +220,9 @@ export default {
         bodypic_flag: 0,
         bodypic_url: null,
         bodypic_file: null,
+
+        
+        physicTimelineDialog: false,
 
         //--- Form Rules ---
         rules: {
