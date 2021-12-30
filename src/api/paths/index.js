@@ -52,6 +52,10 @@ export default {
         getPartner(id){
             return callAPI('get', 'api/v1/business-partner/get-partner/'+id);
         },
+        getWorkoutList(){
+            return callAPI('get', 'api/v1/business-partner/get-workout-list');
+        },
+
         updateProfileInfo(id, data){
             return callAPI('post', 'api/v1/business-partner/update-profile-info/'+id, {data: data});
         },
