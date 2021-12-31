@@ -80,6 +80,10 @@ export const routes = [{
     path: '/testimonios',
     name: 'testimonios',
     component: () => import(/* webpackChunkName: "blank" */ '../pages/Testimonial/TestimonialPage.vue'),
+}, {
+    path: '/blog',
+    name: 'blog',
+    component: () => import(/* webpackChunkName: "blank" */ '../pages/Blog/BlogPage.vue'),
 }, 
 
 ...UserRoutes,

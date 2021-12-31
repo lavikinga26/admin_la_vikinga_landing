@@ -151,4 +151,22 @@ export default {
             return callAPI('get','api/v1/testimonials');
         }
     },
+    blog:{
+        getCategories(){
+            return callAPI('get','api/v1/blog/categories');
+        },
+        getLastPost(){
+            return callAPI('get','api/v1/blog/last');
+        },
+        getLastPosts(){
+            return callAPI('get','api/v1/blog/lasts');
+        },
+        getPostsByCategory(id,page){
+            return callAPI('get','api/v1/blog/category/posts?page='+page+'&id='+id);
+            
+        },
+        searchPosts(page,data){
+            return callAPI('get','api/v1/blog/search?page='+page,{data:data});
+        }
+    },
 }

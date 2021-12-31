@@ -60,7 +60,13 @@
             </v-row>
         </div>
         <div v-else class="container-fluig pt-3 pb-5">
-            Comming soon
+            <div class="row mt-4">
+                <div class="col-md-12 text-center">
+                    <div class="inline-block">
+                        <span style="color:#0b152a; vertical-align: middle;"><b>Próximamente</b></span>&nbsp;
+                    </div>
+                </div>
+            </div>
         </div>
         <v-dialog
         v-model="dialog"
