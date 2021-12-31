@@ -98,6 +98,11 @@
                                     contain
                                     max-height="400"
                                 />
+                                <v-img v-else
+                                    :src="base_url + empty_picture_frontal"
+                                    contain
+                                    max-height="400"
+                                />
                             </v-col>
                             <v-col cols="6">
                                 <span style="font-size: 0.9em;">FOTO LATERAL</span>
@@ -114,6 +119,11 @@
                                 <br>
                                 <v-img v-if="infoProgress[progress_month].lateral_file"
                                     :src="base_url + infoProgress[progress_month].lateral_file"
+                                    contain
+                                    max-height="400"
+                                />
+                                <v-img v-else
+                                    :src="base_url + empty_picture_lateral"
                                     contain
                                     max-height="400"
                                 />
@@ -170,11 +180,50 @@
         </v-dialog>
         <!-- Fin -->
         <!-- Body Picture Dialog -->
-        <v-dialog v-model=" physicTimelineDialog" max-width="40%">
+        <v-dialog v-model=" physicTimelineDialog" max-width="70%">
             <v-card>
+                <br>
                 <v-card-title>
-                    <span class="headline">Línea de Tiempo</span>
+                    <v-col class="text-center">
+                        <p class="tit_h2_pink">TU PROGRESO FÍSICO</p>
+                    </v-col>
                 </v-card-title>
+                <br>
+                <v-card-text>
+                    <v-row>
+                        <v-col cols="4" v-for="(item, k) in months_list" :key="k" class="text-center">
+                            <div class="tit_h1_staff_blue text_entrena txt_uppercase mb-6"> {{item.name}} </div>
+                            <v-row>
+                                <v-col cols="6" class="ml-0 mr-0 pl-0 pr-0">
+                                    <v-img v-if="infoProgress[item.id].frontal_file"
+                                        :src="base_url + infoProgress[item.id].frontal_file"
+                                        contain
+                                        max-height="180"
+                                    />
+                                    <v-img v-else
+                                        :src="base_url + empty_picture_frontal"
+                                        contain
+                                        max-height="180"
+                                    />
+                                </v-col>
+                                
+                                <v-col cols="6" class="ml-0 mr-0 pl-0 pr-0">
+                                    <v-img v-if="infoProgress[item.id].lateral_file"
+                                        :src="base_url + infoProgress[item.id].lateral_file"
+                                        contain
+                                        max-height="180"
+                                    />
+
+                                    <v-img v-else
+                                        :src="base_url + empty_picture_lateral"
+                                        contain
+                                        max-height="180"
+                                    />
+                                </v-col>
+                            </v-row>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
             </v-card>
         </v-dialog>
     </div>
@@ -223,6 +272,8 @@ export default {
 
         
         physicTimelineDialog: false,
+        empty_picture_frontal: "/images/EmptyBodyPictureFrontal.jpg",
+        empty_picture_lateral: "/images/EmptyBodyPictureLateral.jpg",
 
         //--- Form Rules ---
         rules: {
