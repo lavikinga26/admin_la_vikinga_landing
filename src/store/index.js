@@ -8,7 +8,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     loader: false,
-    StoreCart: [],
+    StoreCart: localStorage.getItem('shoppingCartVikinga') ? JSON.parse(localStorage.getItem('shoppingCartVikinga')) : [] || [],
     token: localStorage.getItem('token') || '',
   },
   getters: {
@@ -27,9 +27,15 @@ export default new Vuex.Store({
     //------CART------
     add_Item(state, id) {
       state.StoreCart.push(id);
+      localStorage.setItem('shoppingCartVikinga', JSON.stringify(state.StoreCart));
     },
     remove_Item(state, index) {
       state.StoreCart.splice(index, 1);
+      localStorage.setItem('shoppingCartVikinga', JSON.stringify(state.StoreCart));
+    },
+    clean_Cart(state){
+      state.StoreCart = [];
+      localStorage.removeItem('shoppingCartVikinga');
     },
 
     //------AUTH------
@@ -57,6 +63,9 @@ export default new Vuex.Store({
     },
     removeItem(context, index) {
       context.commit("remove_Item", index);
+    },
+    cleanCart(context) {
+      context.commit("clean_Cart");
     },
   },
   modules: {

@@ -67,8 +67,12 @@ export default {
         updateTrainingInfo(id, data){
             return callAPI('post', 'api/v1/business-partner/update-training-info/'+id, {data: data});
         },
+
         uploadProfilePhoto(data){
             return callAPI('post', 'api/v1/business-partner/upload-profile-photo', {data: data});
+        },
+        uploadBodyPicture(data){
+            return callAPI('post', 'api/v1/business-partner/upload-body-photo', {data: data});
         },
     },
 
@@ -90,6 +94,9 @@ export default {
         read(id){
             return callAPI('get', 'api/v1/plan/'+id);
         },
+        category(id){
+            return callAPI('get', 'api/v1/plans/category/'+id);
+        }
     },
     workouts:{
         list(){
@@ -139,5 +146,10 @@ export default {
         saveToken(data){
             return callAPI('post', 'api/v1/payme/saveToken', { data: data });
         }
-    }
+    },
+    testimonials:{
+        get(){
+            return callAPI('get','api/v1/testimonials');
+        }
+    },
 }

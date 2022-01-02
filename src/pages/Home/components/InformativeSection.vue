@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid mt-15 bg_suplementacion" style="height: 800px;" :style="{ backgroundImage: 'url(' + img + ')' }">
+    <div v-if="showSection" class="container-fluid mt-15 bg_suplementacion" style="height: 800px;" :style="{ backgroundImage: 'url(' + img + ')' }">
             <div class="row">
                 <div class="col-12 text-center suplementacion_titulo">
                     <img src="@/assets/img/isotipo.png" alt="" style="width: 90px" class="my-15">
@@ -31,21 +31,31 @@ export default {
         img:"",
         buttonTitle:"",
         buttonAction:"",
-        subtitle:""
+        subtitle:"",
+        showSection: false,
     }),
     mounted(){
         this.getInformative();
     },
     methods:{
         async getInformative(){
-            let response = await this.$API.informative.get();
-            
-            this.title = response.data.title
-            this.img = this.$baseURL + response.data.file_path.path + response.data.file_path.filename;
-            this.buttonTitle = response.data.button;
-            this.buttonAction = response.data.link;
-            this.subtitle = response.data.subtitle;
-            console.log(response);
+            try{
+                let response = await this.$API.informative.get();
+                if(Object.keys(response.data).length === 0){
+                    this.showSection = false;
+                }else{
+                    this.title = response.data.title
+                    this.img = this.$baseURL + response.data.file_path.path + response.data.file_path.filename;
+                    this.buttonTitle = response.data.button;
+                    this.buttonAction = response.data.link;
+                    this.subtitle = response.data.subtitle;
+
+                    this.showSection = true;
+                }
+            }catch(e){
+                console.error(e);
+                this.showSection = false
+            }
         },
     }
 }

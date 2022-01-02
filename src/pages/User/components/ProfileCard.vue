@@ -150,7 +150,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" text @click="profileImgDialog = false">Cancelar</v-btn>
-                    <v-btn color="primary" @click="uploadProfilePhoto(profileForm.id)">Guardar</v-btn>
+                    <v-btn color="primary" @click="uploadProfilePhoto()">Guardar</v-btn>
                     <v-spacer></v-spacer>
                 </v-card-actions> 
             </v-card>
@@ -212,7 +212,6 @@ export default {
 
                 this.profileForm.info_personal  = JSON.stringify(this.infoPersonal);
                 const response = await this.$API.business_partner.updateProfileInfo(this.business_partner.id, this.profileForm);
-
             } catch (e) {
                 // UTILS.toastr.error("Ups! Ocurrió un error", this);
                 console.error(e);
@@ -235,15 +234,15 @@ export default {
             this.img_file = this.$refs.file.lazyValue;
             this.img_url = URL.createObjectURL(this.img_file);
         },
-        async uploadProfilePhoto(id) {
-
+        async uploadProfilePhoto() {
             try {
                 this.$store.commit('loader', true);
 
                 let formData = new FormData();
-                formData.append('id', id);
-                formData.append('file', this.profileForm.img_file);
+                formData.append('id', this.business_partner.id);
+                formData.append('file', this.img_file);
                 const response = await this.$API.business_partner.uploadProfilePhoto(formData);
+                this.$router.go();
 
             } catch (e) {
                 // UTILS.toastr.error("Ups! Ocurrió un error", this);
@@ -252,6 +251,7 @@ export default {
             } finally {
                 this.$store.commit('loader', false);
             }
+
         },
         //--- End ---
     },

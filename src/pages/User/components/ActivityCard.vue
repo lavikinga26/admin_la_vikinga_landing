@@ -48,7 +48,7 @@
                             ></v-text-field>
                         </div>
                     </v-col>
-                    <v-col cols="12" md="5" sm="12" class="px-10">
+                    <v-col cols="12" md="4" sm="12" class="px-10">
                         <v-text-field
                             v-model="infoProgress[progress_month].question3"
                             label="MEDIDAS DE PECHO"
@@ -61,15 +61,12 @@
                             hint="VER INDICACIONES PARA REALIZAR LA MEDICIÓN *"
                             persistent-hint
                         ></v-text-field>
-                        
                         <v-text-field
                             v-model="infoProgress[progress_month].question5"
                             label="MEDIDAS DE CADERA"
                             hint="VER INDICACIONES PARA REALIZAR LA MEDICIÓN *"
                             persistent-hint
                         ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" md="5" sm="12" class="px-10">
                         <v-text-field
                             v-model="infoProgress[progress_month].question6"
                             label="OBJETIVO MENSUAL"
@@ -78,32 +75,46 @@
                             v-model="infoProgress[progress_month].question7"
                             label="MESES DEL ENTRENAMIENTO"
                         ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6" sm="12" class="px-4">
                         <v-row>
                             <v-col cols="6">
                                 <span style="font-size: 0.9em;">FOTO FRONTAL</span>
                                 <v-btn 
+                                    @click="bodyPictureDialog = true; file_flag = 0"
                                     color="pink lighten-5 text-center"
                                     class="widt:100%"
                                     depressed
                                     dark
                                     large
-                                    block
-                                >
+                                    block>
                                     <v-icon x-large >mdi-cloud-upload-outline</v-icon>
                                 </v-btn>
+                                <br>
+                                <v-img v-if="infoProgress[progress_month].frontal_file"
+                                    :src="base_url + infoProgress[progress_month].frontal_file"
+                                    contain
+                                    max-height="400"
+                                />
                             </v-col>
                             <v-col cols="6">
-                                <span style="font-size: 0.9em;">FOTO DE COSTADO</span>
-                                <v-btn 
+                                <span style="font-size: 0.9em;">FOTO LATERAL</span>
+                                <v-btn
+                                    @click="bodyPictureDialog = true; file_flag = 1"
                                     color="pink lighten-5 text-center"
                                     class="widt:100%"
                                     depressed
                                     dark
                                     large
-                                    block
-                                >
+                                    block>
                                     <v-icon x-large >mdi-cloud-upload-outline</v-icon>
                                 </v-btn>
+                                <br>
+                                <v-img v-if="infoProgress[progress_month].lateral_file"
+                                    :src="base_url + infoProgress[progress_month].lateral_file"
+                                    contain
+                                    max-height="400"
+                                />
                             </v-col>
                         </v-row>
                     </v-col>
@@ -114,6 +125,47 @@
                 </v-card-actions>
             </v-card>
         </v-form>
+
+        <!-- Body Picture Dialog -->
+        <v-dialog v-model="bodyPictureDialog" max-width="40%">
+            <v-card>
+                <v-card-title>
+                    <span class="headline" v-if="file_flag == 0">Subir Foto Frontal</span>
+                    <span class="headline" v-if="file_flag == 1">Subir Foto Lateral</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-row>
+                        <v-col>
+                            <v-file-input label="Subir Imagen (máx 200kb)" v-if="file_flag == 0"
+                                accept="image/*"
+                                ref="frontal_file"
+                                @change="onFileChange"
+                                :rules="rules.file_size_200kb"
+                            ></v-file-input>
+                            <v-file-input label="Subir Imagen (máx 200kb)" v-if="file_flag == 1"
+                                accept="image/*"
+                                ref="lateral_file"
+                                @change="onFileChange"
+                                :rules="rules.file_size_200kb"
+                            ></v-file-input>
+                            <v-img :src="img_url"
+                                contain
+                                max-height="300"
+                                max-width="600"
+                            />
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+                <br>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="bodyPictureDialog = false">Cancelar</v-btn>
+                    <v-btn color="primary" @click="uploadBodyPicture()">Guardar</v-btn>
+                    <v-spacer></v-spacer>
+                </v-card-actions> 
+            </v-card>
+        </v-dialog>
+        <!-- Fin -->
     </div>
 </template>
 <script>
@@ -152,9 +204,24 @@ export default {
             {id: 10, name:'Noviembre'},
             {id: 11, name:'Diciembre'},
         ],
+
+        bodyPictureDialog: false,
+        file_flag: 0,
+        img_url: null,
+        img_file: null,
+
+
+        //--- Form Rules ---
+        rules: {
+            file_size_200kb: [
+                value => !value || value.size < 200000 || 'El archivo debe pesar menos de 200 kb!',
+            ],
+        },
+        //--- End ---
     }),
     created(){
         this.configProgressInfo();
+        this.img_url = this.base_url+"/images/default-profile-picture.png";
     },
     methods: {
         configProgressInfo(){
@@ -168,6 +235,7 @@ export default {
 
                 this.progressForm.info_progress = JSON.stringify(this.infoProgress);
                 const response = await this.$API.business_partner.updateProgressInfo(this.business_partner.id, this.progressForm);
+                this.$router.go();
 
             } catch (e) {
                 // UTILS.toastr.error("Ups! Ocurrió un error", this);
@@ -177,7 +245,65 @@ export default {
                 this.$store.commit('loader', false);
             }
         },
+
+        //--- Upload Pictures Functions ---
+        onFileChange(file) {
+            if (!file) {
+                this.img_file = null;
+                this.img_url = this.base_url+"/images/default-profile-picture.png";
+
+                return;
+            }
+
+            this.img_file = this.file_flag != 1 ? this.$refs.frontal_file.lazyValue : this.$refs.lateral_file.lazyValue;
+            this.img_url = URL.createObjectURL(this.img_file);
+        },
+        async uploadBodyPicture() {
+            try {
+                this.$store.commit('loader', true);
+
+                let formData = new FormData();
+                formData.append('id', this.business_partner.id);
+                formData.append('file', this.img_file);
+                const response = await this.$API.business_partner.uploadBodyPicture(formData);
+                var file_entry = response.data.data;
+                console.log(file_entry);
+                if(this.file_flag != 1){
+                    this.infoProgress[this.progress_month].id_frontal_file = file_entry.id;
+                    this.infoProgress[this.progress_month].frontal_file    = file_entry.path + file_entry.filename;
+                } else {
+                    this.infoProgress[this.progress_month].id_lateral_file = file_entry.id;
+                    this.infoProgress[this.progress_month].lateral_file    = file_entry.path + file_entry.filename;
+                }
+                this.updateProgressInfo();
+
+            } catch (e) {
+                // UTILS.toastr.error("Ups! Ocurrió un error", this);
+                console.error(e);
+
+            } finally {
+                this.$store.commit('loader', false);
+            }
+
+        },
+        //--- End ---
     },
+    watch:{
+        bodyPictureDialog(){
+            if(!this.bodyPictureDialog){
+                // console.log('Dialog is closing');
+                this.img_file = null;
+                if(this.$refs.frontal_file){
+                    this.$refs.frontal_file.lazyValue = null;
+                }
+                if(this.$refs.lateral_file){
+                    this.$refs.lateral_file.lazyValue = null;
+                }
+                
+                this.img_url = this.base_url+"/images/default-profile-picture.png";
+            }
+        },
+    }
 }
 </script>
 <style>

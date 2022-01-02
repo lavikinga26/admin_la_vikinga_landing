@@ -511,6 +511,7 @@ export default {
             },
             couponDisabled:false,
             card_data: [],
+            actions: {}
         }
     },
     computed: {
@@ -665,16 +666,27 @@ export default {
         },
         
         async createOrder(){
-            this.$store.commit('loader',true);
+            let vm = this;
+            vm.$store.commit('loader',true);
             try{
-                this.order.discount = this.discount
-                this.order.total = this.total
-                this.order.subtotal = this.subtotal;
-                this.order.detail = this.cart;
-                const data = await this.$API.order.register(this.order);
-                this.openToastAlert(true, 'Orden creada correctamente', 'primary');
-                this.$store.commit('loader',false);
-                this.$router.push({ path: '/auth/iniciar-sesion' });
+                vm.order.discount = vm.discount
+                vm.order.total = vm.total
+                vm.order.subtotal = vm.subtotal;
+                vm.order.detail = vm.cart;
+                const data = await vm.$API.order.register(vm.order);
+                vm.openToastAlert(true, 'Orden creada correctamente', 'primary');
+                vm.actions = data.data.data.actions
+                if((vm.actions.payment_status=='pending') && (vm.actions.payment_external == false))
+                {
+                    vm.$store.dispatch("cleanCart");
+                    this.$router.push({ path: '/confirmar-pago/'+vm.actions.hash });
+                }
+                if((vm.actions.payment_status=='pending') && (vm.actions.payment_external == true))
+                {
+                    // ABRIR FORMULARIO PAY-ME
+                }
+                
+                vm.$store.commit('loader',false);
             }
             catch(e){
                 this.$store.commit('loader',false);
