@@ -98,7 +98,6 @@ export default {
                 try {
                     this.loginForm.token_name = "LaVikinga2021";
                     const response = await this.$API.user.login(this.loginForm);
-                    console.log(response)
                     const user = response.data.data.user;
                     const token = response.data.data.token;
 
@@ -113,7 +112,7 @@ export default {
                     //this.$router.go();
                 } catch (e) {
                     this.$store.commit('loader',false);
-                    console.log(e);
+                    console.error(e);
                 }
             }
         },
