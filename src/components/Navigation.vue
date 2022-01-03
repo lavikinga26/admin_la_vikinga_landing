@@ -173,10 +173,8 @@ export default {
 
 
         LogoutSession(){
-            // axios.post('/logout').then(response => {
-            //     this.clearStorage();
-            //     window.location.href = "login";
-            // });
+            window.localStorage.clear();
+            this.$router.go();
         },
     },
 

@@ -92,10 +92,6 @@ export default {
                 this.logged_user_token = localStorage.getItem('token');
             }
         },
-        signOut(){
-            window.localStorage.clear();
-            this.$router.go();
-        },
         async loginUser(){
             if(this.$refs.loginForm.validate()){
                 this.$store.commit('loader',true);

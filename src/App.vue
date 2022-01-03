@@ -12,23 +12,23 @@
         </div>
 
         <navigation :color="'white'" :flat="flat" />
-        <v-main class="mt-2">
-            <router-view  :key="$route.path" /> 
-            <v-scale-transition> 
-                <v-btn
-                    fab
-                    v-show="fab"
-                    v-scroll="onScroll"
-                    dark
-                    fixed
-                    bottom
-                    right
-                    color="secondary"
-                    @click="toTop">
-                    <v-icon>mdi-arrow-up</v-icon>
-                </v-btn>
-            </v-scale-transition>
-        </v-main>
+            <v-main class="mt-2">
+                <router-view  :key="$route.path" /> 
+                <v-scale-transition> 
+                    <v-btn
+                        fab
+                        v-show="fab"
+                        v-scroll="onScroll"
+                        dark
+                        fixed
+                        bottom
+                        right
+                        color="secondary"
+                        @click="toTop">
+                        <v-icon>mdi-arrow-up</v-icon>
+                    </v-btn>
+                </v-scale-transition>
+            </v-main>
         <foote />
         <loader></loader>
     </v-app>
@@ -59,7 +59,7 @@ export default {
         logged_user_token: null,
         userdrop_items: [
             { title: 'Mi Perfil', action: action => {e.myProfile() }  },
-            { title: 'Salir', action: action => {e.signOut() } },
+            { title: 'Salir', action: action => {e.LogoutSession() } },
         ],
 
         loginUserDialog: false,
@@ -115,7 +115,7 @@ export default {
         myProfile(){
             console.log("myProfile called!");
         },
-        signOut(){
+        LogoutSession(){
             window.localStorage.clear();
             this.$router.go();
         },
