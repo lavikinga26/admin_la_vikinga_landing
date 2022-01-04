@@ -35,9 +35,12 @@ export default {
         },
         privacyPolicy(){
             return callAPI('get', 'api/v1/privacy-policy');
-        }
+        },
         
-
+        
+        getCountriesList(){
+            return callAPI('get', 'api/v1/configuration/get-countries-list');
+        },
     },
 
     user:{
