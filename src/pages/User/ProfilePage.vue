@@ -85,14 +85,17 @@ export default {
             } 
         },
         async getPartnerData(id){
+            this.$store.commit('loader',true);
             try{
                 const response = await this.$API.business_partner.getPartner(id);
                 this.business_partner = Object.assign(response.data.data[0]);
 
-            }
-            catch(e){
+            } catch(e){
                 console.error(e);
-            } 
+
+            } finally{
+                this.$store.commit('loader',false);
+            }
         },
         getLoggedUser(){
             if(localStorage.getItem('token')){

@@ -65,6 +65,10 @@ export const routes = [{
     name: 'payment',
     component: () => import(/* webpackChunkName: "blank" */ '../pages/Shop/PaymentPage.vue'),
 },  {
+    path: '/pago-payme/:hash',
+    name: 'payme',
+    component: () => import(/* webpackChunkName: "blank" */ '../pages/Shop/PaymePage.vue'),
+},  {
     path: '/terminos-condiciones',
     name: 'terminsconditions',
     component: () => import(/* webpackChunkName: "blank" */ '../pages/TermsConditions/TermsConditionsPage.vue'),
@@ -80,6 +84,10 @@ export const routes = [{
     path: '/testimonios',
     name: 'testimonios',
     component: () => import(/* webpackChunkName: "blank" */ '../pages/Testimonial/TestimonialPage.vue'),
+}, {
+    path: '/blog',
+    name: 'blog',
+    component: () => import(/* webpackChunkName: "blank" */ '../pages/Blog/BlogPage.vue'),
 }, 
 
 ...UserRoutes,

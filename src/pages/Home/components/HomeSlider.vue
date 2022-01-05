@@ -9,7 +9,7 @@
                 v-for="(item,i) in banners"
                 :key="i"  
                 :src="base_url + item.file_path.path + item.file_path.filename"
-                gradient="to bottom, rgba(0,0,0,.3), rgba(0,0,0,.5)"
+                gradient="to bottom, rgba(0,0,0,.5), rgba(0,0,0,.7)"
             >
                 <v-container
                     fill-height
@@ -19,9 +19,9 @@
                     <v-layout fill-height align-center pb-4 mb-4>
                         <v-flex xs12>
                             <v-row align="center">
-                                <v-col cols="12" md="5" xl="8">
-                                <h2 v-show="item.title != null && item.title != '' " class="display-2 font-weight-bold mb-4 white--text" style="font-family: 'MachProCondBold'!important;"> {{ item.title }}</h2>
-                                <h3 v-show="item.subtitle != null && item.subtitle != '' " class="font-weight-light white--text">
+                                <v-col cols="12" md="12" xl="12" align="center">
+                                <h2 v-show="item.title != null && item.title != '' " class="display-2 font-weight-bold mb-4 white--text" style="font-family: 'MachProCondBold'!important; font-size: 4.5rem !important;"> {{ item.title }}</h2>
+                                <h3 v-show="item.subtitle != null && item.subtitle != '' " class="font-weight-light white--text" style="font-size: 2rem !important;">
                                    {{item.subtitle}}
                                 </h3>
                                 <v-btn

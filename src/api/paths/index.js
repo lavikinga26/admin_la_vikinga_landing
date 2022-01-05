@@ -52,6 +52,10 @@ export default {
         getPartner(id){
             return callAPI('get', 'api/v1/business-partner/get-partner/'+id);
         },
+        getWorkoutList(){
+            return callAPI('get', 'api/v1/business-partner/get-workout-list');
+        },
+
         updateProfileInfo(id, data){
             return callAPI('post', 'api/v1/business-partner/update-profile-info/'+id, {data: data});
         },
@@ -124,6 +128,9 @@ export default {
         payment(id){
             return callAPI('get', 'api/v1/order/payment/'+id );
             
+        },
+        getAllOrderInfo(id){
+            return callAPI('get', 'api/v1/order/getAllOrderInfo/'+id );
         }
     },
 
@@ -150,6 +157,24 @@ export default {
     testimonials:{
         get(){
             return callAPI('get','api/v1/testimonials');
+        }
+    },
+    blog:{
+        getCategories(){
+            return callAPI('get','api/v1/blog/categories');
+        },
+        getLastPost(){
+            return callAPI('get','api/v1/blog/last');
+        },
+        getLastPosts(){
+            return callAPI('get','api/v1/blog/lasts');
+        },
+        getPostsByCategory(id,page){
+            return callAPI('get','api/v1/blog/category/posts?page='+page+'&id='+id);
+            
+        },
+        searchPosts(page,data){
+            return callAPI('get','api/v1/blog/search?page='+page,{data:data});
         }
     },
 }

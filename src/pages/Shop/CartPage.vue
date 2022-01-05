@@ -25,7 +25,7 @@
                                                 width="150"
                                                 contain
                                                 class="rounded mr-4"
-                                                :src="'http://admin-lavikinga.bytesoluciones.test/storage/uploads/plan_files/10292021191704617c48b0573bf.jpg'"
+                                                :src="item.image"
                                             ></v-img>
                                         </div>
                                         <div class="flex-grow-1" style="max-width: 30%; min-width: 30%; font-size: 0.9rem;">
@@ -78,6 +78,7 @@
                                     x-large
                                     block
                                     class="widt:100%"
+                                    href="#pago"
                                 >
                                     Finalizar Compra
                                 </v-btn>
@@ -383,13 +384,13 @@
                                                 <tr
                                                 v-for="(item, index) in cart" :key="'tb_'+index"
                                                 >
-                                                    <td class="pl-0 pr-2">
+                                                    <td class="pl-0 pr-0">
                                                         <v-img
                                                             width="100"
                                                             height="80"
                                                             cover
-                                                            class="rounded mr-4"
-                                                            :src="'http://admin-lavikinga.bytesoluciones.test/storage/uploads/plan_files/10292021191704617c48b0573bf.jpg'"
+                                                            class="rounded mr-0"
+                                                            :src="item.image"
                                                         ></v-img>
                                                     </td>
                                                     <td class="pl-0 pr-2">{{ item.title }}</td>
@@ -683,7 +684,8 @@ export default {
                 }
                 if((vm.actions.payment_status=='pending') && (vm.actions.payment_external == true))
                 {
-                    // ABRIR FORMULARIO PAY-ME
+                    //Enviamos a payme
+                    this.$router.push({ path: '/pago-payme/'+vm.actions.hash });
                 }
                 
                 vm.$store.commit('loader',false);
@@ -750,29 +752,3 @@ export default {
     }
 }
 </script>
-
-<style>
-.flex-capture .field > input{
-    outline:none;
-    margin-left: 2em;
-    border-bottom: 1px solid #626262;
-}
-
-.flex-capture .field > input:focus{
-    outline: none;
-    margin-left: 2em;
-    border-bottom: 1px solid #e30e4f;
-}
-
-.flex-capture .field{
-    margin-top: .5em;
-}
-
-.flex-capture .submit > button{
-    background: #e30e4f;
-    padding: 10px;
-    color: #fff;
-    border-radius: 8px;
-    margin-top: 1em;
-}
-</style>
