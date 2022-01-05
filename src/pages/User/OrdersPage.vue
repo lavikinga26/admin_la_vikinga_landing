@@ -1,58 +1,30 @@
 <template>
-    <div style="min-height: 70vh;">
-        <v-card height="70vh">
-            <v-navigation-drawer
-            absolute
-            permanent
-            left
-            class="primary"
-            dark
-            >
-                <div class="ma-5" style="text-align: center;">
-                        <v-avatar
-                            color="orange"
-                            size="62"
-                            class="mb-5"
-                            >
-                        <span class="white--text text-h5">{{user.name.substring(0,1)}}</span>
-                        </v-avatar>
-                        <h4 class="white--text">
-                            {{user.name}} {{user.lastname}}
-                        </h4>
-                </div>
-
-                <v-divider></v-divider>
-
-                <v-list dense>
-                    <v-list-item
-                    v-for="item in items"
-                    :key="item.title"
-                    >
-                    <v-list-item-icon>
-                        <v-icon>{{ item.icon }}</v-icon>
-                    </v-list-item-icon>
-
-                    <v-list-item-content>
-                        <v-list-item-title>{{ item.title }}</v-list-item-title>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-list>
-            </v-navigation-drawer>
-            <v-container class="fill-height">
-                <v-row
-                    align="center"
-                    justify="center"
-                >
-                    <v-btn
-                    color="pink"
-                    dark
-                    @click.stop="drawer = !drawer"
-                    >
-                    Toggle
-                    </v-btn>
-                </v-row>
-            </v-container>
-        </v-card>
+    <div class="bg_blue">
+        <v-container>
+            <div class="col-md-12">
+                <p class="tit_h1_pink text_entrena">MI CUENTA</p>
+            </div>
+            <v-tabs v-model="userProfileTabs" :show-arrows="false" color="#E30E4F" background-color="transparent" dark>
+                <v-tab to="#mi-cuenta">MI CUENTA</v-tab>
+                <v-tab to="#mis-ordenes">MIS ORDENES</v-tab>
+            </v-tabs>
+            <v-tabs-items v-model="userProfileTabs" id="custom-tab-items">
+                <v-tab-item value="mi-cuenta">
+                    <div class="my-5">
+                        <v-card class="my-10 rounded-xl pa-10">
+                        INFO CUENTA
+                        </v-card>
+                    </div>
+                </v-tab-item>
+                <v-tab-item value="mis-ordenes">
+                    <div class="my-5">
+                        <v-card class="my-10 rounded-xl pa-10">
+                        INFO ORDENES
+                        </v-card>
+                    </div>
+                </v-tab-item>
+            </v-tabs-items>
+        </v-container>
     </div>
 </template>
 
@@ -60,12 +32,7 @@
   export default {
     data () {
       return {
-        items: [
-          { title: 'Mi Cuenta', icon: 'mdi-account-outline' },
-          { title: 'Mis Órdenes', icon: 'mdi-package-variant' },
-          { title: 'Mi Contraseña', icon: 'mdi-key-chain-variant' },
-         
-        ],
+        userProfileTabs: 0,
         user:{}
       }
     },

@@ -15,27 +15,50 @@
         </div>
 
         <div class="container-fluid">
-            <v-row style="background-color: #0b152a" class="px-1 main-post">
+            <!-- <v-row style="background-color: #0b152a" class="px-1 main-post">-->
+            <v-row class="px-1 main-post">
                 <v-col cols="12" md="6" sm="12" class="d-flex align-center justify-center">
-                    <div class="text-center">
-                        <p class="tit_h1_pink text_entrena pt-4">
+                    <div class="text-center main-content">
+                        <!-- <p class="tit_h1_pink text_entrena pt-4">
+                            {{last.title}}
+                        </p> -->
+                        <p class="tit_h2_pink text_entrena">
                             {{last.title}}
                         </p>
-                        <v-btn
-                        rounded
-                        outlined
-                        large
-                        dark
-                        link
-                        class="mt-5"
-                        @click.stop="openDialog(last)"
-                        >
-                        Ver más
-                        </v-btn>
+                        <!-- <h4 style="color: #E30E4F; font-weight:100; text-align:center">
+                            {{`Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                            sed do eiusmod tempor incididunt ut labore et dolore magna
+                            aliqua. Ut enim ad minim veniam, q` | uppercase}}
+                        </h4> -->
+                        <h4>
+                            {{last.summary | uppercase}}
+                        </h4>
+                        <!--
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                            sed do eiusmod tempor incididunt ut labore et dolore magna
+                            aliqua. Ut enim ad minim veniam, q
+                        </p>-->
+                        <div>
+                            <router-link :to=" '/post/' + last.slug" style="text-decoration: none">
+                                <v-btn
+                                rounded
+                                large
+                                dark
+                                link
+                                color="primary"
+                                class="mt-5"
+                                @click.stop="openDialog(last)"
+                                >
+                                Ver más
+                                </v-btn>
+                            </router-link>
+                        </div>
+                    
                     </div>
                 </v-col>
                 <v-col cols="12" md="6" sm="12">
-                    <div v-if="img != null"  class="no-photo fill" :style="{ backgroundImage: 'url(' + img + ')' }"></div>
+                    <div v-if="img != null"  class="fill main-image" :style="{ backgroundImage: 'url(' + img + ')' }"></div>
                     <div v-else class="no-photo fill" ></div>
                 </v-col>
             </v-row>
@@ -103,6 +126,40 @@
                 >
                     <h3>{{ postTitle }}</h3>
                     <div class="gallery pt-2">
+                        <div v-for="(post,i) in posts" :key="i" class="card-posts">
+                            <div class="card-image fill" :style="{ backgroundImage: 'url('+base_url+post.image.path+post.image.filename + ')' }">
+                                <!-- image -->
+                            </div>
+                            <div class="card-content">
+                                <!-- contenido -->
+                                <p class="tit_h3_team_pink" style="color: #E30E4F; font-weight:100; text-align:center">
+                                    {{post.title}}
+                                </p>
+                                <p class="text-center" style="font-size:12px;">
+                                    {{post.summary}}
+                                </p>
+                                <div class="card-details">
+                                    <v-chip
+                                    color="secondary"
+                                    >
+                                        {{post.category.description}}
+                                    </v-chip>
+                                    <router-link :to=" '/post/' + post.slug" style="text-decoration: none">
+                                        <v-btn
+                                        rounded
+                                        x-small
+                                        large
+                                        dark
+                                        link
+                                        color="secondary"
+                                        >
+                                            Ver más
+                                        </v-btn>
+                                    </router-link>
+                                </div>
+                            </div>
+                        </div>
+                        <!--
                         <v-card v-for="(post,i) in posts" :key="i" class="py-1">
                             <v-row>
                                 <v-col
@@ -144,7 +201,7 @@
                                     Leer más
                                 </v-btn>
                             </v-card-actions>
-                        </v-card>
+                        </v-card>-->
                     </div>
                 </v-col>
                 <v-col>
@@ -333,7 +390,58 @@ export default {
     .gallery{
         display: grid;
         gap: 1rem;
-        grid-auto-rows: 15rem;
-        grid-template-columns: repeat(auto-fill,minmax(22rem, 1fr));
+        grid-auto-rows: 25rem;
+        grid-template-columns: repeat(auto-fill,minmax(20rem, 1fr));
+    }
+    .card-posts{
+        background-color: #0b152a;
+        color:white;
+        border-radius: 10px;
+    }
+    .main-image{
+
+    }
+    .main-content{
+
+    }
+    .card-image{
+        height: 40%;
+        background-color: turquoise;
+        -webkit-border-top-left-radius: 10px;
+        -webkit-border-top-right-radius: 10px;
+        -moz-border-radius-topleft: 10px;
+        -moz-border-radius-topright: 10px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+    .card-details{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .card-content{
+        height: 60%;
+        padding: 5px 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+    @media (max-width: 960px){
+        .main-image{
+            min-height: 450px;
+        }
+        .main-content{
+            min-height: 450px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    }
+    @media (max-width: 925px){
+        .gallery{
+            grid-template-columns: 100%;
+            padding-right: 50px;
+            padding-left: 50px;
+        }
     }
 </style>

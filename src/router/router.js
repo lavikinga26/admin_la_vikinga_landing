@@ -81,13 +81,17 @@ export const routes = [{
     name: 'preguntasfrecuentes',
     component: () => import(/* webpackChunkName: "blank" */ '../pages/FrequentQuestions/FrequentQuestionsPage.vue'),
 }, {
-    path: '/testimonios',
+    path: '/experiencia',
     name: 'testimonios',
     component: () => import(/* webpackChunkName: "blank" */ '../pages/Testimonial/TestimonialPage.vue'),
 }, {
     path: '/blog',
     name: 'blog',
     component: () => import(/* webpackChunkName: "blank" */ '../pages/Blog/BlogPage.vue'),
+}, {
+    path: '/post/:slug',
+    name: 'slug',
+    component: () => import(/* webpackChunkName: "blank" */ '../pages/Blog/PostPage.vue'),
 }, 
 
 ...UserRoutes,

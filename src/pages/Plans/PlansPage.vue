@@ -79,19 +79,23 @@
                         <v-card
                         :elevation="hover ? 16 : 2"
                         :class="{ 'on-hover': hover }"
-                        max-width="250"
+                        max-width="350"
                         
                         >
                             <v-img
                                 lazy-src="https://picsum.photos/id/11/10/6"
-                                max-height="400"
-                                max-width="250"
+                                max-height="600"
+                                max-width="350"
                                 class="rounded plan white--text align-end"
                                 :src="base_url + plan.file_path.path + plan.file_path.filename"
                                 @click="goToPlan(plan.identifier)"
                                 gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                             >
-                            <v-card-title v-text="plan.title"></v-card-title>
+                            <v-card-title>
+                                <div style="border-left: 4px solid #E30E4F; text-align: left; word-break: keep-all;" class="pl-1">
+                                    {{plan.title}}
+                                </div>
+                            </v-card-title>
                             </v-img>
                         </v-card>
                     </v-hover>

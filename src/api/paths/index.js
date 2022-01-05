@@ -35,9 +35,12 @@ export default {
         },
         privacyPolicy(){
             return callAPI('get', 'api/v1/privacy-policy');
-        }
+        },
         
-
+        
+        getCountriesList(){
+            return callAPI('get', 'api/v1/configuration/get-countries-list');
+        },
     },
 
     user:{
@@ -175,6 +178,9 @@ export default {
         },
         searchPosts(page,data){
             return callAPI('get','api/v1/blog/search?page='+page,{data:data});
+        },
+        getBySlug(slug){
+            return callAPI('get','api/v1/blog/slug/' + slug);
         }
     },
 }
