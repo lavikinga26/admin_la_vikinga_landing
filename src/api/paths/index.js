@@ -131,6 +131,9 @@ export default {
         payment(id){
             return callAPI('get', 'api/v1/order/payment/'+id );
             
+        },
+        getAllOrderInfo(id){
+            return callAPI('get', 'api/v1/order/getAllOrderInfo/'+id );
         }
     },
 
@@ -147,6 +150,11 @@ export default {
     informative:{
         get(){
             return callAPI('get','api/v1/informative');
+        }
+    },
+    payme:{
+        saveToken(data){
+            return callAPI('post', 'api/v1/payme/saveToken', { data: data });
         }
     },
     testimonials:{

@@ -438,6 +438,33 @@ body{
     -webkit-filter: grayscale(0);
 }
 
+.flex-capture .field > input{
+    outline:none;
+    margin-left: 2em;
+    border-bottom: 1px solid #626262;
+}
+
+.flex-capture .field > input:focus{
+    outline: none;
+    margin-left: 2em;
+    border-bottom: 1px solid #e30e4f;
+}
+
+.flex-capture .field{
+    margin-top: .5em;
+}
+
+.flex-capture .submit > button{
+    background: #e30e4f;
+    padding: 10px;
+    color: #fff;
+    border-radius: 8px;
+    margin-top: 1em;
+}
+
+.flex-capture form > pre{
+    display: none!important;
+}
 
 .input_txtnumber input[type='number'] {
     -moz-appearance:textfield;

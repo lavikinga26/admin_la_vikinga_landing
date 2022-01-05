@@ -83,7 +83,16 @@
                                     Finalizar Compra
                                 </v-btn>
                             </v-col>
+                            
                         </v-row>
+                        <v-card class="ma-3 pa-3">
+                                                    <div class="d-flex align-center">
+                                                        <v-btn @click="abrirPayme()">Abrir Payme</v-btn>
+                                                    </div>
+
+                                                    <div id="demo" class="d-flex">
+                                                    </div>
+                                                </v-card>
                     </v-tab-item>
 
                     <v-tab-item value="pago" class="pa-4">
@@ -358,14 +367,7 @@
                                                 </template>
                                                 </v-radio-group>
 
-                                                <v-card class="ma-3 pa-3">
-                                                    <div class="d-flex align-center">
-                                                        <v-btn @click="abrirPayme()">Abrir Payme</v-btn>
-                                                    </div>
-
-                                                    <div id="demo" class="d-flex">
-                                                    </div>
-                                                </v-card>
+                                                
                                             </v-col>
                                         </v-row>
                                         <!--end form invoice-->
@@ -516,6 +518,8 @@ export default {
 
             logged_user: null,
             logged_affiliate: null,
+            card_data: [],
+            actions: {}
         }
     },
     computed: {
@@ -543,6 +547,7 @@ export default {
     mounted(){
         this.getCountriesList();
         this.getTypeDocument();
+        //this.reqCallback("asd");
 
         this.list();
         this.getLoggedUser();
@@ -692,7 +697,8 @@ export default {
                 }
                 if((vm.actions.payment_status=='pending') && (vm.actions.payment_external == true))
                 {
-                    // ABRIR FORMULARIO PAY-ME
+                    //Enviamos a payme
+                    this.$router.push({ path: '/pago-payme/'+vm.actions.hash });
                 }
                 
                 vm.$store.commit('loader',false);
@@ -711,58 +717,25 @@ export default {
             }
         },
 
-        reqCallback(response) {
-            // console.log("vueeeee");
-            // console.log(response);
+        async reqCallback(response) {
+            try{
+                this.card_data = response;
+                console.log(this.card_data);
+                const data = await this.$API.payme.saveToken(this.card_data);
+            }catch(e){
+                //this.$store.commit('loader',false);
+                console.error(e);
+            } 
         },
 
         abrirPayme(){
-            var payRequest = {
-                "action": "authorize",
-                "transaction": {
-                    "currency": "604",
-                    "amount": "100000",
+            var tokenRequest = {
+                    "action": "tokenize",
+                    "transaction": {
                     "meta": {
                         "internal_operation_number": Math.floor(Date.now()).toString().substring(7),
-                        "description": "Descripcion de la transaccion",
                         "additional_fields": {
-                            "reserverd1": "Prueba valor reservado 1"
-                        }
-                    }
-                },
-                "address": {
-                    "billing": {
-                        "first_name": "Juan",
-                        "last_name": "Perez",
-                        "email": "jperez@gmail.com",
-                        "phone": {
-                            "country_code": "51",
-                            "subscriber": "987654321"
-                        },
-                        "location": {
-                            "line_1": "Mi casa",
-                            "line_2": "Mi casa",
-                            "city": "LIMA",
-                            "state": "LIMA",
-                            "country": "PE",
-                            "zip_code": "18"
-                        }
-                    },
-                    "shipping": {
-                        "first_name": "Juan",
-                        "last_name": "Perez",
-                        "email": "jperez@gmail.com",
-                        "phone": {
-                            "country_code": "51",
-                            "subscriber": "987654321"
-                        },
-                        "location": {
-                            "line_1": "Mi casa",
-                            "line_2": "Mi casa",
-                            "city": "LIMA",
-                            "state": "LIMA",
-                            "country": "PE",
-                            "zip_code": "18"
+                            "user_id": "USER_0001"
                         }
                     }
                 },
@@ -770,19 +743,20 @@ export default {
                     {
                         "first_name": "Juan",
                         "last_name": "Perez",
-                        "email_address": "jperez@gmail.com",
-                        "identity_document_country": "PE",
+                        "email_address": "prueba@token.com",
+                        "identity_document_country": "PER",
                         "identity_document_type": "DNI",
                         "identity_document_identifier": "87654321"
                     }
                 ]
             };
+        
 
             var token_key = "meQQw27S6i661bE6TnWWaYDmdwNQdJWNwe0HtD5HrL5H0hXTPdqWQjTTLAoTZKmX";
 
             var capture = new FlexCapture({
                 "key": token_key,
-                "payload": payRequest,
+                "payload": tokenRequest,
                 "additionalFields": []
             });
 
@@ -791,29 +765,3 @@ export default {
     }
 }
 </script>
-
-<style>
-.flex-capture .field > input{
-    outline:none;
-    margin-left: 2em;
-    border-bottom: 1px solid #626262;
-}
-
-.flex-capture .field > input:focus{
-    outline: none;
-    margin-left: 2em;
-    border-bottom: 1px solid #e30e4f;
-}
-
-.flex-capture .field{
-    margin-top: .5em;
-}
-
-.flex-capture .submit > button{
-    background: #e30e4f;
-    padding: 10px;
-    color: #fff;
-    border-radius: 8px;
-    margin-top: 1em;
-}
-</style>
