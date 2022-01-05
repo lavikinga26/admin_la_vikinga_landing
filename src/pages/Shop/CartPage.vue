@@ -153,15 +153,14 @@
                                                 md="12"
                                                 class="pa-0 px-1"
                                             >
-                                                <v-select
-                                                    :items="countries"
-                                                    label="País"
+
+                                                <v-autocomplete v-model="order.id_country" label="País"
+                                                    :items="countries_list"
+                                                    item-text="nombre"
+                                                    item-value="id"
                                                     :rules="rules"
                                                     outlined
-                                                    v-model="order.country"
-                                                    item-text="country"
-                                                    item-value="country"
-                                                ></v-select>
+                                                ></v-autocomplete>
                                             </v-col>
                                             <v-col
                                                 cols="12"
@@ -488,7 +487,7 @@ export default {
             cart: [],
             coupon: null,
             order:{
-                country: 'Peru',
+                id_country: null,
                 password:'',
                 confirmPassword:'',
                 had_invoice: false,
@@ -496,7 +495,7 @@ export default {
             rules: [
                 v => !!v || 'Campo obligatorio',
             ],
-            countries:[],
+            countries_list:[],
             documents:[],
             paymentMethods:[],
 
@@ -538,7 +537,7 @@ export default {
     mounted(){
         this.list();
         this.getUser();
-        this.getCountry();
+        this.getCountriesList();
         this.getTypeDocument();
 
         /** Importamos Pay-me */
@@ -606,17 +605,18 @@ export default {
                 } 
             }
         },
-        async getCountry(){
-            this.$store.commit('loader',true);
-            try{
-                const data = await axios.get('https://countriesnow.space/api/v0.1/countries/');
-                this.countries = data.data.data;
-                this.$store.commit('loader',false);
-            }
-            catch(e){
-                this.$store.commit('loader',false);
+        async getCountriesList(){
+            this.$store.commit('loader', true);
+            try {
+                const response = await this.$API.configuration.getCountriesList();
+                this.countries_list = response.data.data;
+
+            } catch (e) {
                 console.error(e);
-            } 
+
+            } finally {
+                this.$store.commit('loader', false);
+            }
         },
         async getTypeDocument(type = 2){
             this.$store.commit('loader',true);
