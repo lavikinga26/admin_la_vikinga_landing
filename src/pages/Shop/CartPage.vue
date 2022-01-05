@@ -154,11 +154,13 @@
                                                 class="pa-0 px-1"
                                             >
 
-                                                <v-autocomplete v-model="order.id_country" label="País"
+                                                <v-autocomplete v-model="order.country" label="País"
                                                     :items="countries_list"
                                                     item-text="nombre"
                                                     item-value="id"
                                                     :rules="rules"
+                                                    return-object
+
                                                     outlined
                                                 ></v-autocomplete>
                                             </v-col>
@@ -316,7 +318,7 @@
                                                     <v-card-subtitle v-if="!order.had_invoice">
                                                         <div>{{order.name+' '+order.lastname}}</div>
                                                         <div>{{order.email}}</div>
-                                                        <div>{{order.address+', '+order.city+', '+order.country}}</div>
+                                                        <div v-if="order.country">{{order.address+', '+order.city+', '+order.country.nombre}}</div>
                                                     </v-card-subtitle>
                                                     <v-card-subtitle v-else>
                                                         <div>{{order.inv_business_name}}</div>
@@ -487,7 +489,7 @@ export default {
             cart: [],
             coupon: null,
             order:{
-                id_country: null,
+                country: null,
                 password:'',
                 confirmPassword:'',
                 had_invoice: false,
@@ -509,7 +511,11 @@ export default {
             },
             couponDisabled:false,
 
-            actions: {}
+            actions: {},
+
+
+            logged_user: null,
+            logged_affiliate: null,
         }
     },
     computed: {
@@ -535,10 +541,11 @@ export default {
         },
     },
     mounted(){
-        this.list();
-        this.getUser();
         this.getCountriesList();
         this.getTypeDocument();
+
+        this.list();
+        this.getLoggedUser();
 
         /** Importamos Pay-me */
         let paymeScript = document.createElement('script')
@@ -583,26 +590,30 @@ export default {
         },
         list(){
             this.cart = this.$store.getters.StoreCart;
-            console.log(this.cart );
+            // console.log(this.cart );
         },
         removeItem(index){
             this.$store.dispatch("removeItem", index);
         },
-        async getUser(){
-            if(this.$store.getters.isLoggedIn){
-                this.$store.commit('loader',true);
-                try{
-                    const data = await this.$API.auth.auth();
-                    this.order = Object.assign({}, data.data);
-                    this.order.had_invoice = false;
-                    this.order = JSON.parse(JSON.stringify(this.order));
-                    console.log(this.order)
-                    this.$store.commit('loader',false);
-                }
-                catch(e){
-                    this.$store.commit('loader',false);
-                    console.error(e);
-                } 
+        async getLoggedUser(){
+            if(localStorage.getItem('token')){
+                this.logged_user = JSON.parse(localStorage.getItem('user_data'));
+
+                const response = await this.$API.business_partner.getPartner(this.logged_user.id);
+                this.logged_affiliate = response.data.data[0];
+                
+                this.order.bd_id     = this.logged_affiliate.id;
+                this.order.id_document_type = this.logged_affiliate.id_document_type;
+                this.order.name      = this.logged_affiliate.name;
+                this.order.lastname  = this.logged_affiliate.lastname;
+                this.order.nro_doc   = this.logged_affiliate.nro_doc;
+                this.order.address   = this.logged_affiliate.address;
+                this.order.city    = this.logged_affiliate.city;
+                this.order.email   = this.logged_affiliate.email;
+                this.order.country = this.countries_list.find(e => e.id == this.logged_affiliate.id_country);
+                
+
+                this.order.had_invoice = false; //?
             }
         },
         async getCountriesList(){
@@ -701,8 +712,8 @@ export default {
         },
 
         reqCallback(response) {
-            console.log("vueeeee");
-            console.log(response);
+            // console.log("vueeeee");
+            // console.log(response);
         },
 
         abrirPayme(){
