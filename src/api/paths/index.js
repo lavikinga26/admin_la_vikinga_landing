@@ -170,6 +170,9 @@ export default {
         },
         searchPosts(page,data){
             return callAPI('get','api/v1/blog/search?page='+page,{data:data});
+        },
+        getBySlug(slug){
+            return callAPI('get','api/v1/blog/slug/' + slug);
         }
     },
 }
