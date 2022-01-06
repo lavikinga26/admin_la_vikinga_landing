@@ -83,7 +83,16 @@
                                     Finalizar Compra
                                 </v-btn>
                             </v-col>
+                            
                         </v-row>
+                        <v-card class="ma-3 pa-3">
+                                                    <div class="d-flex align-center">
+                                                        <v-btn @click="abrirPayme()">Abrir Payme</v-btn>
+                                                    </div>
+
+                                                    <div id="demo" class="d-flex">
+                                                    </div>
+                                                </v-card>
                     </v-tab-item>
 
                     <v-tab-item value="pago" class="pa-4">
@@ -154,11 +163,13 @@
                                                 class="pa-0 px-1"
                                             >
 
-                                                <v-autocomplete v-model="order.id_country" label="País"
+                                                <v-autocomplete v-model="order.country" label="País"
                                                     :items="countries_list"
                                                     item-text="nombre"
                                                     item-value="id"
                                                     :rules="rules"
+                                                    return-object
+
                                                     outlined
                                                 ></v-autocomplete>
                                             </v-col>
@@ -316,7 +327,7 @@
                                                     <v-card-subtitle v-if="!order.had_invoice">
                                                         <div>{{order.name+' '+order.lastname}}</div>
                                                         <div>{{order.email}}</div>
-                                                        <div>{{order.address+', '+order.city+', '+order.country}}</div>
+                                                        <div v-if="order.country">{{order.address+', '+order.city+', '+order.country.nombre}}</div>
                                                     </v-card-subtitle>
                                                     <v-card-subtitle v-else>
                                                         <div>{{order.inv_business_name}}</div>
@@ -356,14 +367,7 @@
                                                 </template>
                                                 </v-radio-group>
 
-                                                <v-card class="ma-3 pa-3">
-                                                    <div class="d-flex align-center">
-                                                        <v-btn @click="abrirPayme()">Abrir Payme</v-btn>
-                                                    </div>
-
-                                                    <div id="demo" class="d-flex">
-                                                    </div>
-                                                </v-card>
+                                                
                                             </v-col>
                                         </v-row>
                                         <!--end form invoice-->
@@ -487,7 +491,7 @@ export default {
             cart: [],
             coupon: null,
             order:{
-                id_country: null,
+                country: null,
                 password:'',
                 confirmPassword:'',
                 had_invoice: false,
@@ -509,6 +513,12 @@ export default {
             },
             couponDisabled:false,
 
+            actions: {},
+
+
+            logged_user: null,
+            logged_affiliate: null,
+            card_data: [],
             actions: {}
         }
     },
@@ -535,10 +545,12 @@ export default {
         },
     },
     mounted(){
-        this.list();
-        this.getUser();
         this.getCountriesList();
         this.getTypeDocument();
+        //this.reqCallback("asd");
+
+        this.list();
+        this.getLoggedUser();
 
         /** Importamos Pay-me */
         let paymeScript = document.createElement('script')
@@ -583,26 +595,30 @@ export default {
         },
         list(){
             this.cart = this.$store.getters.StoreCart;
-            console.log(this.cart );
+            // console.log(this.cart );
         },
         removeItem(index){
             this.$store.dispatch("removeItem", index);
         },
-        async getUser(){
-            if(this.$store.getters.isLoggedIn){
-                this.$store.commit('loader',true);
-                try{
-                    const data = await this.$API.auth.auth();
-                    this.order = Object.assign({}, data.data);
-                    this.order.had_invoice = false;
-                    this.order = JSON.parse(JSON.stringify(this.order));
-                    console.log(this.order)
-                    this.$store.commit('loader',false);
-                }
-                catch(e){
-                    this.$store.commit('loader',false);
-                    console.error(e);
-                } 
+        async getLoggedUser(){
+            if(localStorage.getItem('token')){
+                this.logged_user = JSON.parse(localStorage.getItem('user_data'));
+
+                const response = await this.$API.business_partner.getPartner(this.logged_user.id);
+                this.logged_affiliate = response.data.data[0];
+                
+                this.order.bd_id     = this.logged_affiliate.id;
+                this.order.id_document_type = this.logged_affiliate.id_document_type;
+                this.order.name      = this.logged_affiliate.name;
+                this.order.lastname  = this.logged_affiliate.lastname;
+                this.order.nro_doc   = this.logged_affiliate.nro_doc;
+                this.order.address   = this.logged_affiliate.address;
+                this.order.city    = this.logged_affiliate.city;
+                this.order.email   = this.logged_affiliate.email;
+                this.order.country = this.countries_list.find(e => e.id == this.logged_affiliate.id_country);
+                
+
+                this.order.had_invoice = false; //?
             }
         },
         async getCountriesList(){
@@ -681,7 +697,8 @@ export default {
                 }
                 if((vm.actions.payment_status=='pending') && (vm.actions.payment_external == true))
                 {
-                    // ABRIR FORMULARIO PAY-ME
+                    //Enviamos a payme
+                    this.$router.push({ path: '/pago-payme/'+vm.actions.hash });
                 }
                 
                 vm.$store.commit('loader',false);
@@ -700,58 +717,25 @@ export default {
             }
         },
 
-        reqCallback(response) {
-            console.log("vueeeee");
-            console.log(response);
+        async reqCallback(response) {
+            try{
+                this.card_data = response;
+                console.log(this.card_data);
+                const data = await this.$API.payme.saveToken(this.card_data);
+            }catch(e){
+                //this.$store.commit('loader',false);
+                console.error(e);
+            } 
         },
 
         abrirPayme(){
-            var payRequest = {
-                "action": "authorize",
-                "transaction": {
-                    "currency": "604",
-                    "amount": "100000",
+            var tokenRequest = {
+                    "action": "tokenize",
+                    "transaction": {
                     "meta": {
                         "internal_operation_number": Math.floor(Date.now()).toString().substring(7),
-                        "description": "Descripcion de la transaccion",
                         "additional_fields": {
-                            "reserverd1": "Prueba valor reservado 1"
-                        }
-                    }
-                },
-                "address": {
-                    "billing": {
-                        "first_name": "Juan",
-                        "last_name": "Perez",
-                        "email": "jperez@gmail.com",
-                        "phone": {
-                            "country_code": "51",
-                            "subscriber": "987654321"
-                        },
-                        "location": {
-                            "line_1": "Mi casa",
-                            "line_2": "Mi casa",
-                            "city": "LIMA",
-                            "state": "LIMA",
-                            "country": "PE",
-                            "zip_code": "18"
-                        }
-                    },
-                    "shipping": {
-                        "first_name": "Juan",
-                        "last_name": "Perez",
-                        "email": "jperez@gmail.com",
-                        "phone": {
-                            "country_code": "51",
-                            "subscriber": "987654321"
-                        },
-                        "location": {
-                            "line_1": "Mi casa",
-                            "line_2": "Mi casa",
-                            "city": "LIMA",
-                            "state": "LIMA",
-                            "country": "PE",
-                            "zip_code": "18"
+                            "user_id": "USER_0001"
                         }
                     }
                 },
@@ -759,19 +743,20 @@ export default {
                     {
                         "first_name": "Juan",
                         "last_name": "Perez",
-                        "email_address": "jperez@gmail.com",
-                        "identity_document_country": "PE",
+                        "email_address": "prueba@token.com",
+                        "identity_document_country": "PER",
                         "identity_document_type": "DNI",
                         "identity_document_identifier": "87654321"
                     }
                 ]
             };
+        
 
             var token_key = "meQQw27S6i661bE6TnWWaYDmdwNQdJWNwe0HtD5HrL5H0hXTPdqWQjTTLAoTZKmX";
 
             var capture = new FlexCapture({
                 "key": token_key,
-                "payload": payRequest,
+                "payload": tokenRequest,
                 "additionalFields": []
             });
 
@@ -780,29 +765,3 @@ export default {
     }
 }
 </script>
-
-<style>
-.flex-capture .field > input{
-    outline:none;
-    margin-left: 2em;
-    border-bottom: 1px solid #626262;
-}
-
-.flex-capture .field > input:focus{
-    outline: none;
-    margin-left: 2em;
-    border-bottom: 1px solid #e30e4f;
-}
-
-.flex-capture .field{
-    margin-top: .5em;
-}
-
-.flex-capture .submit > button{
-    background: #e30e4f;
-    padding: 10px;
-    color: #fff;
-    border-radius: 8px;
-    margin-top: 1em;
-}
-</style>
