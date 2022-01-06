@@ -35,9 +35,12 @@ export default {
         },
         privacyPolicy(){
             return callAPI('get', 'api/v1/privacy-policy');
-        }
+        },
         
-
+        
+        getCountriesList(){
+            return callAPI('get', 'api/v1/configuration/get-countries-list');
+        },
     },
 
     user:{
@@ -128,6 +131,9 @@ export default {
         payment(id){
             return callAPI('get', 'api/v1/order/payment/'+id );
             
+        },
+        getAllOrderInfo(id){
+            return callAPI('get', 'api/v1/order/getAllOrderInfo/'+id );
         }
     },
 
@@ -144,6 +150,11 @@ export default {
     informative:{
         get(){
             return callAPI('get','api/v1/informative');
+        }
+    },
+    payme:{
+        saveToken(data){
+            return callAPI('post', 'api/v1/payme/saveToken', { data: data });
         }
     },
     testimonials:{
@@ -167,6 +178,9 @@ export default {
         },
         searchPosts(page,data){
             return callAPI('get','api/v1/blog/search?page='+page,{data:data});
+        },
+        getBySlug(slug){
+            return callAPI('get','api/v1/blog/slug/' + slug);
         }
     },
 }

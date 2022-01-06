@@ -5,7 +5,7 @@ import axios from "axios";
 // export const baseURL = 'http://adminlavikinga.test/';
 export const baseURL = 'http://admin-lavikinga.bytesoluciones.test/';
 const headers = { 
-    'Accept': 'aplicaition/json' ,
+    'Accept': '*' ,
     'Content-Type': 'application/json'
 };
 const withCredentials = false;

@@ -49,7 +49,11 @@
                                 @click="goToPlan(plan.identifier)"
                                 gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                             >
-                            <v-card-title v-text="plan.title"></v-card-title>
+                            <v-card-title>
+                                <div style="border-left: 4px solid #E30E4F; text-align: left; word-break: keep-all;" class="pl-1">
+                                    {{plan.title}}
+                                </div>
+                            </v-card-title>
                             </v-img>
                         </v-card>
                     </v-hover>
