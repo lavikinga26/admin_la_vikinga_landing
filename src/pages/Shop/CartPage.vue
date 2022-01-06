@@ -112,7 +112,7 @@
                                             >
                                                 <v-text-field
                                                     label="Nombre"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     outlined
                                                     v-model="order.name"
                                                 ></v-text-field>
@@ -124,7 +124,7 @@
                                             >
                                                 <v-text-field
                                                     label="Apellidos"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     outlined
                                                     v-model="order.lastname"
                                                 ></v-text-field>
@@ -136,7 +136,7 @@
                                                 class="pa-0 px-1"
                                             >
                                                 <v-select
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     :items="documents"
                                                     label="Tipo Documento"
                                                     outlined
@@ -152,7 +152,7 @@
                                             >
                                                 <v-text-field
                                                     label="Nro. Documento"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     outlined
                                                     v-model="order.nro_doc"
                                                 ></v-text-field>
@@ -167,7 +167,7 @@
                                                     :items="countries_list"
                                                     item-text="nombre"
                                                     item-value="id"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     return-object
 
                                                     outlined
@@ -180,7 +180,7 @@
                                             >
                                                 <v-text-field
                                                     label="Dirección"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     outlined
                                                     v-model="order.address"
                                                 ></v-text-field>
@@ -192,7 +192,7 @@
                                             >
                                                 <v-text-field
                                                     label="Ciudad"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     outlined
                                                     v-model="order.city"
                                                 ></v-text-field>
@@ -204,7 +204,7 @@
                                             >
                                                 <v-text-field
                                                     label="Correo Electrónico"
-                                                    :rules="rules"
+                                                    :rules="requiredEmail"
                                                     outlined
                                                     v-model="order.email"
                                                 ></v-text-field>
@@ -220,7 +220,7 @@
                                                     outlined
                                                     type="password"
                                                     v-model="order.password"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                 ></v-text-field>
                                             </v-col>
                                             <v-col
@@ -234,7 +234,7 @@
                                                     outlined
                                                     type="password"
                                                     v-model="order.confirmPassword"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                 ></v-text-field>
                                             </v-col>
                                             
@@ -271,7 +271,7 @@
                                             >
                                                 <v-text-field
                                                     label="RUC"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     outlined
                                                     v-model="order.inv_doc"
                                                 ></v-text-field>
@@ -283,7 +283,7 @@
                                             >
                                                 <v-text-field
                                                     label="Razón Social"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     outlined
                                                     v-model="order.inv_business_name"
                                                 ></v-text-field>
@@ -295,7 +295,7 @@
                                             >
                                                 <v-text-field
                                                     label="Dirección fiscal"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     outlined
                                                     v-model="order.inv_address"
                                                 ></v-text-field>
@@ -342,7 +342,7 @@
                                                 column
                                                 color="secondary"
                                                 class="mt-0"
-                                                :rules="rules"
+                                                :rules="requiredRule"
                                                 >
                                                 <template v-for="(item, index) in paymentMethods">
                                                     <v-card :key="'pm_'+index" class="ma-3 pa-3">
@@ -496,8 +496,12 @@ export default {
                 confirmPassword:'',
                 had_invoice: false,
             },
-            rules: [
+            requiredRule: [
                 v => !!v || 'Campo obligatorio',
+            ],
+            requiredEmail:[
+                v => !!v || "Campo es requerido",
+                v => /.+@.+\..+/.test(v) || "Correo electrónico debe ser válido",
             ],
             countries_list:[],
             documents:[],
