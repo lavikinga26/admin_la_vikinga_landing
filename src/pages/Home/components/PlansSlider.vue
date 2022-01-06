@@ -33,11 +33,16 @@
                     <v-card-text 
                         max-height="200">
                             <div class="item">
+                                <div style="border-left: 4px solid #E30E4F; text-align: left; word-break: keep-all;" class="pl-1">
+                                    <h2 style="color: #ffffff">{{item.title}}</h2>
+                                </div>
+                                <br>
                                 <div class="blog-entry">
-                                    <div class="text p-2 bd_desc_carousel">
-                                        <ul>
+                                    <div class="text p-2 bd_desc_carousel" v-html="item.content">
+                                        <!--<ul>
                                             <li>{{item.description}}</li>
-                                        </ul>
+                                        </ul>-->
+
                                     </div>
                                 </div>
                             </div>
