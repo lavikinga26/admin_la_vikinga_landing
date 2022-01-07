@@ -12,10 +12,10 @@
                 </div>
             </div>
         </div>
-        <div class="bg_login" style="height: 800px; width:100%">
-            <div style="width: 30%; margin: auto; text-align: center; padding-top: 200px; height: 100%;">
-                <h2 class="tit_h1_white">UNA VIKINGA NO ABANDONA</h2>
-                <div class="ma-auto rounded-xl pa-10" style="width: 450px; background: rgba(255,255,255,0.5); text-align: left;">
+        <div class="bg_login login-container">
+            <div>
+                <h2 class="tit_h1_white" style="text-align:center; padding-bottom: 20px">UNA VIKINGA NO ABANDONA</h2>
+                <div class="rounded-xl pa-8 login-card-container" style="">
                     <v-form
                         ref="loginForm"
                         v-model="valid"
@@ -119,3 +119,25 @@ export default {
     }
 }
 </script>
+<style scoped>
+.login-container{
+    height: 800px;
+     width:100%;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+}
+.login-card-container{
+    max-width: 450px;
+    margin: auto;
+    background: rgba(255,255,255,0.5);
+    text-align: left;
+}
+@media (max-width: 520px) {
+    .login-container{
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+</style>

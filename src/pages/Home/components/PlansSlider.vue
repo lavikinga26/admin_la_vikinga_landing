@@ -9,35 +9,46 @@
         >
             <v-slide-group
             v-model="model"
-            class="pa-4"
+            class="pa-0"
             center-active
-            show-arrows
+            
             >
             <v-slide-item
                 v-for="(item, n) in plans"
                 :key="n"
-                v-slot="{ s, toggle }"
+                v-slot="{ toggle }"
             >
                 <v-card
                 color="primary"
                 class="ma-4 card-outter"
-                height="740"
+                height="800"
                 width="300"
                 @click="toggle"
                 >
                     <v-img
+                        v-if="item.file_path"
                         lazy-src="https://picsum.photos/id/11/10/6"
-                        max-height="400"
+                        height="360"
+                        max-height="360"
                         :src="base_url + item.file_path.path + item.file_path.filename"
-                    ></v-img>
+                        gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                        class=" white--text align-end"
+                    >
+                        <v-card-title>
+                            <div style="border-left: 4px solid #E30E4F; text-align: left; word-break: keep-all;" class="pl-1">
+                                {{item.title}}
+                            </div>
+                        </v-card-title>
+                    </v-img>
                     <v-card-text 
                         max-height="200">
                             <div class="item">
                                 <div class="blog-entry">
-                                    <div class="text p-2 bd_desc_carousel">
-                                        <ul>
+                                    <div class="text p-2 bd_desc_carousel" v-html="item.content">
+                                        <!--<ul>
                                             <li>{{item.description}}</li>
-                                        </ul>
+                                        </ul>-->
+
                                     </div>
                                 </div>
                             </div>
@@ -51,6 +62,7 @@
                             </v-col>
                             <v-col cols="12" align="center">
                                 <v-btn color="secondary"
+                                    :href="'/plan/'+item.identifier"
                                     depressed
                                     large
                                     class="px-2">

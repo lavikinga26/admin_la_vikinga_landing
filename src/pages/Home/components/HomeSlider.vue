@@ -20,8 +20,8 @@
                         <v-flex xs12>
                             <v-row align="center">
                                 <v-col cols="12" md="12" xl="12" align="center">
-                                <h2 v-show="item.title != null && item.title != '' " class="display-2 font-weight-bold mb-4 white--text" style="font-family: 'MachProCondBold'!important; font-size: 4.5rem !important;"> {{ item.title }}</h2>
-                                <h3 v-show="item.subtitle != null && item.subtitle != '' " class="font-weight-light white--text" style="font-size: 2rem !important;">
+                                <h2 v-show="item.title != null && item.title != '' " class="display-2 font-weight-bold mb-4 white--text" style="font-family: 'MachProCondBold'!important;" id="main-title"> {{ item.title }}</h2>
+                                <h3 v-show="item.subtitle != null && item.subtitle != '' " class="font-weight-light white--text" id="main-subtitle">
                                    {{item.subtitle}}
                                 </h3>
                                 <v-btn
@@ -82,4 +82,28 @@ export default {
     background-position: top center !important;
     background-size: cover;
 }
+#main-title{
+    font-size: 4.5em !important;
+}
+#main-subtitle{
+    font-size: 2em !important;
+}
+@media (max-width: 1000px){
+    #main-title{
+        font-size: 4em !important;
+    }
+    #main-subtitle{
+        font-size: 1.5em !important;
+    }
+}
+@media (max-width: 640px){
+    #main-title{
+        font-size: 3em !important;
+    }
+    #main-subtitle{
+        font-size: 1em !important;
+    }
+}
+
+
 </style>

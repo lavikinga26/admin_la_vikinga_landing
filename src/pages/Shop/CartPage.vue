@@ -112,7 +112,7 @@
                                             >
                                                 <v-text-field
                                                     label="Nombre"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     outlined
                                                     v-model="order.name"
                                                 ></v-text-field>
@@ -124,7 +124,7 @@
                                             >
                                                 <v-text-field
                                                     label="Apellidos"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     outlined
                                                     v-model="order.lastname"
                                                 ></v-text-field>
@@ -136,7 +136,7 @@
                                                 class="pa-0 px-1"
                                             >
                                                 <v-select
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     :items="documents"
                                                     label="Tipo Documento"
                                                     outlined
@@ -152,7 +152,7 @@
                                             >
                                                 <v-text-field
                                                     label="Nro. Documento"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     outlined
                                                     v-model="order.nro_doc"
                                                 ></v-text-field>
@@ -163,11 +163,13 @@
                                                 class="pa-0 px-1"
                                             >
 
-                                                <v-autocomplete v-model="order.id_country" label="País"
+                                                <v-autocomplete v-model="order.country" label="País"
                                                     :items="countries_list"
                                                     item-text="nombre"
                                                     item-value="id"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
+                                                    return-object
+
                                                     outlined
                                                 ></v-autocomplete>
                                             </v-col>
@@ -178,7 +180,7 @@
                                             >
                                                 <v-text-field
                                                     label="Dirección"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     outlined
                                                     v-model="order.address"
                                                 ></v-text-field>
@@ -190,21 +192,35 @@
                                             >
                                                 <v-text-field
                                                     label="Ciudad"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     outlined
                                                     v-model="order.city"
                                                 ></v-text-field>
                                             </v-col>
                                             <v-col
                                                 cols="12"
-                                                md="12"
+                                                md="6"
                                                 class="pa-0 px-1"
                                             >
                                                 <v-text-field
                                                     label="Correo Electrónico"
-                                                    :rules="rules"
+                                                    :rules="requiredEmail"
                                                     outlined
                                                     v-model="order.email"
+                                                    type="email"
+                                                ></v-text-field>
+                                            </v-col>
+                                            <v-col
+                                                cols="12"
+                                                md="6"
+                                                class="pa-0 px-1"
+                                            >
+                                                <v-text-field
+                                                    type="tel"
+                                                    label="Nro. Teléfono"
+                                                    :rules="requiredRule"
+                                                    outlined
+                                                    v-model="order.phone"
                                                 ></v-text-field>
                                             </v-col>
                                             <v-col
@@ -218,7 +234,7 @@
                                                     outlined
                                                     type="password"
                                                     v-model="order.password"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                 ></v-text-field>
                                             </v-col>
                                             <v-col
@@ -232,10 +248,66 @@
                                                     outlined
                                                     type="password"
                                                     v-model="order.confirmPassword"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                 ></v-text-field>
                                             </v-col>
                                             
+                                            <v-col
+                                                cols="12"
+                                                md="12"
+                                                class="pa-0 px-1"
+                                                v-if="!isLogged"
+                                            >
+                                                <v-checkbox v-model="order.terms_conditions"
+                                                :rules="requiredRule">
+                                                <template v-slot:label>
+                                                    <div>
+                                                    Acepto los 
+                                                    <v-tooltip bottom>
+                                                        <template v-slot:activator="{ on }">
+                                                        <a
+                                                            class="secondary--text"
+                                                            target="_blank"
+                                                            href="/terminos-condiciones"
+                                                            @click.stop
+                                                            v-on="on"
+                                                        >
+                                                            Términos y Condiciones
+                                                        </a>
+                                                        </template>
+                                                        Abrir <v-icon color="white" small>mdi-open-in-new</v-icon>
+                                                    </v-tooltip>
+                                                    del servicio
+                                                    </div>
+                                                </template>
+                                                </v-checkbox>
+
+                                                <v-checkbox v-model="order.privacy_policy"
+                                                :rules="requiredRule">
+                                                <template v-slot:label>
+                                                    <div>
+                                                    Acepto la 
+                                                    <v-tooltip bottom>
+                                                        <template v-slot:activator="{ on }">
+                                                        <a
+                                                            class="secondary--text"
+                                                            target="_blank"
+                                                            href="/politica-privacidad"
+                                                            @click.stop
+                                                            v-on="on"
+                                                        >
+                                                            Políticas de privacidad
+                                                        </a>
+                                                        </template>
+                                                        Abrir <v-icon color="white" small>mdi-open-in-new</v-icon>
+                                                    </v-tooltip>
+                                                    del servicio
+                                                    </div>
+                                                </template>
+                                                </v-checkbox>
+                                                <br>
+                                            </v-col>
+
                                             <v-col
                                                 cols="12"
                                                 md="12"
@@ -269,7 +341,7 @@
                                             >
                                                 <v-text-field
                                                     label="RUC"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     outlined
                                                     v-model="order.inv_doc"
                                                 ></v-text-field>
@@ -281,7 +353,7 @@
                                             >
                                                 <v-text-field
                                                     label="Razón Social"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     outlined
                                                     v-model="order.inv_business_name"
                                                 ></v-text-field>
@@ -293,7 +365,7 @@
                                             >
                                                 <v-text-field
                                                     label="Dirección fiscal"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     outlined
                                                     v-model="order.inv_address"
                                                 ></v-text-field>
@@ -325,7 +397,7 @@
                                                     <v-card-subtitle v-if="!order.had_invoice">
                                                         <div>{{order.name+' '+order.lastname}}</div>
                                                         <div>{{order.email}}</div>
-                                                        <div>{{order.address+', '+order.city+', '+order.country}}</div>
+                                                        <div v-if="order.country">{{order.address+', '+order.city+', '+order.country.nombre}}</div>
                                                     </v-card-subtitle>
                                                     <v-card-subtitle v-else>
                                                         <div>{{order.inv_business_name}}</div>
@@ -340,7 +412,7 @@
                                                 column
                                                 color="secondary"
                                                 class="mt-0"
-                                                :rules="rules"
+                                                :rules="requiredRule"
                                                 >
                                                 <template v-for="(item, index) in paymentMethods">
                                                     <v-card :key="'pm_'+index" class="ma-3 pa-3">
@@ -489,13 +561,17 @@ export default {
             cart: [],
             coupon: null,
             order:{
-                id_country: null,
+                country: null,
                 password:'',
                 confirmPassword:'',
                 had_invoice: false,
             },
-            rules: [
+            requiredRule: [
                 v => !!v || 'Campo obligatorio',
+            ],
+            requiredEmail:[
+                v => !!v || "Campo es requerido",
+                v => /.+@.+\..+/.test(v) || "Correo electrónico debe ser válido",
             ],
             countries_list:[],
             documents:[],
@@ -510,6 +586,12 @@ export default {
                 color: "success"
             },
             couponDisabled:false,
+
+            actions: {},
+
+
+            logged_user: null,
+            logged_affiliate: null,
             card_data: [],
             actions: {}
         }
@@ -537,11 +619,12 @@ export default {
         },
     },
     mounted(){
-        this.list();
-        this.getUser();
         this.getCountriesList();
         this.getTypeDocument();
         //this.reqCallback("asd");
+
+        this.list();
+        this.getLoggedUser();
 
         /** Importamos Pay-me */
         let paymeScript = document.createElement('script')
@@ -586,26 +669,45 @@ export default {
         },
         list(){
             this.cart = this.$store.getters.StoreCart;
-            console.log(this.cart );
+            // console.log(this.cart );
         },
         removeItem(index){
             this.$store.dispatch("removeItem", index);
         },
-        async getUser(){
-            if(this.$store.getters.isLoggedIn){
-                this.$store.commit('loader',true);
-                try{
-                    const data = await this.$API.auth.auth();
-                    this.order = Object.assign({}, data.data);
-                    this.order.had_invoice = false;
-                    this.order = JSON.parse(JSON.stringify(this.order));
-                    console.log(this.order)
-                    this.$store.commit('loader',false);
-                }
-                catch(e){
-                    this.$store.commit('loader',false);
-                    console.error(e);
-                } 
+        async getLoggedUser(){
+            if(localStorage.getItem('token')){
+                this.logged_user = JSON.parse(localStorage.getItem('user_data'));
+
+                const response = await this.$API.business_partner.getPartner(this.logged_user.id);
+                this.logged_affiliate = response.data.data[0];
+                
+                this.order.bd_id     = this.logged_affiliate.id;
+                this.order.id_document_type = this.logged_affiliate.id_document_type;
+                this.order.name      = this.logged_affiliate.name;
+                this.order.lastname  = this.logged_affiliate.lastname;
+                this.order.nro_doc   = this.logged_affiliate.nro_doc;
+                this.order.address   = this.logged_affiliate.address;
+                this.order.city    = this.logged_affiliate.city;
+                this.order.email   = this.logged_affiliate.email;
+                this.order.phone   = this.logged_affiliate.phone;
+                this.order.terms_conditions   = this.logged_affiliate.terms_conditions;
+                this.order.privacy_policy   = this.logged_affiliate.privacy_policy;
+                this.order.country = this.countries_list.find(e => e.id == this.logged_affiliate.id_country);
+                
+
+                this.order.had_invoice = false; //?
+            }
+        },
+        async validateUser(){
+            this.$store.commit('loader', true);
+            try {
+                const response = await this.$API.order.validateEmail(this.order.email);
+                this.paymentProcess();
+            } catch (e) {
+                console.error(e);
+
+            } finally {
+                this.$store.commit('loader', false);
             }
         },
         async getCountriesList(){
@@ -646,7 +748,7 @@ export default {
             } 
         },
 
-        paymentProcess(){
+        async paymentProcess(){
             if(this.payment){
                 if(this.$refs.form_payment.validate()){
                     this.createOrder();
@@ -657,8 +759,24 @@ export default {
             }
             else{
                 if(this.$refs.form_invoice.validate()){
-                    this.getPaymentMethods();
-                    this.payment = true;
+                    if(!this.order.bd_id){
+                        this.$store.commit('loader', true);
+                        try {
+                            const response = await this.$API.order.validateEmail({email:this.order.email});
+                            console.log(response)
+                            this.getPaymentMethods();
+                            this.payment = true;
+                        } catch (e) {
+                            this.openToastAlert(true, e.response.data.message, 'red');
+                            console.error(e.response.data.message);
+                        } finally {
+                            this.$store.commit('loader', false);
+                        }
+                    }
+                    else{
+                        this.getPaymentMethods();
+                        this.payment = true;
+                    }
                 }
                 else{
                     return;

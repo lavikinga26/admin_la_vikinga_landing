@@ -12,8 +12,8 @@
         <v-row>
             <v-col cols="12" md="6" sm="12" class="pa-15">
                 <div class="form-div ml-auto p-5">
-                    <p class="tit_h2_pink text_entrena">!ES HORA DE COMENZAR EL DESAFÍO¡</p>
-                    <h4 style="color: #E30E4F; font-weight:100;">DEJANOS UN MENSAJE Y TE BRINDAREMOS INFORMACION</h4>
+                    <p class="tit_h2_pink text_entrena center">!ES HORA DE COMENZAR EL DESAFÍO¡</p>
+                    <h4 class="center" style="color: #E30E4F; font-weight:100;">DEJANOS UN MENSAJE Y TE BRINDAREMOS INFORMACION</h4>
                     <v-form ref="contactForm" v-model="validContactForm" @submit.prevent="saveContactInfo()" lazy-validation>
                         <v-row class="mt-10">
                             <v-col cols="12" sm="12">
@@ -153,3 +153,10 @@ export default {
     }
 }
 </script>
+<style scoped>
+@media (max-width:600px) {
+    .center{
+        text-align: center;
+    }
+}
+</style>

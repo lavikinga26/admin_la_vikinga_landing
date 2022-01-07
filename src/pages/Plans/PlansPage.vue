@@ -22,7 +22,7 @@
 
         <div class="container mt-4">
             <div class="row justify-center m-4">
-                <h2 class="tit_h2_pink">¡ES HORA DE COMENZAR EL DESAFÍO!</h2>
+                <h2 class="tit_h2_pink" style="text-align:center;">¡ES HORA DE COMENZAR EL DESAFÍO!</h2>
             </div>
             <div class="row no-gutters mt-5">
                 <div class="filtering col-sm-12 text-center">
@@ -85,6 +85,7 @@
                             <v-img
                                 lazy-src="https://picsum.photos/id/11/10/6"
                                 max-height="600"
+                                height="420"
                                 max-width="350"
                                 class="rounded plan white--text align-end"
                                 :src="base_url + plan.file_path.path + plan.file_path.filename"
@@ -129,7 +130,10 @@ export default {
         vm.$store.commit('loader',true);
         vm.getBaseUrl();
         vm.categoryList();
-        vm.list();
+        vm.list();this.$store.commit('loader',true);
+        setTimeout(()=>{ 
+            this.$store.commit('loader',false);
+        }, 2000);
     },
 
     watch: {
@@ -157,27 +161,21 @@ export default {
             try{
                 const data = await this.$API.plans.categories();
                 vm.categories = data.data.data;
-                vm.$store.commit('loader',false);
-                console.log(vm.data)
             }
             catch(e){
                 console.error(e);
-                vm.$store.commit('loader',false);
             }
         },
         async list(){
             let vm = this;
-            vm.$store.commit('loader',true);
             try{
                 const data = await this.$API.plans.list();
                 vm.plans = data.data.data;
                 vm.temp_plans = data.data.data;
-                vm.$store.commit('loader',false);
                 console.log(vm.data)
             }
             catch(e){
                 console.error(e);
-                vm.$store.commit('loader',false);
             }
         },
         goToPlan(identifier){
