@@ -218,7 +218,7 @@
                                                 <v-text-field
                                                     type="tel"
                                                     label="Nro. Teléfono"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     outlined
                                                     v-model="order.phone"
                                                 ></v-text-field>
@@ -258,7 +258,8 @@
                                                 class="pa-0 px-1"
                                                 v-if="!isLogged"
                                             >
-                                                <v-checkbox v-model="order.terms_conditions">
+                                                <v-checkbox v-model="order.terms_conditions"
+                                                :rules="requiredRule">
                                                 <template v-slot:label>
                                                     <div>
                                                     Acepto los 
@@ -281,7 +282,8 @@
                                                 </template>
                                                 </v-checkbox>
 
-                                                <v-checkbox v-model="order.privacy_policy">
+                                                <v-checkbox v-model="order.privacy_policy"
+                                                :rules="requiredRule">
                                                 <template v-slot:label>
                                                     <div>
                                                     Acepto la 
@@ -687,10 +689,25 @@ export default {
                 this.order.address   = this.logged_affiliate.address;
                 this.order.city    = this.logged_affiliate.city;
                 this.order.email   = this.logged_affiliate.email;
+                this.order.phone   = this.logged_affiliate.phone;
+                this.order.terms_conditions   = this.logged_affiliate.terms_conditions;
+                this.order.privacy_policy   = this.logged_affiliate.privacy_policy;
                 this.order.country = this.countries_list.find(e => e.id == this.logged_affiliate.id_country);
                 
 
                 this.order.had_invoice = false; //?
+            }
+        },
+        async validateUser(){
+            this.$store.commit('loader', true);
+            try {
+                const response = await this.$API.order.validateEmail(this.order.email);
+                this.paymentProcess();
+            } catch (e) {
+                console.error(e);
+
+            } finally {
+                this.$store.commit('loader', false);
             }
         },
         async getCountriesList(){
@@ -731,7 +748,7 @@ export default {
             } 
         },
 
-        paymentProcess(){
+        async paymentProcess(){
             if(this.payment){
                 if(this.$refs.form_payment.validate()){
                     this.createOrder();
@@ -742,8 +759,24 @@ export default {
             }
             else{
                 if(this.$refs.form_invoice.validate()){
-                    this.getPaymentMethods();
-                    this.payment = true;
+                    if(!this.order.bd_id){
+                        this.$store.commit('loader', true);
+                        try {
+                            const response = await this.$API.order.validateEmail({email:this.order.email});
+                            console.log(response)
+                            this.getPaymentMethods();
+                            this.payment = true;
+                        } catch (e) {
+                            this.openToastAlert(true, e.response.data.message, 'red');
+                            console.error(e.response.data.message);
+                        } finally {
+                            this.$store.commit('loader', false);
+                        }
+                    }
+                    else{
+                        this.getPaymentMethods();
+                        this.payment = true;
+                    }
                 }
                 else{
                     return;
