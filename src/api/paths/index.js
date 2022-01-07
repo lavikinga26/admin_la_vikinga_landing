@@ -155,6 +155,12 @@ export default {
     payme:{
         saveToken(data){
             return callAPI('post', 'api/v1/payme/saveToken', { data: data });
+        },
+        authTransaction(data){
+            return callAPI('post', 'api/v1/payme/authTransaction', { data: data });
+        },
+        getUserCards(data){
+            return callAPI('post', 'api/v1/payme/getUserCards', { data: data });
         }
     },
     testimonials:{

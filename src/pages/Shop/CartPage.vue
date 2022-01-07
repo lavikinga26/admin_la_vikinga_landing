@@ -85,14 +85,14 @@
                             </v-col>
                             
                         </v-row>
-                        <v-card class="ma-3 pa-3">
+                        <!--<v-card class="ma-3 pa-3">
                                                     <div class="d-flex align-center">
                                                         <v-btn @click="abrirPayme()">Abrir Payme</v-btn>
                                                     </div>
 
                                                     <div id="demo" class="d-flex">
                                                     </div>
-                                                </v-card>
+                                                </v-card>-->
                     </v-tab-item>
 
                     <v-tab-item value="pago" class="pa-4">

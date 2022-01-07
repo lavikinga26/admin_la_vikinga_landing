@@ -2,13 +2,63 @@
     <div>
         <v-container>
             <div class="d-flex justify-center">
-                <v-card max-width="800" min-width="400" elevation="1" class="pa-5">
+                <v-card max-width="700" min-width="300" elevation="1" class="pa-5">
                     <div class="py-2 d-flex align-center">
-                        <h2>Pago con tarjetas de crédito/débito a través de Payme</h2>  
+                        <h2>Pago con tarjetas de crédito/débito</h2>  
                     </div>
 
-                    <div class="mt-2 d-flex align-center">
-                        <v-btn @click="abrirPayme()">Abrir Formulario de Pago</v-btn>
+                    <h4 style="font-weight: 100;" class="mx-3" v-if="usercc.length > 0">Selecciona una de tus tarjetas</h4>
+                    <v-radio-group
+                    v-model="selected_card"
+                    column
+                    color="secondary"
+                    class="mt-0"
+                    >
+                        <template v-for="(item, index) in usercc">
+                            <v-card :key="index" class="ma-3 pa-3">
+                                <div class="d-flex align-center">    
+                                    <div>
+                                        <v-radio
+                                            :value="item.id_card"
+                                            color="secondary"
+                                        ></v-radio>
+                                    </div>
+                                    
+                                    <div>
+                                        <img style="max-width: 40px" src="@/assets/img/icons/visa.png" v-if="item.card_brand == 'Visa'"/>
+                                        <img style="max-width: 40px" src="@/assets/img/icons/mastercard.png" v-if="item.card_brand == 'Mastercard'"/>
+                                        <img style="max-width: 40px" src="@/assets/img/icons/amex.png" v-if="item.card_brand == 'Amex'"/>
+                                    </div>
+                                    <div style="margin-left: 20px;">
+                                        <h4> ****{{item.last_pan}}</h4>
+                                        <!--<p style="font-size: 0.8rem; margin-bottom: 0px;">
+                                            {{item.description}}
+                                        </p>
+                                        <div style="font-size: 0.8rem; margin-bottom: 0px;"
+                                            v-html="item.card_brand">
+                                        </div>-->
+                                    </div>
+                                </div>
+                            </v-card>
+                        </template>
+                    </v-radio-group>
+                    
+                    <div class="mt-2 mb-2 d-flex">
+                        <v-btn color="secondary"
+                            outlined
+                            class="px-2"
+                            @click="abrirPayme()"
+                            v-if="hide_btn==false">
+                            <span class="ma-3">Nueva Tarjeta</span>
+                        </v-btn>
+
+                        <v-btn color="secondary"
+                            depressed
+                            class="btn_pay_cc"
+                            @click="abrirPayme()"
+                            v-if="hide_btn==false">
+                            <span class="ma-3">Pagar</span>
+                        </v-btn>
                     </div>
 
                     <div class="d-flex">
@@ -41,12 +91,14 @@ export default {
     data: () => ({
         category: 0,
         order:{},
+        usercc:{},
+        selected_card: 0,
         base_url: '',
         slug:'',
         rules: [
             value => !value || value.size < 2000000 || '',
         ],
-        
+        hide_btn: false,
         img_file: null,
         img_url: "../images/default-image.png",
         
@@ -67,9 +119,11 @@ export default {
         vm.getOrder();
 
         /** Importamos Pay-me */
-        let paymeScript = document.createElement('script')
-        paymeScript.setAttribute('src', 'https://alignet-flex-demo.s3.amazonaws.com/flex-capture.min.js')
-        document.head.appendChild(paymeScript)
+        let paymeScript = document.createElement('script');
+        paymeScript.setAttribute('src', 'https://alignet-flex-demo.s3.amazonaws.com/flex-capture.min.js');
+        document.head.appendChild(paymeScript);
+
+        
     },
 
     watch: {
@@ -87,10 +141,15 @@ export default {
             let vm = this;
             vm.$store.commit('loader',true);
             try{
-                console.log("HASH: "+vm.slug);
+                //console.log("HASH: "+vm.slug);
                 const data = await this.$API.order.getAllOrderInfo(vm.slug);
                 console.log(data.data.data);
                 vm.order = data.data.data.order;
+                const ucards = await this.$API.payme.getUserCards(vm.order.customer);
+                vm.usercc = ucards.data.data.cards;
+                if(vm.usercc.length == 0){
+                    this.abrirPayme();
+                }
                 vm.$store.commit('loader',false);
             }
             catch(e){
@@ -101,17 +160,45 @@ export default {
 
         async reqCallback(response) {
             try{
+                let vm = this;
+                vm.$store.commit('loader',false);
                 this.card_data = response;
-                console.log(this.card_data);
+                //console.log(this.card_data);
+                this.card_data.id_user = this.order.customer.id;
                 const data = await this.$API.payme.saveToken(this.card_data);
+
+                let token_resul = data.data.data;
+
+                if(token_resul.success == true){
+                    //console.log("TOKEN CREADO");
+
+                    token_resul.ucard.hash_order = vm.slug;
+
+                    const data_auth = await this.$API.payme.authTransaction(token_resul.ucard);
+                    //console.log(data_auth);
+                }else{
+                    alert("Error al generar token.");
+                }
+                
             }catch(e){
                 //this.$store.commit('loader',false);
                 console.error(e);
             } 
         },
 
+        startCallback() {
+            let vm = this;
+            vm.$store.commit('loader',true);
+            //console.log("-------Click en pagar-------");
+        },
+
+        errorOnPayCallback() {
+            //console.log("-------Error al momento pagar-------");
+        },
+
         abrirPayme(){
-            
+            this.hide_btn = true;
+            this.selected_card = 0;
             var tokenRequest = {
                     "action": "tokenize",
                     "transaction": {
@@ -133,7 +220,8 @@ export default {
                     }
                 ]
             };
-        
+
+            //console.log(tokenRequest);
 
             var token_key = "meQQw27S6i661bE6TnWWaYDmdwNQdJWNwe0HtD5HrL5H0hXTPdqWQjTTLAoTZKmX";
 
@@ -143,7 +231,7 @@ export default {
                 "additionalFields": []
             });
 
-            capture.init(document.querySelector('#demo'), this.reqCallback); 
+            capture.init(document.querySelector('#demo'), this.reqCallback, this.startCallback, this.errorOnPayCallback); 
         }
     },
 }

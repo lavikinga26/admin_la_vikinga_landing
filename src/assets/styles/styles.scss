@@ -466,12 +466,20 @@ body{
     display: none!important;
 }
 
+.flex-capture .response{
+    display: none!important;
+}
+
 .input_txtnumber input[type='number'] {
     -moz-appearance:textfield;
 }
 .input_txtnumber input::-webkit-outer-spin-button,
 .input_txtnumber input::-webkit-inner-spin-button {
     -webkit-appearance: none;
+}
+
+.btn_pay_cc{
+    margin-left: 13em;
 }
 
 @media only screen and (min-width: 960px) {
@@ -482,4 +490,10 @@ body{
     border-right: 1px solid #0B152A;
     
   }
+}
+
+@media (max-width: 767px) {
+    .btn_pay_cc{
+        margin-left: 4em;
+    }
 }
