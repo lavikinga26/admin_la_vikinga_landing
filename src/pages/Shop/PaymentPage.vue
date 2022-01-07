@@ -132,7 +132,7 @@ export default {
             let formData = new FormData();
             formData.append('id_order', this.slug);
             formData.append('file', this.img_file);
-            axios.post('http://admin-lavikinga.bytesoluciones.test' + '/api/v1/files/upload-order-voucher',
+            axios.post('http://adminlavikinga.test' + '/api/v1/files/upload-order-voucher',
                 formData,
                 {
                     headers: {

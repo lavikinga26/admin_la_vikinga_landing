@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="min-height:80vh;">
         <div class="container-fluid bg_pink pt-3 pb-5">
             <div class="row mt-4">
                 <div class="col-md-12 text-center">
@@ -33,6 +33,10 @@ export default {
     }),
     mounted(){
         this.getTermsConditions();
+        this.$store.commit('loader',true);
+        setTimeout(()=>{ 
+            this.$store.commit('loader',false);
+        }, 2000);
     },
     methods:{
         async getTermsConditions(){

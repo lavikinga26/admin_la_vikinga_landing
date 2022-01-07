@@ -112,7 +112,7 @@
                                             >
                                                 <v-text-field
                                                     label="Nombre"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     outlined
                                                     v-model="order.name"
                                                 ></v-text-field>
@@ -124,7 +124,7 @@
                                             >
                                                 <v-text-field
                                                     label="Apellidos"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     outlined
                                                     v-model="order.lastname"
                                                 ></v-text-field>
@@ -136,7 +136,7 @@
                                                 class="pa-0 px-1"
                                             >
                                                 <v-select
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     :items="documents"
                                                     label="Tipo Documento"
                                                     outlined
@@ -152,7 +152,7 @@
                                             >
                                                 <v-text-field
                                                     label="Nro. Documento"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     outlined
                                                     v-model="order.nro_doc"
                                                 ></v-text-field>
@@ -167,7 +167,7 @@
                                                     :items="countries_list"
                                                     item-text="nombre"
                                                     item-value="id"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     return-object
 
                                                     outlined
@@ -180,7 +180,7 @@
                                             >
                                                 <v-text-field
                                                     label="Dirección"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     outlined
                                                     v-model="order.address"
                                                 ></v-text-field>
@@ -192,21 +192,35 @@
                                             >
                                                 <v-text-field
                                                     label="Ciudad"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     outlined
                                                     v-model="order.city"
                                                 ></v-text-field>
                                             </v-col>
                                             <v-col
                                                 cols="12"
-                                                md="12"
+                                                md="6"
                                                 class="pa-0 px-1"
                                             >
                                                 <v-text-field
                                                     label="Correo Electrónico"
-                                                    :rules="rules"
+                                                    :rules="requiredEmail"
                                                     outlined
                                                     v-model="order.email"
+                                                    type="email"
+                                                ></v-text-field>
+                                            </v-col>
+                                            <v-col
+                                                cols="12"
+                                                md="6"
+                                                class="pa-0 px-1"
+                                            >
+                                                <v-text-field
+                                                    type="tel"
+                                                    label="Nro. Teléfono"
+                                                    :rules="rules"
+                                                    outlined
+                                                    v-model="order.phone"
                                                 ></v-text-field>
                                             </v-col>
                                             <v-col
@@ -220,7 +234,7 @@
                                                     outlined
                                                     type="password"
                                                     v-model="order.password"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                 ></v-text-field>
                                             </v-col>
                                             <v-col
@@ -234,10 +248,64 @@
                                                     outlined
                                                     type="password"
                                                     v-model="order.confirmPassword"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                 ></v-text-field>
                                             </v-col>
                                             
+                                            <v-col
+                                                cols="12"
+                                                md="12"
+                                                class="pa-0 px-1"
+                                                v-if="!isLogged"
+                                            >
+                                                <v-checkbox v-model="order.terms_conditions">
+                                                <template v-slot:label>
+                                                    <div>
+                                                    Acepto los 
+                                                    <v-tooltip bottom>
+                                                        <template v-slot:activator="{ on }">
+                                                        <a
+                                                            class="secondary--text"
+                                                            target="_blank"
+                                                            href="/terminos-condiciones"
+                                                            @click.stop
+                                                            v-on="on"
+                                                        >
+                                                            Términos y Condiciones
+                                                        </a>
+                                                        </template>
+                                                        Abrir <v-icon color="white" small>mdi-open-in-new</v-icon>
+                                                    </v-tooltip>
+                                                    del servicio
+                                                    </div>
+                                                </template>
+                                                </v-checkbox>
+
+                                                <v-checkbox v-model="order.privacy_policy">
+                                                <template v-slot:label>
+                                                    <div>
+                                                    Acepto la 
+                                                    <v-tooltip bottom>
+                                                        <template v-slot:activator="{ on }">
+                                                        <a
+                                                            class="secondary--text"
+                                                            target="_blank"
+                                                            href="/politica-privacidad"
+                                                            @click.stop
+                                                            v-on="on"
+                                                        >
+                                                            Políticas de privacidad
+                                                        </a>
+                                                        </template>
+                                                        Abrir <v-icon color="white" small>mdi-open-in-new</v-icon>
+                                                    </v-tooltip>
+                                                    del servicio
+                                                    </div>
+                                                </template>
+                                                </v-checkbox>
+                                                <br>
+                                            </v-col>
+
                                             <v-col
                                                 cols="12"
                                                 md="12"
@@ -271,7 +339,7 @@
                                             >
                                                 <v-text-field
                                                     label="RUC"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     outlined
                                                     v-model="order.inv_doc"
                                                 ></v-text-field>
@@ -283,7 +351,7 @@
                                             >
                                                 <v-text-field
                                                     label="Razón Social"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     outlined
                                                     v-model="order.inv_business_name"
                                                 ></v-text-field>
@@ -295,7 +363,7 @@
                                             >
                                                 <v-text-field
                                                     label="Dirección fiscal"
-                                                    :rules="rules"
+                                                    :rules="requiredRule"
                                                     outlined
                                                     v-model="order.inv_address"
                                                 ></v-text-field>
@@ -342,7 +410,7 @@
                                                 column
                                                 color="secondary"
                                                 class="mt-0"
-                                                :rules="rules"
+                                                :rules="requiredRule"
                                                 >
                                                 <template v-for="(item, index) in paymentMethods">
                                                     <v-card :key="'pm_'+index" class="ma-3 pa-3">
@@ -496,8 +564,12 @@ export default {
                 confirmPassword:'',
                 had_invoice: false,
             },
-            rules: [
+            requiredRule: [
                 v => !!v || 'Campo obligatorio',
+            ],
+            requiredEmail:[
+                v => !!v || "Campo es requerido",
+                v => /.+@.+\..+/.test(v) || "Correo electrónico debe ser válido",
             ],
             countries_list:[],
             documents:[],
