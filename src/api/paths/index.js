@@ -130,11 +130,14 @@ export default {
         },
         payment(id){
             return callAPI('get', 'api/v1/order/payment/'+id );
-            
         },
         getAllOrderInfo(id){
             return callAPI('get', 'api/v1/order/getAllOrderInfo/'+id );
-        }
+        }, 
+        validateEmail(data){
+            return callAPI('post', 'api/v1/order/validate-email', { data: data });
+        },
+        
     },
 
     coupon:{
