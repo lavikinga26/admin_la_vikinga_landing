@@ -9,9 +9,9 @@
         >
             <v-slide-group
             v-model="model"
-            class="pa-4"
+            class="pa-0"
             center-active
-            show-arrows
+            
             >
             <v-slide-item
                 v-for="(item, n) in plans"
