@@ -1,5 +1,5 @@
 <template>
-    <div v-if="showSection" class="container-fluid mt-15 bg_suplementacion" style="height: 800px;" :style="{ backgroundImage: 'url(' + img + ')' }">
+    <div v-if="showSection" class="container-fluid mt-15 bg_suplementacion" style="height: 800px;" :style="{ backgroundImage: 'linear-gradient(to bottom, rgba(0,0,0,.5), rgba(0,0,0,.7)), url(' + img + ')' }">
             <div class="row">
                 <div class="col-12 text-center suplementacion_titulo">
                     <img src="@/assets/img/isotipo.png" alt="" style="width: 90px" class="my-15">
@@ -44,14 +44,14 @@ export default {
         async getInformative(){
             try{
                 let response = await this.$API.informative.get();
-                if(Object.keys(response.data).length === 0){
+                if(Object.keys(response.data.data).length === 0){
                     this.showSection = false;
                 }else{
-                    this.title = response.data.title
-                    this.img = this.$baseURL + response.data.file_path.path + response.data.file_path.filename;
-                    this.buttonTitle = response.data.button;
-                    this.buttonAction = response.data.link;
-                    this.subtitle = response.data.subtitle;
+                    this.title = response.data.data.title
+                    this.img = this.$baseURL + response.data.data.file_path.path + response.data.data.file_path.filename;
+                    this.buttonTitle = response.data.data.button;
+                    this.buttonAction = response.data.data.link;
+                    this.subtitle = response.data.data.subtitle;
 
                     this.showSection = true;
                 }
