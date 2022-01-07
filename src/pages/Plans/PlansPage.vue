@@ -129,7 +129,10 @@ export default {
         vm.$store.commit('loader',true);
         vm.getBaseUrl();
         vm.categoryList();
-        vm.list();
+        vm.list();this.$store.commit('loader',true);
+        setTimeout(()=>{ 
+            this.$store.commit('loader',false);
+        }, 2000);
     },
 
     watch: {
@@ -157,27 +160,21 @@ export default {
             try{
                 const data = await this.$API.plans.categories();
                 vm.categories = data.data.data;
-                vm.$store.commit('loader',false);
-                console.log(vm.data)
             }
             catch(e){
                 console.error(e);
-                vm.$store.commit('loader',false);
             }
         },
         async list(){
             let vm = this;
-            vm.$store.commit('loader',true);
             try{
                 const data = await this.$API.plans.list();
                 vm.plans = data.data.data;
                 vm.temp_plans = data.data.data;
-                vm.$store.commit('loader',false);
                 console.log(vm.data)
             }
             catch(e){
                 console.error(e);
-                vm.$store.commit('loader',false);
             }
         },
         goToPlan(identifier){

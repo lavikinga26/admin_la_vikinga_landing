@@ -199,7 +199,7 @@
                                             </v-col>
                                             <v-col
                                                 cols="12"
-                                                md="12"
+                                                md="6"
                                                 class="pa-0 px-1"
                                             >
                                                 <v-text-field
@@ -207,6 +207,20 @@
                                                     :rules="requiredEmail"
                                                     outlined
                                                     v-model="order.email"
+                                                    type="email"
+                                                ></v-text-field>
+                                            </v-col>
+                                            <v-col
+                                                cols="12"
+                                                md="6"
+                                                class="pa-0 px-1"
+                                            >
+                                                <v-text-field
+                                                    type="tel"
+                                                    label="Nro. Teléfono"
+                                                    :rules="rules"
+                                                    outlined
+                                                    v-model="order.phone"
                                                 ></v-text-field>
                                             </v-col>
                                             <v-col
@@ -238,6 +252,60 @@
                                                 ></v-text-field>
                                             </v-col>
                                             
+                                            <v-col
+                                                cols="12"
+                                                md="12"
+                                                class="pa-0 px-1"
+                                                v-if="!isLogged"
+                                            >
+                                                <v-checkbox v-model="order.terms_conditions">
+                                                <template v-slot:label>
+                                                    <div>
+                                                    Acepto los 
+                                                    <v-tooltip bottom>
+                                                        <template v-slot:activator="{ on }">
+                                                        <a
+                                                            class="secondary--text"
+                                                            target="_blank"
+                                                            href="/terminos-condiciones"
+                                                            @click.stop
+                                                            v-on="on"
+                                                        >
+                                                            Términos y Condiciones
+                                                        </a>
+                                                        </template>
+                                                        Abrir <v-icon color="white" small>mdi-open-in-new</v-icon>
+                                                    </v-tooltip>
+                                                    del servicio
+                                                    </div>
+                                                </template>
+                                                </v-checkbox>
+
+                                                <v-checkbox v-model="order.privacy_policy">
+                                                <template v-slot:label>
+                                                    <div>
+                                                    Acepto la 
+                                                    <v-tooltip bottom>
+                                                        <template v-slot:activator="{ on }">
+                                                        <a
+                                                            class="secondary--text"
+                                                            target="_blank"
+                                                            href="/politica-privacidad"
+                                                            @click.stop
+                                                            v-on="on"
+                                                        >
+                                                            Políticas de privacidad
+                                                        </a>
+                                                        </template>
+                                                        Abrir <v-icon color="white" small>mdi-open-in-new</v-icon>
+                                                    </v-tooltip>
+                                                    del servicio
+                                                    </div>
+                                                </template>
+                                                </v-checkbox>
+                                                <br>
+                                            </v-col>
+
                                             <v-col
                                                 cols="12"
                                                 md="12"

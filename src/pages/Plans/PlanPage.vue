@@ -15,10 +15,10 @@
 
         <div class="container mt-4">
             <v-row>
-                <v-col cols="12" md="6">
+                <v-col cols="12" md="6" align-self="center">
                     <v-img
                         lazy-src="https://picsum.photos/id/11/10/6"
-                        max-height="400"
+                        max-height="550"
                         :src="base_url + plan.file_path.path + plan.file_path.filename"
                     ></v-img>
                 </v-col>
@@ -26,10 +26,13 @@
                     <div style="min-height: 490px;" class="pa-10">
                         <h2 class="tit_h1_pink" style="line-height: 1em">{{plan.title}}</h2>
                         <h4 class="mb-10 white--text" style="letter-spacing: 5px;">{{plan.months}} SEMANAS</h4>
-                        <div class="grey--text text--lighten-2 desc_plan py-5 mb-5">
-                            <ul>
+                        <div class="grey--text text--lighten-2 desc_plan py-5 mb-5" >
+                            <!--<ul>
                                 <li>{{plan.description}}</li>
-                            </ul>
+                            </ul>-->
+                            <div>{{plan.description}}</div>
+                            <br>
+                            <div v-html="plan.content"></div>
                         </div>
                         <div class="my-4">
                             <span class="price_carousel text-center" style="font-family: 'MachProCondBold' !important;">
@@ -67,9 +70,12 @@ export default {
     mounted() {
         let vm = this;
         vm.slug = this.$route.params.slug;
-        vm.$store.commit('loader',true);
         vm.getBaseUrl();
         vm.getPlan();
+        this.$store.commit('loader',true);
+        setTimeout(()=>{ 
+            this.$store.commit('loader',false);
+        }, 2000);
     },
 
     watch: {
@@ -90,7 +96,6 @@ export default {
             vm.$store.commit('loader',true);
             try{
                 const data = await this.$API.plans.read(vm.slug);
-                console.log(data.data.data)
                 vm.plan = data.data.data;
                 vm.$store.commit('loader',false);
             }
