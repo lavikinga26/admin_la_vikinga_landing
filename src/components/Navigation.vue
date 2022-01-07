@@ -8,11 +8,49 @@
             </v-list>
             <v-divider />
             <v-list dense>
-                <v-list-item v-for="(item, i) in items" :key="i" :to="item.slug" >
+                <div v-for="(item, i) in items" :key="i" :to="item.slug">
+        
+                    <v-list-group
+                    v-if="item.menu.length>0"
+                    :value="false"
+                    >
+                        <template v-slot:activator>
+                        <v-list-item-title>{{item.name}}</v-list-item-title>
+                        </template>
+
+                        <v-list
+                        :value="true"
+                        no-action
+                        sub-group
+                        >
+                            <v-list-item v-for="(subitem,i) in item.menu" :key="i" :to="subitem.slug">
+                                <v-list-item-content>
+                                    <v-list-item-title class="subtitile-1">{{ subitem.name }}</v-list-item-title>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-list>
+                    </v-list-group>
+
+                    <v-list-item v-else-if="!item.slug.includes('https://')" :to="item.slug">
+                        <v-list-item-content>
+                            <v-list-item-title class="subtitile-1">{{ item.name }}</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+
+                    <a v-else :href="item.slug" style="text-decoration:none;">
+                        <v-list-item>
+                            <v-list-item-content>
+                                <v-list-item-title class="subtitile-1">{{ item.name }}</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </a>
+                    
+                </div>
+                <!-- <v-list-item v-for="(item, i) in items" :key="i" :to="item.slug">
                     <v-list-item-content>
                         <v-list-item-title class="subtitile-1">{{ item.name }}</v-list-item-title>
                     </v-list-item-content>
-                </v-list-item>
+                </v-list-item>-->
             </v-list>
             <v-list>
                 <v-list-item class="d-flex justify-center">
