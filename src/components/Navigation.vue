@@ -2,17 +2,29 @@
     <div>
         <v-navigation-drawer v-model="drawer" app temporary light>
             <v-list>
-                <v-list-item>
+                <v-list-item class="d-flex justify-center">
                     <img style="width: 70%;" src="@/assets/img/logo.png" alt="Logo" />
                 </v-list-item>
             </v-list>
             <v-divider />
-
             <v-list dense>
                 <v-list-item v-for="(item, i) in items" :key="i" :to="item.slug" >
                     <v-list-item-content>
                         <v-list-item-title class="subtitile-1">{{ item.name }}</v-list-item-title>
                     </v-list-item-content>
+                </v-list-item>
+            </v-list>
+            <v-list>
+                <v-list-item class="d-flex justify-center">
+                    <v-btn color="secondary"
+                        v-if="!isLogged"
+                        depressed
+                        small
+                        class="px-2 rounded-pill"
+                        link
+                        to="/auth/iniciar-sesion">
+                        <span class="ma-3">INCIAR SESIÓN</span>
+                    </v-btn>
                 </v-list-item>
             </v-list>
         </v-navigation-drawer>

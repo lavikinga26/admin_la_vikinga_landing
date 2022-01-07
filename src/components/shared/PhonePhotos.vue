@@ -4,7 +4,7 @@
       <div class="row mt-4 mt-5">
         <div class="col-md-6 text-center">
           <img src="@/assets/img/isotipo.png" alt="" />
-          <p class="tit_h1_pink text_entrena">
+          <p class="tit_h1_pink text_entrena" id="text-phones">
             ENTRENA<br />DONDE<br />QUIERAS
           </p>
         </div>
@@ -38,6 +38,9 @@
 export default {};
 </script>
 <style>
+#text-phones{
+  font-size: 4.5em;
+}
 .iphone {
   width: 200px;
   background: #000;
@@ -96,6 +99,9 @@ export default {};
   }
   #center-screen {
     height: 320px;
+  }
+  #text-phones{
+    font-size: 3.5em;
   }
 }
 @media (max-width: 700px) {

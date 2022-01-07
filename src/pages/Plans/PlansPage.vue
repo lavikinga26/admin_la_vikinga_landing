@@ -22,7 +22,7 @@
 
         <div class="container mt-4">
             <div class="row justify-center m-4">
-                <h2 class="tit_h2_pink">¡ES HORA DE COMENZAR EL DESAFÍO!</h2>
+                <h2 class="tit_h2_pink" style="text-align:center;">¡ES HORA DE COMENZAR EL DESAFÍO!</h2>
             </div>
             <div class="row no-gutters mt-5">
                 <div class="filtering col-sm-12 text-center">

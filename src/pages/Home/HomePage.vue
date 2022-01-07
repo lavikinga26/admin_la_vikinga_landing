@@ -2,19 +2,16 @@
     <div>
         <home-slider></home-slider>
         <plans-slider></plans-slider>
-        <!--
+        
+        <!-- 
         <div class="container-fluid pt-3 mt-n5">
             <div class="row mt-4">
                 <div class="col-12 text-center">
                     <h2 class="sub_h2_white">DESCUBRE TODOS NUESTROS</h2>
                     <h1 class="tit_h1_pink">DESAFÍOS</h1>
                 </div>
-
-                <div class="col-3">
-                    
-                </div>
-                <div class="col-6 text-center">
-                     <img src="@/assets/img/img_desafio_1.png" alt="" class="img-fluid img_border"> 
+                <div class="col-12 text-center">
+                    <img src="/assets/images/img_desafio_1.png" alt="" class="img-fluid img_border"> 
                     <p class="txt_video">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem quis cumque ad necessitatibus quasi, deserunt impedit quia error sapiente iure adipisci autem ut earum quaerat nisi aliquam dolores saepe? Natus?
                         
@@ -27,11 +24,8 @@
                         </v-btn>
                     </p>
                 </div>
-                <div class="col-3">
-                    
-                </div>
             </div>
-        </div>-->
+        </div> -->
 
         <staff-slider></staff-slider>
         <InformativeSection/>

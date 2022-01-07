@@ -14,31 +14,16 @@
             </div>
         </div>
 
-        <div class="container-fluid">
-            <!-- <v-row style="background-color: #0b152a" class="px-1 main-post">-->
-            <v-row class="px-1 main-post">
+        <div class="container-fluid" v-if="categories.length > 0 && last != {}">
+            <v-row class="px-1 main-post" style="background-color: #0b152a;">
                 <v-col cols="12" md="6" sm="12" class="d-flex align-center justify-center">
                     <div class="text-center main-content">
-                        <!-- <p class="tit_h1_pink text_entrena pt-4">
-                            {{last.title}}
-                        </p> -->
                         <p class="tit_h2_pink text_entrena">
                             {{last.title}}
                         </p>
-                        <!-- <h4 style="color: #E30E4F; font-weight:100; text-align:center">
-                            {{`Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                            sed do eiusmod tempor incididunt ut labore et dolore magna
-                            aliqua. Ut enim ad minim veniam, q` | uppercase}}
-                        </h4> -->
-                        <h4>
+                        <h4 style="color:white;">
                             {{last.summary | uppercase}}
                         </h4>
-                        <!--
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                            sed do eiusmod tempor incididunt ut labore et dolore magna
-                            aliqua. Ut enim ad minim veniam, q
-                        </p>-->
                         <div>
                             <router-link :to=" '/post/' + last.slug" style="text-decoration: none">
                                 <v-btn
@@ -48,7 +33,6 @@
                                 link
                                 color="primary"
                                 class="mt-5"
-                                @click.stop="openDialog(last)"
                                 >
                                 Ver más
                                 </v-btn>
@@ -74,7 +58,7 @@
                         label="Buscar"
                         class="py-1"
                         type="text"
-                        placeholder="Titulo, Creador, Contenido.."
+                        placeholder=""
                         filled
                         rounded
                         dense 
@@ -140,6 +124,7 @@
                                 </p>
                                 <div class="card-details">
                                     <v-chip
+                                    small
                                     color="secondary"
                                     >
                                         {{post.category.description}}
@@ -147,61 +132,18 @@
                                     <router-link :to=" '/post/' + post.slug" style="text-decoration: none">
                                         <v-btn
                                         rounded
-                                        x-small
-                                        large
+                                        small
                                         dark
                                         link
                                         color="secondary"
                                         >
-                                            Ver más
+                                        Leer más
                                         </v-btn>
+
                                     </router-link>
                                 </div>
                             </div>
                         </div>
-                        <!--
-                        <v-card v-for="(post,i) in posts" :key="i" class="py-1">
-                            <v-row>
-                                <v-col
-                                cols="12"
-                                md="6"
-                                sm="6"
-                                > 
-                                    <v-list-item three-line>
-                                        <v-list-item-content>
-                                            <div class="text-overline mb-4">
-                                                Creado el {{ post.created_at.split('T')[0] }}
-                                            </div>
-                                            <v-list-item-title class="text-h5 mb-1">
-                                                {{post.title}}
-                                            </v-list-item-title>
-                                            <v-list-item-subtitle>{{post.user_id.name}}</v-list-item-subtitle>
-                                        </v-list-item-content>
-                                        <div cols="12" md="6" sm="12" class="d-flex align-center no-photo" witdh></div>
-                                    </v-list-item>
-                                </v-col>
-                                <v-col cols="12" md="6" sm="12" class="d-flex align-center">
-                                    <div v-if="post.image != null"  class="fill" :style="{ backgroundImage: 'url('+base_url+post.image.path+post.image.filename + ')' }"></div>
-                                    <div v-else class="fill no-photo"></div>
-                                </v-col>
-                            </v-row>
-                            <v-card-actions class="pt-5">
-                                <v-chip
-                                color="secondary"
-                                >
-                                {{post.category.description}}
-                                </v-chip>
-                                <v-spacer></v-spacer>
-                                <v-btn
-                                    outlined
-                                    rounded
-                                    text
-                                    @click.stop="openDialog(post)"
-                                >
-                                    Leer más
-                                </v-btn>
-                            </v-card-actions>
-                        </v-card>-->
                     </div>
                 </v-col>
                 <v-col>
@@ -212,38 +154,15 @@
                     ></v-pagination>
                 </v-col>
             </v-row>
-            <v-dialog
-            v-model="dialog"
-            max-width="800px"
-
-            >
-                <v-card>
-                    <v-card-title class="text-h5">
-                        {{ selectedPost.title }}
-                    </v-card-title>
-
-                    <v-card-subtitle>
-                        {{selectedSubtitle}}
-                    </v-card-subtitle>
-
-                    <v-card-text>
-                        <div v-html="renderContent()"></div>
-                        <div height="250px" v-if="selectedPost.image != null" class="fill image-post" :style="{ backgroundImage: 'url('+ base_url+selectedPost.image.path + selectedPost.image.filename + ')' }">
-                        </div>
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                            <v-btn
-                            outlined
-                            rounded
-                            text
-                            @click="dialog = !dialog"
-                            >
-                                    Cerrar
-                        </v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
+        </div>
+        <div v-else class="container-fluig pt-3 pb-5">
+            <div class="row mt-4">
+                <div class="col-md-12 text-center">
+                    <div class="inline-block">
+                        <span style="color:#0b152a; vertical-align: middle;"><b>Próximamente</b></span>&nbsp;
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
         <!-- Fin -->
@@ -254,7 +173,6 @@ export default {
     data(){
         return {
             pagination:false,
-            dialog:false,
             categories:[],
             posts:[],
             last:{},
@@ -263,8 +181,6 @@ export default {
             selectedCategory:"",
             loading:false,
             postTitle:"ULTIMOS POSTS",
-            selectedPost:{},
-            selectedSubtitle:'',
             total:0,
             page:0,
             search:"",
@@ -272,14 +188,7 @@ export default {
         }
     },
     methods:{
-        openDialog(post){
-            this.selectedPost = post;
-            this.selectedSubtitle = post.user_id.name + ' - ' + post.created_at.split('T')[0]
-           this.dialog = true;
-        },
-        renderContent(){
-            return this.selectedPost.content;
-        },
+
         async getCategories(){
             try{
                 const response = await this.$API.blog.getCategories();
@@ -325,6 +234,7 @@ export default {
         async searchData(page = 1){
             this.isSearch = true;
             this.pagination = true;
+            console.log(this.search);
             const response = await this.$API.blog.searchPosts(page,this.search);
             console.log(response)
             this.posts = response.data.data;
@@ -440,8 +350,8 @@ export default {
     @media (max-width: 925px){
         .gallery{
             grid-template-columns: 100%;
-            padding-right: 50px;
-            padding-left: 50px;
+            padding-right: 20px;
+            padding-left: 20px;
         }
     }
 </style>
