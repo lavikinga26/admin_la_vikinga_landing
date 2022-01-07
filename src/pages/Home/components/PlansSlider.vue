@@ -9,9 +9,9 @@
         >
             <v-slide-group
             v-model="model"
-            class="pa-4"
+            class="pa-0"
             center-active
-            show-arrows
+            
             >
             <v-slide-item
                 v-for="(item, n) in plans"
@@ -26,6 +26,7 @@
                 @click="toggle"
                 >
                     <v-img
+                        v-if="item.file_path"
                         lazy-src="https://picsum.photos/id/11/10/6"
                         max-height="360"
                         :src="base_url + item.file_path.path + item.file_path.filename"
