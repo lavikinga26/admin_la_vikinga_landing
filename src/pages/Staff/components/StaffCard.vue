@@ -5,6 +5,7 @@
                 <v-img
                     lazy-src="https://picsum.photos/id/11/10/6"
                     max-height="400"
+                    height="300"
                     max-width="250"
                     :src="image"
                     class="img_staff"

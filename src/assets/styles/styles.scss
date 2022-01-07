@@ -364,7 +364,9 @@ body{
     list-style-image: url(../img/lista_icon.png);
     font-family: 'Montserrat';
 }
-
+.bd_desc_carousel ul li p{
+    margin-bottom: 1px;
+}
 .desc_plan ul li{
     color: #fff;
     list-style-image: url(../img/lista_icon.png);

@@ -85,6 +85,7 @@
                             <v-img
                                 lazy-src="https://picsum.photos/id/11/10/6"
                                 max-height="600"
+                                height="420"
                                 max-width="350"
                                 class="rounded plan white--text align-end"
                                 :src="base_url + plan.file_path.path + plan.file_path.filename"
