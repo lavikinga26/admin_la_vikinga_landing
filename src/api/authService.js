@@ -1,10 +1,10 @@
 import axios from "axios";
 // const baseURL = 'http://lavikinga.bytesoluciones.com/';
-// export const baseURL = 'http://admin-lavikinga.bytesoluciones.test/';
+export const baseURL = 'http://admin-lavikinga.bytesoluciones.test/';
 // const baseURL = 'http://admin_la_vikinga.test/';
-export const baseURL = 'http://admin_la_vikinga.test/';
+// export const baseURL = 'http://admin_la_vikinga.test/';
 const headers = { 
-    'Accept': 'aplicaition/json' ,
+    'Accept': 'application/json' ,
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin' :'*',
 };
