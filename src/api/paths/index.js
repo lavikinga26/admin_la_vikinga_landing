@@ -50,6 +50,16 @@ export default {
         register(data){
             return callAPI('post', 'api/v1/auth/register', { data: data });
         },
+
+        forgot(data) {
+            return callAPI('post', 'api/v1/auth/forgot-password', { data: data });
+        },
+        verify_recovery(data) {
+            return callAPI('post', 'api/v1/auth/verify-recovery', { data: data });
+        },
+        reset_password(data) {
+            return callAPI('post', 'api/v1/auth/reset-password', { data: data });
+        },
     },
     business_partner:{
         getPartner(id){

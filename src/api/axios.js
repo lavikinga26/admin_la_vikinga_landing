@@ -1,11 +1,12 @@
 import axios from "axios";
 // export const baseURL = 'http://lavikinga.bytesoluciones.com/';
-export const baseURL = 'http://admin-lavikinga.bytesoluciones.test/';
+// export const baseURL = 'http://admin-lavikinga.bytesoluciones.test/';
 // export const baseURL = 'http://admin_la_vikinga.test/';
-// export const baseURL = 'http://adminlavikinga.test/';
+export const baseURL = 'http://adminlavikinga.test/';
 const headers = { 
-    'Accept': '*' ,
-    'Content-Type': 'application/json'
+    'Accept': 'application/json',//'*' ,
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin' :'*',
 };
 const withCredentials = false;
 
@@ -41,7 +42,12 @@ const call = async (_type, _endpoint, _body) => {
 async function callAPI(type, endpoint, options = {}) {
     try {
         var data;
-        data = await call(type, endpoint, options.data);
+        await instance
+              .get('sanctum/csrf-cookie')
+              .then(async(response) => {
+                data = await call(type, endpoint, options.data);
+              });
+        //data = await call(type, endpoint, options.data);
     } 
     catch (error) {
         throw error;
