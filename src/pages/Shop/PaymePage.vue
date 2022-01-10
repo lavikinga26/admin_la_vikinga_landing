@@ -19,7 +19,7 @@
                                 <div class="d-flex align-center">    
                                     <div>
                                         <v-radio
-                                            :value="item.id_card"
+                                            :value="item"
                                             color="secondary"
                                         ></v-radio>
                                     </div>
@@ -55,8 +55,8 @@
                         <v-btn color="secondary"
                             depressed
                             class="btn_pay_cc"
-                            @click="abrirPayme()"
-                            v-if="hide_btn==false">
+                            @click="authPayment()"
+                            v-if="selected_card!=0">
                             <span class="ma-3">Pagar</span>
                         </v-btn>
                     </div>
@@ -120,7 +120,7 @@ export default {
 
         /** Importamos Pay-me */
         let paymeScript = document.createElement('script');
-        paymeScript.setAttribute('src', 'https://alignet-flex-demo.s3.amazonaws.com/flex-capture.min.js');
+        paymeScript.setAttribute('src', 'https://d23b52o2im4p82.cloudfront.net/flex-capture.min.js');
         document.head.appendChild(paymeScript);
 
         
@@ -137,13 +137,49 @@ export default {
             this.toast.toast = true;
         },
 
+        async authPayment(){
+            let vm = this;
+            vm.$store.commit('loader',true);
+            try{
+                /*console.log("CARD: ");
+                console.log(vm.selected_card);*/
+                vm.selected_card.hash_order = vm.slug;
+                const data_auth = await this.$API.payme.authTransaction(vm.selected_card);
+                let auth_resul = data_auth.data;
+
+                let datos_upd = {};
+                datos_upd.hash_order = vm.slug;
+                
+                this.$router.push({ path: '/resultado-pago/'+vm.slug });
+
+                /*if(auth_resul.success == true){
+                    datos_upd.status = 1;
+                    console.log("retorna true");
+                    const upd_order = await this.$API.payme.updOrderStatus(datos_upd);
+                }else if(auth_resul.success == false){
+                    datos_upd.status = 2;
+                    console.log("retorna false");
+                    const upd_order = await this.$API.payme.updOrderStatus(datos_upd);
+                }else{
+                    datos_upd.status = 1;
+                    const upd_order = await this.$API.payme.updOrderStatus(datos_upd);
+                }*/
+
+                vm.$store.commit('loader',false);
+            }
+            catch(e){
+                console.error(e);
+                vm.$store.commit('loader',false);
+            }
+        },
+
         async getOrder(){
             let vm = this;
             vm.$store.commit('loader',true);
             try{
                 //console.log("HASH: "+vm.slug);
                 const data = await this.$API.order.getAllOrderInfo(vm.slug);
-                console.log(data.data.data);
+                //console.log(data.data.data);
                 vm.order = data.data.data.order;
                 const ucards = await this.$API.payme.getUserCards(vm.order.customer);
                 vm.usercc = ucards.data.data.cards;
@@ -161,7 +197,7 @@ export default {
         async reqCallback(response) {
             try{
                 let vm = this;
-                vm.$store.commit('loader',false);
+                
                 this.card_data = response;
                 //console.log(this.card_data);
                 this.card_data.id_user = this.order.customer.id;
@@ -175,9 +211,13 @@ export default {
                     token_resul.ucard.hash_order = vm.slug;
 
                     const data_auth = await this.$API.payme.authTransaction(token_resul.ucard);
+
+                    this.$router.push({ path: '/resultado-pago/'+vm.slug });
+                    vm.$store.commit('loader',false);
                     //console.log(data_auth);
                 }else{
                     alert("Error al generar token.");
+                    vm.$store.commit('loader',false);
                 }
                 
             }catch(e){
@@ -223,7 +263,7 @@ export default {
 
             //console.log(tokenRequest);
 
-            var token_key = "meQQw27S6i661bE6TnWWaYDmdwNQdJWNwe0HtD5HrL5H0hXTPdqWQjTTLAoTZKmX";
+            var token_key = "TvqvXinCnJKvnuHfYRReHlHevWHLL8YXOT38HxvOfWgUaN2gcgxi86xlr6J3YbXB";
 
             var capture = new FlexCapture({
                 "key": token_key,
@@ -232,7 +272,8 @@ export default {
             });
 
             capture.init(document.querySelector('#demo'), this.reqCallback, this.startCallback, this.errorOnPayCallback); 
-        }
+        },
+
     },
 }
 </script>

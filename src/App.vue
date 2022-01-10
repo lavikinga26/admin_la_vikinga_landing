@@ -34,7 +34,7 @@
     </v-app>
 </template>
 <style>
-  @import 'https://alignet-flex-demo.s3.amazonaws.com/css/flex-capture.css';
+  @import 'https://d23b52o2im4p82.cloudfront.net/css/flex-capture.css';
 </style>
 <script>
 import navigation from "./components/Navigation";
