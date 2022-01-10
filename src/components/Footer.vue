@@ -134,7 +134,8 @@
          class="text-center p-3"
          style="color: grey; font-size: 0.7rem;"
          >
-      © 2021 La Vikinga - TODOS LOS DERECHOS RESERVADOS. DESARROLLADO POR <a href="https://bytesoluciones.com" target="_blank" style="text-decoration:none;">BYTESOLUCIONES</a>
+        ©{{new Date().getFullYear()}} La Vikinga - Todos los derechos reservados. 
+      <!--DESARROLLADO POR <a href="https://bytesoluciones.com" target="_blank" style="text-decoration:none;">BYTESOLUCIONES</a>-->
     </div>
     <!-- Copyright -->
     </v-card>
