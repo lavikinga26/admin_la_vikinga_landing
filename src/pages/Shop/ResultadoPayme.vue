@@ -107,6 +107,9 @@ export default {
                 const data = await this.$API.order.getAllOrderInfo(vm.slug);
                 console.log(data.data.data);
                 vm.order = data.data.data.order;
+                if(vm.order.id_status==1){
+                    vm.$store.dispatch("cleanCart");
+                }
                 vm.$store.commit('loader',false);
             }
             catch(e){
