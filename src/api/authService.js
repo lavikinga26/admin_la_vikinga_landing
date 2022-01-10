@@ -1,12 +1,12 @@
 import axios from "axios";
 // const baseURL = 'http://lavikinga.bytesoluciones.com/';
 // export const baseURL = 'http://admin-lavikinga.bytesoluciones.test/';
-// const baseURL = 'http://admin_la_vikinga.test/';
-export const baseURL = 'http://admin_la_vikinga.test/';
+// export const baseURL = 'http://admin_la_vikinga.test/';
+export const baseURL = 'http://adminlavikinga.test/';
 const headers = { 
-    'Accept': 'aplicaition/json' ,
+    'Accept': '*',//'application/json' ,
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin' :'*',
+    //'Access-Control-Allow-Origin' :'*',
 };
 const withCredentials = true;
 
