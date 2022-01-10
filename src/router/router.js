@@ -18,10 +18,10 @@ const isAutheticated = async() =>{
 } 
 
 export const routes = [{
-    path: '/',
-    redirect: '/inicio'
-}, {
     path: '/inicio',
+    redirect: '/'
+}, {
+    path: '/',
     name: 'home',
     component: () => import(/* webpackChunkName: "blank" */ '../pages/Home/HomePage.vue'),
 }, {
