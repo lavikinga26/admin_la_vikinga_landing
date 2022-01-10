@@ -1,7 +1,7 @@
 import axios from "axios";
 // export const baseURL = 'http://lavikinga.bytesoluciones.com/';
 // export const baseURL = 'http://admin-lavikinga.bytesoluciones.test/';
- export const baseURL = 'https://lavikinga.bytesoluciones.com/';
+ export const baseURL = 'https://apiserv.lavikingaoficial.com/';
 //export const baseURL = 'http://adminlavikinga.test/';
 const headers = { 
     'Accept': 'application/json',//'*' ,
