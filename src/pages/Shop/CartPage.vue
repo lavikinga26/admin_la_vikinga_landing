@@ -626,10 +626,6 @@ export default {
         this.list();
         this.getLoggedUser();
 
-        /** Importamos Pay-me */
-        let paymeScript = document.createElement('script')
-        paymeScript.setAttribute('src', 'https://alignet-flex-demo.s3.amazonaws.com/flex-capture.min.js')
-        document.head.appendChild(paymeScript)
     },
     methods:{
         showToast(msg,color){
@@ -643,14 +639,14 @@ export default {
                 if(response.data.available === true){
                     let data = response.data;
                     if(data.id_plan === null){
-                        this.discount = (data.discount_type == 1) ? this.subtotal * (data.discount/100) : this.subtotal - data.discount; 
+                        this.discount = (data.discount_type == 1) ? this.subtotal * (data.discount/100) : data.discount; 
                     }else{
                         let index = this.cart.findIndex((elem) => elem.id == data.id_plan);
                         if(index == -1){
                             this.showToast("No valido para los productos de este carrito","red");
                         }else{
                             if(this.couponDisabled != true){
-                                this.discount = (data.discount_type == 1) ? this.cart[index].price * (data.discount/100) :  this.cart[index].price - data.discount;
+                                this.discount = (data.discount_type == 1) ? this.cart[index].price * (data.discount/100) :  data.discount;
                                 this.couponDisabled = true;
                                 this.showToast("Cupón valido","success");
                             }
@@ -763,7 +759,7 @@ export default {
                         this.$store.commit('loader', true);
                         try {
                             const response = await this.$API.order.validateEmail({email:this.order.email});
-                            console.log(response)
+                            //console.log(response)
                             this.getPaymentMethods();
                             this.payment = true;
                         } catch (e) {
@@ -789,6 +785,7 @@ export default {
             vm.$store.commit('loader',true);
             try{
                 vm.order.discount = vm.discount
+                vm.order.cupon = vm.coupon
                 vm.order.total = vm.total
                 vm.order.subtotal = vm.subtotal;
                 vm.order.detail = vm.cart;
@@ -825,7 +822,7 @@ export default {
         async reqCallback(response) {
             try{
                 this.card_data = response;
-                console.log(this.card_data);
+                //console.log(this.card_data);
                 const data = await this.$API.payme.saveToken(this.card_data);
             }catch(e){
                 //this.$store.commit('loader',false);
