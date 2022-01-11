@@ -60,6 +60,7 @@
               text
               small
               color="secondary"
+              href="/inscripciones"
             >
               INSCRIPCIONES
             </v-btn>
@@ -72,6 +73,7 @@
               text
               small
               color="secondary"
+              href="/inscripciones"
             >
               GYM VIRTUAL
             </v-btn>
@@ -84,8 +86,9 @@
               text
               small
               color="secondary"
+              href="/staff"
             >
-              SATFF
+              STAFF
             </v-btn>
           </div>
           <!-- Grid column -->
@@ -96,6 +99,7 @@
               text
               small
               color="secondary"
+              href="/calendario"
             >
               CALENDARIO
             </v-btn>
@@ -108,6 +112,7 @@
               text
               small
               color="secondary"
+              href="https://shop.lavikingaoficial.com"
             >
               TIENDA
             </v-btn>
@@ -119,6 +124,7 @@
               text
               small
               color="secondary"
+              href="/preguntas-frecuentes"
             >
               INFO
             </v-btn>

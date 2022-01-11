@@ -41,7 +41,7 @@
                         
                         >
                             <v-img
-                                lazy-src="https://picsum.photos/id/11/10/6"
+                                lazy-src="@/assets/img/lazy_img.jpg"
                                 max-height="400"
                                 max-width="250"
                                 class="rounded plan white--text align-end"

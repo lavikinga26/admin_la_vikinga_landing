@@ -3,7 +3,7 @@
     <v-row class="flex-row">
       <v-col cols="12" md="6" sm="6" class="flex-col">
         <v-img
-          lazy-src="https://picsum.photos/id/11/10/6"
+          lazy-src="@/assets/img/lazy_img.jpg"
           max-height="400"
           height="300"
           max-width="250"

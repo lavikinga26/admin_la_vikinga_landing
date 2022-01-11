@@ -11,7 +11,7 @@
                             <h3 style="font-weight: 400;">
                                 Información de facturación
                             </h3>
-                            <h5>N° Orden #00001002</h5>
+                            <h5>N° Orden #0000{{ order.id }}</h5>
                         </div>     
                         
                     </div>
@@ -23,7 +23,7 @@
                     </div>
                     <br>
                     <template v-if="order.status == 4">
-                        <h3 class="text-center my-7"><b>Orden en pendiente de confirmación</b></h3>
+                        <h3 class="text-center my-7"><b>Orden pendiente de confirmación</b></h3>
                     </template>
                     <template v-if="order.status == 5">
                         <v-file-input label="Imágen comprobante"
@@ -132,7 +132,7 @@ export default {
             let formData = new FormData();
             formData.append('id_order', this.slug);
             formData.append('file', this.img_file);
-            axios.post('http://adminlavikinga.test' + '/api/v1/files/upload-order-voucher',
+            axios.post(this.$baseURL + 'api/v1/files/upload-order-voucher',
                 formData,
                 {
                     headers: {

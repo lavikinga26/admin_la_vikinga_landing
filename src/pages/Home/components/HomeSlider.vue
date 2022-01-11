@@ -33,7 +33,6 @@
                                     link
                                     class="mt-5"
                                     :href="item.link"
-                                    target="_blank"
                                 >
                                     Ver más
                                 </v-btn>

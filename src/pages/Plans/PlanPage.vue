@@ -17,7 +17,7 @@
             <v-row>
                 <v-col cols="12" md="6" align-self="center">
                     <v-img
-                        lazy-src="https://picsum.photos/id/11/10/6"
+                        lazy-src="@/assets/img/lazy_img.jpg"
                         max-height="550"
                         :src="base_url + plan.file_path.path + plan.file_path.filename"
                     ></v-img>
