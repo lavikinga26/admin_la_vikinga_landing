@@ -230,12 +230,12 @@
                 >
               </v-list-item>
               <v-divider class="white"></v-divider>
-              <!--<v-list-item link class="white--text" to="/cuenta/mis-ordenes">
+              <v-list-item link class="white--text" to="/cuenta/mis-ordenes">
                 <v-list-item-title class="white--text"
-                  >Mis Ordenes</v-list-item-title
+                  >Mi Cuenta</v-list-item-title
                 >
               </v-list-item>
-              <v-divider class="white"></v-divider>-->
+              <v-divider class="white"></v-divider>
               <v-list-item link class="white--text" to="/gym-virtual/agenda">
                 <v-list-item-title class="white--text"
                   >Gym Virtual</v-list-item-title

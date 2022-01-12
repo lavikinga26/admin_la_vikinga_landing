@@ -19,6 +19,7 @@ import store from "./store";
 require("./assets/styles/styles.scss");
 
 import API from "./api";
+import UTILS from "./utils";
 import { baseURL } from './api/axios';
 import { Form } from 'vform';
 
@@ -33,6 +34,8 @@ Vue.component('phones-photos', require('./components/shared/PhonePhotos.vue').de
 Vue.component('frequent-questions', require('./components/shared/FrequentQuestions.vue').default);
 
 Vue.prototype.$API = API;
+Vue.prototype.$UTILS = UTILS;
+
 Vue.config.productionTip = false;
 
 Vue.filter("truncate", function(value, length) {

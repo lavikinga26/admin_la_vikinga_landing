@@ -17,7 +17,86 @@
       <v-tabs-items v-model="userProfileTabs" id="custom-tab-items">
         <v-tab-item value="mi-cuenta">
           <div class="my-5">
-            <v-card class="my-10 rounded-xl pa-10"> INFO CUENTA </v-card>
+            <v-card class="my-10 rounded-xl pa-10">
+
+              <v-card-title
+                class="tit_h1_staff_pink text_entrena txt_uppercase mb-6"
+              >
+                SEGURIDAD
+              </v-card-title>
+              <v-row class="px-5">
+                <v-col>
+                  <div class="mb-2">
+                    <v-form
+                      ref="form_change_password"
+                      v-model="isChangePasswordFormValid"
+                      lazy-validation
+                    >
+                      <h3 class="mt-1">Cambiar mi contraseña</h3>
+                      <div class="subtitle mb-2">
+                        Aquí podrás cambiar tu contraseña para acceder a tu cuenta
+                      </div>
+
+                      <v-row no-gutters>
+                        <v-col cols="12" md="6">
+                          <div class="d-flex flex-column">
+                            <v-text-field
+                              v-model="last_password"
+                              :append-icon="
+                                showLastPassword ? 'mdi-eye' : 'mdi-eye-off'
+                              "
+                              :rules="[rules.required]"
+                              :type="showLastPassword ? 'text' : 'password'"
+                              :error="error"
+                              :error-messages="errorMessages"
+                              name="password"
+                              label="Contraseña Anterior"
+                              @click:append="showLastPassword = !showLastPassword"
+                            ></v-text-field>
+
+                            <v-text-field
+                              v-model="new_password"
+                              :append-icon="
+                                showNewPassword ? 'mdi-eye' : 'mdi-eye-off'
+                              "
+                              :rules="[rules.required]"
+                              :type="showNewPassword ? 'text' : 'password'"
+                              :error="error"
+                              :error-messages="errorMessages"
+                              name="password"
+                              label="Nueva contraseña (min. 8 caracteres)"
+                              @click:append="showNewPassword = !showNewPassword"
+                            ></v-text-field>
+
+
+                            <v-text-field
+                              v-model="new_password_confirm"
+                              :rules="pwdConfirm"
+                              :error="error"
+                              :error-messages="errorMessages"
+                              name="password"
+                              label="Confirmar contraseña (min. 8 caracteres)"
+                            ></v-text-field>
+                          </div>
+                        </v-col>
+                      </v-row>
+
+                      <v-btn
+                        color="blue-grey darken-4"
+                        class="mt-2 mb-2"
+                        @click="submitChangePassword"
+                        :loading="loadingChangePassword"
+                        outlined
+                      >
+                        <v-icon left small>mdi-lock-reset</v-icon>
+                        Cambiar contraseña
+                      </v-btn>
+                    </v-form>
+                  </div>
+
+                </v-col>
+              </v-row>
+            </v-card>
           </div>
         </v-tab-item>
         <v-tab-item value="mis-ordenes">
@@ -309,6 +388,17 @@
           </div>
         </v-tab-item>
       </v-tabs-items>
+
+            
+      <v-snackbar
+          v-model="toast.toast"
+          :timeout="toast.timeout"
+          :color="toast.color"
+          dark
+          >
+          {{ toast.message }}
+      </v-snackbar>
+
     </v-container>
   </div>
 </template>
@@ -350,6 +440,42 @@ export default {
       page: 1,
       total: 0,
       loading: false,
+
+      // form error
+      error: false,
+      errorMessages: "",
+
+      // show password field
+      showLastPassword: false,
+      showNewPassword: false,
+      loadingChangePassword: false,
+
+      isChangePasswordFormValid: true,
+      last_password: "",
+      new_password: "",
+      new_password_confirm: "",
+
+      // input rules
+      rules: {
+        required: (value) => !!value || "Este campo es requerido",
+        only_numbers: this.$UTILS.rules.only_numbers,
+      },
+
+
+      pwdRules: [v => !!v || "Este campo es requerido"],
+      pwdConfirm: [
+        v => !!v || "Este campo es requerido",
+        v => v === this.new_password || "Contraseñas no coinciden"
+      ],
+
+
+      toast:{
+          toast: false,
+          message: '',
+          timeout: 3000,
+          color: "success"
+      },
+
     };
   },
   mounted() {
@@ -361,6 +487,13 @@ export default {
     },
   },
   methods: {
+
+    showToast(msg,color){
+        this.toast.color = color;
+        this.toast.message = msg;
+        this.toast.toast = true;
+    },
+
     openDetails(order) {
       this.selectedOrder.detail = order.detail;
       this.selectedOrder.order_status = order.order_status.id;
@@ -401,6 +534,17 @@ export default {
         console.error(e);
       }
     },
+
+
+    submitChangePassword() {
+      if (this.$refs.form_change_password.validate()) {
+        this.changePassword();
+      } else {
+        return;
+      }
+    },
+
+
     getIcon(status) {
       let color = null;
       switch (status) {
@@ -442,6 +586,41 @@ export default {
           break;
       }
       return color;
+    },
+
+
+
+
+    async changePassword() {
+      let vm = this;
+      this.$store.commit('loader',true);
+      try {
+        vm.loadingChangePassword = true;
+        let data = {
+          old_password: vm.last_password,
+          new_password: vm.new_password,
+        };
+        await this.$API.auth.change_password(data);
+        vm.loadingChangePassword = false;
+
+        this.$refs.form_change_password.reset();
+        this.$store.commit('loader',false);
+        this.showToast('Contraseña Restablecida',"success");
+      } catch (error) {
+        vm.loadingChangePassword = false;
+        let err = {
+          status: error.response.status,
+          name: error.name,
+          data: error.response.data,
+          message: error.message,
+        };
+        vm.last_password='';
+        vm.new_password='';
+        vm.new_password_confirm=''
+        this.showToast(error.response.data.message+'. Vuelve a intentarlo',"error");
+        this.$store.commit('loader',false);
+        console.log(err);
+      }
     },
   },
 };
