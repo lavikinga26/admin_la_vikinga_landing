@@ -144,6 +144,9 @@ export default {
         getAllOrderInfo(id){
             return callAPI('get', 'api/v1/order/getAllOrderInfo/'+id );
         }, 
+        getOrdersByUser(id,page){
+            return callAPI('get','api/v1/order/getOrdersByUser/'+id+"?page="+page);
+        }, 
         validateEmail(data){
             return callAPI('post', 'api/v1/order/validate-email', { data: data });
         },
