@@ -492,7 +492,7 @@
                                             background-color="grey lighten-2"
                                             placeholder="CUPÓN"
                                             hide-details=""
-                                            v-model="coupon"
+                                            v-model="order.coupon"
                                             :disabled="couponDisabled"
                                         ></v-text-field>
                                         <v-btn
@@ -660,6 +660,8 @@ export default {
                     this.toast.color = "red";
                     this.toast.message = "Cupón inválido.";
                     this.toast.toast = true;
+                    console.log(response.data)
+                    
                 }
                 
             }catch(e){

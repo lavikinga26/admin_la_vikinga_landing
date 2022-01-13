@@ -12,17 +12,155 @@
         dark
       >
         <v-tab to="#mi-cuenta">MI CUENTA</v-tab>
+        <v-tab to="#mis-planes">MIS PLANES</v-tab>
         <v-tab to="#mis-ordenes">MIS ORDENES</v-tab>
       </v-tabs>
       <v-tabs-items v-model="userProfileTabs" id="custom-tab-items">
         <v-tab-item value="mi-cuenta">
           <div class="my-5">
-            <v-card class="my-10 rounded-xl pa-10"> INFO CUENTA </v-card>
+            <v-card class="my-10 rounded-xl pa-10">
+
+              <v-card-title
+                class="tit_h1_staff_pink text_entrena txt_uppercase mb-6"
+              >
+                SEGURIDAD
+              </v-card-title>
+              <v-row class="px-5">
+                <v-col>
+                  <div class="mb-2">
+                    <v-form
+                      ref="form_change_password"
+                      v-model="isChangePasswordFormValid"
+                      lazy-validation
+                    >
+                      <h3 class="mt-1">Cambiar mi contraseña</h3>
+                      <div class="subtitle mb-2">
+                        Aquí podrás cambiar tu contraseña para acceder a tu cuenta
+                      </div>
+
+                      <v-row no-gutters>
+                        <v-col cols="12" md="6">
+                          <div class="d-flex flex-column">
+                            <v-text-field
+                              v-model="last_password"
+                              :append-icon="
+                                showLastPassword ? 'mdi-eye' : 'mdi-eye-off'
+                              "
+                              :rules="[rules.required]"
+                              :type="showLastPassword ? 'text' : 'password'"
+                              :error="error"
+                              :error-messages="errorMessages"
+                              name="password"
+                              label="Contraseña Anterior"
+                              @click:append="showLastPassword = !showLastPassword"
+                            ></v-text-field>
+
+                            <v-text-field
+                              v-model="new_password"
+                              :append-icon="
+                                showNewPassword ? 'mdi-eye' : 'mdi-eye-off'
+                              "
+                              :rules="[rules.required]"
+                              :type="showNewPassword ? 'text' : 'password'"
+                              :error="error"
+                              :error-messages="errorMessages"
+                              name="password"
+                              label="Nueva contraseña (min. 8 caracteres)"
+                              @click:append="showNewPassword = !showNewPassword"
+                            ></v-text-field>
+
+
+                            <v-text-field
+                              v-model="new_password_confirm"
+                              :rules="pwdConfirm"
+                              :error="error"
+                              :error-messages="errorMessages"
+                              type="password"
+                              name="password"
+                              label="Confirmar contraseña (min. 8 caracteres)"
+                            ></v-text-field>
+                          </div>
+                        </v-col>
+                      </v-row>
+
+                      <v-btn
+                        color="blue-grey darken-4"
+                        class="mt-2 mb-2"
+                        @click="submitChangePassword"
+                        :loading="loadingChangePassword"
+                        outlined
+                      >
+                        <v-icon left small>mdi-lock-reset</v-icon>
+                        Cambiar contraseña
+                      </v-btn>
+                    </v-form>
+                  </div>
+
+                </v-col>
+              </v-row>
+            </v-card>
           </div>
         </v-tab-item>
+        
+        <v-tab-item value="mis-planes">
+          <div class="my-5">
+            <v-card class="my-10 rounded-xl pa-10">
+              <v-card-title
+                class="tit_h1_staff_pink text_entrena txt_uppercase mb-6"
+              >
+                MIS PLANES
+              </v-card-title>
+              <v-row class="px-5">
+                <v-col>
+                  <div class="mb-2">
+                    <v-simple-table>
+                      <template v-slot:default>
+                        <thead>
+                          <tr>
+                            <th class="text-left">
+                              Plan
+                            </th>
+                            <th class="text-left">
+                              Fecha de Expiración
+                            </th>
+                            <th class="text-center">
+                              Estado
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            v-for="(item, key) in user.plans"
+                            :key="'plan_'+key"
+                          >
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.expiration_date }}</td>
+                            <td class="text-center">
+                              <v-chip
+                                class="ma-2"
+                                small
+                                :color="item.status ? 'success' : 'error'"
+                              >
+                                {{item.status ? 'Habilitado':'Deshabilitado'}}
+                              </v-chip>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </template>
+                    </v-simple-table>
+                  </div>
+                </v-col>
+              </v-row>
+            </v-card>
+          </div>
+        </v-tab-item>
+
         <v-tab-item value="mis-ordenes">
           <div class="my-2">
-            <v-card class="my-10 rounded-xl pa-10 orders-main-container" :loading="loading">
+            <v-card
+              class="my-10 rounded-xl pa-10 orders-main-container"
+              :loading="loading"
+            >
               <template slot="progress">
                 <v-progress-linear
                   color="deep-purple"
@@ -41,8 +179,25 @@
                   :key="i"
                   class="order-card elevation-2"
                 >
-                  <v-card-title style="color: black">
-                    {{ order.created_at.split("T")[0] }}
+                  <v-card-title
+                    style="color: black"
+                    class="d-flex flex-row justify-space-between"
+                  >
+                    <span>
+                      {{ order.created_at.split("T")[0] }}
+                    </span>
+
+                    <v-chip
+                      class="ma-2"
+                      :color="getColor(order.order_status.id)"
+                      label
+                      text-color="white"
+                    >
+                      {{ order.order_status.name }}
+                      <v-icon class="ml-1">
+                        {{ getIcon(order.order_status.id) }}
+                      </v-icon>
+                    </v-chip>
                   </v-card-title>
                   <v-card-text class="d-flex flex-column">
                     <v-row>
@@ -91,9 +246,15 @@
                       </v-col>
                     </v-row>
                     <div
-                      class="d-flex flex-row justify-space-between align-center footer"
+                      class="
+                        d-flex
+                        flex-row
+                        justify-space-between
+                        align-center
+                        footer
+                      "
                     >
-                      <v-chip
+                      <!--<v-chip
                         class="ma-2"
                         :color="getColor(order.order_status.id)"
                         label
@@ -103,7 +264,7 @@
                         <v-icon class="ml-1">
                           {{ getIcon(order.order_status.id) }}
                         </v-icon>
-                      </v-chip>
+                      </v-chip>-->
 
                       <v-btn
                         depressed
@@ -113,15 +274,36 @@
                         Detalles
                         <v-icon class="ml-2"> mdi-eye </v-icon>
                       </v-btn>
+                      <v-btn
+                        depressed
+                        link
+                        :to="'/confirmar-pago/' + order.hash"
+                        color="green"
+                        v-if="order.order_status.id == 5 && order.id_payment_method == 2"
+                      >
+                        Pagar
+                        <v-icon class="ml-2"> mdi-check-circle </v-icon>
+                      </v-btn>
+                      
+                      <v-btn
+                        depressed
+                        link
+                        :to="'/pago-payme/' + order.hash"
+                        color="green"
+                        v-else-if="order.order_status.id == 5 && order.id_payment_method == 1"
+                      >
+                        Pagar
+                        <v-icon class="ml-2"> mdi-check-circle </v-icon>
+                      </v-btn>
+
+                      <!-- /pago-payme/MTAxMTIyMDIyMTAwMTQ4OEw3 -->
                     </div>
                   </v-card-text>
                 </v-card>
               </v-card-text>
               <v-card-text v-else>
                 <p>
-                  <strong>
-                      No existen aún ordenes.
-                  </strong>
+                  <strong> No existen aún ordenes. </strong>
                 </p>
               </v-card-text>
               <v-card-actions class="d-flex justify-center" v-if="hasOrders">
@@ -130,7 +312,7 @@
                 </div>
               </v-card-actions>
             </v-card>
-            
+
             <v-dialog v-model="dialog" max-width="900">
               <v-card>
                 <v-card-title
@@ -220,18 +402,59 @@
                     </v-col>
                   </v-row>
                 </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
+                <v-card-actions class="d-flex flex-wrap justify-end">
+                  
 
-                  <v-btn color="primary" text @click="dialog = false">
+                  <!-- <v-btn color="primary" text @click="dialog = false">
                     Cerrar
-                  </v-btn>
+                  </v-btn>-->
+                  <v-btn
+                        depressed
+                        color="primary"
+                        @click="dialog = false"
+                      >
+                        Cerrar
+                        <v-icon class="ml-2"> mdi-close-circle </v-icon>
+                      </v-btn>
+
+
+                    <v-btn
+                        depressed
+                        link
+                        :to="'/pago-payme/' + selectedOrder.hash"
+                        color="green"
+                        v-if="selectedOrder.order_status == 5 && selectedOrder.payment_method_id == 1"
+                      >
+                        Pagar
+                        <v-icon class="ml-2"> mdi-check-circle </v-icon>
+                    </v-btn>
+                    <v-btn
+                        depressed
+                        link
+                        :to="'/confirmar-pago/' + selectedOrder.hash"
+                        color="green"
+                        v-else-if="selectedOrder.order_status == 5 && selectedOrder.payment_method_id == 2"
+                      >
+                        Pagar
+                        <v-icon class="ml-2"> mdi-check-circle </v-icon>
+                    </v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
           </div>
         </v-tab-item>
       </v-tabs-items>
+
+            
+      <v-snackbar
+          v-model="toast.toast"
+          :timeout="toast.timeout"
+          :color="toast.color"
+          dark
+          >
+          {{ toast.message }}
+      </v-snackbar>
+
     </v-container>
   </div>
 </template>
@@ -246,6 +469,7 @@ export default {
       selectedOrder: {
         detail: [],
         payment_method: "",
+        payment_method_id: "",
         order_status: 0,
         order_status_name: 0,
         id: "",
@@ -253,6 +477,7 @@ export default {
         total: 0,
         subtotal: 0,
         igv: 0,
+        hash:""
       },
       hasOrders: true,
       dialog: false,
@@ -271,6 +496,42 @@ export default {
       page: 1,
       total: 0,
       loading: false,
+
+      // form error
+      error: false,
+      errorMessages: "",
+
+      // show password field
+      showLastPassword: false,
+      showNewPassword: false,
+      loadingChangePassword: false,
+
+      isChangePasswordFormValid: true,
+      last_password: "",
+      new_password: "",
+      new_password_confirm: "",
+
+      // input rules
+      rules: {
+        required: (value) => !!value || "Este campo es requerido",
+        only_numbers: this.$UTILS.rules.only_numbers,
+      },
+
+
+      pwdRules: [v => !!v || "Este campo es requerido"],
+      pwdConfirm: [
+        v => !!v || "Este campo es requerido",
+        v => v === this.new_password || "Contraseñas no coinciden"
+      ],
+
+
+      toast:{
+          toast: false,
+          message: '',
+          timeout: 3000,
+          color: "success"
+      },
+
     };
   },
   mounted() {
@@ -282,6 +543,13 @@ export default {
     },
   },
   methods: {
+
+    showToast(msg,color){
+        this.toast.color = color;
+        this.toast.message = msg;
+        this.toast.toast = true;
+    },
+
     openDetails(order) {
       this.selectedOrder.detail = order.detail;
       this.selectedOrder.order_status = order.order_status.id;
@@ -291,15 +559,19 @@ export default {
       this.selectedOrder.descuento = order.discount;
       this.selectedOrder.subtotal = order.subtotal;
       this.selectedOrder.total = order.total;
+      this.selectedOrder.hash = order.hash;
+      this.selectedOrder.payment_method_id = order.id_payment_method;
       this.selectedOrder.igv = order.igv;
       this.dialog = true;
     },
     async getPartnerData(id) {
+      this.$store.commit('loader',true);
       try {
         const response = await this.$API.auth.auth(id);
         this.user = response.data;
-        console.log(this.user);
+        this.$store.commit('loader',false);
       } catch (e) {
+        this.$store.commit('loader',false);
         console.error(e);
       }
     },
@@ -313,13 +585,24 @@ export default {
         );
         this.orders = response.data.data.orders.data;
         this.total = response.data.data.orders.last_page;
-        this.hasOrders = (response.data.data.orders.total != 0) ? true : false;
+        this.hasOrders = response.data.data.orders.total != 0 ? true : false;
         this.loading = false;
-        console.log(this.hasOrders);
+        console.log(this.orders);
       } catch (e) {
         console.error(e);
       }
     },
+
+
+    submitChangePassword() {
+      if (this.$refs.form_change_password.validate()) {
+        this.changePassword();
+      } else {
+        return;
+      }
+    },
+
+
     getIcon(status) {
       let color = null;
       switch (status) {
@@ -362,6 +645,41 @@ export default {
       }
       return color;
     },
+
+
+
+
+    async changePassword() {
+      let vm = this;
+      this.$store.commit('loader',true);
+      try {
+        vm.loadingChangePassword = true;
+        let data = {
+          old_password: vm.last_password,
+          new_password: vm.new_password,
+        };
+        await this.$API.auth.change_password(data);
+        vm.loadingChangePassword = false;
+
+        this.$refs.form_change_password.reset();
+        this.$store.commit('loader',false);
+        this.showToast('Contraseña Restablecida',"success");
+      } catch (error) {
+        vm.loadingChangePassword = false;
+        let err = {
+          status: error.response.status,
+          name: error.name,
+          data: error.response.data,
+          message: error.message,
+        };
+        vm.last_password='';
+        vm.new_password='';
+        vm.new_password_confirm=''
+        this.showToast(error.response.data.message+'. Vuelve a intentarlo',"error");
+        this.$store.commit('loader',false);
+        console.log(err);
+      }
+    },
   },
 };
 </script>
@@ -391,16 +709,15 @@ export default {
     color: #000;
   }
 }
-@media (max-width:600px) {
-    .footer{
-        display: flex;
-        flex-wrap: wrap;
-        span{
-            margin-left: 0px !important;
-        }
+@media (max-width: 600px) {
+  .footer {
+    
+    span {
+      margin-left: 0px !important;
     }
-    .orders-main-container{
-        padding: 0px !important;
-    }
+  }
+  .orders-main-container {
+    padding: 0px !important;
+  }
 }
 </style>

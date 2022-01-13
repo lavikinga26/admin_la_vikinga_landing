@@ -5,6 +5,9 @@ export default {
         auth(){
             return callAuthAPI('post', 'api/v1/auth/user');
         },
+        change_password(data){
+            return callAuthAPI('post', 'api/v1/auth/change-password', { data: data });
+        }
     },
 
     gymVirtual:{
