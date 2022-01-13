@@ -635,7 +635,7 @@ export default {
         },
         async aplicarCupon(){
             try{
-                const response = await this.$API.coupon.validate({cupon: this.coupon});
+                const response = await this.$API.coupon.validate({cupon: this.order.coupon});
                 //console.log(response.data);
                 let datos = response.data;
                 let flag = 0;
@@ -660,7 +660,7 @@ export default {
                     this.toast.color = "red";
                     this.toast.message = "Cupón inválido.";
                     this.toast.toast = true;
-                    console.log(response.data)
+                    //console.log(response.data)
                     
                 }
                 
