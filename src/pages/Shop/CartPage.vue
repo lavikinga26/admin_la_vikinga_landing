@@ -654,9 +654,12 @@ export default {
                     }
 
                 }else{
+                   
                     this.toast.color = "red";
                     this.toast.message = response.data.msg;
                     this.toast.toast = true;
+                    console.log(response.data)
+                    
                 }
             }catch(e){
                 this.$store.commit('loader',false);
