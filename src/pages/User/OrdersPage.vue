@@ -12,6 +12,7 @@
         dark
       >
         <v-tab to="#mi-cuenta">MI CUENTA</v-tab>
+        <v-tab to="#mis-planes">MIS PLANES</v-tab>
         <v-tab to="#mis-ordenes">MIS ORDENES</v-tab>
       </v-tabs>
       <v-tabs-items v-model="userProfileTabs" id="custom-tab-items">
@@ -99,6 +100,60 @@
             </v-card>
           </div>
         </v-tab-item>
+        
+        <v-tab-item value="mis-planes">
+          <div class="my-5">
+            <v-card class="my-10 rounded-xl pa-10">
+              <v-card-title
+                class="tit_h1_staff_pink text_entrena txt_uppercase mb-6"
+              >
+                MIS PLANES
+              </v-card-title>
+              <v-row class="px-5">
+                <v-col>
+                  <div class="mb-2">
+                    <v-simple-table>
+                      <template v-slot:default>
+                        <thead>
+                          <tr>
+                            <th class="text-left">
+                              Plan
+                            </th>
+                            <th class="text-left">
+                              Fecha de Expiración
+                            </th>
+                            <th class="text-center">
+                              Estado
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            v-for="(item, key) in user.plans"
+                            :key="'plan_'+key"
+                          >
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.expiration_date }}</td>
+                            <td class="text-center">
+                              <v-chip
+                                class="ma-2"
+                                small
+                                :color="item.status ? 'success' : 'error'"
+                              >
+                                {{item.status ? 'Habilitado':'Deshabilitado'}}
+                              </v-chip>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </template>
+                    </v-simple-table>
+                  </div>
+                </v-col>
+              </v-row>
+            </v-card>
+          </div>
+        </v-tab-item>
+
         <v-tab-item value="mis-ordenes">
           <div class="my-2">
             <v-card
@@ -509,11 +564,13 @@ export default {
       this.dialog = true;
     },
     async getPartnerData(id) {
+      this.$store.commit('loader',true);
       try {
         const response = await this.$API.auth.auth(id);
         this.user = response.data;
-        console.log(this.user);
+        this.$store.commit('loader',false);
       } catch (e) {
+        this.$store.commit('loader',false);
         console.error(e);
       }
     },
