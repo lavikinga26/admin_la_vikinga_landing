@@ -492,7 +492,7 @@
                                             background-color="grey lighten-2"
                                             placeholder="CUPÓN"
                                             hide-details=""
-                                            v-model="coupon"
+                                            v-model="order.coupon"
                                             :disabled="couponDisabled"
                                         ></v-text-field>
                                         <v-btn
@@ -635,7 +635,7 @@ export default {
         },
         async aplicarCupon(){
             try{
-                const response = await this.$API.coupon.validate({cupon: this.coupon});
+                const response = await this.$API.coupon.validate({cupon: this.order.coupon});
                 if(response.data.available === true){
                     let data = response.data;
                     if(data.id_plan === null){

@@ -75,6 +75,7 @@
                               :rules="pwdConfirm"
                               :error="error"
                               :error-messages="errorMessages"
+                              type="password"
                               name="password"
                               label="Confirmar contraseña (min. 8 caracteres)"
                             ></v-text-field>
