@@ -13,6 +13,8 @@
                     show-arrows
                     v-model="model2"
                     center-active
+                    @click:next="model2=model2+1; current_month=planMonths[model2] "
+                    @click:prev="model2=model2-1; current_month=planMonths[model2] "
                     >
                     <v-slide-item
                         v-for="(n, index) in planMonths"
@@ -48,14 +50,17 @@
                 center-active
                 show-arrows
                 >
-                <template  v-for="(n, index) in planSections">
+                
+
+                    <!--v-if="n.month == current_month._month"-->
                     <v-slide-item
-                        :key="'section_'+index"
                         v-slot="{ toggle }"
-                        v-if="n.month == current_month._month"
+                        v-for="(n, indx) in planSectionsFilter()"
+                        :key="indx"
                     >
+                    <!--; getActivities(indx)-->
                         <v-card
-                        :color="index==model ? 'pink lighten-5' : 'grey lighten-5'"
+                        :color="indx==model ? 'pink lighten-5' : 'grey lighten-5'"
                         class="my-4 mx-1"
                         height="280"
                         width="180"
@@ -98,8 +103,6 @@
                             </v-card-actions>
                         </v-card>
                     </v-slide-item>
-                </template>
-                
                 </v-slide-group>
             </v-sheet>
         </div>
@@ -197,6 +200,13 @@ export default {
                 console.error(e);
                 vm.$store.commit('loader',false);
             }
+        },
+        planSectionsFilter(){
+            //n.month == current_month._month
+            return this.planSections.filter((item)=>item.month==this.current_month._month);
+        },
+        getActivities(indx){
+            console.log(this.model)
         }
     }
 }
