@@ -79,6 +79,12 @@ export default {
         loginForm: {
             token_name: '',
         },
+        toast:{
+            toast: false,
+            message: '',
+            timeout: 3000,
+            color: "success"
+        },
         //--- End ---
 
         //--- Form Rules ---
@@ -135,6 +141,10 @@ export default {
                     this.$store.commit('loader',false);
                     console.error(e);
                 }
+            }else{
+                this.toast.color = "red";
+                this.toast.message = "Usuario y/o contraseña incorrecta.";
+                this.toast.toast = true;
             }
         },
     }
