@@ -7,7 +7,7 @@
                         <div class="tit_h1_staff_pink text_entrena txt_uppercase mb-6">MI HISTORIA CLÍNICA</div>
                         <v-row class="align-center">
                             <v-col cols="12" md="12" sm="12">
-                                <span style="font-size: 0.9em;"><b>Enfermedad o padecimiento actual (Marque con una x):</b></span>
+                                <span style="font-size: 0.9em;"><b>Enfermedad o padecimiento actual:</b></span>
                             </v-col>
 
                             <v-col cols="12" md="8" sm="12"><span style="font-size: 0.9em;">Hipertensión Arterial o prob cardiovasculares</span></v-col>
