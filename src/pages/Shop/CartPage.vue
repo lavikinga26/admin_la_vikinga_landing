@@ -636,31 +636,34 @@ export default {
         async aplicarCupon(){
             try{
                 const response = await this.$API.coupon.validate({cupon: this.order.coupon});
-                if(response.data.available === true){
-                    let data = response.data;
-                    if(data.id_plan === null){
-                        this.discount = (data.discount_type == 1) ? this.subtotal * (data.discount/100) : data.discount; 
-                    }else{
-                        let index = this.cart.findIndex((elem) => elem.id == data.id_plan);
-                        if(index == -1){
-                            this.showToast("No valido para los productos de este carrito","red");
+                //console.log(response.data);
+                let datos = response.data;
+                let flag = 0;
+                datos.forEach((cuponval, index) => {
+                    if(cuponval.available === true){
+                        if(cuponval.id_plan === null){
+                            this.discount = (cuponval.discount_type == 1) ? this.subtotal * (cuponval.discount/100) : cuponval.discount; 
                         }else{
-                            if(this.couponDisabled != true){
-                                this.discount = (data.discount_type == 1) ? this.cart[index].price * (data.discount/100) :  data.discount;
-                                this.couponDisabled = true;
-                                this.showToast("Cupón valido","success");
+                            let index = this.cart.findIndex((elem) => elem.id == cuponval.id_plan);
+                            if(index != -1){
+                                if(this.couponDisabled != true){
+                                    this.discount = (cuponval.discount_type == 1) ? this.cart[index].price * (cuponval.discount/100) :  cuponval.discount;
+                                    this.couponDisabled = true;
+                                    flag = 1;
+                                    this.showToast("Cupón valido","success");
+                                }
                             }
                         }
                     }
-
-                }else{
-                   
+                });
+                if(flag == 0){
                     this.toast.color = "red";
-                    this.toast.message = response.data.msg;
+                    this.toast.message = "Cupón inválido.";
                     this.toast.toast = true;
-                    console.log(response.data)
+                    //console.log(response.data)
                     
                 }
+                
             }catch(e){
                 this.$store.commit('loader',false);
                 console.error(e);

@@ -138,10 +138,10 @@
     <!-- Copyright -->
     <div
          class="text-center p-3"
-         style="color: grey; font-size: 0.7rem;"
+         style="color: grey; font-size: 0.75rem;"
          >
         ©{{new Date().getFullYear()}} La Vikinga - Todos los derechos reservados. 
-      <!--DESARROLLADO POR <a href="https://bytesoluciones.com" target="_blank" style="text-decoration:none;">BYTESOLUCIONES</a>-->
+      Desarrollado por <a href="https://bytesoluciones.com" target="_blank" style="text-decoration:none;">ByteSoluciones</a>
     </div>
     <!-- Copyright -->
     </v-card>
