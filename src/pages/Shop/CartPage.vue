@@ -797,23 +797,43 @@ export default {
                 vm.order.detail = vm.cart;
                 const data = await vm.$API.order.register(vm.order);
                 vm.openToastAlert(true, 'Orden creada correctamente', 'primary');
-                vm.actions = data.data.data.actions
+                vm.actions = data.data.data.actions;
+
+                if(!this.isLogged){
+                    const response = await vm.$API.user.login({
+                        email: vm.order.email,
+                        password: vm.order.password,
+                        token_name: "LaVikinga2021"
+                    });
+                    const user = response.data.data.user;
+                    const token = response.data.data.token;
+                    localStorage.setItem('user_data', JSON.stringify(user));
+                    localStorage.setItem('token', token);
+                }
+
                 if((vm.actions.payment_status=='pending') && (vm.actions.payment_external == false))
                 {
                     vm.$store.dispatch("cleanCart");
-                    this.$router.push({ path: '/confirmar-pago/'+vm.actions.hash });
+                    //this.$router.push({ path: '/confirmar-pago/'+vm.actions.hash });
+                    window.location.replace('/confirmar-pago/'+vm.actions.hash );
                 }
                 if((vm.actions.payment_status=='pending') && (vm.actions.payment_external == true))
                 {
                     //Enviamos a payme
-                    this.$router.push({ path: '/pago-payme/'+vm.actions.hash });
+                    //this.$router.push({ path: '/pago-payme/'+vm.actions.hash });
+                    window.location.replace('/pago-payme/'+vm.actions.hash);
                 }
                 
                 vm.$store.commit('loader',false);
             }
             catch(e){
                 this.$store.commit('loader',false);
+                vm.openToastAlert(true, 'Upps! Ocurrio un error. Vuelve a intentarlo', 'Error');
+                setTimeout(()=>{ 
+                    this.$router.go();
+                }, 1500);
                 console.error(e);
+                this.$router.go();
             } 
         },
 
