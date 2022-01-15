@@ -296,7 +296,20 @@
                         <v-icon class="ml-2"> mdi-check-circle </v-icon>
                       </v-btn>
 
-                      <!-- /pago-payme/MTAxMTIyMDIyMTAwMTQ4OEw3 -->
+
+                      <a 
+                      v-else-if="order.order_status.id == 1 && order.invoice != null"
+                      :href="'https://lavikinga.bytesoluciones.net/print/document/'+ order.invoice.external_id +'/a4'"
+                      style="text-decoration:none;"
+                      target="_blank" rel="invoice">
+                          <v-btn
+                            depressed
+                            color="green"
+                          >
+                            {{ (order.invoice.had_invoice == 0) ? "Boleta" : "Factura" }}
+                            <v-icon class="ml-2"> mdi-file </v-icon>
+                          </v-btn>
+                      </a>
                     </div>
                   </v-card-text>
                 </v-card>
@@ -403,11 +416,7 @@
                   </v-row>
                 </v-card-text>
                 <v-card-actions class="d-flex flex-wrap justify-end">
-                  
 
-                  <!-- <v-btn color="primary" text @click="dialog = false">
-                    Cerrar
-                  </v-btn>-->
                   <v-btn
                         depressed
                         color="primary"
@@ -433,11 +442,24 @@
                         link
                         :to="'/confirmar-pago/' + selectedOrder.hash"
                         color="green"
-                        v-else-if="selectedOrder.order_status == 5 && selectedOrder.payment_method_id == 2"
+                        v-else-if="selectedOrder.order_status == 1 && selectedOrder.payment_method_id == 1"
                       >
                         Pagar
                         <v-icon class="ml-2"> mdi-check-circle </v-icon>
                     </v-btn>
+                    <a 
+                      v-else-if="selectedOrder.order_status == 1 && selectedOrder.invoice_external_id != null"
+                      :href="'https://lavikinga.bytesoluciones.net/print/document/'+ selectedOrder.invoice_external_id +'/a4'"
+                      style="text-decoration:none;"
+                      target="_blank" rel="invoice">
+                          <v-btn
+                            depressed
+                            color="green"
+                          >
+                            {{( selectedOrder.had_invoice == 0) ? 'Boleta' : 'Factura'}}
+                            <v-icon class="ml-2"> mdi-file </v-icon>
+                          </v-btn>
+                      </a>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -477,7 +499,9 @@ export default {
         total: 0,
         subtotal: 0,
         igv: 0,
-        hash:""
+        hash:"",
+        invoice_external_id: '',
+        had_invoice:'',
       },
       hasOrders: true,
       dialog: false,
@@ -562,6 +586,10 @@ export default {
       this.selectedOrder.hash = order.hash;
       this.selectedOrder.payment_method_id = order.id_payment_method;
       this.selectedOrder.igv = order.igv;
+
+      this.selectedOrder.invoice_external_id = (order.invoice == null) ? null : order.invoice.external_id;
+      this.selectedOrder.had_invoice = (order.invoice == null) ? null : order.invoice.had_invoice;
+
       this.dialog = true;
     },
     async getPartnerData(id) {
