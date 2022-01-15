@@ -202,12 +202,8 @@ export default {
             }
         },
         planSectionsFilter(){
-            //n.month == current_month._month
             return this.planSections.filter((item)=>item.month==this.current_month._month);
         },
-        getActivities(indx){
-            console.log(this.model)
-        }
     }
 }
 </script>
