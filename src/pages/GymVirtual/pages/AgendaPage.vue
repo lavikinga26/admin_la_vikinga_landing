@@ -212,7 +212,7 @@
                     >
                         ENTRENAMIENTO DE BRAZOS
                     </v-toolbar>
-                    <v-card-text class="text-center d-flex align-center pt-10 justify-center">
+                    <v-card-text class="text-center d-flex align-center pt-10 justify-center" v-if="dialog">
                         <!--<div v-html="currrent_activity.iframe"></div>-->
                         <iframe :src="currrent_activity.iframe" width="640" height="328" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
                     </v-card-text>
@@ -287,8 +287,7 @@ import axios from "axios";
         }
     }),
     mounted() {
-         moment.locale('es');
-         console.log(moment('2022-01-19 06:00').hour());
+        moment.locale('es');
         let vm = this;
         vm.$store.commit('loader',true);
         
@@ -330,6 +329,7 @@ import axios from "axios";
                 activities: []
             }
             vm.model = vm.planSections.findIndex((element) => element.dat == vm.current_date.dat );
+            vm.current_date.activities = vm.planSections[vm.model].activities;
         },
         async schedule(){
             let vm = this;
@@ -337,11 +337,9 @@ import axios from "axios";
                 const data = await this.$API.gymVirtual.schedule();
                 vm.planSections = data.data.data;
                 vm.dates = vm.planSections.map(item => {
-                    
                     const container = {};
                     container.date = item.dias_avb;
                     container.month = item.month;
-
                     return container;
                 });
                 vm.getDate();

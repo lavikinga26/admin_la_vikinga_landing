@@ -4,7 +4,7 @@
           color="primary"
           dark
         >
-            <v-toolbar-title class="tit_h2_pink" style="font-size: 3.0rem; color: white">PLAN VIKINGA</v-toolbar-title>
+            <v-toolbar-title class="tit_h2_pink" style="font-size: 3.0rem; color: white">GYM VIRTUAL</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn
                 text 
