@@ -65,19 +65,7 @@
               INSCRIPCIONES
             </v-btn>
           </div>
-          <!-- Grid column -->
-          <div><span style="color: #E30E4F; font-size: 0.9rem;"> | </span></div>
-          <!-- Grid column -->
-          <div>
-            <v-btn
-              text
-              small
-              color="secondary"
-              href="/inscripciones"
-            >
-              GYM VIRTUAL
-            </v-btn>
-          </div>
+          
           <!-- Grid column -->
           <div><span style="color: #E30E4F; font-size: 0.9rem;"> | </span></div>
           <!-- Grid column -->
@@ -127,6 +115,20 @@
               href="/preguntas-frecuentes"
             >
               INFO
+            </v-btn>
+          </div>
+
+          <!-- Grid column -->
+          <div><span style="color: #E30E4F; font-size: 0.9rem;"> | </span></div>
+          <!-- Grid column -->
+          <div>
+            <v-btn
+              text
+              small
+              color="secondary"
+              href="/terminos-condiciones"
+            >
+              TÉRMINOS Y CONDICIONES
             </v-btn>
           </div>
         </div>
