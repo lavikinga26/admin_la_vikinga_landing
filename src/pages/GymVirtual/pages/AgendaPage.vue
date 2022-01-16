@@ -99,11 +99,19 @@
                         max-width="1000"
                         >
 
-                            <div class="primary white--text text-left pa-3 px-10 d-flex">
-                                {{activity.name}}
+                            <div class="text-left pa-3 px-10 d-flex"
+                                v-bind:class="{ 
+                                    'activity-class': activity.type=='class' || activity.type=='masterclass', 
+                                    'activity-taller': activity.type=='taller', 
+                                    'activity-descanso': activity.type=='descanso', 
+                                    'activity-nutrition': activity.type=='nutricion', 
+                                    'white--text': activity.type!='descanso' ,
+                                    'black--text': activity.type=='descanso' 
+                                }">
+                                    <b>{{activity.name}}</b>
                                 <v-spacer></v-spacer>
                                 <!--<v-icon color="#EF476F">mdi-circle-medium</v-icon>-->
-                                <div v-if="!activity.link_video">
+                                <div v-if="!activity.link_video && activity.link_class">
                                     <v-icon color="#FFFFFF">mdi-access-point</v-icon>
                                     &nbsp;&nbsp;
                                     <b>En vivo</b>
@@ -123,13 +131,27 @@
                                             <v-row class="fill-height ma-0"  align="center" justify="center" 
                                             style="background-color:#0000004d">
                                                 <v-btn
-                                                :disabled="!activity.link_video"
+                                                v-if="!activity.link_video && activity.link_class"
                                                 :href="activity.link_class"
                                                 target="_blank"
                                                 icon
+                                                class="white--text"
                                                 >
                                                     <v-icon style="font-size: 50px" 
                                                     class="white--text"
+                                                    color="#FFFFFF"
+                                                    >mdi-access-point</v-icon>
+                                                </v-btn>
+                                                <v-btn
+                                                v-if="activity.link_video"
+                                                icon
+                                                class="white--text"
+                                                @click="getVideoActivity(activity)"
+                                                
+                                                >
+                                                    <v-icon style="font-size: 50px" 
+                                                    class="white--text"
+                                                    color="#FFFFFF"
                                                     >mdi-motion-play-outline</v-icon>
                                                 </v-btn>
                                             </v-row>
@@ -160,7 +182,7 @@
                                             dark
                                             :href="activity.link_class"
                                             target="_blank"
-                                            v-if="!activity.link_video"
+                                            v-if="!activity.link_video && activity.link_class"
                                             >
                                                 <v-icon left>
                                                     mdi-access-point
@@ -186,11 +208,12 @@
                     <v-toolbar
                     color="primary"
                     dark
+                    elevation="0"
                     >
                         ENTRENAMIENTO DE BRAZOS
                     </v-toolbar>
                     <v-card-text class="text-center d-flex align-center pt-10 justify-center">
-                        <div v-html="iframe"></div>
+                        <div v-html="currrent_activity.iframe"></div>
                     </v-card-text>
                     <div class="py-0">
                         <v-container class="mx-6">
@@ -201,11 +224,11 @@
                                 </v-col>
                                 <v-col cols="6" md="4">
                                     <h6>ENFOQUE:</h6>
-                                    <div style="font-size: 0.8rem">FULL BODY</div>
+                                    <div style="font-size: 0.8rem">{{currrent_activity.focus}}</div>
                                 </v-col>
                                 <v-col cols="6" md="4">
                                     <h6>MATERIAL:</h6>
-                                    <div style="font-size: 0.8rem">MANCUERNAS</div> 
+                                    <div style="font-size: 0.8rem">{{currrent_activity.material}}</div> 
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -213,7 +236,7 @@
                     <v-card-actions class="justify-end">
                     <v-btn
                         text
-                        @click="dialog.value = false"
+                        @click="dialog  = false"
                     >Cerrar</v-btn>
                     </v-card-actions>
                 </v-card>
@@ -251,8 +274,16 @@ import axios from "axios";
             activities: []
         },
         colors: ['#0281a5','#0B233F','#E30E4F'],
-        dialog: true,
-        iframe: '<iframe src=\"https://player.vimeo.com/video/393999309?h=0cd4c9c103&amp;app_id=122963\" width=\"426\" height=\"240\" frameborder=\"0\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen title=\"Creating Video With Your Phone: Getting Started\"></iframe>'
+
+        dialog: false,
+        //iframe: '<iframe src=\"https://player.vimeo.com/video/393999309?h=0cd4c9c103&amp;app_id=122963\" width=\"426\" height=\"240\" frameborder=\"0\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen title=\"Creating Video With Your Phone: Getting Started\"></iframe>'
+        currrent_activity: {
+            iframe:'',
+            name:'',
+            hour_class:'',
+            focus:'',
+            material:''
+        }
     }),
     mounted() {
          moment.locale('es');
@@ -263,7 +294,6 @@ import axios from "axios";
         vm.getBaseUrl();
         vm.calendar();
         vm.schedule();
-        vm.getVideoActivity('x');
     },
     methods:{
         getMonth(){
@@ -343,13 +373,36 @@ import axios from "axios";
 
 
         //--------VIDEO-----------
-        getVideoActivity(video){
-            axios.get('https://vimeo.com/api/oembed.json?url='+'https://vimeo.com/393999309').then(function(data) {
+        getVideoActivity(activity){
+            /*axios.get('https://vimeo.com/api/oembed.json?url='+'https://vimeo.com/393999309').then(function(data) {
                 console.log(data.data)
             }.bind(this)).catch(function(e) {
                 this.showToast(e.response.data.message,"red");
-            });
+            });*/
+            this.currrent_activity = {
+                iframe: activity.link_video,
+                name: activity.name,
+                hour_class: activity.hour_class,
+                focus: activity.focus,
+                material: activity.material
+            }
+            this.dialog= true;
         }
     }
 }
 </script>
+
+<style>
+.activity-class{
+    background-color: #0B233F;
+}
+.activity-taller{
+    background-color: #E30E4F;
+}
+.activity-descanso{
+    background-color: #e9e9e9;
+}
+.activity-nutrition{
+    background-color: #0480a4;
+}
+</style>

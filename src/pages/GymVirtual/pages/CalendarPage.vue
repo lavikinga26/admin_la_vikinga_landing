@@ -72,9 +72,9 @@
                             </div>
 
                             <div class="pa-4" v-if="n.activities.length>0">
-                                <section v-for="(activity, index) in n.activities" :key="'activity_'+index">
+                                <section v-for="(activity, index) in n.activities" :key="'activity_'+index" class="mb-3">
                                     <h5>{{activity.name}}</h5>
-                                    <a class="mb-3" style="font-size: 0.7rem"> VER VIDEO</a>
+                                    <a class="mb-3 primary--text" style="font-size: 0.7rem">{{ n.dat+' '+activity.hour_class | formatTime}} (GMT-5)</a>
                                 </section>
                             </div>
                             
@@ -82,7 +82,7 @@
                                 <div>
                                     <img style="width: 50%;" src="@/assets/img/logo_vikinga_icon.png" alt="Logo" />
                                     <p class="tit_h1_staff_pink text_entrena txt_uppercase mb-6" style="font-size: 1.5rem">
-                                        PRÓXIMANENTE
+                                        PRÓXIMAMENTE
                                     </p>  
                                 </div>
                             </div>
@@ -138,7 +138,7 @@ export default {
         moment.locale('es');
         let vm = this;
         vm.$store.commit('loader',true);
-        
+        console.log(moment().format('LT'))
         vm.getBaseUrl();
         vm.calendar();
         vm.schedule();
