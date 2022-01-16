@@ -213,7 +213,8 @@
                         ENTRENAMIENTO DE BRAZOS
                     </v-toolbar>
                     <v-card-text class="text-center d-flex align-center pt-10 justify-center">
-                        <div v-html="currrent_activity.iframe"></div>
+                        <!--<div v-html="currrent_activity.iframe"></div>-->
+                        <iframe :src="currrent_activity.iframe" width="640" height="328" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
                     </v-card-text>
                     <div class="py-0">
                         <v-container class="mx-6">
