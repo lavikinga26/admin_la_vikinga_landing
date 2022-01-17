@@ -26,7 +26,7 @@
                                 </div>
 
                                 <div class="d-flex flex-wrap">
-                                    <div style="width:20%" class="pa-2" v-for="(item, k) in workout_list" :key="k">
+                                    <v-col cols="12" md="3" v-for="(item, k) in workout_list" :key="k">
                                         <div class="rounded-lg pink lighten-5 pa-5">
                                             <h5 class="secondary--text"><b>{{item.name}}</b></h5>
                                             <v-text-field
@@ -42,7 +42,7 @@
                                                 hide-details
                                             ></v-text-field>
                                         </div>
-                                    </div>
+                                    </v-col>
                                 </div>
                             </v-col>
                         </v-row>
