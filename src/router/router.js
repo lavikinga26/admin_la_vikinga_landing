@@ -6,11 +6,15 @@ import AuthRoutes from './auth.routes'
 
 import store from '../store';
 
+
+
 Vue.use(Router)
 
 const isAutheticated = async() =>{
     try{
         //await API.users.authenticated();
+        //return true;
+        const data = await axios.post(this.$baseURL + 'api/v1/auth/user')
         return true;
     }catch(error){
         return false;
@@ -128,7 +132,8 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
     //return next()
     if(to.matched.some(record => record.meta.requiresAuth)) {
-        if (store.getters.isLoggedIn) {
+        console.log(isAutheticated)
+        if (store.getters.isLoggedIn) { //(isAutheticated){
           next()
           return
         }

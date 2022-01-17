@@ -52,3 +52,27 @@
         </div>-->
     </div>
 </template>
+
+<script>
+export default {
+    components: { 
+    },
+    data: () => ({
+
+    }),
+
+    mounted(){
+        this.auth();
+    },
+    methods: {
+        async auth(){
+            try {
+                const response = await this.$API.auth.auth();
+            } catch (e) {
+                console.log('not login')
+                console.error(e);
+            }
+        }
+    }
+}
+</script>
