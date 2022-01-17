@@ -111,7 +111,7 @@
                                     <b>{{activity.name}}</b>
                                 <v-spacer></v-spacer>
                                 <!--<v-icon color="#EF476F">mdi-circle-medium</v-icon>-->
-                                <div v-if="!activity.link_video && activity.link_class">
+                                <div v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)">
                                     <v-icon color="#FFFFFF">mdi-access-point</v-icon>
                                     &nbsp;&nbsp;
                                     <b>En vivo</b>
@@ -131,7 +131,7 @@
                                             <v-row class="fill-height ma-0"  align="center" justify="center" 
                                             style="background-color:#0000004d">
                                                 <v-btn
-                                                v-if="!activity.link_video && activity.link_class"
+                                                v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)"
                                                 :href="activity.link_class"
                                                 target="_blank"
                                                 icon
@@ -160,7 +160,7 @@
                                     <v-col cols="12" md="8" class="text-left align-center d-flex">
                                         <v-container>
                                             <h3>{{activity.name}}</h3>
-                                            <div>HORA: {{activity.hour_class}}</div>
+                                            <div>HORA: {{current_date.dat + ' ' +activity.hour_class | formatTime}}</div>
                                             <v-row class="my-3">
                                                 <v-col cols="12" md="4">
                                                     <h5>TIEMPO:</h5>
@@ -177,18 +177,23 @@
                                             </v-row>
                                             <v-btn
                                             tile
-                                            color="red"
+                                            color="secondary"
                                             class="rounded"
                                             dark
                                             :href="activity.link_class"
                                             target="_blank"
-                                            v-if="!activity.link_video && activity.link_class"
+                                            v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)"
                                             >
                                                 <v-icon left>
                                                     mdi-access-point
                                                 </v-icon>
                                                 Ingresar
                                             </v-btn>
+                                            <!--<p style="font-size: 0.7rem"
+                                                v-if="!activity.link_video && activity.link_class && !isOnlive(current_date.dat, activity.hour_class)"
+                                            >
+                                                * Clase en vivo finalizada, en momentos podras ver el video.
+                                            </p>-->
                                         </v-container>
                                     </v-col>
                                 </v-row>
@@ -386,6 +391,17 @@ import axios from "axios";
                 material: activity.material
             }
             this.dialog= true;
+        },
+
+        isOnlive(date, hour){
+
+            let fecha_class = moment(date + ' ' + hour);//.add(1, 'hour')
+            let fecha_class_2 = moment(date + ' ' + hour).add(1, 'hour');
+
+            let now = moment();
+
+            let response = (fecha_class <= now && fecha_class_2 >= now);
+            return response;
         }
     }
 }

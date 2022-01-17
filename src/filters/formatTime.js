@@ -5,7 +5,7 @@ import store from '../store'
 Vue.filter('formatTime', function(value) {
 
   if (value) { 
-    return moment(String(value)).format('LT')
+    return moment(String(value)).format('hh:mm A')
  }
 
   return ''
