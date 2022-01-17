@@ -4,7 +4,7 @@
           color="primary"
           dark
         >
-            <v-toolbar-title class="tit_h2_pink" style="font-size: 3.0rem; color: white">PLAN VIKINGA</v-toolbar-title>
+            <v-toolbar-title class="tit_h2_pink" style="font-size: 3.0rem; color: white">GYM VIRTUAL</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn
                 text 
@@ -36,10 +36,10 @@
             </v-btn>-->
         </v-toolbar>
 
-        <!--<div class="d-flex flex-grow-1 flex-column">
-            <router-view :key="$route.fullPath" class="flex-grow-1"></router-view>
-        </div>-->
         <div class="d-flex flex-grow-1 flex-column">
+            <router-view :key="$route.fullPath" class="flex-grow-1"></router-view>
+        </div>
+        <!--<div class="d-flex flex-grow-1 flex-column">
             <v-container style="min-height:70vh;" class="d-flex align-center">
                 <div style="text-align: center; width: 100%" class="pa-10">
                     <img style="width: 250px;" src="@/assets/img/logo_vikinga_icon.png" alt="Logo" />
@@ -49,6 +49,30 @@
                 </div>
                 
             </v-container>
-        </div>
+        </div>-->
     </div>
 </template>
+
+<script>
+export default {
+    components: { 
+    },
+    data: () => ({
+
+    }),
+
+    mounted(){
+        this.auth();
+    },
+    methods: {
+        async auth(){
+            try {
+                const response = await this.$API.auth.auth();
+            } catch (e) {
+                console.log('not login')
+                console.error(e);
+            }
+        }
+    }
+}
+</script>

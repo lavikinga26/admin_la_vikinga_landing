@@ -67,7 +67,7 @@
                 </div>
             </v-col>
             <v-col cols="12" md="6" sm="12" >
-                <img src="@/assets/img/img_carousel_1.png" alt="" class="" style="width: 100%">
+                <img src="@/assets/img/multimedia/ENTRENA_DONDE_QUIERAS/DESAFIO_7.jpg" alt="" class="" style="width: 100%">
             </v-col>
         </v-row>
         <sponsors-section></sponsors-section>

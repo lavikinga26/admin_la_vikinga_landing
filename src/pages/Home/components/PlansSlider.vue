@@ -27,7 +27,7 @@
                 >
                     <v-img
                         v-if="item.file_path"
-                        lazy-src="https://picsum.photos/id/11/10/6"
+                        lazy-src="@/assets/img/lazy_img.jpg"
                         height="360"
                         max-height="360"
                         :src="base_url + item.file_path.path + item.file_path.filename"

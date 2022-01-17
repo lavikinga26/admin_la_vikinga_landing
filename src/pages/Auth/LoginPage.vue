@@ -52,6 +52,14 @@
                 </div>
             </div>
         </div>
+        <v-snackbar
+            v-model="toast.toast"
+            :timeout="toast.timeout"
+            :color="toast.color"
+            dark
+            >
+            {{ toast.message }}
+        </v-snackbar>
     </div>
 </template>
 <script>
@@ -71,6 +79,12 @@ export default {
         loginForm: {
             token_name: '',
         },
+        toast:{
+            toast: false,
+            message: '',
+            timeout: 3000,
+            color: "success"
+        },
         //--- End ---
 
         //--- Form Rules ---
@@ -83,9 +97,22 @@ export default {
         ],
         //--- End ---
         valid: true,
+
+        toast:{
+            toast: false,
+            message: '',
+            timeout: 3000,
+            color: "success"
+        },
+
     }),
 
     methods:{
+        showToast(msg,color){
+            this.toast.color = color;
+            this.toast.message = msg;
+            this.toast.toast = true;
+        },
         getLoggedUser(){
             if(localStorage.getItem('token')){
                 this.logged_user = JSON.parse(localStorage.getItem('user_data'));
@@ -108,12 +135,16 @@ export default {
                         window.location.replace('/cuenta/mi-perfil');
                         //this.$router.push({ path: '/gym-virtual/calendario' });
                     }, 3000);
-                    
                     //this.$router.go();
                 } catch (e) {
+                    this.showToast('Correo Electrónico y/o contraseña incorrecta',"error");
                     this.$store.commit('loader',false);
                     console.error(e);
                 }
+            }else{
+                this.toast.color = "red";
+                this.toast.message = "Usuario y/o contraseña incorrecta.";
+                this.toast.toast = true;
             }
         },
     }

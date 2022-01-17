@@ -83,7 +83,7 @@
                         
                         >
                             <v-img
-                                lazy-src="https://picsum.photos/id/11/10/6"
+                                lazy-src="@/assets/img/lazy_img.jpg"
                                 max-height="600"
                                 height="420"
                                 max-width="350"

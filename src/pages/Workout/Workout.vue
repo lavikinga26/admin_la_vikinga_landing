@@ -41,7 +41,7 @@
                 <v-col cols="12" md="4" sm="4" v-for="(item, i) in list_workout" :key="i">
                     <div class="parent-size">
                         <!-- <img
-                            src="https://picsum.photos/id/11/10/6"
+                            src="@/assets/img/lazy_img.jpg"
                             style="width: 100%"
                             class="img_staff"> -->
         

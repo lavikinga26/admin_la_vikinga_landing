@@ -131,9 +131,11 @@ export default {
             try{
                 const response = await this.$API.user.reset_password({hash:vm.hash,email:vm.email,password:vm.newPassword});
                 this.name = response.data.data.name;
-                this.showToast('Contraseña Restablecida',"success");
                 this.$store.commit('loader',false);
-                this.$router.push({ path: '/auth/iniciar-sesion' });
+                setTimeout(()=>{ 
+                    this.showToast('Contraseña Restablecida',"success");
+                    this.$router.push({ path: '/auth/iniciar-sesion' });
+                }, 2000);
                 //window.location.replace('/')
         
             }catch(e){

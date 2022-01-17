@@ -61,37 +61,6 @@ export default {
             return callAPI('post', 'api/v1/auth/reset-password', { data: data });
         },
     },
-    business_partner:{
-        getPartner(id){
-            return callAPI('get', 'api/v1/business-partner/get-partner/'+id);
-        },
-        getWorkoutList(){
-            return callAPI('get', 'api/v1/business-partner/get-workout-list');
-        },
-
-        updateProfileInfo(id, data){
-            return callAPI('post', 'api/v1/business-partner/update-profile-info/'+id, {data: data});
-        },
-        updateHealthInfo(id, data){
-            return callAPI('post', 'api/v1/business-partner/update-health-info/'+id, {data: data});
-        },
-        updateProgressInfo(id, data){
-            return callAPI('post', 'api/v1/business-partner/update-progress-info/'+id, {data: data});
-        },
-        updateNutritionInfo(id, data){
-            return callAPI('post', 'api/v1/business-partner/update-nutrition-info/'+id, {data: data});
-        },
-        updateTrainingInfo(id, data){
-            return callAPI('post', 'api/v1/business-partner/update-training-info/'+id, {data: data});
-        },
-
-        uploadProfilePhoto(data){
-            return callAPI('post', 'api/v1/business-partner/upload-profile-photo', {data: data});
-        },
-        uploadBodyPicture(data){
-            return callAPI('post', 'api/v1/business-partner/upload-body-photo', {data: data});
-        },
-    },
 
     team:{
         staff(){
@@ -143,6 +112,9 @@ export default {
         },
         getAllOrderInfo(id){
             return callAPI('get', 'api/v1/order/getAllOrderInfo/'+id );
+        }, 
+        getOrdersByUser(id,page){
+            return callAPI('get','api/v1/order/getOrdersByUser/'+id+"?page="+page);
         }, 
         validateEmail(data){
             return callAPI('post', 'api/v1/order/validate-email', { data: data });

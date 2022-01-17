@@ -13,6 +13,8 @@
                     show-arrows
                     v-model="model2"
                     center-active
+                    @click:next="model2=model2+1; current_month=planMonths[model2] "
+                    @click:prev="model2=model2-1; current_month=planMonths[model2] "
                     >
                     <v-slide-item
                         v-for="(n, index) in planMonths"
@@ -48,14 +50,17 @@
                 center-active
                 show-arrows
                 >
-                <template  v-for="(n, index) in planSections">
+                
+
+                    <!--v-if="n.month == current_month._month"-->
                     <v-slide-item
-                        :key="'section_'+index"
                         v-slot="{ toggle }"
-                        v-if="n.month == current_month._month"
+                        v-for="(n, indx) in planSectionsFilter()"
+                        :key="indx"
                     >
+                    <!--; getActivities(indx)-->
                         <v-card
-                        :color="index==model ? 'pink lighten-5' : 'grey lighten-5'"
+                        :color="indx==model ? 'pink lighten-5' : 'grey lighten-5'"
                         class="my-4 mx-1"
                         height="280"
                         width="180"
@@ -67,9 +72,9 @@
                             </div>
 
                             <div class="pa-4" v-if="n.activities.length>0">
-                                <section v-for="(activity, index) in n.activities" :key="'activity_'+index">
+                                <section v-for="(activity, index) in n.activities" :key="'activity_'+index" class="mb-3">
                                     <h5>{{activity.name}}</h5>
-                                    <a class="mb-3" style="font-size: 0.7rem"> VER VIDEO</a>
+                                    <a class="mb-3 primary--text" style="font-size: 0.7rem">{{ n.dat+' '+activity.hour_class | formatTime}} (GMT-5)</a>
                                 </section>
                             </div>
                             
@@ -77,7 +82,7 @@
                                 <div>
                                     <img style="width: 50%;" src="@/assets/img/logo_vikinga_icon.png" alt="Logo" />
                                     <p class="tit_h1_staff_pink text_entrena txt_uppercase mb-6" style="font-size: 1.5rem">
-                                        PRÓXIMANENTE
+                                        PRÓXIMAMENTE
                                     </p>  
                                 </div>
                             </div>
@@ -98,8 +103,6 @@
                             </v-card-actions>
                         </v-card>
                     </v-slide-item>
-                </template>
-                
                 </v-slide-group>
             </v-sheet>
         </div>
@@ -134,14 +137,24 @@ export default {
         //console.log(moment().format('MM-YYYY'))//.subtract(10, 'days').calendar());
         moment.locale('es');
         let vm = this;
+        vm.auth();
         vm.$store.commit('loader',true);
-        
         vm.getBaseUrl();
         vm.calendar();
         vm.schedule();
     },
 
     methods:{
+        async auth(){
+            try {
+                const response = await this.$API.auth.auth();
+            } catch (e) {
+                localStorage.removeItem('user_data');
+                localStorage.removeItem('token');
+                window.location.replace('/auth/iniciar-sesion');
+                //this.$router.push({ path: '/auth/iniciar-sesion' });
+            }
+        },
         getMonth(){
             let vm = this;
             vm.current_month = {
@@ -197,7 +210,10 @@ export default {
                 console.error(e);
                 vm.$store.commit('loader',false);
             }
-        }
+        },
+        planSectionsFilter(){
+            return this.planSections.filter((item)=>item.month==this.current_month._month);
+        },
     }
 }
 </script>

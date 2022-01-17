@@ -492,7 +492,7 @@
                                             background-color="grey lighten-2"
                                             placeholder="CUPÓN"
                                             hide-details=""
-                                            v-model="coupon"
+                                            v-model="order.coupon"
                                             :disabled="couponDisabled"
                                         ></v-text-field>
                                         <v-btn
@@ -635,29 +635,35 @@ export default {
         },
         async aplicarCupon(){
             try{
-                const response = await this.$API.coupon.validate({cupon: this.coupon});
-                if(response.data.available === true){
-                    let data = response.data;
-                    if(data.id_plan === null){
-                        this.discount = (data.discount_type == 1) ? this.subtotal * (data.discount/100) : data.discount; 
-                    }else{
-                        let index = this.cart.findIndex((elem) => elem.id == data.id_plan);
-                        if(index == -1){
-                            this.showToast("No valido para los productos de este carrito","red");
+                const response = await this.$API.coupon.validate({cupon: this.order.coupon});
+                //console.log(response.data);
+                let datos = response.data;
+                let flag = 0;
+                datos.forEach((cuponval, index) => {
+                    if(cuponval.available === true){
+                        if(cuponval.id_plan === null){
+                            this.discount = (cuponval.discount_type == 1) ? this.subtotal * (cuponval.discount/100) : cuponval.discount; 
                         }else{
-                            if(this.couponDisabled != true){
-                                this.discount = (data.discount_type == 1) ? this.cart[index].price * (data.discount/100) :  data.discount;
-                                this.couponDisabled = true;
-                                this.showToast("Cupón valido","success");
+                            let index = this.cart.findIndex((elem) => elem.id == cuponval.id_plan);
+                            if(index != -1){
+                                if(this.couponDisabled != true){
+                                    this.discount = (cuponval.discount_type == 1) ? this.cart[index].price * (cuponval.discount/100) :  cuponval.discount;
+                                    this.couponDisabled = true;
+                                    flag = 1;
+                                    this.showToast("Cupón valido","success");
+                                }
                             }
                         }
                     }
-
-                }else{
+                });
+                if(flag == 0){
                     this.toast.color = "red";
-                    this.toast.message = response.data.msg;
+                    this.toast.message = "Cupón inválido.";
                     this.toast.toast = true;
+                    //console.log(response.data)
+                    
                 }
+                
             }catch(e){
                 this.$store.commit('loader',false);
                 console.error(e);
@@ -791,23 +797,43 @@ export default {
                 vm.order.detail = vm.cart;
                 const data = await vm.$API.order.register(vm.order);
                 vm.openToastAlert(true, 'Orden creada correctamente', 'primary');
-                vm.actions = data.data.data.actions
+                vm.actions = data.data.data.actions;
+
+                if(!this.isLogged){
+                    const response = await vm.$API.user.login({
+                        email: vm.order.email,
+                        password: vm.order.password,
+                        token_name: "LaVikinga2021"
+                    });
+                    const user = response.data.data.user;
+                    const token = response.data.data.token;
+                    localStorage.setItem('user_data', JSON.stringify(user));
+                    localStorage.setItem('token', token);
+                }
+
                 if((vm.actions.payment_status=='pending') && (vm.actions.payment_external == false))
                 {
                     vm.$store.dispatch("cleanCart");
-                    this.$router.push({ path: '/confirmar-pago/'+vm.actions.hash });
+                    //this.$router.push({ path: '/confirmar-pago/'+vm.actions.hash });
+                    window.location.replace('/confirmar-pago/'+vm.actions.hash );
                 }
                 if((vm.actions.payment_status=='pending') && (vm.actions.payment_external == true))
                 {
                     //Enviamos a payme
-                    this.$router.push({ path: '/pago-payme/'+vm.actions.hash });
+                    //this.$router.push({ path: '/pago-payme/'+vm.actions.hash });
+                    window.location.replace('/pago-payme/'+vm.actions.hash);
                 }
                 
                 vm.$store.commit('loader',false);
             }
             catch(e){
                 this.$store.commit('loader',false);
+                vm.openToastAlert(true, 'Upps! Ocurrio un error. Vuelve a intentarlo', 'Error');
+                setTimeout(()=>{ 
+                    this.$router.go();
+                }, 1500);
                 console.error(e);
+                this.$router.go();
             } 
         },
 
