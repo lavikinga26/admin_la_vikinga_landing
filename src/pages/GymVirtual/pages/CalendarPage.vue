@@ -137,14 +137,24 @@ export default {
         //console.log(moment().format('MM-YYYY'))//.subtract(10, 'days').calendar());
         moment.locale('es');
         let vm = this;
+        vm.auth();
         vm.$store.commit('loader',true);
-        console.log(moment().format('LT'))
         vm.getBaseUrl();
         vm.calendar();
         vm.schedule();
     },
 
     methods:{
+        async auth(){
+            try {
+                const response = await this.$API.auth.auth();
+            } catch (e) {
+                localStorage.removeItem('user_data');
+                localStorage.removeItem('token');
+                window.location.replace('/auth/iniciar-sesion');
+                //this.$router.push({ path: '/auth/iniciar-sesion' });
+            }
+        },
         getMonth(){
             let vm = this;
             vm.current_month = {
