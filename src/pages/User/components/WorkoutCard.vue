@@ -25,8 +25,9 @@
                                     </div>
                                 </div>
 
+
                                 <div class="d-flex flex-wrap">
-                                    <div style="width:20%" class="pa-2" v-for="(item, k) in workout_list" :key="k">
+                                    <div class="pa-2 card-workout" v-for="(item, k) in workout_list" :key="k">
                                         <div class="rounded-lg pink lighten-5 pa-5">
                                             <h5 class="secondary--text"><b>{{item.name}}</b></h5>
                                             <v-text-field
@@ -130,3 +131,14 @@ export default {
     },
 }
 </script>
+<style>
+.card-workout{
+    width: 20%;
+}
+@media (max-width: 520px) {
+    .card-workout{
+        width: 100%;
+    }
+}
+
+</style>

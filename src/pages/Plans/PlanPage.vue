@@ -44,8 +44,17 @@
                             color="secondary"
                             outlined
                             @click="addToCart"
+                            v-if="data_config.allow_sale"
                             >
                                 COMPRAR AHORA
+                        </v-btn>
+                        <v-btn
+                            class="my-2 fb-not-spaces"
+                            color="white"
+                            outlined
+                            v-else
+                            >
+                                AGOTADO
                         </v-btn>
                     </div>
                 </v-col>
@@ -61,15 +70,17 @@ export default {
 
     data: () => ({
         category: 0,
-        plan:{},
+        plan: {},
         base_url: '',
-        slug:''
+        slug:'',
+        data_config: {}
     }),
 
     
     mounted() {
         let vm = this;
         vm.slug = this.$route.params.slug;
+        vm.getConfiguracion();
         vm.getBaseUrl();
         vm.getPlan();
         this.$store.commit('loader',true);
@@ -82,6 +93,15 @@ export default {
     },
 
     methods: {
+        async getConfiguracion(){
+            try{
+                const data = await this.$API.configuration.configuration();
+                this.data_config = data.data.data;
+            }
+            catch(e){
+                console.error(e);
+            } 
+        },
         async getBaseUrl(){
             try{
                 const data = await this.$API.configuration.getBaseUrl();
@@ -126,6 +146,9 @@ export default {
 <style>
   .fb-btn.v-btn--outlined {
     border: 1px solid #E30E4F;
+  }
+  .fb-not-spaces.v-btn--outlined {
+    border: 1px solid #FFFFFF;
   }
   .rounded-lg .round-radius{
     border-radius: 5px !important; 
