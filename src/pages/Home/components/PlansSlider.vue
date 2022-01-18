@@ -62,6 +62,7 @@
                             </v-col>
                             <v-col cols="12" align="center">
                                 <v-btn color="secondary"
+                                    :disabled="!data_config.allow_sale"
                                     :href="'/plan/'+item.identifier"
                                     depressed
                                     large
@@ -84,6 +85,7 @@
         model: null,
         plans:[],
         base_url: '',
+        data_config: {}
     }),
 
     
@@ -99,6 +101,16 @@
     },
 
     methods: {
+
+        async getConfiguracion(){
+            try{
+                const data = await this.$API.configuration.configuration();
+                this.data_config = data.data.data;
+            }
+            catch(e){
+                console.error(e);
+            } 
+        },
         async getBaseUrl(){
             try{
                 const data = await this.$API.configuration.getBaseUrl();
