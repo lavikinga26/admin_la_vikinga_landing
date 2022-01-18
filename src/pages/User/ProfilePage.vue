@@ -74,7 +74,20 @@ export default {
         this.getBaseUrl();
         this.getLoggedUser();
     },
+    mounted() {
+        moment.locale('es');
+        this.auth();
+    },
     methods: {
+        async auth(){
+            try {
+                const response = await this.$API.auth.auth();
+            } catch (e) {
+                localStorage.removeItem('user_data');
+                localStorage.removeItem('token');
+                window.location.replace('/auth/iniciar-sesion');
+            }
+        },
         async getBaseUrl(){
             try{
                 const data = await this.$API.configuration.getBaseUrl();

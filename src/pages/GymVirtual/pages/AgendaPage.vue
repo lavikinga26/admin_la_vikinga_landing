@@ -182,7 +182,7 @@
                                             dark
                                             :href="activity.link_class"
                                             target="_blank"
-                                            v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)"
+                                            v-if="!activity.link_video && activity.link_class"
                                             >
                                                 <v-icon left>
                                                     mdi-access-point
