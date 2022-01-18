@@ -79,19 +79,7 @@
               STAFF
             </v-btn>
           </div>
-          <!-- Grid column -->
-          <div><span style="color: #E30E4F; font-size: 0.9rem;"> | </span></div>
-          <!-- Grid column -->
-          <div>
-            <v-btn
-              text
-              small
-              color="secondary"
-              href="/calendario"
-            >
-              CALENDARIO
-            </v-btn>
-          </div>
+          
           <!-- Grid column -->
           <div><span style="color: #E30E4F; font-size: 0.9rem;"> | </span></div>
           <!-- Grid column -->
@@ -131,6 +119,18 @@
               TÉRMINOS Y CONDICIONES
             </v-btn>
           </div>
+          <div><span style="color: #E30E4F; font-size: 0.9rem;"> | </span></div>
+            <!-- Grid column -->
+            <div>
+              <v-btn
+                text
+                small
+                color="secondary"
+                href="/auth/iniciar-sesion"
+              >
+                INGRESAR
+              </v-btn>
+            </div>
         </div>
         <!-- Grid row-->
       </section>
