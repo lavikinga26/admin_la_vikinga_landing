@@ -97,6 +97,11 @@ export default {
             return callAPI('get', 'api/v1/calendar-events/listEvents');
         },
     },
+    gym_banner:{
+        list(){
+            return callAPI('get', 'api/v1/gym-banner');
+        },
+    },
     contact:{
         saveContactInfo(data){
             return callAPI('post', 'api/v1/contact/save-contact-info', { data: data });
