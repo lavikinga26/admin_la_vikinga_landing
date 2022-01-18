@@ -93,6 +93,7 @@
         let vm = this;
         vm.slug = this.$route.params.slug;
         vm.$store.commit('loader',true);
+        vm.getConfiguracion();
         vm.getBaseUrl();
         vm.list();
     },
