@@ -250,7 +250,7 @@ body{
 
 .bg_suplementacion{
     //background: url('../img/multimedia/SUPLEMENTACION_DEPORTIVA/DESAFIO_4.jpg') no-repeat top center;// fixed; 
-    background: linear-gradient(to bottom, rgb(0 0 0 / 52%), rgb(0 0 0 / 73%)),url('@/img/multimedia/SUPLEMENTACION_DEPORTIVA/DESAFIO_4.jpg') no-repeat top center;
+    background: linear-gradient(to bottom, rgb(0 0 0 / 52%), rgb(0 0 0 / 73%)),url('../img/multimedia/SUPLEMENTACION_DEPORTIVA/DESAFIO_4.jpg') no-repeat top center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -259,7 +259,7 @@ body{
 }
 
 .bg_login{
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.52), rgba(0, 0, 0, 0.73)), url('@/img/bg_login.jpg') no-repeat center center; 
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.52), rgba(0, 0, 0, 0.73)), url('../img/bg_login.jpg') no-repeat center center; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -510,7 +510,7 @@ body{
     border-radius: 35px;
   }
   .iphone .screen {
-    background: url("@/assets/img/multimedia/mobile.png") no-repeat;
+    background: url("../img/multimedia/mobile.png") no-repeat;
     height: 405px;
     width: 100%;
     background-size: 100%;
@@ -523,19 +523,19 @@ body{
   }
   
   .iphone1 {
-    background: url("@/assets/img/multimedia/ENTRENA_DONDE_QUIERAS/DESAFIO_7.jpg")
+    background: url("../img/multimedia/ENTRENA_DONDE_QUIERAS/DESAFIO_7.jpg")
       no-repeat;
     background-size: cover;
     background-position: center;
   }
   .iphone2 {
-    background: url("@/assets/img/multimedia/ENTRENA_DONDE_QUIERAS/DESAFIO_5.jpg")
+    background: url("../img/multimedia/ENTRENA_DONDE_QUIERAS/DESAFIO_5.jpg")
       no-repeat;
     background-size: cover;
     background-position: center;
   }
   .iphone3 {
-    background: url("@/assets/img/multimedia/ENTRENA_DONDE_QUIERAS/DESAFIO_6.jpg")
+    background: url("../img/multimedia/ENTRENA_DONDE_QUIERAS/DESAFIO_6.jpg")
       no-repeat;
     background-size: cover;
     background-position: center;
