@@ -73,6 +73,7 @@ export default {
     created() {
         this.getBaseUrl();
         this.getLoggedUser();
+        this.auth();
     },
     mounted() {
         moment.locale('es');
@@ -116,6 +117,10 @@ export default {
                 this.logged_user_token = localStorage.getItem('token');
 
                 this.getPartnerData(this.logged_user.id);
+            }else{
+                localStorage.removeItem('user_data');
+                localStorage.removeItem('token');
+                window.location.replace('/auth/iniciar-sesion');
             }
         },
     },

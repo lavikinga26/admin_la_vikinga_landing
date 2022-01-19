@@ -215,7 +215,7 @@
                     dark
                     elevation="0"
                     >
-                        ENTRENAMIENTO DE BRAZOS
+                        {{currrent_activity.name}}
                     </v-toolbar>
                     <v-card-text class="text-center d-flex align-center pt-10 justify-center" v-if="dialog">
                         <!--<div v-html="currrent_activity.iframe"></div>-->
