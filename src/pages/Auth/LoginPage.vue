@@ -34,6 +34,7 @@
                             type="password"
                             :rules="rules"
                             v-model="loginForm.password"
+                            @keydown.enter="loginUser"
                         ></v-text-field>
                         <div class="d-flex align-center">
                             <a href="/auth/olvide-contrasena" class="secondary--text" style="font-size: 0.8rem; text-decoration: underline;"><b>OLVIDE MI CONTRASEÑA</b></a>

@@ -73,8 +73,22 @@ export default {
     created() {
         this.getBaseUrl();
         this.getLoggedUser();
+        this.auth();
+    },
+    mounted() {
+        moment.locale('es');
+        this.auth();
     },
     methods: {
+        async auth(){
+            try {
+                const response = await this.$API.auth.auth();
+            } catch (e) {
+                localStorage.removeItem('user_data');
+                localStorage.removeItem('token');
+                window.location.replace('/auth/iniciar-sesion');
+            }
+        },
         async getBaseUrl(){
             try{
                 const data = await this.$API.configuration.getBaseUrl();
@@ -103,6 +117,10 @@ export default {
                 this.logged_user_token = localStorage.getItem('token');
 
                 this.getPartnerData(this.logged_user.id);
+            }else{
+                localStorage.removeItem('user_data');
+                localStorage.removeItem('token');
+                window.location.replace('/auth/iniciar-sesion');
             }
         },
     },

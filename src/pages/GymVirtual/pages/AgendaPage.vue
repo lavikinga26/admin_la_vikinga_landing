@@ -182,7 +182,7 @@
                                             dark
                                             :href="activity.link_class"
                                             target="_blank"
-                                            v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)"
+                                            v-if="!activity.link_video && activity.link_class"
                                             >
                                                 <v-icon left>
                                                     mdi-access-point
@@ -215,7 +215,7 @@
                     dark
                     elevation="0"
                     >
-                        ENTRENAMIENTO DE BRAZOS
+                        {{currrent_activity.name}}
                     </v-toolbar>
                     <v-card-text class="text-center d-flex align-center pt-10 justify-center" v-if="dialog">
                         <!--<div v-html="currrent_activity.iframe"></div>-->
