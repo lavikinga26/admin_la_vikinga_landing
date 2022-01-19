@@ -79,6 +79,7 @@
                                     block
                                     class="widt:100%"
                                     href="#pago"
+                                    v-if="data_config.allow_sale"
                                 >
                                     Finalizar Compra
                                 </v-btn>
@@ -517,6 +518,7 @@
                                         x-large
                                         :disabled="cart.length === 0"
                                         @click="paymentProcess()"
+                                        v-if="data_config.allow_sale"
                                     >
                                         <v-icon left>mdi-cart-outline</v-icon>
                                         Continuar Pago
@@ -593,7 +595,8 @@ export default {
             logged_user: null,
             logged_affiliate: null,
             card_data: [],
-            actions: {}
+            actions: {},
+            data_config: {}
         }
     },
     computed: {
@@ -619,6 +622,7 @@ export default {
         },
     },
     mounted(){
+        this.getConfiguracion();
         this.getCountriesList();
         this.getTypeDocument();
         //this.reqCallback("asd");
@@ -632,6 +636,15 @@ export default {
             this.toast.color = color;
             this.toast.message = msg;
             this.toast.toast = true;
+        },
+        async getConfiguracion(){
+            try{
+                const data = await this.$API.configuration.configuration();
+                this.data_config = data.data.data;
+            }
+            catch(e){
+                console.error(e);
+            } 
         },
         async aplicarCupon(){
             try{
