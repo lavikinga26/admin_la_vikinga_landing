@@ -3,6 +3,7 @@
         <v-toolbar
           color="primary"
           dark
+          class="mb-1"
         >
             <v-toolbar-title class="tit_h2_pink" style="font-size: 3.0rem; color: white">GYM VIRTUAL</v-toolbar-title>
             <v-spacer></v-spacer>
@@ -35,6 +36,8 @@
                 GALERÍA
             </v-btn>-->
         </v-toolbar>
+        
+        <Banner/>
 
         <div class="d-flex flex-grow-1 flex-column">
             <router-view :key="$route.fullPath" class="flex-grow-1"></router-view>
@@ -54,8 +57,10 @@
 </template>
 
 <script>
+import Banner from './components/Banner.vue';
 export default {
     components: { 
+        Banner,
     },
     data: () => ({
 

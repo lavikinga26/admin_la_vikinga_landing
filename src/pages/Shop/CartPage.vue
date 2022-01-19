@@ -639,12 +639,21 @@ export default {
                 //console.log(response.data);
                 let datos = response.data;
                 let flag = 0;
-                datos.forEach((cuponval, index) => {
+                
+                if(datos.available){
+                    datos.forEach((cuponval, index) => {
                     if(cuponval.available === true){
                         if(cuponval.id_plan === null){
                             this.discount = (cuponval.discount_type == 1) ? this.subtotal * (cuponval.discount/100) : cuponval.discount; 
                         }else{
-                            let index = this.cart.findIndex((elem) => elem.id == cuponval.id_plan);
+                            //let index = this.cart.findIndex((elem) => elem.id == cuponval.id_plan);
+                            //let index = this.cart.findIndex((elem) => elem.id == cuponval.id_plan);
+                            cuponval.id_plan = cuponval.id_plan.map(Number);
+                            let index = this.cart.findIndex((element) => {
+                                if(cuponval.id_plan.indexOf(element.id) != -1) { return true;}
+                                else{false}
+                            })
+
                             if(index != -1){
                                 if(this.couponDisabled != true){
                                     this.discount = (cuponval.discount_type == 1) ? this.cart[index].price * (cuponval.discount/100) :  cuponval.discount;
@@ -655,7 +664,8 @@ export default {
                             }
                         }
                     }
-                });
+                    });
+                }
                 if(flag == 0){
                     this.toast.color = "red";
                     this.toast.message = "Cupón inválido.";
