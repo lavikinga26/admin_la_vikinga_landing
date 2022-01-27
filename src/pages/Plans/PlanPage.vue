@@ -44,7 +44,16 @@
                             color="secondary"
                             outlined
                             @click="addToCart"
-                            v-if="data_config.allow_sale"
+                            v-if="(data_config.allow_sale && plan.allow_sale)"
+                            >
+                                COMPRAR AHORA
+                        </v-btn>
+                        <v-btn
+                            class="my-2 fb-btn"
+                            color="secondary"
+                            outlined
+                            @click="addToCart"
+                            v-if="(!data_config.allow_sale && plan.allow_sale)"
                             >
                                 COMPRAR AHORA
                         </v-btn>
@@ -52,7 +61,15 @@
                             class="my-2 fb-not-spaces"
                             color="white"
                             outlined
-                            v-else
+                            v-if="(!data_config.allow_sale && !plan.allow_sale)"
+                            >
+                                AGOTADO
+                        </v-btn>
+                        <v-btn
+                            class="my-2 fb-not-spaces"
+                            color="white"
+                            outlined
+                            v-if="(data_config.allow_sale && !plan.allow_sale)"
                             >
                                 AGOTADO
                         </v-btn>

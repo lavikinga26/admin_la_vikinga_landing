@@ -52,6 +52,7 @@
     </div>
 </template>
 <script>
+import moment from 'moment-timezone'
 import ProfileCard from './components/ProfileCard.vue'
 import HealthCard from './components/HealthCard.vue'
 import ActivityCard from './components/ActivityCard.vue'
