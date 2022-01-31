@@ -62,8 +62,32 @@
                             </v-col>
                             <v-col cols="12" align="center">
                                 <v-btn color="secondary"
-                                    :disabled="!data_config.allow_sale"
+                                    v-if="(data_config.allow_sale && item.allow_sale)"
                                     :href="'/plan/'+item.identifier"
+                                    depressed
+                                    large
+                                    class="px-2">
+                                    <span class="ma-3">COMPRAR AHORA</span>
+                                </v-btn>
+                                <v-btn color="secondary"
+                                    v-if="(!data_config.allow_sale && item.allow_sale)"
+                                    :href="'/plan/'+item.identifier"
+                                    depressed
+                                    large
+                                    class="px-2">
+                                    <span class="ma-3">COMPRAR AHORA</span>
+                                </v-btn>
+                                <v-btn color="secondary"
+                                    v-if="(!data_config.allow_sale && !item.allow_sale)"
+                                    :disabled="true"
+                                    depressed
+                                    large
+                                    class="px-2">
+                                    <span class="ma-3">COMPRAR AHORA</span>
+                                </v-btn>
+                                <v-btn color="secondary"
+                                    v-if="(data_config.allow_sale && !item.allow_sale)"
+                                    :disabled="true"
                                     depressed
                                     large
                                     class="px-2">
