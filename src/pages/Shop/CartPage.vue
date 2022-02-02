@@ -652,10 +652,11 @@ export default {
                 //console.log(response.data);
                 let datos = response.data;
                 let flag = 0;
-                
-                if(datos.available){
+                if(datos[0].available){
                     datos.forEach((cuponval, index) => {
+                    
                     if(cuponval.available === true){
+
                         if(cuponval.id_plan === null){
                             this.discount = (cuponval.discount_type == 1) ? this.subtotal * (cuponval.discount/100) : cuponval.discount; 
                         }else{
@@ -666,6 +667,7 @@ export default {
                                 if(cuponval.id_plan.indexOf(element.id) != -1) { return true;}
                                 else{false}
                             })
+
 
                             if(index != -1){
                                 if(this.couponDisabled != true){
@@ -814,7 +816,6 @@ export default {
             vm.$store.commit('loader',true);
             try{
                 vm.order.discount = vm.discount
-                vm.order.cupon = vm.coupon
                 vm.order.total = vm.total
                 vm.order.subtotal = vm.subtotal;
                 vm.order.detail = vm.cart;

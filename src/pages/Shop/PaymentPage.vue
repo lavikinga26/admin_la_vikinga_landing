@@ -39,6 +39,15 @@
                             <td style="font-size: 0.8rem;">{{ item.quantity }} X {{ item.product_name }}</td>
                             <td style="font-size: 0.8rem;">S/. {{ item.price_total }}</td>
                             </tr>
+
+                            <tr v-if="order.discount>0">
+                                <td style="font-size: 0.8rem;"><b>Descuento</b></td>
+                                <td style="font-size: 0.8rem;">S/. -{{ order.discount }}</td>
+                            </tr>
+                            <tr v-if="order.discount>0">
+                                <td style="font-size: 0.8rem;"><b>Total a Pagar</b></td>
+                                <td style="font-size: 0.8rem;">S/. {{ order.total }}</td>
+                            </tr>
                         </tbody>
                         </template>
                     </v-simple-table>
