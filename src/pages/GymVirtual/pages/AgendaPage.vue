@@ -157,7 +157,7 @@
                                             </v-row>
                                         </v-img>
                                     </v-col>
-                                    <v-col cols="12" md="8" class="text-left align-center d-flex">
+                                    <v-col cols="12" md="7" class="text-left align-center d-flex">
                                         <v-container>
                                             <h3>{{activity.name}}</h3>
                                             <div>HORA: {{current_date.dat + ' ' +activity.hour_class | formatTime}}</div>
@@ -196,6 +196,22 @@
                                             </p>-->
                                         </v-container>
                                     </v-col>
+                                    <v-col cols="12" md="1" class="text-center align-center justify-center d-flex">
+                                        <v-icon
+                                            color="secondary"
+                                            @click="saveAttempts(activity, current_date.dat, i); "
+                                            v-if="activity.sessions.length==0"
+                                        >
+                                            mdi-heart-outline
+                                        </v-icon>
+                                        <v-icon
+                                            color="secondary"
+                                            v-else
+                                        >
+                                            mdi-heart
+                                        </v-icon>
+                                    </v-col>
+
                                 </v-row>
                             </v-card-text>
                         </v-card>
@@ -302,7 +318,20 @@ import axios from "axios";
         vm.schedule();
     },
     methods:{
-
+        async saveAttempts(activity, date, indx){
+            try{
+                this.current_date.activities[indx].sessions.push(1);
+                let attempt = {
+                    activity_id: activity.id,
+                    status: 'finish',
+                    _date: date
+                };
+                const data = await this.$API.gymVirtual.saveAttempt(attempt);
+            }
+            catch(e){
+                console.error(e);
+            } 
+        },
         async auth(){
             try {
                 const response = await this.$API.auth.auth();

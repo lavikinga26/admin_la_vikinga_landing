@@ -12,6 +12,9 @@
                         </v-avatar>
                         <h3 class="mx-10 my-5"><b>{{profileForm.name}} {{profileForm.lastname}}</b></h3>
                         <v-btn @click="profileImgDialog = true" color="pink" dark>Cambiar Foto</v-btn>
+                        <div style="background: #f6e4e9;" class="pa-10 ma-10 rounded-lg">
+                            <img :src='require(`@/assets/img/icons/${insignia.insignia}`)' alt="">
+                        </div>
                     </v-col>
                     <v-col cols="12" md="9" sm="12" class="px-15">
                         <div class="tit_h1_staff_pink text_entrena txt_uppercase mb-6">MI INFORMACIÓN PERSONAL</div>
@@ -182,7 +185,8 @@ export default {
         },
         infoPersonal:{
         },
-
+        insignia: {
+        },
         profileImgDialog: false,
         img_file: null,
         img_url: null,
@@ -197,9 +201,20 @@ export default {
     }),
     created(){
         this.configPersonalInfo();
+        this.getBadge();
         this.img_url = this.base_url+"/images/default-profile-picture.png";
     },
     methods: {
+        async getBadge(){
+            try {
+                const response = await this.$API.business_partner.getBadge();
+                this.insignia = response.data.data;
+            } catch (e) {
+                // UTILS.toastr.error("Ups! Ocurrió un error", this);
+                console.error(e);
+
+            }
+        },
         configPersonalInfo(){
             this.profileForm = Object.assign({}, this.business_partner);
             if(this.business_partner.partner_information.info_personal){
