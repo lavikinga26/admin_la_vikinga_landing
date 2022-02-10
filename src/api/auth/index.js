@@ -61,6 +61,10 @@ export default {
         },
         getBadge(){
             return callAuthAPI('get', 'api/v1/gymvirtual/get-badge');
+        },
+        getDownloads(){
+            return callAuthAPI('get', 'api/v1/business-partner/downloads');
+            
         }
     },
 }

@@ -52,6 +52,12 @@
                   >Gym Virtual</v-list-item-title
                 >
               </v-list-item>
+              
+              <v-divider class="white"></v-divider>
+              <v-list-item link to="/cuenta/descargables">
+                <v-list-item-title>Descargables</v-list-item-title
+                >
+              </v-list-item>
             </v-list>
           </v-list-group>
       </v-list>
@@ -240,6 +246,12 @@
               <v-list-item link class="white--text" to="/gym-virtual/agenda">
                 <v-list-item-title class="white--text"
                   >Gym Virtual</v-list-item-title
+                >
+              </v-list-item>
+              <v-divider class="white"></v-divider>
+              <v-list-item link class="white--text" to="/cuenta/descargables">
+                <v-list-item-title class="white--text"
+                  >Descargables</v-list-item-title
                 >
               </v-list-item>
               <v-divider class="white"></v-divider>
