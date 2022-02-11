@@ -42,6 +42,7 @@ import StaffSlider from './components/StaffSlider.vue';
 import PhonePhotos from '../../components/shared/PhonePhotos.vue';
 import InformativeSection from './components/InformativeSection.vue';
 
+import axios from "axios";
 export default {
     name: "App",
     components: { 
@@ -69,6 +70,21 @@ export default {
     },
 
     methods: {
+        
+        downloadItem ( url) {
+            const config = {
+                headers: { 'Access-Control-Allow-Origin' : '*'}
+            }
+    axios.get(url, { responseType: 'blob',config , withCredentials: false } )
+      .then(response => {
+        const blob = new Blob([response.data], { type: 'application/pdf' })
+        const link = document.createElement('a')
+        link.href = URL.createObjectURL(blob)
+        link.download = 'label'
+        link.click()
+        URL.revokeObjectURL(link.href)
+      }).catch(console.error)
+  },
     },
 };
 </script>

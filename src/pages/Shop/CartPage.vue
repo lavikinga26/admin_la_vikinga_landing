@@ -648,38 +648,34 @@ export default {
         },
         async aplicarCupon(){
             try{
-                const response = await this.$API.coupon.validate({cupon: this.order.coupon});
-                //console.log(response.data);
+                let products = this.cart.map(({id}) => id);
+                const response = await this.$API.coupon.validate({cupon: this.order.coupon, items: products});
                 let datos = response.data;
                 let flag = 0;
-                if(datos[0].available){
-                    datos.forEach((cuponval, index) => {
-                    
-                    if(cuponval.available === true){
-
-                        if(cuponval.id_plan === null){
-                            this.discount = (cuponval.discount_type == 1) ? this.subtotal * (cuponval.discount/100) : cuponval.discount; 
+                if(datos.available){
+                    //datos.forEach((cuponval, index) => {
+                    //if(cuponval.available === true){
+                        if(datos.id_plan === null){
+                            this.discount = (datos.discount_type == 1) ? this.subtotal * (datos.discount/100) : datos.discount; 
                         }else{
                             //let index = this.cart.findIndex((elem) => elem.id == cuponval.id_plan);
                             //let index = this.cart.findIndex((elem) => elem.id == cuponval.id_plan);
-                            cuponval.id_plan = cuponval.id_plan.map(Number);
+                            datos.id_plan = datos.id_plan.map(Number);
                             let index = this.cart.findIndex((element) => {
-                                if(cuponval.id_plan.indexOf(element.id) != -1) { return true;}
+                                if(datos.id_plan.indexOf(element.id) != -1) { return true;}
                                 else{false}
                             })
-
-
                             if(index != -1){
                                 if(this.couponDisabled != true){
-                                    this.discount = (cuponval.discount_type == 1) ? this.cart[index].price * (cuponval.discount/100) :  cuponval.discount;
+                                    this.discount = (datos.discount_type == 1) ? this.cart[index].price * (datos.discount/100) :  datos.discount;
                                     this.couponDisabled = true;
                                     flag = 1;
                                     this.showToast("Cupón valido","success");
                                 }
                             }
                         }
-                    }
-                    });
+                    //}
+                    //});
                 }
                 if(flag == 0){
                     this.toast.color = "red";

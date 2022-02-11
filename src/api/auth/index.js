@@ -22,6 +22,9 @@ export default {
         },
         day(){
             return callAuthAPI('get', 'api/v1/gymvirtual/day');
+        },
+        saveAttempt(data){
+            return callAuthAPI('post', 'api/v1/gymvirtual/save-attempt', {data: data});
         }
     },
 
@@ -56,5 +59,12 @@ export default {
         uploadBodyPicture(data){
             return callAuthAPI('post', 'api/v1/business-partner/upload-body-photo', {data: data});
         },
+        getBadge(){
+            return callAuthAPI('get', 'api/v1/gymvirtual/get-badge');
+        },
+        getDownloads(){
+            return callAuthAPI('get', 'api/v1/business-partner/downloads');
+            
+        }
     },
 }
