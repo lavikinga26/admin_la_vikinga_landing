@@ -12,8 +12,28 @@
                         </v-avatar>
                         <h3 class="mx-10 my-5"><b>{{profileForm.name}} {{profileForm.lastname}}</b></h3>
                         <v-btn @click="profileImgDialog = true" color="pink" dark>Cambiar Foto</v-btn>
-                        <div style="background: #f6e4e9;" class="pa-10 ma-10 rounded-lg">
-                            <img :src='require(`@/assets/img/icons/${insignia.insignia}`)' alt="">
+                        <div style="background: #f6e4e9; min-height: 200px" class="pa-5 mx-2 my-10 rounded-lg" >
+                            <h5 class="mb-5">MIS INSIGNIAS</h5>
+                            <!--<img :src='require(`@/assets/img/icons/${insignia.insignia}`)' alt="">-->
+                            <v-row align="center" v-if="insignias.length > 0">
+                                <v-col class="pa-5" cols="6" md="6" v-for="(ing, index) in insignias" :key="'insignia_'+index">
+                                    <img :src='require(`@/assets/img/icons/${ing}`)' alt="" height="80px">
+                                </v-col>
+                            </v-row>
+                            <v-row align="center" v-else>
+                                <v-col class="pa-5" cols="6" md="6">
+                                    <img src="@/assets/img/icons/insignia_casco_grey.svg" alt="" height="80px">
+                                </v-col>
+                                <v-col class="pa-5" cols="6" md="6">
+                                    <img src="@/assets/img/icons/insignia_medalla_grey.svg" alt="" height="80px">
+                                </v-col>
+                                <v-col class="pa-5" cols="6" md="6">
+                                    <img src="@/assets/img/icons/insignia_escudo_grey.svg" alt="" height="80px">
+                                </v-col>
+                                <v-col class="pa-5" cols="6" md="6">
+                                    <img src="@/assets/img/icons/insignia_espada_grey.svg" alt="" height="80px">
+                                </v-col>
+                            </v-row>
                         </div>
                     </v-col>
                     <v-col cols="12" md="9" sm="12" class="px-15">
@@ -187,6 +207,7 @@ export default {
         },
         insignia: {
         },
+        insignias: [],
         profileImgDialog: false,
         img_file: null,
         img_url: null,
@@ -209,6 +230,14 @@ export default {
             try {
                 const response = await this.$API.business_partner.getBadge();
                 this.insignia = response.data.data;
+                const data = [];
+                for (let index = 0; index < this.insignia.insignias.length; index++) {
+                    const element = this.insignia.insignias[index];
+                    for (let j = 0; j < element.cant; j++) {
+                        data.push(element.tipo);
+                    }
+                }
+                this.insignias = data;
             } catch (e) {
                 // UTILS.toastr.error("Ups! Ocurrió un error", this);
                 console.error(e);
