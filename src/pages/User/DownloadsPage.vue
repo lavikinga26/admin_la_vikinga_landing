@@ -5,39 +5,74 @@
             <p class="tit_h1_pink text_entrena">DESCARGABLES</p>
         </div>
         <v-card class="rounded-xl pa-10 mb-10">
-            <v-row class="px-5">
-            <v-col>
-                <div class="mb-2">
-                    <v-row no-gutters>
-                        <v-col cols="12" md="6" v-for="(item, indx) in downloads_list" :key="indx" class="pa-3">
-                            <v-card>
-                                <v-card-text>
-                                <p class="text-h6 text--primary">
-                                    {{item.title}}
-                                </p>
-                                <div class="text--primary text-wrap">
-                                    {{item.description}}
-                                </div>
-                                </v-card-text>
-                                <v-card-actions>
-                                    <v-spacer></v-spacer>
-                                    <v-btn
-                                        text
-                                        color="secondary"
-                                        :href="'https://apiserv.lavikingaoficial.com/api/download-file/'+item.code"
-                                        target="_blank"
-                                    >
-                                        <b>DESCARGAR</b>
-                                        <v-icon class="ml-2">mdi-tray-arrow-down</v-icon>
-                                    </v-btn>
-                                </v-card-actions>
-                            </v-card>
-                        </v-col>
-                    </v-row>
-                </div>
+            <div class="px-5">
 
-            </v-col>
-            </v-row>
+              <v-tabs
+                v-model="tab"
+                background-color="transparent"
+                color="secondary"
+              >
+                <v-tab
+                  v-for="(item, indx) in groupList"
+                  :key="'tab_'+indx"
+                >
+                  {{ item.field }}
+                </v-tab>
+              </v-tabs>
+
+              <v-tabs-items v-model="tab">
+                <v-tab-item
+                  v-for="(item, indx) in groupList"
+                  :key="'tab_item_'+indx"
+                >
+                 
+                   <div class="mb-2">
+                      <v-row no-gutters>
+                          <v-col cols="12" md="6" v-for="(item, indx) in item.groupList" :key="indx" class="pa-3">
+
+                              <v-card
+                                  outlined
+                                  class="pa-2 mr-3"
+                                  height="100%"
+                              >
+                                  <div class="d-flex align-center" style="height: 100%">
+                                      <div style="width: 20%; text-align: center;">
+                                          <v-btn
+                                          elevation="0"
+                                          color="#FBD0DD"
+                                          class="rounded"
+                                          fab
+                                          depressed
+                                          >
+                                              <v-icon large color="#E30E4F">mdi-file-document-outline</v-icon>
+                                          </v-btn>
+                                      </div>
+                                      <div class="mr-3" style="width: 70%">
+                                          <span class="text-body-2 font-weight-bold black--text">{{item.title}}</span><br>
+                                          <span class="text-body-2 font-weight-regular black--text">{{item.description}}</span>
+                                      </div>
+                                      <div>
+                                          <v-btn
+                                            icon
+                                            color="#424242"
+                                            :href="'https://apiserv.lavikingaoficial.com/api/download-file/'+item.code"
+                                            target="_blank"
+                                          >
+                                            <v-icon color="secondary">
+                                                mdi-tray-arrow-down
+                                            </v-icon>
+                                          </v-btn>
+                                      </div>
+                                  </div>
+                              </v-card>
+                          </v-col>
+                      </v-row>
+                  </div>
+                </v-tab-item>
+              </v-tabs-items>
+
+                 
+            </div>
         </v-card>
         <v-snackbar
             v-model="toast.toast"
@@ -82,13 +117,11 @@ export default {
         only_numbers: this.$UTILS.rules.only_numbers,
       },
 
-
       pwdRules: [v => !!v || "Este campo es requerido"],
       pwdConfirm: [
         v => !!v || "Este campo es requerido",
         v => v === this.new_password || "Contraseñas no coinciden"
       ],
-
 
       toast:{
           toast: false,
@@ -97,7 +130,27 @@ export default {
           color: "success"
       },
 
+      groupList:[],
+      tab: null,
     };
+  },
+  created(){
+    Array.prototype.groupBy = function(field){
+      let groupedArr = [];
+      this.forEach(function(e){
+        //look for an existent group
+        let group = groupedArr.find(g => g['field'] === e[field]);
+        if (group == undefined){
+          //add new group if it doesn't exist
+          group = {field: e[field], groupList: []};
+          groupedArr.push(group);
+        }
+        //add the element to the group
+        group.groupList.push(e);
+      });
+      
+      return groupedArr;
+    }
   },
   mounted() {
     this.getDownloads();
@@ -120,6 +173,9 @@ export default {
       try {
         const response = await this.$API.business_partner.getDownloads();
         this.downloads_list=response.data.data;
+
+        console.log(this.downloads_list.groupBy('name_category'))
+        this.groupList = this.downloads_list.groupBy('name_category');
         this.$store.commit('loader',false);
       } catch (e) {
         this.$store.commit('loader',false);
