@@ -151,6 +151,7 @@ export default {
                 price: Number(this.plan.cost),
                 quantity: 1,
                 priceCompare: Number(this.plan.cost),
+                priceTotal: Number(this.plan.cost),
                 currency: this.plan.currency.symbol
             }
             this.$store.dispatch("addItem", item);

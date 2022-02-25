@@ -36,6 +36,7 @@
                                         </div>
                                         <div class="mx-1 mx-sm-4 flex-grow-1" style="font-size: 0.9rem;">
                                             <v-select
+                                                v-on:change="updateCart(index)"
                                                 v-model="item.quantity"
                                                 :items="[1, 2, 3, 4, 5]"
                                                 :label="'CANT.'"
@@ -632,6 +633,10 @@ export default {
 
     },
     methods:{
+        updateCart(indx){
+            console.log(indx)
+            this.cart[indx].priceTotal = (item.price * item.quantity);
+        },
         showToast(msg,color){
             this.toast.color = color;
             this.toast.message = msg;
@@ -656,18 +661,28 @@ export default {
                     //datos.forEach((cuponval, index) => {
                     //if(cuponval.available === true){
                         if(datos.id_plan === null){
-                            this.discount = (datos.discount_type == 1) ? this.subtotal * (datos.discount/100) : datos.discount; 
+                            this.discount = (datos.discount_type == 1) ? this.subtotal * (datos.discount/100) : datos.discount;
+                            for (let index = 0; index < this.cart.length; index++) {
+                                const element = this.cart;
+                                this.cart[index].priceTotal = this.cart[index].priceTotal - (this.cart[index].priceTotal * (datos.discount/100))
+                            }
                         }else{
                             //let index = this.cart.findIndex((elem) => elem.id == cuponval.id_plan);
                             //let index = this.cart.findIndex((elem) => elem.id == cuponval.id_plan);
                             datos.id_plan = datos.id_plan.map(Number);
+                            /*for (let index = 0; index < datos.id_plan.length; index++) {
+                                const element = datos.id_plan[index];
+                                console.log( this.cart.findIndex((elm) => { elm.id == element }) )
+                            }*/
                             let index = this.cart.findIndex((element) => {
                                 if(datos.id_plan.indexOf(element.id) != -1) { return true;}
                                 else{false}
                             })
                             if(index != -1){
                                 if(this.couponDisabled != true){
-                                    this.discount = (datos.discount_type == 1) ? this.cart[index].price * (datos.discount/100) :  datos.discount;
+                                    this.discount = (datos.discount_type == 1) ? this.cart[index].priceTotal * (datos.discount/100) :  datos.discount;
+                                    this.cart[index].priceTotal = this.cart[index].priceTotal - (this.cart[index].priceTotal * (datos.discount/100));
+                                    this.cart[index].priceCompare = this.cart[index].priceCompare - (this.cart[index].priceCompare * (datos.discount/100));
                                     this.couponDisabled = true;
                                     flag = 1;
                                     this.showToast("Cupón valido","success");
@@ -816,6 +831,7 @@ export default {
                 vm.order.subtotal = vm.subtotal;
                 vm.order.detail = vm.cart;
                 const data = await vm.$API.order.register(vm.order);
+                console.log(data)
                 vm.openToastAlert(true, 'Orden creada correctamente', 'primary');
                 vm.actions = data.data.data.actions;
 
@@ -847,12 +863,13 @@ export default {
                 vm.$store.commit('loader',false);
             }
             catch(e){
+
                 this.$store.commit('loader',false);
                 vm.openToastAlert(true, 'Upps! Ocurrio un error. Vuelve a intentarlo', 'Error');
                 setTimeout(()=>{ 
                     this.$router.go();
                 }, 1500);
-                console.error(e);
+                console.log(e.response.data);
                 this.$router.go();
             } 
         },
