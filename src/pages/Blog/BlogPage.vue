@@ -93,6 +93,11 @@
                                 <strong>CATEGORIAS</strong>
                             </v-subheader>
                             <v-list-item-group v-model="selectedCategory">
+                                <v-list-item :value="0">
+                                    <v-list-item-content>
+                                        <v-list-item-title v-text="'TODOS'"></v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
                                 <v-list-item v-for="(item, i) in categories" :key="i" :value="item.id">
                                     <v-list-item-content>
                                         <v-list-item-title v-text="item.description"></v-list-item-title>
@@ -111,7 +116,7 @@
                     <h3>{{ postTitle }}</h3>
                     <div class="gallery pt-2">
                         <div v-for="(post,i) in posts" :key="i" class="card-posts">
-                            <div class="card-image fill" :style="{ backgroundImage: 'url('+base_url+post.image.path+post.image.filename + ')' }">
+                            <div v-if="post.image" class="card-image fill" :style="{ backgroundImage: 'url('+base_url+post.image.path+post.image.filename + ')' }">
                                 <!-- image -->
                             </div>
                             <div class="card-content">
@@ -178,7 +183,7 @@ export default {
             last:{},
             base_url:'',
             img:'',
-            selectedCategory:"",
+            selectedCategory:"0",
             loading:false,
             postTitle:"ULTIMOS POSTS",
             total:0,
@@ -198,11 +203,14 @@ export default {
             }
         },
         async getLastPosts(){
+            this.$store.commit('loader', true);
             try{
                 const response = await this.$API.blog.getLastPosts();
                 this.posts = response.data;
             }catch(e){
                 console.error(e)
+            }finally{
+                this.$store.commit('loader', false);
             }
         },
         async getLastPost(){
@@ -221,15 +229,22 @@ export default {
         async getPostsByCategory(id,page = 1){
             this.isSearch = false;
             this.pagination = true;
-            const response = await this.$API.blog.getPostsByCategory(id,page);
-            this.posts = response.data.data;
-            if(this.posts.length == 0){
-                this.postTitle = "SIN RESULTADOS"
-            }else{
-                this.postTitle = "CATEGORIA "+this.posts[0].category.description;
-                this.postTitle = this.postTitle.toUpperCase();
+            this.$store.commit('loader', true);
+            try{
+                const response = await this.$API.blog.getPostsByCategory(id,page);
+                this.posts = response.data.data;
+                if(this.posts.length == 0){
+                    this.postTitle = "SIN RESULTADOS"
+                }else{
+                    this.postTitle = "CATEGORIA "+this.posts[0].category.description;
+                    this.postTitle = this.postTitle.toUpperCase();
+                }
+                this.total = response.data.last_page;
+            }catch(e){
+                console.error(e)
+            }finally{
+                this.$store.commit('loader', false);
             }
-            this.total = response.data.last_page;
         },
         async searchData(page = 1){
             this.isSearch = true;
@@ -252,7 +267,8 @@ export default {
     created(){
         this.getCategories();
         this.getLastPost();
-        this.getLastPosts();
+        //this.getLastPosts();
+        this.getPostsByCategory(0,1);
         this.base_url = this.$baseURL;
     },
     watch:{
