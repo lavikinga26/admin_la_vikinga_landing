@@ -16,6 +16,7 @@
               <v-icon>mdi-close-circle</v-icon>
             </v-btn>
             <v-img
+                @click="openLink(banner.link)"
                 :src="banner.path"
             >
             </v-img>
@@ -65,6 +66,9 @@
         close(){
             this.dialog = false;
             localStorage.setItem('flyer_recurrent', 1);
+        },
+        openLink(link){
+            window.open(link, '_blank')
         }
     },
   }
