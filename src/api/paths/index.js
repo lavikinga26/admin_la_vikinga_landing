@@ -98,8 +98,8 @@ export default {
         },
     },
     gym_banner:{
-        list(){
-            return callAPI('get', 'api/v1/gym-banner');
+        list(type){
+            return callAPI('get', 'api/v1/gym-banner/'+type);
         },
     },
     contact:{

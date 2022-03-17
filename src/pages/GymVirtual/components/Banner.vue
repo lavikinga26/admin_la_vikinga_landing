@@ -24,7 +24,7 @@ export default {
     },
     methods:{
         async loadBanner(){
-            const response  = await this.$API.gym_banner.list();
+            const response  = await this.$API.gym_banner.list('class');
             this.banner.link = response.data.data.link;
             this.banner.path = this.$baseURL + response.data.data.file_path.path + response.data.data.file_path.filename; 
             console.log(this.banner);
