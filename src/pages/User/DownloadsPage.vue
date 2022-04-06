@@ -34,6 +34,7 @@
                                   outlined
                                   class="pa-2 mr-3"
                                   height="100%"
+                                  v-if="item.id"
                               >
                                   <div class="d-flex align-center" style="height: 100%">
                                       <div style="width: 20%; text-align: center;">
