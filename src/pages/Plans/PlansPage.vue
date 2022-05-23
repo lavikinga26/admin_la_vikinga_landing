@@ -20,7 +20,7 @@
             </div>
         </div>
 
-        <div class="container mt-4">
+        <div v-if="data_enrollment.enable_next_enrollment==0" class="container mt-4">
             <div class="row justify-center m-4">
                 <h2 class="tit_h2_pink" style="text-align:center;">¡ES HORA DE COMENZAR EL DESAFÍO!</h2>
             </div>
@@ -103,7 +103,21 @@
                     <!--<v-img v-if="item.file_path" :src="base_url + item.file_path.path + item.file_path.filename" max-width="100px" max-height="80px" class="ma-3" style="border-radius:50%; min-height: 150px; min-width: 150px;"></v-img>
                     <v-img v-else :src="base_url + empty_url" max-width="100px" max-height="80px" class="ma-3" style="border-radius:50%; min-height: 150px; min-width: 150px;"></v-img>-->
                 </v-col>
+
+                <v-col cols="12">
+
+                </v-col>
             </v-row>
+        </div>
+
+
+        <div v-if="data_enrollment.enable_next_enrollment==1" class="container mt-4">
+            <div class="row justify-center m-4">
+                <h2 class="tit_h2_pink" style="text-align:center;">{{data_enrollment.enrollment_message}}</h2>
+            </div>
+            <div class="row justify-center m-4">
+                <h2 class="tit_h2_pink" style="text-align:center;">{{data_enrollment.next_enrollment_date | formatDate}}</h2>
+            </div>
         </div>
 
     </div>
@@ -121,7 +135,9 @@ export default {
         plans:[],
         temp_plans:[],
         base_url: '',
-        name:['DESAFÍO EXPERIENCIA', 'DESAFÍO BRONCE','DESAFÍO EXPERIENCIA']
+        name:['DESAFÍO EXPERIENCIA', 'DESAFÍO BRONCE','DESAFÍO EXPERIENCIA'],
+        data_config: {},
+        data_enrollment: {}
     }),
 
     
@@ -130,6 +146,7 @@ export default {
         vm.$store.commit('loader',true);
         vm.getBaseUrl();
         vm.categoryList();
+        vm.getConfiguracion();
         vm.list();this.$store.commit('loader',true);
         setTimeout(()=>{ 
             this.$store.commit('loader',false);
@@ -146,6 +163,16 @@ export default {
         },
         cleaning(){
             this.plans = this.temp_plans;
+        },
+        async getConfiguracion(){
+            try{
+                const data = await this.$API.configuration.configuration();
+                this.data_config = data.data.data;
+                this.data_enrollment = JSON.parse(data.data.data.next_enrollment_date);
+            }
+            catch(e){
+                console.error(e);
+            } 
         },
         async getBaseUrl(){
             try{

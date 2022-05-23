@@ -56,7 +56,7 @@
                                           <v-btn
                                             icon
                                             color="#424242"
-                                            :href="'https://apiserv.lavikingaoficial.com/api/download-file/'+item.code"
+                                            :href="'https://apiweb.lavikingaoficial.com/api/download-file/'+item.code"
                                             target="_blank"
                                           >
                                             <v-icon color="secondary">

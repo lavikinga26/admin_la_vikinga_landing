@@ -9,9 +9,8 @@
                 
                 <div ref="" class="flex-wrap d-flex justify-center align-center px-5">
                     <div v-for="item in data_reg" :key="item.name" class="ma-5 align-center">
-                        <v-img contain v-if="item.file_path" :src="base_url + item.file_path.path + item.file_path.filename" max-width="120px" max-height="80px" class="ma-3" style="border-radius:10px; margin-right: auto !important; margin-left: auto !important;"></v-img>
+                        <v-img contain v-if="item.file_path" :src="base_url + item.file_path.path + item.file_path.filename" max-width="120px" max-height="80px" class="ma-3" style="border-radius:10px; margin-right: auto !important; margin-left: auto !important; cursor:pointer;" @click="goPage(item.site_url)"></v-img>
                         <v-img contain v-else :src="base_url + empty_url" max-width="120px" max-height="80px" class="ma-3" style="border-radius:10px; margin-right: auto !important; margin-left: auto !important;"></v-img>
-
                     </div>
                 </div>
             </div>
@@ -53,6 +52,9 @@ export default {
             catch(e){
                 console.error(e);
             }
+        },
+        goPage(url){
+            window.open(url);
         }
     },
 };

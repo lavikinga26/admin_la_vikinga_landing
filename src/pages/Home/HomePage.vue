@@ -28,7 +28,7 @@
         </div> -->
 
         <staff-slider></staff-slider>
-        <InformativeSection/>
+        <!--<InformativeSection/>-->
         <phone-photos></phone-photos>
         <frequent-questions></frequent-questions>
         <sponsors-section></sponsors-section>

@@ -271,17 +271,17 @@ export default {
                 "additionalFields": []
             });
 
-            capture.init(document.querySelector('#demo'), this.reqCallback, this.startCallback, this.errorOnPayCallback); 
+            capture.init(document.querySelector('#demo'), this.reqCallback, this.startCallback, this.errorOnPayCallback);
         },
 
     },
 }
 </script>
 <style>
-  .fb-btn.v-btn--outlined {
-    border: 1px solid #E30E4F;
-  }
-  .rounded-lg .round-radius{
-    border-radius: 5px !important; 
-  }
+    .fb-btn.v-btn--outlined {
+        border: 1px solid #E30E4F;
+    }
+    .rounded-lg .round-radius{
+        border-radius: 5px !important; 
+    }
 </style>

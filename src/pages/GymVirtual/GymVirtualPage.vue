@@ -7,16 +7,15 @@
         >
             <v-toolbar-title class="tit_h2_pink" style="font-size: 3.0rem; color: white">GYM VIRTUAL</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn
+            <!--<v-btn
                 text 
                 small
                 link
                 :to="'/gym-virtual/calendario'"
             >
-                <!--<v-icon>mdi-calendar-blank-outline</v-icon>-->
                 MI CALENDARIO
             </v-btn>
-            <span style="color: #fff; font-size: 0.9rem;"> | </span>
+            <span style="color: #fff; font-size: 0.9rem;"> | </span>-->
             <v-btn 
                 text 
                 small
@@ -24,7 +23,7 @@
                 :to="'/gym-virtual/agenda'"
             >
                 <!--<v-icon>mdi-view-agenda-outline</v-icon>-->
-                MI AGENDA
+                MI GYM
             </v-btn>
             <!--<span style="color: #fff; font-size: 0.9rem;"> | </span>
             <v-btn 

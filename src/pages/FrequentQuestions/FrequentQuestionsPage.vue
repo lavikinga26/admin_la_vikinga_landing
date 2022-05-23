@@ -38,12 +38,15 @@ export default {
     },
     methods:{
         async getFrequentQuestions(){
+            this.$store.commit('loader',true);
             try{
                 const data = await this.$API.configuration.frequent_questions();
                 this.information = data.data.data;
+                this.$store.commit('loader',false);
             }
             catch(e){
                 console.error(e);
+                this.$store.commit('loader',false);
             } 
         },
     },

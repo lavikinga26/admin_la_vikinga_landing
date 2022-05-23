@@ -87,14 +87,6 @@
                             </v-col>
                             
                         </v-row>
-                        <!--<v-card class="ma-3 pa-3">
-                                                    <div class="d-flex align-center">
-                                                        <v-btn @click="abrirPayme()">Abrir Payme</v-btn>
-                                                    </div>
-
-                                                    <div id="demo" class="d-flex">
-                                                    </div>
-                                                </v-card>-->
                     </v-tab-item>
 
                     <v-tab-item value="pago" class="pa-4">
@@ -415,6 +407,7 @@
                                                 color="secondary"
                                                 class="mt-0"
                                                 :rules="requiredRule"
+                                                v-if="total > 0"
                                                 >
                                                 <template v-for="(item, index) in paymentMethods">
                                                     <v-card :key="'pm_'+index" class="ma-3 pa-3">
@@ -437,6 +430,33 @@
                                                         </div>
                                                     </v-card>
                                                 </template>
+                                                </v-radio-group>
+
+                                                <v-radio-group
+                                                v-model="order.id_payment_method"
+                                                column
+                                                color="secondary"
+                                                class="mt-0"
+                                                :rules="requiredRule"
+                                                v-if="total == 0 || total == 0.00"
+                                                >
+                                                    <v-card :key="'pm_'+index" class="ma-3 pa-3">
+                                                        <div class="d-flex align-center">    
+                                                            <div>
+                                                                <v-radio
+                                                                    value="3"
+                                                                    color="secondary"
+                                                                ></v-radio>
+                                                            </div>
+                                                            <div>
+                                                                <h4>GRATIS</h4>
+                                                                <!--<p style="font-size: 0.8rem; margin-bottom: 0px;">
+                                                                    {{item.description}}
+                                                                </p>-->
+                                                                <div style="font-size: 0.8rem; margin-bottom: 0px;">No se requiere un pago para esta orden.</div>
+                                                            </div>
+                                                        </div>
+                                                    </v-card>
                                                 </v-radio-group>
 
                                                 
@@ -568,6 +588,7 @@ export default {
                 password:'',
                 confirmPassword:'',
                 had_invoice: false,
+                coupon:''
             },
             requiredRule: [
                 v => !!v || 'Campo obligatorio',
@@ -634,7 +655,7 @@ export default {
     },
     methods:{
         updateCart(indx){
-            console.log(indx)
+            //console.log(indx)
             this.cart[indx].priceTotal = (item.price * item.quantity);
         },
         showToast(msg,color){
@@ -831,7 +852,7 @@ export default {
                 vm.order.subtotal = vm.subtotal;
                 vm.order.detail = vm.cart;
                 const data = await vm.$API.order.register(vm.order);
-                console.log(data)
+                //console.log(data)
                 vm.openToastAlert(true, 'Orden creada correctamente', 'primary');
                 vm.actions = data.data.data.actions;
 
@@ -858,6 +879,11 @@ export default {
                     //Enviamos a payme
                     //this.$router.push({ path: '/pago-payme/'+vm.actions.hash });
                     window.location.replace('/pago-payme/'+vm.actions.hash);
+                }
+
+                if((vm.actions.payment_status=='approved') && (vm.actions.payment_external == false))
+                {
+                    window.location.replace('/orden-completada/'+vm.actions.hash);
                 }
                 
                 vm.$store.commit('loader',false);
@@ -892,41 +918,6 @@ export default {
                 console.error(e);
             } 
         },
-
-        abrirPayme(){
-            var tokenRequest = {
-                    "action": "tokenize",
-                    "transaction": {
-                    "meta": {
-                        "internal_operation_number": Math.floor(Date.now()).toString().substring(7),
-                        "additional_fields": {
-                            "user_id": "USER_0001"
-                        }
-                    }
-                },
-                "card_holder": [
-                    {
-                        "first_name": "Juan",
-                        "last_name": "Perez",
-                        "email_address": "prueba@token.com",
-                        "identity_document_country": "PER",
-                        "identity_document_type": "DNI",
-                        "identity_document_identifier": "87654321"
-                    }
-                ]
-            };
-        
-
-            var token_key = "meQQw27S6i661bE6TnWWaYDmdwNQdJWNwe0HtD5HrL5H0hXTPdqWQjTTLAoTZKmX";
-
-            var capture = new FlexCapture({
-                "key": token_key,
-                "payload": tokenRequest,
-                "additionalFields": []
-            });
-
-            capture.init(document.querySelector('#demo'), this.reqCallback); 
-        }
     }
 }
 </script>

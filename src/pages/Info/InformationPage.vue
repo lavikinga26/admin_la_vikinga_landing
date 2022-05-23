@@ -25,7 +25,7 @@
             </v-row>
         </v-container>
         <phones-photos></phones-photos>
-        <frequent-questions></frequent-questions>
+        <!--<frequent-questions></frequent-questions>-->
     </div>
 </template>
 
@@ -39,12 +39,15 @@ export default {
     },
     methods:{
         async getBaseUrl(){
+            this.$store.commit('loader',true);
             try{
                 const data = await this.$API.configuration.getInformation();
                 this.information = data.data.data;
+                this.$store.commit('loader',false);
             }
             catch(e){
                 console.error(e);
+                this.$store.commit('loader',false);
             } 
         },
     },

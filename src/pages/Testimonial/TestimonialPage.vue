@@ -97,7 +97,7 @@
         <div class="col-md-12 text-center">
           <div class="inline-block">
             <span style="color: #0b152a; vertical-align: middle"
-              ><b>Próximamente</b></span
+              ><b></b></span
             >&nbsp;
           </div>
         </div>
@@ -170,6 +170,7 @@ export default {
   },
   methods: {
     async getTestimonials() {
+      this.$store.commit('loader',true);
       const response = await this.$API.testimonials.get();
       let data = response.data;
       if (response.status == 200) {
@@ -178,8 +179,7 @@ export default {
           this.showTestimonials = true;
           this.mainTestimonial = data[0];
           this.testimonialsData = data.splice(1, data.length);
-          console.log(this.mainTestimonial);
-          console.log(this.testimonialsData);
+          this.$store.commit('loader',false);
         }
       }
     },
@@ -203,7 +203,9 @@ export default {
     },
   },
   mounted() {
+    
     this.getTestimonials();
+    
   },
 };
 </script>

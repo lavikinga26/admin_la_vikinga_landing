@@ -106,7 +106,7 @@
 
         <!-- Fin -->
         <phones-photos></phones-photos>
-        <frequent-questions></frequent-questions>
+        <!--<frequent-questions></frequent-questions>-->
     </div>
 </template>
 

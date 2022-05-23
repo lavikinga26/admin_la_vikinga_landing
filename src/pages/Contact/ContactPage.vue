@@ -71,7 +71,7 @@
             </v-col>
         </v-row>
         <sponsors-section></sponsors-section>
-        <frequent-questions></frequent-questions>
+        <!--<frequent-questions></frequent-questions>-->
 
 
         <v-dialog v-model="dialogSuccess" max-width="30%" transition="dialog-top-transition">

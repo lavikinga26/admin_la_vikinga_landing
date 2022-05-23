@@ -21,8 +21,8 @@
                     </p>
                 </div>
                 <div class="post-header-details">
-                    <h3>{{ post.created_at.split('T')[0] }}</h3>
-                    <p>{{ post.user_id }}</p>
+                    <!--<h3>{{ post.created_at.split('T')[0] }}</h3>
+                    <p>{{ post.user_id }}</p>-->
                 </div>
             </div>
             <div v-html="post.content">

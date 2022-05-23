@@ -42,7 +42,10 @@
                     </div>
                 </v-col>
                 <v-col cols="12" md="6" sm="12">
-                    <div v-if="img != null"  class="fill main-image" :style="{ backgroundImage: 'url(' + img + ')' }"></div>
+                    <!--<div v-if="img != null"  class="fill main-image" :style="{ backgroundImage: 'url(' + img + ')' }">-->
+                    <div v-if="img != null"  class="fill main-image">
+                        <img :src="img" style="width: 100%;">
+                    </div>
                     <div v-else class="no-photo fill" ></div>
                 </v-col>
             </v-row>
@@ -116,8 +119,9 @@
                     <h3>{{ postTitle }}</h3>
                     <div class="gallery pt-2">
                         <div v-for="(post,i) in posts" :key="i" class="card-posts">
-                            <div v-if="post.image" class="card-image fill" :style="{ backgroundImage: 'url('+base_url+post.image.path+post.image.filename + ')' }">
-                                <!-- image -->
+                            <!--<div v-if="post.image" class="card-image fill" :style="{ backgroundImage: 'url('+base_url+post.image.path+post.image.filename + ')' }">-->
+                            <div v-if="post.image" class="card-image fill">
+                                <img :src="base_url+post.image.path+post.image.filename" style="width: 100%;">
                             </div>
                             <div class="card-content">
                                 <!-- contenido -->
@@ -164,7 +168,7 @@
             <div class="row mt-4">
                 <div class="col-md-12 text-center">
                     <div class="inline-block">
-                        <span style="color:#0b152a; vertical-align: middle;"><b>Próximamente</b></span>&nbsp;
+                        <span style="color:#0b152a; vertical-align: middle;"><b></b></span>&nbsp;
                     </div>
                 </div>
             </div>
@@ -331,7 +335,7 @@ export default {
 
     }
     .card-image{
-        height: 40%;
+        height: 48%;
         background-color: turquoise;
         -webkit-border-top-left-radius: 10px;
         -webkit-border-top-right-radius: 10px;
@@ -346,7 +350,7 @@ export default {
         align-items: center;
     }
     .card-content{
-        height: 60%;
+        height: 52%;
         padding: 5px 20px;
         display: flex;
         flex-direction: column;

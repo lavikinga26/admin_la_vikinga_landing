@@ -13,13 +13,14 @@
       <!-- Section: Social -->
       <section class="text-center mb-5">
         <v-btn
-              color="secondary"
-              fab
-              x-small
-              dark mx-1
-              class="elevation-0"
-            >
-              <v-icon>mdi-facebook</v-icon>
+          color="secondary"
+          fab
+          x-small
+          dark mx-1
+          class="elevation-0"
+          @click="goPage('https://www.facebook.com/lavikingaoficial')"
+        >
+          <v-icon>mdi-facebook</v-icon>
         </v-btn>
         <v-btn
               color="secondary"
@@ -27,6 +28,7 @@
               x-small
               dark  mx-1
               class="elevation-0"
+              @click="goPage('https://www.instagram.com/lavikingaoficial')"
         >
               <v-icon>mdi-instagram</v-icon>
         </v-btn>
@@ -36,17 +38,9 @@
               x-small
               dark mx-1
               class="elevation-0"
+              @click="goPage('https://www.youtube.com/channel/UC4PlQJbtyk23yK23ye2uu8w')"
             >
               <v-icon>mdi-youtube</v-icon>
-        </v-btn>
-        <v-btn
-              color="secondary"
-              fab
-              x-small
-              dark mx-1
-              class="elevation-0"
-            >
-              <v-icon>mdi-twitter</v-icon>
         </v-btn>
       </section>
       <!-- Section: Social -->
@@ -178,6 +172,9 @@ export default {
                 console.error(e);
             } 
         },
+        goPage(url){
+            window.open(url);
+        }
     }
 };
 </script>
