@@ -65,6 +65,11 @@ export default {
         getDownloads(){
             return callAuthAPI('get', 'api/v1/business-partner/downloads');
             
+        },
+        getLibrary(){
+            return callAuthAPI('get', 'api/v1/business-partner/library');
+            
         }
+
     },
 }

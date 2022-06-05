@@ -13,5 +13,10 @@ export default [
         path: '/cuenta/descargables',
         component: () => import(/* webpackChunkName: "auth-signup" */ '../pages/User/DownloadsPage.vue'),
         meta: { requiresAuth: true }
+    },
+    {
+        path: '/cuenta/mi-biblioteca',
+        component: () => import(/* webpackChunkName: "auth-signup" */ '../pages/User/LibraryPage.vue'),
+        meta: { requiresAuth: true }
     }
 ]

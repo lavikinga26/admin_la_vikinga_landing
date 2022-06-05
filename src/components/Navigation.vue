@@ -10,56 +10,48 @@
       <v-list dense>
         <v-list-item to="/carrito">
           <v-list-item-content>
-            <v-list-item-title
-              style="padding-right: 10px; height: 45px"
-              class="subtitile-1 d-flex justify-space-between align-center"
-            >
+            <v-list-item-title style="padding-right: 10px; height: 45px"
+              class="subtitile-1 d-flex justify-space-between align-center">
               <span>CARRITO</span>
               <div>
-                <v-badge
-                  color="secondary"
-                  :content="cartCount"
-                  :value="cartCount"
-                  style="padding-top: 0px"
-                  overlap
-                >
+                <v-badge color="secondary" :content="cartCount" :value="cartCount" style="padding-top: 0px" overlap>
                   <v-icon>mdi-shopping-outline</v-icon>
                 </v-badge>
               </div>
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+
         <v-list-group v-if="isLogged" :value="false">
-            <template v-slot:activator>
-              <v-list-item-title>CUENTA</v-list-item-title>
-            </template>
+          <template v-slot:activator>
+            <v-list-item-title>CUENTA</v-list-item-title>
+          </template>
 
-            <v-list :value="true" no-action sub-group>
-              <v-list-item link to="/cuenta/mi-perfil">
-                <v-list-item-title>Mi Perfil</v-list-item-title
-                >
-              </v-list-item>
-              
-              <v-divider class="white"></v-divider>
-              <v-list-item link to="/cuenta/mis-ordenes">
-                <v-list-item-title>Mi Cuenta</v-list-item-title
-                >
-              </v-list-item>
+          <v-list :value="true" no-action sub-group>
+            <v-list-item link to="/cuenta/mi-perfil">
+              <v-list-item-title>Mi Perfil</v-list-item-title>
+            </v-list-item>
 
-              <v-divider class="white"></v-divider>
-              <v-list-item link to="/gym-virtual/agenda">
-                <v-list-item-title 
-                  >Gym Virtual</v-list-item-title
-                >
-              </v-list-item>
-              
-              <v-divider class="white"></v-divider>
-              <v-list-item link to="/cuenta/descargables">
-                <v-list-item-title>Descargables</v-list-item-title
-                >
-              </v-list-item>
-            </v-list>
-          </v-list-group>
+            <v-divider class="white"></v-divider>
+            <v-list-item link to="/cuenta/mis-ordenes">
+              <v-list-item-title>Mi Cuenta</v-list-item-title>
+            </v-list-item>
+
+            <v-divider class="white"></v-divider>
+            <v-list-item link to="/gym-virtual/agenda">
+              <v-list-item-title>Gym Virtual</v-list-item-title>
+            </v-list-item>
+
+            <v-divider class="white"></v-divider>
+            <v-list-item link to="/cuenta/descargables">
+              <v-list-item-title>Descargables</v-list-item-title>
+            </v-list-item>
+            <v-divider class="white"></v-divider>
+            <v-list-item link to="/cuenta/mi-biblioteca">
+              <v-list-item-title>Mi Biblioteca</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-list-group>
       </v-list>
 
       <v-divider />
@@ -71,28 +63,21 @@
             </template>
 
             <v-list :value="true" no-action sub-group>
-              <v-list-item
-                v-for="(subitem, i) in item.menu"
-                :key="i"
-                :to="subitem.slug"
-              >
+              <v-list-item v-for="(subitem, i) in item.menu" :key="i" :to="subitem.slug">
                 <v-list-item-content>
                   <v-list-item-title class="subtitile-1">{{
                     subitem.name
-                  }}</v-list-item-title>
+                    }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </v-list>
           </v-list-group>
 
-          <v-list-item
-            v-else-if="!item.slug.includes('https://')"
-            :to="item.slug"
-          >
+          <v-list-item v-else-if="!item.slug.includes('https://')" :to="item.slug">
             <v-list-item-content>
               <v-list-item-title class="subtitile-1">{{
                 item.name
-              }}</v-list-item-title>
+                }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
@@ -101,7 +86,7 @@
               <v-list-item-content>
                 <v-list-item-title class="subtitile-1">{{
                   item.name
-                }}</v-list-item-title>
+                  }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </a>
@@ -109,32 +94,14 @@
       </v-list>
       <v-list>
         <v-list-item class="d-flex justify-center" v-if="!isLogged">
-          <v-btn
-            color="secondary"
-            small
-            class="px-2 rounded-pill"
-            style="width: 100%"
-            link
-            to="/auth/iniciar-sesion"
-          >
+          <v-btn color="secondary" small class="px-2 rounded-pill" style="width: 100%" link to="/auth/iniciar-sesion">
             <span class="ma-3">INCIAR SESIÓN</span>
             <v-icon>mdi-login</v-icon>
           </v-btn>
         </v-list-item>
-        <v-list-item
-          class="d-flex justify-center"
-          v-else
-          @click="LogoutSession"
-        >
-          <v-btn
-            color="secondary"
-            depressed
-            small
-            class="px-2 rounded-pill"
-            style="width: 100%"
-            link
-            to="/cuenta/mis-ordenes"
-          >
+        <v-list-item class="d-flex justify-center" v-else @click="LogoutSession">
+          <v-btn color="secondary" depressed small class="px-2 rounded-pill" style="width: 100%" link
+            to="/cuenta/mis-ordenes">
             <span class="ma-3">CERRAR SESIÓN</span>
             <v-icon>mdi-logout</v-icon>
           </v-btn>
@@ -149,138 +116,70 @@
                     </router-link>
             </v-toolbar-title>
             <v-spacer />-->
-      <v-app-bar-nav-icon
-        @click.stop="drawer = !drawer"
-        class="mr-4"
-        v-if="isXs"
-      />
-      <div
-        v-else
-        class="d-flex justify-space-between align-center"
-        style="width: 100%"
-      >
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="mr-4" v-if="isXs" />
+      <div v-else class="d-flex justify-space-between align-center" style="width: 100%">
         <div>
           <template v-for="(item, i) in items">
-            <dan-menu
-              v-bind:key="i"
-              v-if="item.menu.length > 0"
-              :name="item.name"
-              :slug="item.slug"
-              :menu-items="item.menu"
-              @dan-menu-click="onMenuItemClick"
-            ></dan-menu>
-            <v-btn
-              text
-              :href="item.slug"
-              target="_blank"
-              v-else-if="item.slug.includes('https://')"
-              :key="i"
-              medium
-              class="px-1"
-              small
-            >
+            <dan-menu v-bind:key="i" v-if="item.menu.length > 0" :name="item.name" :slug="item.slug"
+              :menu-items="item.menu" @dan-menu-click="onMenuItemClick"></dan-menu>
+            <v-btn text :href="item.slug" target="_blank" v-else-if="item.slug.includes('https://')" :key="i" medium
+              class="px-1" small>
               <span class="ma-2">{{ item.name }}</span>
             </v-btn>
-            <v-btn
-              text
-              :to="item.slug"
-              v-else
-              small
-              :key="i"
-              medium
-              class="px-1"
-            >
+            <v-btn text :to="item.slug" v-else small :key="i" medium class="px-1">
               <span class="ma-2">{{ item.name }}</span>
             </v-btn>
-            <span
-              v-if="i < items.length - 1"
-              style="color: #0b233f; font-size: 0.9rem"
-              v-bind:key="i + 100"
-            >
+            <span v-if="i < items.length - 1" style="color: #0b233f; font-size: 0.9rem" v-bind:key="i + 100">
               |
             </span>
           </template>
         </div>
         <div>
-          <v-btn
-            color="secondary"
-            v-if="!isLogged"
-            depressed
-            small
-            class="px-2 rounded-pill"
-            link
-            to="/auth/iniciar-sesion"
-          >
+          <v-btn color="secondary" v-if="!isLogged" depressed small class="px-2 rounded-pill" link
+            to="/auth/iniciar-sesion">
             <span class="ma-3">INCIAR SESIÓN</span>
           </v-btn>
-          <v-menu
-            offset-y
-            v-if="isLogged"
-            min-width="200px"
-            class="secondary white--text"
-          >
+          <v-btn color="secondary" v-if="isLogged" depressed small class="px-2 rounded-pill" link
+            to="/gym-virtual/agenda">
+            <span class="ma-3">
+              <v-icon>mdi-weight-lifter</v-icon> MI GYM
+            </span>
+          </v-btn>
+          <v-menu offset-y v-if="isLogged" min-width="200px" class="secondary white--text">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                color="secondary"
-                icon
-                class="px-2 rounded-pill"
-                v-bind="attrs"
-                v-on="on"
-              >
+              <v-btn color="secondary" icon class="px-2 rounded-pill" v-bind="attrs" v-on="on">
                 <v-icon>mdi-account-circle-outline</v-icon>
               </v-btn>
             </template>
             <v-list class="secondary white--text">
               <v-list-item link class="white--text" to="/cuenta/mi-perfil">
-                <v-list-item-title class="white--text"
-                  >Mi Perfil</v-list-item-title
-                >
+                <v-list-item-title class="white--text">Mi Perfil</v-list-item-title>
               </v-list-item>
               <v-divider class="white"></v-divider>
               <v-list-item link class="white--text" to="/cuenta/mis-ordenes">
-                <v-list-item-title class="white--text"
-                  >Mi Cuenta</v-list-item-title
-                >
+                <v-list-item-title class="white--text">Mi Cuenta</v-list-item-title>
               </v-list-item>
               <v-divider class="white"></v-divider>
               <v-list-item link class="white--text" to="/gym-virtual/agenda">
-                <v-list-item-title class="white--text"
-                  >Gym Virtual</v-list-item-title
-                >
+                <v-list-item-title class="white--text">Gym Virtual</v-list-item-title>
               </v-list-item>
               <v-divider class="white"></v-divider>
               <v-list-item link class="white--text" to="/cuenta/descargables">
-                <v-list-item-title class="white--text"
-                  >Descargables</v-list-item-title
-                >
+                <v-list-item-title class="white--text">Descargables</v-list-item-title>
               </v-list-item>
               <v-divider class="white"></v-divider>
-              <v-list-item
-                @click="LogoutSession"
-                link
-                class="white--text"
-                to="/cuenta/mis-ordenes"
-              >
-                <v-list-item-title class="white--text"
-                  >Cerrar Sesión</v-list-item-title
-                >
+              <v-list-item link class="white--text" to="/cuenta/mi-biblioteca">
+                <v-list-item-title class="white--text">Mi Biblioteca</v-list-item-title>
+              </v-list-item>
+              <v-divider class="white"></v-divider>
+              <v-list-item @click="LogoutSession" link class="white--text" to="/cuenta/mis-ordenes">
+                <v-list-item-title class="white--text">Cerrar Sesión</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
 
-          <v-btn
-            color="secondary"
-            icon
-            class="px-2 rounded-pill"
-            link
-            to="/carrito"
-          >
-            <v-badge
-              color="secondary"
-              :content="cartCount"
-              :value="cartCount"
-              overlap
-            >
+          <v-btn color="secondary" icon class="px-2 rounded-pill" link to="/carrito">
+            <v-badge color="secondary" :content="cartCount" :value="cartCount" overlap>
               <v-icon>mdi-shopping-outline</v-icon>
             </v-badge>
           </v-btn>
