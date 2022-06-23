@@ -12,9 +12,10 @@
                 <div class="col-md-12 text-center">
                     <div class="inline-block">
                         <span style="color:white; vertical-align: middle;"><b>INICIO</b></span>&nbsp;
-                        <img src="@/assets/img/lista_icon.png" style="max-width: 20px; filter: brightness(0) invert(1); vertical-align: middle;">
+                        <img src="@/assets/img/lista_icon.png"
+                            style="max-width: 20px; filter: brightness(0) invert(1); vertical-align: middle;">
                     </div>
-                    
+
                     <p class="tit_h1_white text_entrena">INSCRIPCIONES</p>
                 </div>
             </div>
@@ -26,77 +27,42 @@
             </div>
             <div class="row no-gutters mt-5">
                 <div class="filtering col-sm-12 text-center">
-                     <v-btn
-                        class="ma-2 fb-btn"
-                        color="secondary"
-                        :outlined="category==0"
-                        :text="category!=0"
-                        @click="category=0;cleaning();"
-                        >
-                            TODOS
+                    <v-btn class="ma-2 fb-btn" color="secondary" :outlined="category==0" :text="category!=0"
+                        @click="category=0;cleaning();">
+                        TODOS
                     </v-btn>
 
-                    <v-btn
-                        class="ma-2 fb-btn"
-                        color="secondary"
-                        v-for="(item, i) in categories"
-                        :key="i"
-                        :outlined="category==item.id"
-                        :text="category!=item.id"
-                        @click="category=item.id;category_info=item.description;category_slug=item.slug;filtering();"
-                        >
+                    <v-btn class="ma-2 fb-btn" color="secondary" v-for="(item, i) in categories" :key="i"
+                        :outlined="category==item.id" :text="category!=item.id"
+                        @click="category=item.id;category_info=item.description;category_slug=item.slug;filtering();">
                         <span style="text-transform: uppercase !important;">{{item.name}}</span>
                     </v-btn>
                 </div>
             </div>
             <div v-if="category!=0" style="text-align:center;" class="mb-10">
-                <div class="d-flex justify-center" >
+                <div class="d-flex justify-center">
                     <div style="width: 70%; text-align:center;">
                         {{category_info}}
                     </div>
                 </div>
-                <v-btn
-                    class="ma-2 fb-btn"
-                    color="secondary"
-                    text
-                    @click="goToCategory()"
-                    >
+                <v-btn class="ma-2 fb-btn" color="secondary" x-large @click="goToCategory()">
                     Ver más
                 </v-btn>
             </div>
             <v-row>
-                <v-col
-                    v-for="(plan,index) in plans"
-                    :key="index"
-                    cols="12"
-                    sm="4"
-                    align="center"
-                >
-                    <v-hover
-                        v-slot="{ hover }"
-                        close-delay="200"
-                    >
-                        <v-card
-                        :elevation="hover ? 16 : 2"
-                        :class="{ 'on-hover': hover }"
-                        max-width="350"
-                        
-                        >
-                            <v-img
-                                lazy-src="@/assets/img/lazy_img.jpg"
-                                max-height="600"
-                                height="420"
-                                max-width="350"
+                <v-col v-for="(plan,index) in plans" :key="index" cols="12" sm="4" align="center">
+                    <v-hover v-slot="{ hover }" close-delay="200">
+                        <v-card :elevation="hover ? 16 : 2" :class="{ 'on-hover': hover }" max-width="350">
+                            <v-img lazy-src="@/assets/img/lazy_img.jpg" max-height="600" height="420" max-width="350"
                                 class="rounded plan white--text align-end"
                                 :src="base_url + plan.file_path.path + plan.file_path.filename"
-                                @click="goToPlan(plan.identifier)"
-                                gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                            >
-                            <v-card-title>
-                                <div style="border-left: 4px solid #E30E4F; text-align: left; word-break: keep-all;" class="pl-1">
-                                    {{plan.title}}
-                                </div>
-                            </v-card-title>
+                                @click="goToPlan(plan.identifier)" gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)">
+                                <v-card-title>
+                                    <div style="border-left: 4px solid #E30E4F; text-align: left; word-break: keep-all;"
+                                        class="pl-1">
+                                        {{plan.title}}
+                                    </div>
+                                </v-card-title>
                             </v-img>
                         </v-card>
                     </v-hover>
@@ -116,7 +82,8 @@
                 <h2 class="tit_h2_pink" style="text-align:center;">{{data_enrollment.enrollment_message}}</h2>
             </div>
             <div class="row justify-center m-4">
-                <h2 class="tit_h2_pink" style="text-align:center;">{{data_enrollment.next_enrollment_date | formatDate}}</h2>
+                <h2 class="tit_h2_pink" style="text-align:center;">{{data_enrollment.next_enrollment_date | formatDate}}
+                </h2>
             </div>
         </div>
 

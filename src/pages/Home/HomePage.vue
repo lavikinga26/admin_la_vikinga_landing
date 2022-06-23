@@ -2,7 +2,7 @@
     <div>
         <home-slider></home-slider>
         <plans-slider></plans-slider>
-        
+
         <!-- 
         <div class="container-fluid pt-3 mt-n5">
             <div class="row mt-4">
@@ -30,9 +30,9 @@
         <staff-slider></staff-slider>
         <!--<InformativeSection/>-->
         <phone-photos></phone-photos>
-        <frequent-questions></frequent-questions>
+        <!--<frequent-questions></frequent-questions>-->
         <sponsors-section></sponsors-section>
-        <FlyerPopup/>
+        <FlyerPopup />
     </div>
 </template>
 
