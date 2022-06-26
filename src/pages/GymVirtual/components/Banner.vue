@@ -1,14 +1,14 @@
 <template>
-  <div class="banner fill" v-if="banner.path != ''">
-      <div class="fill-image" v-if="banner.link != null">
-          <a :href="banner.link">
-              <img :src="banner.path" alt="">
-          </a>
-      </div>
-      <div class="fill-image" v-else>
-          <img :src="banner.path" alt="">
-      </div>
-  </div>
+    <div class="banner fill" v-if="banner.path != ''">
+        <div class="fill-image" v-if="banner.link != null">
+            <a :href="banner.link">
+                <img :src="banner.path" class="bannerimg" alt="">
+            </a>
+        </div>
+        <div class="fill-image" v-else>
+            <img :src="banner.path" alt="" class="bannerimg">
+        </div>
+    </div>
 </template>
 
 <script>
@@ -38,6 +38,7 @@ export default {
 </script>
 
 <style>
+
 .banner{
     height: 250px;
     width: 100%;
@@ -57,7 +58,7 @@ export default {
     width: 100%;
     display: block;
 }
-img{
+.bannerimg{
     height: 100%;
     width: 100%;
     object-fit: contain;

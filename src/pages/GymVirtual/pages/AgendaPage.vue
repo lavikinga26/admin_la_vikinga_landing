@@ -5,83 +5,42 @@
                 <h1>MI GYM</h1>
             </div>
 
-            <!--<div class="text-center my-3">
-                <v-alert
-                    color="pink"
-                    dark
-                    border="top"
-                    icon="mdi-home"
-                    transition="scale-transition"
-                    >
-                    Phasellus tempus. Fusce ac felis sit amet ligula pharetra condimentum. In dui magna, posuere eget, vestibulum et, tempor auctor, justo. Pellentesque posuere. Curabitur ligula sapien, tincidunt non, euismod vitae, posuere imperdiet, leo.
-
-                    Phasellus nec sem in justo pellentesque facilisis. Phasellus magna. Cras risus ipsum, faucibus ut, ullamcorper id, varius ac, leo. In hac habitasse platea dictumst. Praesent turpis.
+            <div v-for="(n, index) in userPlans" :key="'plan_alert_'+index" class="text-left my-3">
+                <v-alert border="top"
+                    v-if="new Date(n.expiration_date) > actual_date && (Math.ceil((new Date(n.expiration_date).getTime() - actual_date.getTime()) / (1000 * 3600 * 24)) <= 15)"
+                    type="error" colored-border color="pink accent-4" elevation="2">
+                    Recuerda que la membresía de tu plan <b>{{n.name}}</b> vence el <b>{{ n.expiration_date | formatDate
+                    }}</b>. Renueva tu plan haciendo <a :href="'/inscripciones'"
+                        style="text-decoration: none;"><b>CLICK AQUÍ</b>.</a>
                 </v-alert>
-            </div>-->
+            </div>
 
             <div class="text-center pt-5">
-                <v-sheet
-                    class="mx-auto"
-                    max-width="240"
-                >
-                    <v-slide-group
-                    show-arrows
-                    v-model="model2"
-                    center-active
-                    @click:next="model2=model2+1; current_month=planMonths[model2]; model=null;"
-                    @click:prev="model2=model2-1; current_month=planMonths[model2]; model=null;"
-                    >
-                    <v-slide-item
-                        v-for="(n, index) in planMonths"
-                        :key="'month_'+index"
-                        v-slot="{ toggle }"
-
-                    >
-                        <v-btn
-                        max-width="120"
-                        min-width="120"
-                        class="mx-2"
-                        :input-value="current_month._month+'-'+current_month._year == n._month+'-'+n._year"
-                        active-class="secondary white--text"
-                        depressed
-                        rounded
-                        @click="toggle; current_month=n"
-                        >
-                        {{ months[n._month - 1] }}
-                        </v-btn>
-                    </v-slide-item>
+                <v-sheet class="mx-auto" max-width="240">
+                    <v-slide-group show-arrows v-model="model2" center-active
+                        @click:next="model2=model2+1; current_month=planMonths[model2]; model=null;"
+                        @click:prev="model2=model2-1; current_month=planMonths[model2]; model=null;">
+                        <v-slide-item v-for="(n, index) in planMonths" :key="'month_'+index" v-slot="{ toggle }">
+                            <v-btn max-width="120" min-width="120" class="mx-2"
+                                :input-value="current_month._month+'-'+current_month._year == n._month+'-'+n._year"
+                                active-class="secondary white--text" depressed rounded @click="toggle; current_month=n">
+                                {{ months[n._month - 1] }}
+                            </v-btn>
+                        </v-slide-item>
                     </v-slide-group>
                 </v-sheet>
             </div>
             <br>
-            
+
             <div class="text-center py-5">
-                <v-sheet
-                    class="mx-auto"
-                    max-width="1000"
-                >
-                    <v-slide-group
-                    center-active
-                    show-arrows
-                    v-model="model"
-                    >
-                        <v-slide-item
-                            v-for="(n,index) in planSectionsFilter()"
-                            :key="'class_day_'+index"
-                            v-slot="{ active, toggle }"
-                        >
+                <v-sheet class="mx-auto" max-width="1000">
+                    <v-slide-group center-active show-arrows v-model="model">
+                        <v-slide-item v-for="(n,index) in planSectionsFilter()" :key="'class_day_'+index"
+                            v-slot="{ active, toggle }">
                             <!--; getActivities(index)-->
-                            <v-btn
-                            max-width="120"
-                            min-width="120"
-                            class="mx-3"
-                            :input-value="index==model"
-                            active-class="primary white--text"
-                            depressed
-                            rounded
-                            @click="getActivities(index, n)"
-                            >
-                            {{ n.dias_avb }}
+                            <v-btn max-width="120" min-width="120" class="mx-3" :input-value="index==model"
+                                active-class="primary white--text" depressed rounded @click="getActivities(index, n)">
+                                {{ n.dias_avb }}
                             </v-btn>
                         </v-slide-item>
                     </v-slide-group>
@@ -97,78 +56,54 @@
                                 <img style="width: 180px;" src="@/assets/img/logo_vikinga_icon.png" alt="Logo" />
                                 <p class="tit_h1_staff_pink text_entrena txt_uppercase mb-6" style="font-size: 2rem">
                                     SIN ACTIVIDADES
-                                </p> 
+                                </p>
                             </div>
                         </v-container>
                     </v-col>
-                    <v-col v-else
-                    cols="12" 
-                    align="center" 
-                    v-for="(activity, i) in current_date.activities"
-                    :key="'activity_'+i"
-                    >
-                        <v-card
-                        color="grey lighten-5"
-                        class="my-3 mx-4"
-                        elevation="3"
-                        min-height="250"
-                        max-width="1000"
-                        >
+                    <v-col v-else cols="12" align="center" v-for="(activity, i) in current_date.activities"
+                        :key="'activity_'+i">
+                        <v-card color="grey lighten-5" class="my-3 mx-4" elevation="3" min-height="250"
+                            max-width="1000">
 
-                            <div class="text-left pa-3 px-10 d-flex"
-                                v-bind:class="{ 
-                                    'activity-class': activity.type=='class' || activity.type=='masterclass', 
-                                    'activity-taller': activity.type=='taller', 
-                                    'activity-descanso': activity.type=='descanso', 
-                                    'activity-nutrition': activity.type=='nutricion', 
-                                    'white--text': activity.type!='descanso' ,
-                                    'black--text': activity.type=='descanso' 
-                                }">
-                                    <b>{{activity.name}}</b>
+                            <div class="text-left pa-3 px-10 d-flex" v-bind:class="{ 
+                                'activity-class': activity.type=='class' || activity.type=='masterclass', 
+                                'activity-taller': activity.type=='taller', 
+                                'activity-descanso': activity.type=='descanso', 
+                                'activity-nutrition': activity.type=='nutricion', 
+                                'white--text': activity.type!='descanso' ,
+                                'black--text': activity.type=='descanso' 
+                            }">
+                                <b>{{activity.name}}</b>
                                 <v-spacer></v-spacer>
                                 <!--<v-icon color="#EF476F">mdi-circle-medium</v-icon>-->
-                                <div v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)">
+                                <div
+                                    v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)">
                                     <v-icon color="#FFFFFF">mdi-access-point</v-icon>
                                     &nbsp;&nbsp;
                                     <b>En vivo</b>
                                 </div>
-                                
+
                             </div>
                             <v-card-text>
                                 <v-row height="250">
                                     <v-col cols="12" md="4" class="pa-4" align-items="center">
                                         <v-img
                                             src="https://i.vimeocdn.com/video/1216681987-4743218d2221b42f2acba382eceedf59e3a83c91aade0ff4b264a3deb6b2a295-d_640"
-                                            height="180px"
-                                            width="270"
-                                            class="ma-auto"
-                                        >
-                                            
-                                            <v-row class="fill-height ma-0"  align="center" justify="center" 
-                                            style="background-color:#0000004d">
+                                            height="180px" width="270" class="ma-auto">
+
+                                            <v-row class="fill-height ma-0" align="center" justify="center"
+                                                style="background-color:#0000004d">
                                                 <v-btn
-                                                v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)"
-                                                :href="activity.link_class"
-                                                target="_blank"
-                                                icon
-                                                class="white--text"
-                                                >
-                                                    <v-icon style="font-size: 50px" 
-                                                    class="white--text"
-                                                    color="#FFFFFF"
-                                                    >mdi-access-point</v-icon>
+                                                    v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)"
+                                                    :href="activity.link_class" target="_blank" icon
+                                                    class="white--text">
+                                                    <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
+                                                        mdi-access-point</v-icon>
                                                 </v-btn>
-                                                <v-btn
-                                                v-if="activity.link_video"
-                                                icon
-                                                class="white--text"
-                                                @click="getVideoActivity(activity)"
-                                                
-                                                >
-                                                    <v-icon style="font-size: 50px" 
-                                                    class="white--text"
-                                                    color="#FFFFFF"
-                                                    >mdi-motion-play-outline</v-icon>
+                                                <v-btn v-if="activity.link_video" icon class="white--text"
+                                                    @click="getVideoActivity(activity)">
+                                                    <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
+                                                        mdi-motion-play-outline</v-icon>
                                                 </v-btn>
                                             </v-row>
                                         </v-img>
@@ -176,7 +111,8 @@
                                     <v-col cols="12" md="7" class="text-left align-center d-flex">
                                         <v-container>
                                             <h3>{{activity.name}}</h3>
-                                            <div>HORA: {{current_date.dat + ' ' +activity.hour_class | formatTime}}</div>
+                                            <div>HORA: {{current_date.dat + ' ' +activity.hour_class | formatTime}}
+                                            </div>
                                             <v-row class="my-3">
                                                 <v-col cols="12" md="4">
                                                     <h5>TIEMPO:</h5>
@@ -191,15 +127,9 @@
                                                     <div>{{activity.material}}</div>
                                                 </v-col>
                                             </v-row>
-                                            <v-btn
-                                            tile
-                                            color="secondary"
-                                            class="rounded"
-                                            dark
-                                            :href="activity.link_class"
-                                            target="_blank"
-                                            v-if="!activity.link_video && activity.link_class"
-                                            >
+                                            <v-btn tile color="secondary" class="rounded" dark
+                                                :href="activity.link_class" target="_blank"
+                                                v-if="!activity.link_video && activity.link_class">
                                                 <v-icon left>
                                                     mdi-access-point
                                                 </v-icon>
@@ -213,17 +143,11 @@
                                         </v-container>
                                     </v-col>
                                     <v-col cols="12" md="1" class="text-center align-center justify-center d-flex">
-                                        <v-icon
-                                            color="secondary"
-                                            @click="saveAttempts(activity, current_date.dat, i); "
-                                            v-if="activity.sessions.length==0"
-                                        >
+                                        <v-icon color="secondary" @click="saveAttempts(activity, current_date.dat, i); "
+                                            v-if="activity.sessions.length==0">
                                             mdi-heart-outline
                                         </v-icon>
-                                        <v-icon
-                                            color="secondary"
-                                            v-else
-                                        >
+                                        <v-icon color="secondary" v-else>
                                             mdi-heart
                                         </v-icon>
                                     </v-col>
@@ -236,22 +160,15 @@
             </v-container>
 
 
-            <v-dialog
-                transition="dialog-bottom-transition"
-                max-width="550"
-                v-model="dialog"
-            >
+            <v-dialog transition="dialog-bottom-transition" max-width="550" v-model="dialog">
                 <v-card>
-                    <v-toolbar
-                    color="primary"
-                    dark
-                    elevation="0"
-                    >
+                    <v-toolbar color="primary" dark elevation="0">
                         {{currrent_activity.name}}
                     </v-toolbar>
                     <v-card-text class="text-center d-flex align-center pt-10 justify-center" v-if="dialog">
                         <!--<div v-html="currrent_activity.iframe"></div>-->
-                        <iframe :src="currrent_activity.iframe" width="640" height="328" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                        <iframe :src="currrent_activity.iframe" width="640" height="328" frameborder="0"
+                            allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
                     </v-card-text>
                     <div class="py-0">
                         <v-container class="mx-6">
@@ -266,16 +183,13 @@
                                 </v-col>
                                 <v-col cols="6" md="4">
                                     <h6>MATERIAL:</h6>
-                                    <div style="font-size: 0.8rem">{{currrent_activity.material}}</div> 
+                                    <div style="font-size: 0.8rem">{{currrent_activity.material}}</div>
                                 </v-col>
                             </v-row>
                         </v-container>
                     </div>
                     <v-card-actions class="justify-end">
-                    <v-btn
-                        text
-                        @click="dialog  = false"
-                    >Cerrar</v-btn>
+                        <v-btn text @click="dialog  = false">Cerrar</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -321,7 +235,10 @@ import axios from "axios";
             hour_class:'',
             focus:'',
             material:''
-        }
+        },
+        user: {},
+        userPlans: {},
+        actual_date: null
     }),
     mounted() {
         moment.locale('es');
@@ -332,6 +249,7 @@ import axios from "axios";
         vm.getBaseUrl();
         vm.calendar();
         vm.schedule();
+        this.actual_date = new Date();
     },
     methods:{
         async saveAttempts(activity, date, indx){
@@ -351,6 +269,8 @@ import axios from "axios";
         async auth(){
             try {
                 const response = await this.$API.auth.auth();
+                this.user = response.data;
+                this.userPlans = response.data.plans;
             } catch (e) {
                 localStorage.removeItem('user_data');
                 localStorage.removeItem('token');
@@ -370,7 +290,7 @@ import axios from "axios";
             let vm = this;
             try{
                 const data = await this.$API.gymVirtual.calendar();
-                console.log(data.data)
+                //console.log(data.data)
                 vm.planMonths = data.data.data;
                 vm.getMonth()
                 vm.$store.commit('loader',false);
