@@ -69,7 +69,15 @@ export default {
         getLibrary(){
             return callAuthAPI('get', 'api/v1/business-partner/library');
             
-        }
-
+        },
+        getCards() {
+            return callAuthAPI('get', 'api/v1/business-partner/getCards');
+        },
+        deleteCard(id){
+            return callAuthAPI('get', 'api/v1/business-partner/deleteCard/'+id);
+        },
+        cancelSuscription(id){
+            return callAuthAPI('get', 'api/v1/business-partner/cancelSuscription/'+id);
+        },
     },
 }

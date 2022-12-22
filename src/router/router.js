@@ -136,7 +136,7 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
     //return next()
     if(to.matched.some(record => record.meta.requiresAuth)) {
-        console.log(isAutheticated)
+        //console.log(isAutheticated)
         if (store.getters.isLoggedIn) { //(isAutheticated){
           next()
           return

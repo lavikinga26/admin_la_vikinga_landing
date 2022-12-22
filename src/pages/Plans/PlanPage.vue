@@ -46,7 +46,7 @@
                             @click="addToCart"
                             v-if="(data_config.allow_sale && plan.allow_sale)"
                             >
-                                COMPRAR AHORA
+                                INICIAR DESAFÍO
                         </v-btn>
                         <v-btn
                             class="my-2 fb-btn"
@@ -55,7 +55,7 @@
                             @click="addToCart"
                             v-if="(!data_config.allow_sale && plan.allow_sale)"
                             >
-                                COMPRAR AHORA
+                                INICIAR DESAFÍO
                         </v-btn>
                         <v-btn
                             class="my-2 fb-not-spaces"

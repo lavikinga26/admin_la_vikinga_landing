@@ -59,7 +59,7 @@ export default {
         },
         reset_password(data) {
             return callAPI('post', 'api/v1/auth/reset-password', { data: data });
-        },
+        }
     },
 
     team:{
@@ -69,6 +69,11 @@ export default {
         sponsors(){
             return callAPI('get', 'api/v1/team/sponsors');
         },
+    },
+    levels:{
+        list(data){
+            return callAPI('post', 'api/v1/getLevels', { data: data });
+        }
     },
     plans:{
         list(){

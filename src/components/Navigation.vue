@@ -142,7 +142,7 @@
           <v-btn color="secondary" v-if="isLogged" depressed small class="px-2 rounded-pill" link
             to="/gym-virtual/agenda">
             <span class="ma-3">
-              <v-icon>mdi-weight-lifter</v-icon> MI GYM
+              <v-icon>mdi-weight-lifter</v-icon> INGRESAR AL GYM
             </span>
           </v-btn>
           <v-menu offset-y v-if="isLogged" min-width="200px" class="secondary white--text">

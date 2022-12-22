@@ -80,6 +80,10 @@
                                 <v-form ref="form_invoice" v-model="valid">
                                     <!--form order-->
                                     <v-row v-show="!payment" class="mt-10">
+                                        <v-col cols="12" md="12" class="pa-0 px-1 mb-5" v-if="!isLogged">
+                                            ¿Ya tienes una cuenta? <a href='/auth/iniciar-sesion' style="color: #e30e4f; text-decoration: underline">Inicia
+                                                Sesión</a>
+                                        </v-col>
                                         <v-col cols="12" md="6" class="pa-0 px-1">
                                             <v-text-field label="Nombre" :rules="requiredRule" outlined
                                                 v-model="order.name"></v-text-field>
@@ -168,10 +172,6 @@
                                             <br>
                                         </v-col>
 
-                                        <v-col cols="12" md="12" class="pa-0 px-1" v-if="!isLogged">
-                                            ¿Ya tienes una cuenta? <a href='/auth/iniciar-sesion'
-                                                style="color: #e30e4f; text-decoration: underline">Inicia Sesión</a>
-                                        </v-col>
 
                                         <v-col cols="12" md="12" class="pa-0 px-1">
                                             <v-checkbox color="primary" v-model="order.had_invoice"

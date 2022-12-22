@@ -1,5 +1,27 @@
 <template>
     <div>
+        <v-toolbar color="primary" dark class="mb-1">
+            <v-toolbar-title class="tit_h2_pink" style="font-size: 3.0rem; color: white">GYM VIRTUAL</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <!--<v-btn
+                                text 
+                                small
+                                link
+                                :to="'/gym-virtual/calendario'"
+                            >
+                                MI CALENDARIO
+                            </v-btn>
+                            <span style="color: #fff; font-size: 0.9rem;"> | </span>-->
+        
+            <v-select :items="levels" label="Nivel" item-text="level"
+                placeholder="Seleciona" item-value="id_level"></v-select>
+            <span style="color: #fff; font-size: 0.9rem;"> | </span>
+        
+            <v-btn text small link :to="'/gym-virtual/agenda'">
+                <!--<v-icon>mdi-view-agenda-outline</v-icon>-->
+                DESCARGAR PLANIFICACIÓN
+            </v-btn>
+        </v-toolbar>
         <v-container>
             <div class="text-center my-3">
                 <h1>MI GYM</h1>
@@ -7,7 +29,7 @@
 
             <div v-for="(n, index) in userPlans" :key="'plan_alert_'+index" class="text-left my-3">
                 <v-alert border="top"
-                    v-if="new Date(n.expiration_date) > actual_date && (Math.ceil((new Date(n.expiration_date).getTime() - actual_date.getTime()) / (1000 * 3600 * 24)) <= 15)"
+                    v-if="show_alert && new Date(n.expiration_date) > actual_date && (Math.ceil((new Date(n.expiration_date).getTime() - actual_date.getTime()) / (1000 * 3600 * 24)) <= 15)"
                     type="error" colored-border color="pink accent-4" elevation="2">
                     Recuerda que la membresía de tu plan <b>{{n.name}}</b> vence el <b>{{ n.expiration_date | formatDate
                     }}</b>. Renueva tu plan haciendo <a :href="'/inscripciones'"
@@ -110,9 +132,22 @@
                                     </v-col>
                                     <v-col cols="12" md="7" class="text-left align-center d-flex">
                                         <v-container>
-                                            <h3>{{activity.name}}</h3>
-                                            <div>HORA: {{current_date.dat + ' ' +activity.hour_class | formatTime}}
-                                            </div>
+                                            <v-row class="my-3">
+                                                <v-col cols="12" md="4">
+                                                    <h3>{{activity.name}}</h3>
+                                                    <div>HORA: {{current_date.dat + ' ' +activity.hour_class | formatTime}}
+                                                    </div>
+                                                </v-col>
+                                                <v-col cols="12" md="4">
+                                                    <h5>PROFESOR:</h5>
+                                                    <div>{{activity.staff.name}}</div>
+                                                </v-col>
+                                                <v-col cols="12" md="4">
+                                                    <h5>NIVEL:</h5>
+                                                    <div>{{activity.level.level}}</div>
+                                                </v-col>
+                                            </v-row>
+                                            
                                             <v-row class="my-3">
                                                 <v-col cols="12" md="4">
                                                     <h5>TIEMPO:</h5>
@@ -236,12 +271,15 @@ import axios from "axios";
             focus:'',
             material:''
         },
+        levels:[],
         user: {},
         userPlans: {},
-        actual_date: null
+        actual_date: null,
+        show_alert: true
     }),
     mounted() {
         moment.locale('es');
+        this.actual_date = new Date();
         let vm = this;
         vm.auth();
         vm.$store.commit('loader',true);
@@ -249,7 +287,7 @@ import axios from "axios";
         vm.getBaseUrl();
         vm.calendar();
         vm.schedule();
-        this.actual_date = new Date();
+        vm.loadLevels();
     },
     methods:{
         async saveAttempts(activity, date, indx){
@@ -266,11 +304,20 @@ import axios from "axios";
                 console.error(e);
             } 
         },
-        async auth(){
+        async auth() {
+            let vm = this;
             try {
                 const response = await this.$API.auth.auth();
                 this.user = response.data;
                 this.userPlans = response.data.plans;
+                let fecha_actual = new Date();
+                this.userPlans.map(function (item) {
+                    let init_d = new Date(item.init_date);
+                    if (init_d > fecha_actual || (Math.ceil((new Date(item.expiration_date).getTime() - init_d.getTime()) / (1000 * 3600 * 24)) >= 15)) {
+                        console.log("entra");
+                        vm.show_alert = false;
+                    }
+                });
             } catch (e) {
                 localStorage.removeItem('user_data');
                 localStorage.removeItem('token');
@@ -339,6 +386,17 @@ import axios from "axios";
             catch(e){
                 console.error(e);
             } 
+        },
+
+        async loadLevels(page = 1, per_page = 50, sortDesc = 0, sortBy = '') {
+            let vm = this;
+            try {
+                const response = await this.$API.levels.list('?page=' + page + '&itemsPerPage=' + per_page + '&sortDesc=' + sortDesc + '&sortBy=' + sortBy);
+                this.levels = response.data.data;
+            } catch (e) {
+                this.loadingTable = false;
+                console.error(e);
+            }
         },
 
 

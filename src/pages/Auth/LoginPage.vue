@@ -133,7 +133,7 @@ export default {
                     localStorage.setItem('token', token);
                     setTimeout(()=>{ 
                         this.$store.commit('loader',false);
-                        window.location.replace('/cuenta/mi-perfil');
+                        window.location.replace('/gym-virtual/agenda');
                         //this.$router.push({ path: '/gym-virtual/calendario' });
                     }, 3000);
                     //this.$router.go();

@@ -1,40 +1,6 @@
 <template>
     <div>
-        <v-toolbar
-          color="primary"
-          dark
-          class="mb-1"
-        >
-            <v-toolbar-title class="tit_h2_pink" style="font-size: 3.0rem; color: white">GYM VIRTUAL</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <!--<v-btn
-                text 
-                small
-                link
-                :to="'/gym-virtual/calendario'"
-            >
-                MI CALENDARIO
-            </v-btn>
-            <span style="color: #fff; font-size: 0.9rem;"> | </span>-->
-            <v-btn 
-                text 
-                small
-                link
-                :to="'/gym-virtual/agenda'"
-            >
-                <!--<v-icon>mdi-view-agenda-outline</v-icon>-->
-                MI GYM
-            </v-btn>
-            <!--<span style="color: #fff; font-size: 0.9rem;"> | </span>
-            <v-btn 
-                text 
-                small
-                link
-                :to="'/gym-virtual/galeria'"
-            >
-                GALERÍA
-            </v-btn>-->
-        </v-toolbar>
+        
         
         <Banner/>
 

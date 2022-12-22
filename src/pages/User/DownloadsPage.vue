@@ -34,7 +34,7 @@
                                   outlined
                                   class="pa-2 mr-3"
                                   height="100%"
-                                  v-if="item.id"
+                                  v-if="item.id && flag_mostrar==1"
                               >
                                   <div class="d-flex align-center" style="height: 100%">
                                       <div style="width: 20%; text-align: center;">
@@ -133,6 +133,7 @@ export default {
 
       groupList:[],
       tab: null,
+      flag_mostrar:1
     };
   },
   created(){
@@ -154,6 +155,7 @@ export default {
     }
   },
   mounted() {
+    this.getPartnerData().then(() => this.getOrdersByUser());
     this.getDownloads();
   },
   watch: {
@@ -162,7 +164,37 @@ export default {
     },
   },
   methods: {
-
+    async getPartnerData(id) {
+      this.$store.commit('loader', true);
+      try {
+        const response = await this.$API.auth.auth(id);
+        this.user = response.data;
+        var plans = this.user.plans;
+        
+        plans.map(function (element) {
+          if (element.id_plan == 33) { this.flag_mostrar = 0; }
+        }, this);
+        this.$store.commit('loader', false);
+      } catch (e) {
+        this.$store.commit('loader', false);
+        console.error(e);
+      }
+    },
+    async getOrdersByUser(page = 1) {
+      try {
+        this.loading = true;
+        const response = await this.$API.order.getOrdersByUser(
+          this.user.id,
+          page
+        );
+        this.orders = response.data.data.orders.data;
+        this.total = response.data.data.orders.last_page;
+        this.hasOrders = response.data.data.orders.total != 0 ? true : false;
+        this.loading = false;
+      } catch (e) {
+        console.error(e);
+      }
+    },
     showToast(msg,color){
         this.toast.color = color;
         this.toast.message = msg;
@@ -177,7 +209,7 @@ export default {
 
         console.log(this.downloads_list.groupBy('name_category'))
         this.groupList = this.downloads_list.groupBy('name_category');
-        this.$store.commit('loader',false);
+        this.$store.commit('loader', false);
       } catch (e) {
         this.$store.commit('loader',false);
         console.error(e);

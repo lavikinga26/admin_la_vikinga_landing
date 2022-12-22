@@ -41,7 +41,7 @@
                         </v-card-title>
                     </v-img>
                     <v-card-text 
-                        max-height="200">
+                        max-height="300">
                             <div class="item">
                                 <div class="blog-entry">
                                     <div class="text p-2 bd_desc_carousel" v-html="item.content">
@@ -53,7 +53,7 @@
                                 </div>
                             </div>
                     </v-card-text>
-                    <v-card-actions class="card-actions mb-8">
+                    <v-card-actions class="card-actions">
                         <v-row align="center">
                             <v-col cols="12" align="center" class="py-0">
                                 <span class="price_carousel text-center" style="font-family: 'MachProCondBold' !important;">
