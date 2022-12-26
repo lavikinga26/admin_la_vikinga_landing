@@ -86,7 +86,7 @@
                 </h2>
             </div>
         </div>
-
+<whatsapp />
     </div>
 </template>
 <script>

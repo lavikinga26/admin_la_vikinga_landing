@@ -77,8 +77,9 @@
                 </v-col>
             </v-row>
         </div>
-
+<whatsapp />
     </div>
+    
 </template>
 <script>
 export default {

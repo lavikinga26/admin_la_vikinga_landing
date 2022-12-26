@@ -3,23 +3,13 @@
         <v-toolbar color="primary" dark class="mb-1">
             <v-toolbar-title class="tit_h2_pink" style="font-size: 3.0rem; color: white">GYM VIRTUAL</v-toolbar-title>
             <v-spacer></v-spacer>
-            <!--<v-btn
-                                text 
-                                small
-                                link
-                                :to="'/gym-virtual/calendario'"
-                            >
-                                MI CALENDARIO
-                            </v-btn>
-                            <span style="color: #fff; font-size: 0.9rem;"> | </span>-->
         
-            <v-select :items="levels" label="Nivel" item-text="level"
-                placeholder="Seleciona" item-value="id_level"></v-select>
+            <span style="width: 250px;"><v-select :items="levels" v-model="id_level" label="Nivel" item-text="level"
+                placeholder="Seleciona" item-value="id_level" v-on:change="filterByLevel()" class="mt-8" outlined></v-select></span>
             <span style="color: #fff; font-size: 0.9rem;"> | </span>
         
             <v-btn text small link :to="'/gym-virtual/agenda'">
-                <!--<v-icon>mdi-view-agenda-outline</v-icon>-->
-                DESCARGAR PLANIFICACIÓN
+                DESCARGAR PLAN
             </v-btn>
         </v-toolbar>
         <v-container>
@@ -228,13 +218,16 @@
                     </v-card-actions>
                 </v-card>
             </v-dialog>
-
+            
         </div>
     </div>
+    
 </template>
+
 <script>
 import moment from 'moment-timezone'
 import axios from "axios";
+
   export default {
     components: { 
         axios
@@ -261,7 +254,7 @@ import axios from "axios";
             activities: []
         },
         colors: ['#0281a5','#0B233F','#E30E4F'],
-
+        id_level: null,
         dialog: false,
         //iframe: '<iframe src=\"https://player.vimeo.com/video/393999309?h=0cd4c9c103&amp;app_id=122963\" width=\"426\" height=\"240\" frameborder=\"0\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen title=\"Creating Video With Your Phone: Getting Started\"></iframe>'
         currrent_activity: {
@@ -275,7 +268,8 @@ import axios from "axios";
         user: {},
         userPlans: {},
         actual_date: null,
-        show_alert: true
+        show_alert: true,
+        original_activities: [],
     }),
     mounted() {
         moment.locale('es');
@@ -358,6 +352,13 @@ import axios from "axios";
             }
             vm.model = vm.planSections.findIndex((element) => element.dat == vm.current_date.dat );
             vm.current_date.activities = vm.planSections[vm.model].activities;
+            vm.original_activities = vm.current_date.activities;
+        },
+        filterByLevel() {
+            let vm = this;
+            let id_level = vm.id_level;
+            let filtrado = vm.original_activities.filter((element) => element.id_level == id_level);
+            vm.current_date.activities = filtrado;
         },
         async schedule(){
             let vm = this;

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import vuetify from './plugins/vuetify';
+
 // import VueFilterDateFormat from '@vuejs-community/vue-filter-date-format';
 import VueCountdownTimer from 'vuejs-countdown-timer';
 // FILTERS
@@ -32,6 +33,7 @@ Vue.component('custom-breadcrumbs', require('./components/shared/CustomBreadcrum
 Vue.component('sponsors-section', require('./components/shared/Sponsors.vue').default);
 Vue.component('phones-photos', require('./components/shared/PhonePhotos.vue').default);
 Vue.component('frequent-questions', require('./components/shared/FrequentQuestions.vue').default);
+Vue.component('whatsapp', require('./components/Whatsapp.vue').default);
 
 Vue.prototype.$API = API;
 Vue.prototype.$UTILS = UTILS;
