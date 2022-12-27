@@ -9,7 +9,7 @@
                 v-for="(item,i) in banners"
                 :key="i"  
                 :src="base_url + item.file_path.path + item.file_path.filename"
-                gradient="to bottom, rgba(0,0,0,.5), rgba(0,0,0,.7)"
+                gradient="to bottom, rgba(0,0,0,0), rgba(0,0,0,0)"
             >
                 <v-container
                     fill-height
