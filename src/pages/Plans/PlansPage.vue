@@ -23,7 +23,7 @@
 
         <div v-if="data_enrollment.enable_next_enrollment==0" class="container mt-4">
             <div class="row justify-center m-4">
-                <h2 class="tit_h2_pink" style="text-align:center;">Para comenzar, elige el plan que mejor se adapte a tí</h2>
+                <h2 class="tit_h2_pink" style="text-align:center;">Elige el plan que mejor se adapte a tí</h2>
             </div>
             <div class="row no-gutters mt-5">
                 <div class="filtering col-sm-12 text-center">

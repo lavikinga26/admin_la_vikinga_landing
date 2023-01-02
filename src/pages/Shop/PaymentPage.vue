@@ -4,9 +4,15 @@
             <div class="d-flex justify-center">
                 <v-card max-width="500" min-width="300" width="500" elevation="1" class="px-5 py-2">
                     <div class="py-2 d-flex align-center">
+                        <div style="width: 100%" class="text-center">
+                            <h3>Sólo queda realizar la transferencia para iniciar el Desafío.</h3>
+                        </div>
+                    </div>
+                    <div class="py-2 d-flex align-center">
+                        
                         <div style="width: 40%" class="text-center">
                             <img style="width: 100px" src="@/assets/img/icons/mobile-payment.png" />
-                        </div>   
+                        </div>
                         <div style="width: 60%" class="text-rigth">
                             <h3 style="font-weight: 400;">
                                 Información de orden
@@ -91,6 +97,7 @@
             </v-snackbar>
 
         </v-container>
+        <whatsapp />
     </div>
 </template>
 <script>

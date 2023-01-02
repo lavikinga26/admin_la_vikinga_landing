@@ -1,5 +1,5 @@
 <template>
-<a href="https://api.whatsapp.com/send?phone=51987131811&text=Hola, tengo una duda!" class="whatsapp" target="_blank">
+<a href="https://api.whatsapp.com/send?phone=51933736575&text=Hola, tengo una duda!" class="whatsapp" target="_blank">
     <v-icon style="font-size: 40px" class="white--text whatsapp-icon" color="#FFFFFF">
         mdi-whatsapp</v-icon>
 </a>

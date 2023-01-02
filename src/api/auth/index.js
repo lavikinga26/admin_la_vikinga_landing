@@ -79,5 +79,8 @@ export default {
         cancelSuscription(id){
             return callAuthAPI('get', 'api/v1/business-partner/cancelSuscription/'+id);
         },
+        updateLevel(level){
+            return callAuthAPI('get', 'api/v1/business-partner/updateLevel/'+level);
+        },
     },
 }

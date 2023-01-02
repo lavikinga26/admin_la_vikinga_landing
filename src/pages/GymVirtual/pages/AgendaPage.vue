@@ -13,9 +13,6 @@
             </v-btn>
         </v-toolbar>
         <v-container>
-            <div class="text-center my-3">
-                <h1>MI GYM</h1>
-            </div>
 
             <div v-for="(n, index) in userPlans" :key="'plan_alert_'+index" class="text-left my-3">
                 <v-alert border="top"
@@ -48,7 +45,7 @@
                 <v-sheet class="mx-auto" max-width="1000">
                     <v-slide-group center-active show-arrows v-model="model">
                         <v-slide-item v-for="(n,index) in planSectionsFilter()" :key="'class_day_'+index"
-                            v-slot="{ active, toggle }">
+                            v-slot="{ toggle }">
                             <!--; getActivities(index)-->
                             <v-btn max-width="120" min-width="120" class="mx-3" :input-value="index==model"
                                 active-class="primary white--text" depressed rounded @click="getActivities(index, n)">
@@ -247,9 +244,9 @@ import axios from "axios";
             _year: ''
         },
         current_date: {
-            dat: "2022-01-19", 
-            week: 3, 
-            name: "Miercoles 19", 
+            dat: "2022-12-17", 
+            week: 52, 
+            name: "Martes 17", 
             section: false,
             activities: []
         },
@@ -308,7 +305,6 @@ import axios from "axios";
                 this.userPlans.map(function (item) {
                     let init_d = new Date(item.init_date);
                     if (init_d > fecha_actual || (Math.ceil((new Date(item.expiration_date).getTime() - init_d.getTime()) / (1000 * 3600 * 24)) >= 15)) {
-                        console.log("entra");
                         vm.show_alert = false;
                     }
                 });
@@ -350,14 +346,18 @@ import axios from "axios";
                 name: moment().format('dddd DD'),
                 activities: []
             }
-            vm.model = vm.planSections.findIndex((element) => element.dat == vm.current_date.dat );
+            vm.model = vm.planSections.findIndex((element) => element.dat == vm.current_date.dat);
+            //vm.current_date = moment().format('YYYY-MM-DD');
             vm.current_date.activities = vm.planSections[vm.model].activities;
             vm.original_activities = vm.current_date.activities;
+            let mes_actual = this.planSectionsFilter();
+            vm.model = mes_actual.findIndex((element) => element.dat == vm.current_date.dat);
+            //console.log(mes);
         },
         filterByLevel() {
             let vm = this;
             let id_level = vm.id_level;
-            let filtrado = vm.original_activities.filter((element) => element.id_level == id_level);
+            let filtrado = vm.original_activities.filter((element) => (element.id_level == id_level || element.id_level == "4"));
             vm.current_date.activities = filtrado;
         },
         async schedule(){

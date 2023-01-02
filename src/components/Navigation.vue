@@ -109,7 +109,6 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-toolbar light elevation="0" class="mx-4">
       <!--<v-toolbar-title>
                     <router-link to="/inicio">
                         <v-img src="@/assets/img/logo.png" max-width="150px" />
@@ -117,22 +116,27 @@
             </v-toolbar-title>
             <v-spacer />-->
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="mr-4" v-if="isXs" />
-      <div v-else class="d-flex justify-space-between align-center" style="width: 100%">
+      <div v-if="!isXs" class="d-flex justify-space-between align-center pa-4" style="width: 100%">
         <div>
           <template v-for="(item, i) in items">
             <dan-menu v-bind:key="i" v-if="item.menu.length > 0" :name="item.name" :slug="item.slug"
               :menu-items="item.menu" @dan-menu-click="onMenuItemClick"></dan-menu>
             <v-btn text :href="item.slug" target="_blank" v-else-if="item.slug.includes('https://')" :key="i" medium
               class="px-1" small>
-              <span class="ma-2">{{ item.name }}</span>
+              <span >{{ item.name }}</span>
             </v-btn>
             <v-btn text :to="item.slug" v-else small :key="i" medium class="px-1">
-              <span class="ma-2">{{ item.name }}</span>
+              <span >{{ item.name }}</span>
             </v-btn>
             <span v-if="i < items.length - 1" style="color: #0b233f; font-size: 0.9rem" v-bind:key="i + 100">
               |
             </span>
           </template>
+        </div>
+        <div class="mt-5 mr-5">
+          <router-link to="/">
+            <img style="width: 130px;" src="@/assets/img/logo.png" alt="Logo" />
+          </router-link>
         </div>
         <div>
           <v-btn color="secondary" v-if="!isLogged" depressed small class="px-2 rounded-pill" link
@@ -185,7 +189,6 @@
           </v-btn>
         </div>
       </div>
-    </v-toolbar>
   </div>
 </template>
 

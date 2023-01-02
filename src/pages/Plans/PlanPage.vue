@@ -153,7 +153,8 @@ export default {
                 quantity: 1,
                 priceCompare: Number(this.plan.cost),
                 priceTotal: Number(this.plan.cost),
-                currency: this.plan.currency.symbol
+                currency: this.plan.currency.symbol,
+                renovacion: this.plan.renovacion_automatica
             }
             this.$store.dispatch("addItem", item);
             this.$store.commit('loader',false);

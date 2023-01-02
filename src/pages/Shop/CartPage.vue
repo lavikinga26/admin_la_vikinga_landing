@@ -79,8 +79,8 @@
                             <v-container>
                                 <v-form ref="form_invoice" v-model="valid">
                                     <!--form order-->
-                                    <v-row v-show="!payment" class="mt-10">
-                                        <v-col cols="12" md="12" class="pa-0 px-1 mb-5" v-if="!isLogged">
+                                    <v-row v-show="!payment" class="mt-3">
+                                        <v-col cols="12" md="12" class="pa-0 px-1 mb-6" v-if="!isLogged">
                                             ¿Ya tienes una cuenta? <a href='/auth/iniciar-sesion' style="color: #e30e4f; text-decoration: underline">Inicia
                                                 Sesión</a>
                                         </v-col>
@@ -146,26 +146,17 @@
                                                                 </a>
                                                             </template>
                                                             Abrir <v-icon color="white" small>mdi-open-in-new</v-icon>
-                                                        </v-tooltip>
-                                                        del servicio
-                                                    </div>
-                                                </template>
-                                            </v-checkbox>
-
-                                            <v-checkbox v-model="order.privacy_policy" :rules="requiredRule">
-                                                <template v-slot:label>
-                                                    <div>
-                                                        Acepto la
+                                                        </v-tooltip> 
+                                                        y las 
                                                         <v-tooltip bottom>
                                                             <template v-slot:activator="{ on }">
-                                                                <a class="secondary--text" target="_blank"
-                                                                    href="/politica-privacidad" @click.stop v-on="on">
+                                                                <a class="secondary--text" target="_blank" href="/politica-privacidad" @click.stop v-on="on">
                                                                     Políticas de privacidad
                                                                 </a>
                                                             </template>
                                                             Abrir <v-icon color="white" small>mdi-open-in-new</v-icon>
                                                         </v-tooltip>
-                                                        del servicio
+                                                        del servicio.
                                                     </div>
                                                 </template>
                                             </v-checkbox>
@@ -213,8 +204,7 @@
                                                 <v-card-subtitle v-if="!order.had_invoice">
                                                     <div>{{order.name+' '+order.lastname}}</div>
                                                     <div>{{order.email}}</div>
-                                                    <div v-if="order.country">{{order.address+', '+order.city+',
-                                                    '+order.country.nombre}}</div>
+                                                    <div v-if="order.country">{{order.address+', '+order.cit+','+order.country.nombre}}</div>
                                                 </v-card-subtitle>
                                                 <v-card-subtitle v-else>
                                                     <div>{{order.inv_business_name}}</div>
@@ -227,7 +217,7 @@
                                             <v-radio-group v-model="order.id_payment_method" column color="secondary"
                                                 class="mt-0" :rules="requiredRule" v-if="total > 0">
                                                 <template v-for="(item, index) in paymentMethods">
-                                                    <v-card :key="'pm_'+index" class="ma-3 pa-3">
+                                                    <v-card :key="'pm_'+index" class="ma-3 pa-3" v-if="show_transfer == true && item.id == 2">
                                                         <div class="d-flex align-center">
                                                             <div>
                                                                 <v-radio :value="item.id" color="secondary"></v-radio>
@@ -239,6 +229,18 @@
                                                                 </p>-->
                                                                 <div style="font-size: 0.8rem; margin-bottom: 0px;"
                                                                     v-html="item.description">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </v-card>
+                                                    <v-card :key="'pm_'+index" class="ma-3 pa-3" v-if="item.id != 2">
+                                                        <div class="d-flex align-center">
+                                                            <div>
+                                                                <v-radio :value="item.id" color="secondary"></v-radio>
+                                                            </div>
+                                                            <div>
+                                                                <h4>{{item.name}}</h4>
+                                                                <div style="font-size: 0.8rem; margin-bottom: 0px;" v-html="item.description">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -285,9 +287,10 @@
                                                         <v-img width="100" height="80" cover class="rounded mr-0"
                                                             :src="item.image"></v-img>
                                                     </td>
-                                                    <td class="pl-0 pr-2">{{ item.title }}</td>
-                                                    <td class="pr-0 pl-2">S/. {{ (item.price * item.quantity) |
+                                                    <td class="pl-1 pr-1">{{ item.title }}</td>
+                                                    <td class="pr-0 pl-1" style="width: 20%;">S/. {{ (item.price * item.quantity) |
                                                     formatCurrency }}</td>
+                                                    <td width="10"><v-btn icon @click="cart.splice(index, 1); removeItem(index)"><v-icon>mdi-close</v-icon></v-btn></td>
                                                 </tr>
                                             </tbody>
                                         </template>
@@ -334,6 +337,7 @@
             </v-snackbar>
 
         </v-container>
+        <whatsapp />
     </div>
 </template>
 <script>
@@ -350,7 +354,7 @@ export default {
             }, {
                 text: 'Cart'
             }],
-
+            show_transfer: true,
             discount: 0,
             tab: null,
             valid: false,
@@ -533,8 +537,8 @@ export default {
             this.cart = this.$store.getters.StoreCart;
             // console.log(this.cart );
         },
-        removeItem(index){
-            this.$store.dispatch("removeItem", index);
+        removeItem(index) {
+            this.$store.dispatch("removeItem", index+1);
         },
         async getLoggedUser(){
             if(localStorage.getItem('token')){
@@ -602,6 +606,11 @@ export default {
             try{
                 const data = await this.$API.configuration.getPaymentMethods();
                 this.paymentMethods = data.data.data;
+                let renovacion = this.cart.filter((item) => item.renovacion == 1);
+                if (renovacion.length > 0) {
+                    console.log("cambiando transfer");
+                    this.show_transfer = false;
+                }
                 this.$store.commit('loader',false);
             }
             catch(e){

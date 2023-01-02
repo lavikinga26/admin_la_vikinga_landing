@@ -78,6 +78,7 @@
             </v-snackbar>
 
         </v-container>
+        <whatsapp />
     </div>
 </template>
 <script>

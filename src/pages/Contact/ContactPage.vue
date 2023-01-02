@@ -89,6 +89,7 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
+        <whatsapp />
     </div>
 </template>
 

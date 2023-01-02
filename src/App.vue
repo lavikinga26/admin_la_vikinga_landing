@@ -4,12 +4,12 @@
             <v-spacer></v-spacer>
             <span>¡ENTRENA DESDE CUALQUIER PARTE DEL MUNDO!</span>
             <v-spacer></v-spacer>
-        </div>-->
+        </div>
         <div class="d-flex flex-row justify-center my-2" align="center">
             <router-link to="/">
                 <img style="width: 130px;" src="@/assets/img/logo.png" alt="Logo" />
             </router-link>
-        </div>
+        </div>-->
 
         <navigation :color="'white'" :flat="flat" />
             <v-main class="mt-2">
