@@ -24,7 +24,7 @@
                 </v-alert>
             </div>
 
-            <div class="text-center pt-5">
+            <div class="text-center pt-5" style="display:none;">
                 <v-sheet class="mx-auto" max-width="240">
                     <v-slide-group show-arrows v-model="model2" center-active
                         @click:next="model2=model2+1; current_month=planMonths[model2]; model=null;"
@@ -69,114 +69,153 @@
                             </div>
                         </v-container>
                     </v-col>
-                    <v-col v-else cols="12" align="center" v-for="(activity, i) in current_date.activities"
-                        :key="'activity_'+i">
-                        <v-card color="grey lighten-5" class="my-3 mx-4" elevation="3" min-height="250"
-                            max-width="1000">
+                    <v-col v-if="current_date.activities.length>0" cols="12" align="center">
+                        <div class="text-center pa-3 px-10 activity-class" >
+                            <b style="color:white;">CLASES EN VIVO</b>
+                        </div>
+                        <div v-for="(activity, i) in current_date.activities" :key="'col_activity_'+i">
+                            <v-card color="grey lighten-5" class="my-3 mx-4" elevation="3" min-height="250"
+                                max-width="1000" :key="'activity_'+i" v-if="activity.link_video == null">
+                                <!--<div class="text-left pa-3 px-10 d-flex" v-bind:class="{ 
+                                    'activity-class': activity.type=='class' || activity.type=='masterclass', 
+                                    'activity-taller': activity.type=='taller', 
+                                    'activity-descanso': activity.type=='descanso', 
+                                    'activity-nutrition': activity.type=='nutricion', 
+                                    'white--text': activity.type!='descanso' ,
+                                    'black--text': activity.type=='descanso' 
+                                }">
+                                    <b>{{activity.name}}</b>
+                                    <v-spacer></v-spacer>
+                                    <div
+                                        v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)">
+                                        <v-icon color="#FFFFFF">mdi-access-point</v-icon>
+                                        &nbsp;&nbsp;
+                                        <b>En vivo</b>
+                                    </div>
 
-                            <div class="text-left pa-3 px-10 d-flex" v-bind:class="{ 
-                                'activity-class': activity.type=='class' || activity.type=='masterclass', 
-                                'activity-taller': activity.type=='taller', 
-                                'activity-descanso': activity.type=='descanso', 
-                                'activity-nutrition': activity.type=='nutricion', 
-                                'white--text': activity.type!='descanso' ,
-                                'black--text': activity.type=='descanso' 
-                            }">
-                                <b>{{activity.name}}</b>
-                                <v-spacer></v-spacer>
-                                <!--<v-icon color="#EF476F">mdi-circle-medium</v-icon>-->
-                                <div
-                                    v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)">
-                                    <v-icon color="#FFFFFF">mdi-access-point</v-icon>
-                                    &nbsp;&nbsp;
-                                    <b>En vivo</b>
-                                </div>
+                                </div>-->
+                                <v-card-text>
+                                    <v-row height="250">
+                                        <v-col cols="12" md="4" class="pa-4" align-items="center">
+                                            <v-img
+                                                src="https://i.vimeocdn.com/video/1216681987-4743218d2221b42f2acba382eceedf59e3a83c91aade0ff4b264a3deb6b2a295-d_640"
+                                                height="180px" width="270" class="ma-auto">
 
-                            </div>
-                            <v-card-text>
-                                <v-row height="250">
-                                    <v-col cols="12" md="4" class="pa-4" align-items="center">
-                                        <v-img
-                                            src="https://i.vimeocdn.com/video/1216681987-4743218d2221b42f2acba382eceedf59e3a83c91aade0ff4b264a3deb6b2a295-d_640"
-                                            height="180px" width="270" class="ma-auto">
-
-                                            <v-row class="fill-height ma-0" align="center" justify="center"
-                                                style="background-color:#0000004d">
-                                                <v-btn
-                                                    v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)"
-                                                    :href="activity.link_class" target="_blank" icon
-                                                    class="white--text">
-                                                    <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
-                                                        mdi-access-point</v-icon>
+                                                <v-row class="fill-height ma-0" align="center" justify="center"
+                                                    style="background-color:#0000004d">
+                                                    <v-btn
+                                                        v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)"
+                                                        :href="activity.link_class" target="_blank" icon
+                                                        class="white--text">
+                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
+                                                            mdi-access-point</v-icon>
+                                                    </v-btn>
+                                                    <v-btn v-if="activity.link_video" icon class="white--text"
+                                                        @click="getVideoActivity(activity)">
+                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
+                                                            mdi-motion-play-outline</v-icon>
+                                                    </v-btn>
+                                                </v-row>
+                                            </v-img>
+                                        </v-col>
+                                        <v-col cols="12" md="7" class="text-left align-center d-flex">
+                                            <v-container>
+                                                <v-row class="my-3">
+                                                    <v-col cols="12" md="4">
+                                                        <h3>{{activity.name}}</h3>
+                                                        <div>HORA: {{current_date.dat + ' ' +activity.hour_class | formatTime}}
+                                                        </div>
+                                                    </v-col>
+                                                    <v-col cols="12" md="4">
+                                                        <h5>PROFESOR:</h5>
+                                                        <div>{{activity.staff.name}}</div>
+                                                    </v-col>
+                                                    <v-col cols="12" md="4">
+                                                        <h5>NIVEL:</h5>
+                                                        <div>{{activity.level.level}}</div>
+                                                    </v-col>
+                                                </v-row>
+                                                
+                                                <v-row class="my-3">
+                                                    <v-col cols="12" md="4">
+                                                        <h5>TIEMPO:</h5>
+                                                        <div>1:00 HR APROX.</div>
+                                                    </v-col>
+                                                    <v-col cols="12" md="4">
+                                                        <h5>ENFOQUE:</h5>
+                                                        <div>{{activity.focus}}</div>
+                                                    </v-col>
+                                                    <v-col cols="12" md="4">
+                                                        <h5>MATERIAL:</h5>
+                                                        <div>{{activity.material}}</div>
+                                                    </v-col>
+                                                </v-row>
+                                                <v-btn tile color="secondary" class="rounded" dark
+                                                    :href="activity.link_class" target="_blank"
+                                                    v-if="!activity.link_video && activity.link_class">
+                                                    <v-icon left>
+                                                        mdi-access-point
+                                                    </v-icon>
+                                                    Ingresar
                                                 </v-btn>
-                                                <v-btn v-if="activity.link_video" icon class="white--text"
-                                                    @click="getVideoActivity(activity)">
-                                                    <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
-                                                        mdi-motion-play-outline</v-icon>
-                                                </v-btn>
-                                            </v-row>
-                                        </v-img>
-                                    </v-col>
-                                    <v-col cols="12" md="7" class="text-left align-center d-flex">
-                                        <v-container>
-                                            <v-row class="my-3">
-                                                <v-col cols="12" md="4">
-                                                    <h3>{{activity.name}}</h3>
-                                                    <div>HORA: {{current_date.dat + ' ' +activity.hour_class | formatTime}}
+                                                <!--<p style="font-size: 0.7rem"
+                                                    v-if="!activity.link_video && activity.link_class && !isOnlive(current_date.dat, activity.hour_class)"
+                                                >
+                                                    * Clase en vivo finalizada, en momentos podras ver el video.
+                                                </p>-->
+                                            </v-container>
+                                        </v-col>
+                                        <v-col cols="12" md="1" class="text-center align-center justify-center d-flex">
+                                            <v-icon color="secondary" @click="saveAttempts(activity, current_date.dat, i); "
+                                                v-if="activity.sessions.length==0">
+                                                mdi-heart-outline
+                                            </v-icon>
+                                            <v-icon color="secondary" v-else>
+                                                mdi-heart
+                                            </v-icon>
+                                        </v-col>
+
+                                    </v-row>
+                                </v-card-text>
+                            </v-card>
+                        </div>
+                        <div class="text-center pa-3 px-10 activity-class" >
+                            <b style="color:white;">CLASES GRABADAS</b>
+                        </div>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col cols="12">
+                        <v-carousel style="height: 280px;" hide-delimiters>
+                            <template v-for="(item, index) in current_date.activities">
+                                <v-carousel-item v-if="((index + 1) % columns === 1 || columns === 1) && item.link_video != null" :key="index">
+                                    <v-row class="flex-nowrap">
+                                        <template v-for="(n,i) in current_date.activities">
+                                            <template v-if="(+index + i) < current_date.activities.length">
+                                                <v-col :key="i">
+                                                    <div :key="'col_activity_'+i">
+                                                        <v-card color="primary" class="card-outter"  width="380" @click="getVideoActivity(n);">
+                                                            <v-img height="300" 
+                                                                src="https://i.vimeocdn.com/video/1216681987-4743218d2221b42f2acba382eceedf59e3a83c91aade0ff4b264a3deb6b2a295-d_640"
+                                                                gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)" class=" white--text">
+                                                                <v-card-title>
+                                                                    <div style="border-left: 4px solid #E30E4F; text-align: left; " class="pl-1">
+                                                                        <span style="font-size: 18px; font-weight: bold;">{{n.name}}</span><br>
+                                                                        <span style="font-size: 14px;">con {{ n.staff.name }}</span>
+                                                                    </div>
+                                                                    <p></p>
+                                                                </v-card-title>
+                                                            </v-img>
+                                                        </v-card>
+                                                        
                                                     </div>
                                                 </v-col>
-                                                <v-col cols="12" md="4">
-                                                    <h5>PROFESOR:</h5>
-                                                    <div>{{activity.staff.name}}</div>
-                                                </v-col>
-                                                <v-col cols="12" md="4">
-                                                    <h5>NIVEL:</h5>
-                                                    <div>{{activity.level.level}}</div>
-                                                </v-col>
-                                            </v-row>
-                                            
-                                            <v-row class="my-3">
-                                                <v-col cols="12" md="4">
-                                                    <h5>TIEMPO:</h5>
-                                                    <div>1:00 HR APROX.</div>
-                                                </v-col>
-                                                <v-col cols="12" md="4">
-                                                    <h5>ENFOQUE:</h5>
-                                                    <div>{{activity.focus}}</div>
-                                                </v-col>
-                                                <v-col cols="12" md="4">
-                                                    <h5>MATERIAL:</h5>
-                                                    <div>{{activity.material}}</div>
-                                                </v-col>
-                                            </v-row>
-                                            <v-btn tile color="secondary" class="rounded" dark
-                                                :href="activity.link_class" target="_blank"
-                                                v-if="!activity.link_video && activity.link_class">
-                                                <v-icon left>
-                                                    mdi-access-point
-                                                </v-icon>
-                                                Ingresar
-                                            </v-btn>
-                                            <!--<p style="font-size: 0.7rem"
-                                                v-if="!activity.link_video && activity.link_class && !isOnlive(current_date.dat, activity.hour_class)"
-                                            >
-                                                * Clase en vivo finalizada, en momentos podras ver el video.
-                                            </p>-->
-                                        </v-container>
-                                    </v-col>
-                                    <v-col cols="12" md="1" class="text-center align-center justify-center d-flex">
-                                        <v-icon color="secondary" @click="saveAttempts(activity, current_date.dat, i); "
-                                            v-if="activity.sessions.length==0">
-                                            mdi-heart-outline
-                                        </v-icon>
-                                        <v-icon color="secondary" v-else>
-                                            mdi-heart
-                                        </v-icon>
-                                    </v-col>
-
-                                </v-row>
-                            </v-card-text>
-                        </v-card>
+                                            </template>
+                                        </template>
+                                    </v-row>
+                                </v-carousel-item>
+                            </template>
+                        </v-carousel>
                     </v-col>
                 </v-row>
             </v-container>
@@ -267,6 +306,22 @@ import axios from "axios";
         actual_date: null,
         show_alert: true,
         original_activities: [],
+        total_clases_vivo: 0,
+        total_clases_grabadas: 0,
+        slider: [
+            "red",
+            "green",
+            "orange",
+            "blue",
+            "pink",
+            "purple",
+            "indigo",
+            "cyan",
+            "deep-purple",
+            "light-green",
+            "deep-orange",
+            "blue-grey"
+        ]
     }),
     mounted() {
         moment.locale('es');
@@ -279,6 +334,23 @@ import axios from "axios";
         vm.calendar();
         vm.schedule();
         vm.loadLevels();
+    },
+    computed: {
+        columns() {
+            if (this.$vuetify.breakpoint.xl) {
+                return 4;
+            }
+
+            if (this.$vuetify.breakpoint.lg) {
+                return 3;
+            }
+
+            if (this.$vuetify.breakpoint.md) {
+                return 2;
+            }
+
+            return 1;
+        }
     },
     methods:{
         async saveAttempts(activity, date, indx){
@@ -352,7 +424,14 @@ import axios from "axios";
             vm.original_activities = vm.current_date.activities;
             let mes_actual = this.planSectionsFilter();
             vm.model = mes_actual.findIndex((element) => element.dat == vm.current_date.dat);
-            //console.log(mes);
+
+            let clases_vivo = vm.current_date.activities.filter((element) => (element.link_video != null));
+
+            vm.total_clases_vivo = vm.current_date.activities.length - clases_vivo.length;
+
+            vm.total_clases_grabadas = clases_vivo.length;
+
+            //(vm.total_clases_vivo);
         },
         filterByLevel() {
             let vm = this;
@@ -408,6 +487,12 @@ import axios from "axios";
         getActivities(indx, date){
             this.model = indx;
             this.current_date = date;
+
+            let clases_vivo = vm.current_date.activities.filter((element) => (element.link_video != null));
+
+            vm.total_clases_vivo = vm.current_date.activities.length - clases_vivo.length;
+
+            vm.total_clases_grabadas = clases_vivo.length;
         },
 
 

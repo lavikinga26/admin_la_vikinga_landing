@@ -33,7 +33,7 @@
         <!--<frequent-questions></frequent-questions>-->
         <sponsors-section></sponsors-section>
         <FlyerPopup />
-        <whatsapp />
+        <!--<whatsapp />-->
     </div>
 </template>
 

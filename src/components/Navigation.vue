@@ -133,7 +133,7 @@
             </span>
           </template>
         </div>
-        <div class="mt-5 mr-5">
+        <div class="mt-5 logo_margin">
           <router-link to="/">
             <img style="width: 130px;" src="@/assets/img/logo.png" alt="Logo" />
           </router-link>

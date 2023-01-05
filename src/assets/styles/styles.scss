@@ -547,6 +547,12 @@ body{
     background-position: center;
   }
 
+  /** LOGO HEAD **/
+
+  .logo_margin{
+    margin-right: 105px;
+  }
+
   /** WhatsApp icon **/
 
     .whatsapp {
@@ -562,6 +568,7 @@ body{
         font-size: 30px;
         box-shadow: 2px 2px 3px #999;
         z-index: 100;
+        text-decoration: none;
     }
 
     .whatsapp-icon {
