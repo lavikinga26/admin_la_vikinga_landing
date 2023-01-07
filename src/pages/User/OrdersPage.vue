@@ -107,7 +107,7 @@
                             <td>{{ item.expiration_date | formatDate}}</td>
                             <td class="text-center">
                               <v-chip class="ma-2" small :color="item.status ? 'success' : 'error'">
-                                {{item.status ? 'Habilitado':'Expirado'}}
+                                {{item.status ? 'Vigente':'Expirado'}}
                               </v-chip>
                             </td>
                             <td class="text-center">
