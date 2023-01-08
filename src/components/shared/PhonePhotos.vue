@@ -5,7 +5,13 @@
         <div class="col-md-6 text-center">
           <img src="@/assets/img/isotipo.png" alt="" />
           <p class="tit_h1_pink text_entrena" id="text-phones">
-            ENTRENA<br />DONDE<br />QUIERAS
+            CONOCE<br />NUESTROS<br />HORARIOS
+          </p>
+          <p class="text-center"> 
+            <v-btn color="secondary" depressed
+              large class="px-2" @click="abrirHorario()">
+              <span class="ma-3">VER HORARIOS</span>
+            </v-btn>
           </p>
         </div>
         <div class="col-md-6 phone-container">
@@ -35,7 +41,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    abrirHorario() {
+      window.open("https://lavikingaoficial.com/horarios/horarios_web.pdf");
+    },
+  },
+};
 </script>
 <style>
 
