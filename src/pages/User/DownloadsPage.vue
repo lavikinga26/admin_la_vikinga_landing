@@ -4,7 +4,7 @@
         <div class="col-md-12">
             <p class="tit_h1_pink text_entrena">DESCARGABLES</p>
         </div>
-        <v-card class="rounded-xl pa-10 mb-10">
+        <v-card class="rounded-xl mb-10">
             <div class="px-5">
 
               <v-tabs
@@ -172,7 +172,7 @@ export default {
         var plans = this.user.plans;
         
         plans.map(function (element) {
-          if (element.id_plan == 33) { this.flag_mostrar = 0; }
+          if (element.id_plan == 35 && this.flag_mostrar!=1) { this.flag_mostrar = 0; }
         }, this);
         this.$store.commit('loader', false);
       } catch (e) {
@@ -207,7 +207,7 @@ export default {
         const response = await this.$API.business_partner.getDownloads();
         this.downloads_list=response.data.data;
 
-        console.log(this.downloads_list.groupBy('name_category'))
+        //console.log(this.downloads_list.groupBy('name_category'))
         this.groupList = this.downloads_list.groupBy('name_category');
         this.$store.commit('loader', false);
       } catch (e) {

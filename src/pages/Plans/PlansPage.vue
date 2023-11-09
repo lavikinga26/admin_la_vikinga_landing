@@ -21,7 +21,7 @@
             </div>
         </div>
 
-        <div v-if="data_enrollment.enable_next_enrollment==0" class="container mt-4">
+        <!--<div v-if="data_enrollment.enable_next_enrollment==0" class="container mt-4">
             <div class="row justify-center m-4">
                 <h2 class="tit_h2_pink" style="text-align:center;">Elige el plan que mejor se adapte a tí</h2>
             </div>
@@ -66,16 +66,14 @@
                             </v-img>
                         </v-card>
                     </v-hover>
-                    <!--<v-img v-if="item.file_path" :src="base_url + item.file_path.path + item.file_path.filename" max-width="100px" max-height="80px" class="ma-3" style="border-radius:50%; min-height: 150px; min-width: 150px;"></v-img>
-                    <v-img v-else :src="base_url + empty_url" max-width="100px" max-height="80px" class="ma-3" style="border-radius:50%; min-height: 150px; min-width: 150px;"></v-img>-->
                 </v-col>
 
                 <v-col cols="12">
 
                 </v-col>
             </v-row>
-        </div>
-
+        </div>-->
+        <plans-slider></plans-slider>
 
         <div v-if="data_enrollment.enable_next_enrollment==1" class="container mt-4">
             <div class="row justify-center m-4">
@@ -90,8 +88,10 @@
     </div>
 </template>
 <script>
+import PlansSlider from '../Home/components/PlansSlider.vue';
 export default {
     components: { 
+        PlansSlider,
      },
 
     data: () => ({

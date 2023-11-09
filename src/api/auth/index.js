@@ -76,11 +76,16 @@ export default {
         deleteCard(id){
             return callAuthAPI('get', 'api/v1/business-partner/deleteCard/'+id);
         },
-        cancelSuscription(id){
-            return callAuthAPI('get', 'api/v1/business-partner/cancelSuscription/'+id);
+        cancelSuscription(id, motivo){
+            return callAuthAPI('get', 'api/v1/business-partner/cancelSuscription/'+id+'/'+motivo);
         },
         updateLevel(level){
             return callAuthAPI('get', 'api/v1/business-partner/updateLevel/'+level);
         },
     },
+    rating:{
+        saveRating(data){
+            return callAuthAPI('post', 'api/v1/rating/storeRating', {data: data});
+        },
+    }
 }

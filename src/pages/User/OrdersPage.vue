@@ -88,7 +88,7 @@
                               Fecha de Expiración
                             </th>
                             <th class="text-left">
-                              Fecha de Renovación
+                              Fecha de Pago/Renovación
                             </th>
                             <th class="text-center">
                               Estado
@@ -102,25 +102,33 @@
                         <tbody>
                           <tr v-for="(item, key) in user.plans" :key="'plan_'+key">
                             <td>{{ item.name }}</td>
-                            <td>{{ item.date_init | formatDate}}</td>
+                            <td>{{ item.init_date | formatDate}}</td>
                             <td>{{ item.expiration_date | formatDate}}</td>
-                            <td>{{ item.expiration_date | formatDate}}</td>
+                            <td v-if="item.fecha_prox_renovacion != null">{{ item.fecha_prox_renovacion | formatDate}}</td>
+                            <td v-if="item.fecha_prox_renovacion == null">-</td>
                             <td class="text-center">
                               <v-chip class="ma-2" small :color="item.status ? 'success' : 'error'">
                                 {{item.status ? 'Vigente':'Expirado'}}
                               </v-chip>
                             </td>
                             <td class="text-center">
-                              <v-chip class="ma-2" small :color="item.renovacion_automatica ? 'success' : 'error'">
-                                {{ item.renovacion_automatica ? 'Si':'No'}}
-                              </v-chip>
-                              
+
+                                {{ item.renovacion_automatica ? 'Activa':'-'}}
+    
                             </td>
-                            <td><v-btn @click="cancelarSuscripcion(item.id_suscripcion, item.id_partner)" small class="mx-2" color="error" v-if="item.renovacion_automatica == 1">
-                              <v-icon dark small>
-                                mdi-cancel
-                              </v-icon> Cancelar
-                            </v-btn></td>
+                            <td>
+                              <!--<v-btn @click="cancelarSuscripcion(item.id_suscripcion, item.id_partner)" small class="mx-2" color="error" v-if="item.renovacion_automatica == 1">
+                                <v-icon dark small>
+                                  mdi-cancel
+                                </v-icon> Cancelar
+                              </v-btn>-->
+                              <v-btn @click="showDeleteDialog(item.id_suscripcion, item.id_partner, item.expiration_date)" small class="mx-2" color="error"
+                                v-if="item.renovacion_automatica == 1">
+                                <v-icon dark small>
+                                  mdi-cancel
+                                </v-icon> Cancelar
+                              </v-btn>
+                            </td>
                           </tr>
                         </tbody>
                       </template>
@@ -129,6 +137,24 @@
                 </v-col>
               </v-row>
             </v-card>
+            <v-dialog v-model="dialogDelete" max-width="500px">
+              <v-card>
+                <v-card-title>Cancelar Suscripción</v-card-title>
+                <v-card-text>Estas a punto de cancelar la renovación automatica de tu plan. Luego del {{ exp_date_pop | formatDate }} no tendrás más acceso a la plataforma. <br/><br/>
+                  Si deseas, puedes dejar un comentario explicando el motivo de la cancelación: <br/><br/>
+                  <v-text-field label="Motivo de cancelación" v-model="cancel_suscrip"></v-text-field>
+                  ¿Estás seguro?
+                </v-card-text>
+                <v-card-actions>
+                  <v-btn color="error" text @click="dialogDelete = false"><v-icon dark small>
+                    mdi-close
+                  </v-icon> No</v-btn>
+                  <v-btn color="success" text @click="cancelarSuscripcion()"><v-icon dark small>
+                    mdi-check
+                  </v-icon> Si</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </div>
         </v-tab-item>
 
@@ -357,7 +383,7 @@
                               <v-badge color="error" content="No" inline v-if="item.predeterminada == 0"></v-badge>
                             </td>
                             <td class="text-center">
-                              <v-btn @click="deleteCard(item.id_card)" class="mx-2" fab dark small color="error" v-if="item.predeterminada == 0">
+                              <v-btn @click="deleteCard(item.id_card)" class="mx-2" fab dark small color="error">
                                 <v-icon dark>
                                   mdi-delete
                                 </v-icon>
@@ -408,6 +434,7 @@ export default {
       userProfileTabs: 0,
       user: {},
       orders: [],
+      dialogDelete: false,
       selectedOrder: {
         detail: [],
         payment_method: "",
@@ -425,6 +452,7 @@ export default {
       },
       hasOrders: true,
       dialog: false,
+      exp_date_pop: null,
       headers: [
         {
           text: "ID",
@@ -474,7 +502,9 @@ export default {
           timeout: 3000,
           color: "success"
       },
-
+      del_id_susc: null,
+      del_id_part: null,
+      cancel_suscrip: ""
     };
   },
   mounted() {
@@ -593,6 +623,12 @@ export default {
       }
       return color;
     },
+    showDeleteDialog(id_suscripcion, id_partner, fecha_venc) {
+      this.dialogDelete = true;
+      this.exp_date_pop = fecha_venc;
+      this.del_id_susc = id_suscripcion;
+      this.del_id_part = id_partner;
+    },
     async changePassword() {
       let vm = this;
       this.$store.commit('loader',true);
@@ -645,13 +681,16 @@ export default {
         console.error(e);
       }
     },
-    async cancelarSuscripcion(id, id_partner) {
+    async cancelarSuscripcion() {
       try {
-        this.loading = true;
-        const response = await this.$API.business_partner.cancelSuscription(id);
-        this.loading = false;
+        this.$store.commit('loader', true);
+        this.dialogDelete = false;
+        if(this.cancel_suscrip=="") this.cancel_suscrip = "-";
+        const response = await this.$API.business_partner.cancelSuscription(this.del_id_susc, this.cancel_suscrip);
+        this.$store.commit('loader', false);
         this.showToast('Suscripción cancelada correctamente!', "success");
-        this.getPartnerData(id_partner);
+
+        this.getPartnerData(this.del_id_part);
       } catch (e) {
         console.error(e);
       }
@@ -662,7 +701,7 @@ export default {
 
         this.card_data = response;
         //console.log(this.card_data);
-        this.card_data.id_user = this.user.id;
+        this.card_data.id_user = this.user.bp_id;
         const data = await this.$API.payme.saveToken(this.card_data);
 
         let token_resul = data.data.data;

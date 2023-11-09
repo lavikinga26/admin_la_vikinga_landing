@@ -39,7 +39,7 @@
                                         <div class="text-overline">Total:</div>{{item.currency}} {{ (item.price *
                                         item.quantity) | formatCurrency }}
                                     </div>
-                                    <v-btn icon @click="cart.splice(index, 1); removeItem(index)">
+                                    <v-btn icon @click="cart.splice(index, 1); removeItem(index, item)">
                                         <v-icon>mdi-close</v-icon>
                                     </v-btn>
                                 </div>
@@ -290,7 +290,7 @@
                                                     <td class="pl-1 pr-1">{{ item.title }}</td>
                                                     <td class="pr-0 pl-1" style="width: 20%;">S/. {{ (item.price * item.quantity) |
                                                     formatCurrency }}</td>
-                                                    <td width="10"><v-btn icon @click="cart.splice(index, 1); removeItem(index)"><v-icon>mdi-close</v-icon></v-btn></td>
+                                                    <td width="10"><v-btn icon @click="cart.splice(index, 1); removeItem(index, item)"><v-icon>mdi-close</v-icon></v-btn></td>
                                                 </tr>
                                             </tbody>
                                         </template>
@@ -321,8 +321,13 @@
                                     <v-spacer></v-spacer>
                                     <div>S/. {{ total | formatCurrency }}</div>
                                 </div>
+                                <v-btn v-if="this.show_transfer==1 && data_config.allow_sale" large color="secondary" block class="mt-8" x-large :disabled="cart.length === 0"
+                                    @click="paymentProcess()">
+                                    <v-icon left>mdi-cart-outline</v-icon>
+                                    Continuar Pago
+                                </v-btn>
                                 <v-btn large color="secondary" block class="mt-8" x-large :disabled="cart.length === 0"
-                                    @click="paymentProcess()" v-if="data_config.allow_sale">
+                                    @click="showModalConditions()" v-if="data_config.allow_sale && this.show_transfer==0">
                                     <v-icon left>mdi-cart-outline</v-icon>
                                     Continuar Pago
                                 </v-btn>
@@ -338,6 +343,20 @@
 
         </v-container>
         <whatsapp />
+        <v-dialog v-model="dialogConfirm" max-width="500px">
+              <v-card>
+                <v-card-title>Confirmar Suscripción</v-card-title>
+                <v-card-text>Al comprar un plan con débito automático, aceptas que 5 días antes del vencimiento de tu plan realicemos el cobro en tu tarjeta de manera automática. ¿Aceptas adherirte al débito automático?</v-card-text>
+                <v-card-actions>
+                  <v-btn color="error" text @click="dialogConfirm = false"><v-icon dark small>
+                    mdi-close
+                  </v-icon> No</v-btn>
+                  <v-btn color="success" text @click=" paymentProcess()"><v-icon dark small>
+                    mdi-check
+                  </v-icon> Si</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
     </div>
 </template>
 <script>
@@ -355,6 +374,7 @@ export default {
                 text: 'Cart'
             }],
             show_transfer: true,
+            dialogConfirm: false,
             discount: 0,
             tab: null,
             valid: false,
@@ -443,12 +463,19 @@ export default {
 
     },
     methods: {
+        showModalConditions(){
+            this.dialogConfirm = true;
+        },
         docRules(v) {
             if (this.order.id_document_type == 2 && !Number.isInteger(Number(v))) {
                 return "Ingrese sólo números.";
             }
             if (this.order.id_document_type == 2 && v.length != 8) {
                 return "DNI debe tener 8 dígitos.";
+            }
+            let renovacion = this.cart.filter((item) => item.renovacion == 1);
+            if (renovacion.length > 0) {
+                this.show_transfer = false;
             }
             return true;
         },
@@ -535,10 +562,10 @@ export default {
         },
         list(){
             this.cart = this.$store.getters.StoreCart;
-            // console.log(this.cart );
+            console.log(this.cart );
         },
-        removeItem(index) {
-            this.$store.dispatch("removeItem", index+1);
+        removeItem(index, item) {
+            this.$store.dispatch("removeItem", index+1, item);
         },
         async getLoggedUser(){
             if(localStorage.getItem('token')){
@@ -608,7 +635,6 @@ export default {
                 this.paymentMethods = data.data.data;
                 let renovacion = this.cart.filter((item) => item.renovacion == 1);
                 if (renovacion.length > 0) {
-                    console.log("cambiando transfer");
                     this.show_transfer = false;
                 }
                 this.$store.commit('loader',false);
@@ -620,6 +646,7 @@ export default {
         },
 
         async paymentProcess(){
+            this.dialogConfirm = false;
             if(this.payment){
                 if(this.$refs.form_payment.validate()){
                     this.createOrder();

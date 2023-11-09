@@ -553,6 +553,16 @@ body{
     margin-right: 15%;
   }
 
+  /**   Carousel items   **/
+
+.card-clase{
+    width: 360px;
+}
+
+.clase-img{
+    height: 300px;
+}
+
   /** WhatsApp icon **/
 
     .whatsapp {
@@ -614,5 +624,25 @@ body{
     }
     #center-screen {
       height: 245px;
+    }
+
+    .card-clase {
+        width: 220px!important;
+    }
+
+    .clase-img {
+        height: 210px!important;
+    }
+
+    .titulo-container{
+        line-height: 1rem!important;
+    }
+
+    .titulo-clase{
+        font-size: 16px!important;
+    }
+
+    .subtitulo-clase {
+        font-size: 12px !important;
     }
   }

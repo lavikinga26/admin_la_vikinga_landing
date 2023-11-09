@@ -26,10 +26,17 @@ export default new Vuex.Store({
     },
     //------CART------
     add_Item(state, id) {
-      state.StoreCart.push(id);
+      let flag = 0;
+      state.StoreCart.map((x, index) => {
+        if (x.category_id == id.category_id) flag = 1;
+      });
+
+      if (flag == 0) {
+        state.StoreCart.push(id);
+      }
       localStorage.setItem('shoppingCartVikinga', JSON.stringify(state.StoreCart));
     },
-    remove_Item(state, index) {
+    remove_Item(state, index, item) {
       state.StoreCart.splice(index, 1);
       localStorage.setItem('shoppingCartVikinga', JSON.stringify(state.StoreCart));
     },

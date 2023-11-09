@@ -120,9 +120,9 @@
                 text
                 small
                 color="secondary"
-                href="/auth/iniciar-sesion"
+                href="https://shop.lavikingaoficial.com/libro-de-reclamaciones/"
               >
-                INGRESAR
+                LIBRO DE RECLAMACIONES
               </v-btn>
             </div>
         </div>

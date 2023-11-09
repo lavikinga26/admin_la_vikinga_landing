@@ -3,8 +3,7 @@
         <v-carousel
             hide-delimiter-background
             cycle
-             :show-arrows="false"
-                height="700">
+             :show-arrows="false">
             <v-carousel-item
                 v-for="(item,i) in banners"
                 :key="i"  

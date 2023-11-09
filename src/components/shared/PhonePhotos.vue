@@ -44,7 +44,7 @@
 export default {
   methods: {
     abrirHorario() {
-      window.open("https://lavikingaoficial.com/horarios/horarios_web.pdf");
+      window.open("https://lavikingaoficial.com/horarios/horarios.jpg");
     },
   },
 };

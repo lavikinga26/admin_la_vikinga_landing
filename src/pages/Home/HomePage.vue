@@ -1,7 +1,7 @@
 <template>
     <div>
         <home-slider></home-slider>
-        <plans-slider></plans-slider>
+        <!--<plans-slider></plans-slider>-->
 
         <!-- 
         <div class="container-fluid pt-3 mt-n5">
@@ -26,6 +26,61 @@
                 </div>
             </div>
         </div> -->
+
+        <v-row class="d-none d-md-flex d-lg-flex">
+            <v-col cols="12" class="px-5">
+                <v-card class="pa-10">
+                    <div class="row justify-center m-4">
+                        <h2 class="tit_h2_pink mb-5">NUESTRA MISIÓN</h2>
+                    </div>
+                    <v-row>
+                    <v-col cols="7" md="7" sm="12">
+                        Nuestra misión es ayudarte a construir el hábito del entrenamiento, mejorando tu capacidad física y mental. De esta manera, lograras un estilo de vida más saludable apoyándote en un programa de entrenamiento diseñado por expertos en el
+                        campo del deporte.<br/><br />
+                        No importa tu nivel de habilidad, dónde te encuentres o el tiempo que tengas, en el Desafío te guiaremos para que alcances grandes resultados de manera simple y efectiva.
+                        <br/><br />
+                        
+                        <v-btn color="secondary" depressed large class="px-2" @click="abrirHorario()">
+                            <span class="ma-3">Descubre el Desafío</span>
+                        </v-btn>
+                    </v-col>
+                    <v-col cols="5" md="5" sm="12">
+                        <v-img src="@/assets/img/nuestra-mision.jpg" width="370" class="ma-auto"/>
+                    </v-col>
+                </v-row>
+                </v-card>
+        
+            </v-col>
+        </v-row>
+
+        <v-row class="d-flex d-sm-none">
+            <v-col cols="12" class="px-5">
+                <v-card class="pa-10">
+                    <div class="row justify-center m-4">
+                        <h2 class="tit_h2_pink mb-5">NUESTRA MISIÓN</h2>
+                    </div>
+                    <v-row>
+                        <v-col cols="12" md="12" sm="12">
+                            Nuestra misión es ayudarte a construir el hábito del entrenamiento, mejorando tu capacidad física y
+                            mental. De esta manera, lograras un estilo de vida más saludable apoyándote en un programa de
+                            entrenamiento diseñado por expertos en el
+                            campo del deporte.<br /><br />
+                            No importa tu nivel de habilidad, dónde te encuentres o el tiempo que tengas, en el Desafío te
+                            guiaremos para que alcances grandes resultados de manera simple y efectiva.
+                            <br /><br />
+        
+                            <v-btn color="secondary" depressed large class="px-2" @click="abrirHorario()">
+                                <span class="ma-3">Descubre el Desafío</span>
+                            </v-btn>
+                        </v-col>
+                        <v-col cols="12" md="12" sm="12">
+                            <v-img src="@/assets/img/nuestra-mision.jpg" width="370" class="ma-auto" />
+                        </v-col>
+                    </v-row>
+                </v-card>
+        
+            </v-col>
+        </v-row>
 
         <staff-slider></staff-slider>
         <!--<InformativeSection/>-->
@@ -74,6 +129,9 @@ export default {
     },
 
     methods: {
+        abrirHorario() {
+            window.open("https://lavikingacoaching-29600.gr8.com/?utm_source=web&utm_medium=home");
+        },
     },
 };
 </script>

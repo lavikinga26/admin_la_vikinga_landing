@@ -31,7 +31,9 @@
                         <div class="sub_h2_white_login" >CONTRASEÑA</div>
                         <v-text-field
                             solo
-                            type="password"
+                            :append-icon="show_pwd ? 'mdi-eye' : 'mdi-eye-off'"
+                            @click:append="() => (show_pwd = !show_pwd)"
+                            :type="show_pwd ? 'password' : 'text'"
                             :rules="rules"
                             v-model="loginForm.password"
                             @keydown.enter="loginUser"
@@ -70,7 +72,7 @@ export default {
         fab: null,
         color: "",
         flat: null,
-
+        show_pwd: String,
         //--- User Login/Signup ---
         logged_user: null,
         logged_user_token: null,

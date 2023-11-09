@@ -14,6 +14,11 @@
                     <v-divider v-if='item.isDivider' :key='index' />
                     <dan-menu v-else-if='item.menu.length>0' :key='index' :name='item.name' :menu-items='item.menu' @dan-menu-click='emitClickEvent' :is-open-on-hover=false :is-offset-x=true 
                         :to="item.slug" :is-offset-y=false :is-sub-menu=true />
+
+                    <v-list-item class="white--text" v-else-if="item.slug.includes('https://')" :key='index' :href="item.slug" target="_blank" @click='emitClickEvent(item)'>
+                        <v-list-item-title>{{ item.name }}</v-list-item-title>
+                    </v-list-item>
+                    
                     <v-list-item class="white--text" v-else :key='index' :to="item.slug" @click='emitClickEvent(item)'>
                         <v-list-item-title>{{ item.name }}</v-list-item-title>
                     </v-list-item>

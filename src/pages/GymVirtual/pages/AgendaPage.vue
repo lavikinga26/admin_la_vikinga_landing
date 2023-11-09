@@ -1,19 +1,27 @@
 <template>
     <div>
         <v-toolbar color="primary" dark class="mb-1">
-            <v-toolbar-title class="tit_h2_pink d-xs-none" style="font-size: 3.0rem; color: white">GYM VIRTUAL</v-toolbar-title>
+            <v-toolbar-title class="tit_h2_pink d-none d-sm-flex" style="font-size: 3.0rem; color: white">GYM VIRTUAL</v-toolbar-title>
             <v-spacer></v-spacer>
         
             <span style="width: 250px;"><v-select :items="levels" v-model="id_level" label="Nivel" item-text="level"
                 placeholder="Seleciona" item-value="id_level" v-on:change="filterByLevel()" class="mt-8" outlined></v-select></span>
             <span style="color: #fff; font-size: 0.9rem;"> | </span>
         
-            <v-btn text small link @click="descargarPlan()">
+            <v-btn v-if="show_descarga_plan" text small link @click="descargarPlan()">
                 <v-icon color="#FFFFFF">mdi-download</v-icon> DESCARGAR PLAN
             </v-btn>
         </v-toolbar>
         <v-container>
-
+            <v-col cols="12">
+                <div>
+                    <v-btn @click="showRatingDialog()" medium class="mx-2 float-left" color="secondary">
+                        <v-icon dark small>
+                            mdi-star
+                        </v-icon> Danos tu opinión
+                    </v-btn>
+                </div>
+            </v-col>
             <div v-for="(n, index) in userPlans" :key="'plan_alert_'+index" class="text-left my-3">
                 <v-alert border="top"
                     v-if="show_alert && new Date(n.expiration_date) > actual_date && (Math.ceil((new Date(n.expiration_date).getTime() - actual_date.getTime()) / (1000 * 3600 * 24)) <= 15)"
@@ -24,7 +32,13 @@
                 </v-alert>
             </div>
 
-            <div class="text-center pt-5" style="display:none;">
+            <div v-if="id_level==null" key="popup_level" class="text-left my-3">
+                <v-alert border="top" type="info" colored-border color="pink accent-4" elevation="2">
+                    Selecciona tu nivel en la parte superior. Adaptaremos los entrenamientos según tu nivel de entrenamiento.
+                </v-alert>
+            </div>
+
+            <div class="text-center pt-5">
                 <v-sheet class="mx-auto" max-width="240">
                     <v-slide-group show-arrows v-model="model2" center-active
                         @click:next="model2=model2+1; current_month=planMonths[model2]; model=null;"
@@ -174,7 +188,7 @@
                                                 </v-row>
                                             </v-img>
                                         </v-col>
-                                        <v-col cols="12" md="4" class="pa-4" align-items="center" v-if="activity.name ==='DANCE HIT'">
+                                        <v-col cols="12" md="4" class="pa-4" align-items="center" v-if="activity.name ==='DANCE HIT' || activity.name ==='DANCE HIIT'">
                                             <v-img src="@/assets/img/video_portada/dance-hiit.jpg" height="180px" width="270" class="ma-auto">
                                                 <v-row class="fill-height ma-0" align="center" justify="center">
                                                     <v-btn v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)"
@@ -191,6 +205,66 @@
                                         </v-col>
                                         <v-col cols="12" md="4" class="pa-4" align-items="center" v-if="activity.name ==='FUNCIONAL'">
                                             <v-img src="@/assets/img/video_portada/funcional.jpg" height="180px" width="270" class="ma-auto">
+                                                <v-row class="fill-height ma-0" align="center" justify="center">
+                                                    <v-btn v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)"
+                                                        :href="activity.link_class" target="_blank" icon class="white--text">
+                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
+                                                            mdi-access-point</v-icon>
+                                                    </v-btn>
+                                                    <v-btn v-if="activity.link_video" icon class="white--text" @click="getVideoActivity(activity)">
+                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
+                                                            mdi-motion-play-outline</v-icon>
+                                                    </v-btn>
+                                                </v-row>
+                                            </v-img>
+                                        </v-col>
+                                        <v-col cols="12" md="4" class="pa-4" align-items="center" v-if="activity.name ==='CARDIO HIT' || activity.name ==='CARDIO HIIT'">
+                                            <v-img src="@/assets/img/video_portada/cardio-hiit.jpg" height="180px" width="270" class="ma-auto">
+                                                <v-row class="fill-height ma-0" align="center" justify="center">
+                                                    <v-btn v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)"
+                                                        :href="activity.link_class" target="_blank" icon class="white--text">
+                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
+                                                            mdi-access-point</v-icon>
+                                                    </v-btn>
+                                                    <v-btn v-if="activity.link_video" icon class="white--text" @click="getVideoActivity(activity)">
+                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
+                                                            mdi-motion-play-outline</v-icon>
+                                                    </v-btn>
+                                                </v-row>
+                                            </v-img>
+                                        </v-col>
+                                        <v-col cols="12" md="4" class="pa-4" align-items="center" v-if="activity.name ==='TORSO'">
+                                            <v-img src="@/assets/img/video_portada/torso.jpg" height="180px" width="270" class="ma-auto">
+                                                <v-row class="fill-height ma-0" align="center" justify="center">
+                                                    <v-btn v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)"
+                                                        :href="activity.link_class" target="_blank" icon class="white--text">
+                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
+                                                            mdi-access-point</v-icon>
+                                                    </v-btn>
+                                                    <v-btn v-if="activity.link_video" icon class="white--text" @click="getVideoActivity(activity)">
+                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
+                                                            mdi-motion-play-outline</v-icon>
+                                                    </v-btn>
+                                                </v-row>
+                                            </v-img>
+                                        </v-col>
+                                        <v-col cols="12" md="4" class="pa-4" align-items="center" v-if="activity.name ==='HIPOPRESIVOS'">
+                                            <v-img src="@/assets/img/video_portada/hipopresivos.jpg" height="180px" width="270" class="ma-auto">
+                                                <v-row class="fill-height ma-0" align="center" justify="center">
+                                                    <v-btn v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)"
+                                                        :href="activity.link_class" target="_blank" icon class="white--text">
+                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
+                                                            mdi-access-point</v-icon>
+                                                    </v-btn>
+                                                    <v-btn v-if="activity.link_video" icon class="white--text" @click="getVideoActivity(activity)">
+                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
+                                                            mdi-motion-play-outline</v-icon>
+                                                    </v-btn>
+                                                </v-row>
+                                            </v-img>
+                                        </v-col>
+                                        <v-col cols="12" md="4" class="pa-4" align-items="center" v-if="activity.name ==='TALLER DE NUTRICIÓN'">
+                                            <v-img src="@/assets/img/video_portada/nutricion.jpg" height="180px" width="270" class="ma-auto">
                                                 <v-row class="fill-height ma-0" align="center" justify="center">
                                                     <v-btn v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)"
                                                         :href="activity.link_class" target="_blank" icon class="white--text">
@@ -275,33 +349,117 @@
                         <v-sheet class="mx-auto" elevation="8" max-width="1920">
                             <v-slide-group v-model="carousel" active-class="success" class="py-6 px-2" show-arrows>
                                 <v-slide-item v-for="(item, index) in clases_grabadas" :key="index" v-slot="{ active, toggle }">
-                                    <v-card color="primary" class="card-outter mr-4" @click="getVideoActivity(item);" width="360" >
-                                        <v-img src="@/assets/img/video_portada/avanzados.jpg" height="300"
-                                            class=" white--text"v-if="item.id_level === 3">
-                                            <v-card-title>
+                                    <v-card color="primary" class="card-outter mr-4 card-clase" @click="getVideoActivity(item);" >
+                                        <v-img src="@/assets/img/video_portada/avanzados.jpg"
+                                            class=" white--text clase-img" v-if="item.id_level === 3">
+                                            <v-card-title class="titulo-container">
                                                 <div style="border-left: 4px solid #E30E4F; text-align: left; " class="pl-1">
-                                                    <span style="font-size: 18px; font-weight: bold;">{{ item.name}}</span><br>
-                                                    <span style="font-size: 14px;">con {{ item.staff.name }}</span>
+                                                    <span style="font-size: 18px; font-weight: bold;" class="titulo-clase">{{ item.name}}</span><br>
+                                                    <span style="font-size: 14px;" class="subtitulo-clase">con {{ item.staff.name }}</span>
                                                 </div>
                                                 <p></p>
                                             </v-card-title>
                                         </v-img>
 
-                                        <v-img src="@/assets/img/video_portada/intermedio.jpg" height="300" class=" white--text" v-if="item.id_level === 2">
-                                            <v-card-title>
+                                        <v-img src="@/assets/img/video_portada/intermedio.jpg" class=" white--text clase-img" v-if="item.id_level === 2">
+                                            <v-card-title class="titulo-container">
                                                 <div style="border-left: 4px solid #E30E4F; text-align: left; " class="pl-1">
-                                                    <span style="font-size: 18px; font-weight: bold;">{{ item.name}}</span><br>
-                                                    <span style="font-size: 14px;">con {{ item.staff.name }}</span>
+                                                    <span style="font-size: 18px; font-weight: bold;" class="titulo-clase">{{ item.name}}</span><br>
+                                                    <span style="font-size: 14px;" class="subtitulo-clase">con {{ item.staff.name }}</span>
                                                 </div>
                                                 <p></p>
                                             </v-card-title>
                                         </v-img>
 
-                                        <v-img src="@/assets/img/video_portada/principiantes.jpg" height="300" class=" white--text" v-if="item.id_level === 1">
-                                            <v-card-title>
+                                        <v-img src="@/assets/img/video_portada/principiantes.jpg" class="white--text clase-img" v-if="item.id_level === 1">
+                                            <v-card-title class="titulo-container">
                                                 <div style="border-left: 4px solid #E30E4F; text-align: left; " class="pl-1">
-                                                    <span style="font-size: 18px; font-weight: bold;">{{ item.name}}</span><br>
-                                                    <span style="font-size: 14px;">con {{ item.staff.name }}</span>
+                                                    <span style="font-size: 18px; font-weight: bold;" class="titulo-clase">{{ item.name}}</span><br>
+                                                    <span style="font-size: 14px;" class="subtitulo-clase">con {{ item.staff.name }}</span>
+                                                </div>
+                                                <p></p>
+                                            </v-card-title>
+                                        </v-img>
+
+                                        <v-img src="@/assets/img/video_portada/power-training.jpg"  class="white--text clase-img" v-if="item.name === 'POWER TRAINING'">
+                                            <v-card-title class="titulo-container">
+                                                <div style="border-left: 4px solid #E30E4F; text-align: left; " class="pl-1">
+                                                    <span style="font-size: 18px; font-weight: bold;" class="titulo-clase">{{ item.name}}</span><br>
+                                                    <span style="font-size: 14px;" class="subtitulo-clase">con {{ item.staff.name }}</span>
+                                                </div>
+                                                <p></p>
+                                            </v-card-title>
+                                        </v-img>
+
+                                        <v-img src="@/assets/img/video_portada/yoga.jpg" class="white--text clase-img" v-if="item.name === 'YOGA'">
+                                            <v-card-title class="titulo-container">
+                                                <div style="border-left: 4px solid #E30E4F; text-align: left; " class="pl-1">
+                                                    <span style="font-size: 18px; font-weight: bold;" class="titulo-clase">{{ item.name}}</span><br>
+                                                    <span style="font-size: 14px;" class="subtitulo-clase">con {{ item.staff.name }}</span>
+                                                </div>
+                                                <p></p>
+                                            </v-card-title>
+                                        </v-img>
+
+                                        <v-img src="@/assets/img/video_portada/dance-hiit.jpg" class="white--text clase-img" v-if="item.name === 'DANCE HIT' || item.name === 'DANCE HIIT'">
+                                            <v-card-title class="titulo-container">
+                                                <div style="border-left: 4px solid #E30E4F; text-align: left; " class="pl-1">
+                                                    <span style="font-size: 18px; font-weight: bold;" class="titulo-clase">{{ item.name}}</span><br>
+                                                    <span style="font-size: 14px;" class="subtitulo-clase">con {{ item.staff.name }}</span>
+                                                </div>
+                                                <p></p>
+                                            </v-card-title>
+                                        </v-img>
+
+                                        <v-img src="@/assets/img/video_portada/funcional.jpg" class="white--text clase-img" v-if="item.name === 'FUNCIONAL'">
+                                            <v-card-title class="titulo-container">
+                                                <div style="border-left: 4px solid #E30E4F; text-align: left; " class="pl-1">
+                                                    <span style="font-size: 18px; font-weight: bold;" class="titulo-clase">{{ item.name}}</span><br>
+                                                    <span style="font-size: 14px;" class="subtitulo-clase">con {{ item.staff.name }}</span>
+                                                </div>
+                                                <p></p>
+                                            </v-card-title>
+                                        </v-img>
+
+                                        <v-img src="@/assets/img/video_portada/cardio-hiit.jpg" class="white--text clase-img"
+                                            v-if="item.name === 'CARDIO HIT' || item.name === 'CARDIO HIIT'">
+                                            <v-card-title class="titulo-container">
+                                                <div style="border-left: 4px solid #E30E4F; text-align: left; " class="pl-1">
+                                                    <span style="font-size: 18px; font-weight: bold;" class="titulo-clase">{{ item.name}}</span><br>
+                                                    <span style="font-size: 14px;" class="subtitulo-clase">con {{ item.staff.name }}</span>
+                                                </div>
+                                                <p></p>
+                                            </v-card-title>
+                                        </v-img>
+
+                                        <v-img src="@/assets/img/video_portada/torso.jpg" height="300" class="white--text clase-img"
+                                            v-if="item.name === 'TORSO'">
+                                            <v-card-title class="titulo-container">
+                                                <div style="border-left: 4px solid #E30E4F; text-align: left; " class="pl-1">
+                                                    <span style="font-size: 18px; font-weight: bold;" class="titulo-clase">{{ item.name}}</span><br>
+                                                    <span style="font-size: 14px;" class="subtitulo-clase">con {{ item.staff.name }}</span>
+                                                </div>
+                                                <p></p>
+                                            </v-card-title>
+                                        </v-img>
+
+                                        <v-img src="@/assets/img/video_portada/hipopresivos.jpg" height="300" class="white--text clase-img"
+                                            v-if="item.name === 'HIPOPRESIVOS'">
+                                            <v-card-title class="titulo-container">
+                                                <div style="border-left: 4px solid #E30E4F; text-align: left; " class="pl-1">
+                                                    <span style="font-size: 18px; font-weight: bold;" class="titulo-clase">{{ item.name}}</span><br>
+                                                    <span style="font-size: 14px;" class="subtitulo-clase">con {{ item.staff.name }}</span>
+                                                </div>
+                                                <p></p>
+                                            </v-card-title>
+                                        </v-img>
+
+                                        <v-img src="@/assets/img/video_portada/nutricion.jpg" height="300" class="white--text clase-img"
+                                            v-if="item.name === 'TALLER DE NUTRICIÓN'">
+                                            <v-card-title class="titulo-container">
+                                                <div style="border-left: 4px solid #E30E4F; text-align: left; " class="pl-1">
+                                                    <span style="font-size: 18px; font-weight: bold;" class="titulo-clase">{{ item.name}}</span><br>
+                                                    <span style="font-size: 14px;" class="subtitulo-clase">con {{ item.staff.name }}</span>
                                                 </div>
                                                 <p></p>
                                             </v-card-title>
@@ -315,8 +473,31 @@
                 </v-row>
             </v-container>
 
+            <v-dialog v-model="dialogRating" max-width="500px">
+              <v-card>
+                <v-card-title>Danos tu opinión</v-card-title>
+                <v-card-text>Del 1 al 5, ¿Que tan satisfech@ estás con El Desafío?<br/><br/>
+                    <v-rating
+                        v-model="rating"
+                        background-color="pink lighten-3"
+                        color="pink"
+                        medium
+                    ></v-rating><br/>
+                    Déjanos tu comentario:
+                  <v-text-field label="Comentario" v-model="comentario_rating"></v-text-field>
+                </v-card-text>
+                <v-card-actions>
+                  <v-btn color="error" text @click="dialogRating = false"><v-icon dark small>
+                    mdi-close
+                  </v-icon> Cancelar</v-btn>
+                  <v-btn color="success" text @click="saveRating()"><v-icon dark small>
+                    mdi-send
+                  </v-icon> Enviar</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
 
-            <v-dialog transition="dialog-bottom-transition" max-width="550" v-model="dialog">
+            <v-dialog transition="dialog-bottom-transition" max-width="600" v-model="dialog">
                 <v-card>
                     <v-toolbar color="primary" dark elevation="0">
                         {{currrent_activity.name}}
@@ -416,7 +597,11 @@ import axios from "axios";
             message: '',
             timeout: 3000,
             color: "success"
-        }
+        },
+        show_descarga_plan: false,
+        dialogRating: false,
+        comentario_rating: '',
+        rating: null
     }),
     mounted() {
         moment.locale('es');
@@ -448,6 +633,26 @@ import axios from "axios";
         }
     },
     methods:{
+        showRatingDialog() {
+            this.dialogRating = true;
+        },
+        async saveRating(){
+            try{
+                let rating = {
+                    stars: this.rating,
+                    comentario: this.comentario_rating
+                };
+                const data = await this.$API.rating.saveRating(rating);
+
+
+                    this.dialogRating = false;
+                    this.showToast("Gracias por tus comentarios!", "green");
+                
+            }
+            catch(e){
+                console.error(e);
+            } 
+        },
         async saveAttempts(activity, date, indx){
             try{
                 this.current_date.activities[indx].sessions.push(1);
@@ -474,8 +679,13 @@ import axios from "axios";
                 let fecha_actual = new Date();
                 this.userPlans.map(function (item) {
                     let init_d = new Date(item.init_date);
+                    let end_d = new Date(item.expiration_date);
                     if (init_d > fecha_actual || (Math.ceil((new Date(item.expiration_date).getTime() - init_d.getTime()) / (1000 * 3600 * 24)) >= 15)) {
                         vm.show_alert = false;
+                    }
+
+                    if (fecha_actual.getTime() <= end_d.getTime()) {
+                        vm.show_descarga_plan = true;
                     }
                 });
             } catch (e) {
@@ -536,7 +746,7 @@ import axios from "axios";
             vm.clases_vivo_org = vm.clases_vivo;
 
             if (vm.id_level != null) {
-                vm.clases_grabadas = vm.clases_grabadas_org.filter((element) => ((element.id_level == vm.id_level || element.id_level == "4") && element.link_video == null));
+                vm.clases_grabadas = vm.clases_grabadas_org.filter((element) => ((element.id_level == vm.id_level || element.id_level == "4") && element.link_video != null));
 
                 vm.clases_vivo = vm.clases_vivo_org.filter((element) => ((element.id_level == vm.id_level || element.id_level == "4") && element.link_video == null));
             }

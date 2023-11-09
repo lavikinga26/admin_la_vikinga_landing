@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="container-fluid bg_blue pt-3 pb-5">
+        <div class="container-fluid bg_blue pt-3 pb-5" v-if="data_reg.length>0">
             <div class="mt-4">
                 <div class="col-md-12 text-center">
                     <p class="tit_h1_pink text_entrena">MARCAS ALIADAS</p>

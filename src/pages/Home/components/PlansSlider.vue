@@ -56,12 +56,12 @@
                     <v-card-actions class="card-actions">
                         <v-row align="center">
                             <v-col cols="12" align="center" class="py-0">
-                                <span class="price_carousel text-center" style="font-family: 'MachProCondBold' !important;">
+                                <span class="price_carousel text-center" style="font-family: 'MachProCondBold'!important;">
                                     S/. {{item.cost}}
                                 </span>  
                             </v-col>
                             <v-col cols="12" align="center">
-                                <v-btn color="secondary"
+                                <!--<v-btn color="secondary"
                                     v-if="(data_config.allow_sale && item.allow_sale)"
                                     :href="'/plan/'+item.identifier"
                                     depressed
@@ -92,6 +92,20 @@
                                     large
                                     class="px-2">
                                     <span class="ma-3">COMPRAR AHORA</span>
+                                </v-btn>-->
+                                <v-btn class="my-2 fb-btn" color="secondary" outlined @click="addToCart(item)"
+                                    v-if="(data_config.allow_sale && item.allow_sale)">
+                                    INICIAR DESAFÍO
+                                </v-btn>
+                                <v-btn class="my-2 fb-btn" color="secondary" outlined @click="addToCart(item)"
+                                    v-if="(!data_config.allow_sale && item.allow_sale)">
+                                    INICIAR DESAFÍO
+                                </v-btn>
+                                <v-btn class="my-2 fb-not-spaces" color="white" outlined v-if="(!data_config.allow_sale && !item.allow_sale)">
+                                    AGOTADO
+                                </v-btn>
+                                <v-btn class="my-2 fb-not-spaces" color="white" outlined v-if="(data_config.allow_sale && !item.allow_sale)">
+                                    AGOTADO
                                 </v-btn>
                             </v-col>
                         </v-row>
@@ -157,6 +171,26 @@
                 console.error(e);
                 vm.$store.commit('loader',false);
             }
+        },
+        addToCart(itemv) {
+            console.log(itemv);
+            this.$store.commit('loader', true);
+            let item = {
+                id: itemv.id,
+                title: itemv.title,
+                code: itemv.code,
+                image: itemv.base_url + itemv.file_path.path + itemv.file_path.filename,
+                price: Number(itemv.cost),
+                quantity: 1,
+                priceCompare: Number(itemv.cost),
+                priceTotal: Number(itemv.cost),
+                currency: itemv.currency.symbol,
+                renovacion: itemv.renovacion_automatica,
+                category_id: itemv.category_id
+            }
+            this.$store.dispatch("addItem", item);
+            this.$store.commit('loader', false);
+            this.$router.push({ path: '/carrito#pago' })
         }
     },
 }

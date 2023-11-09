@@ -95,7 +95,7 @@
       <v-list>
         <v-list-item class="d-flex justify-center" v-if="!isLogged">
           <v-btn color="secondary" small class="px-2 rounded-pill" style="width: 100%" link to="/auth/iniciar-sesion">
-            <span class="ma-3">INCIAR SESIÓN</span>
+            <span class="ma-3">INICIAR SESIÓN</span>
             <v-icon>mdi-login</v-icon>
           </v-btn>
         </v-list-item>
@@ -125,7 +125,7 @@
               class="px-1" small>
               <span >{{ item.name }}</span>
             </v-btn>
-            <v-btn text :to="item.slug" v-else small :key="i" medium class="px-1">
+            <v-btn text :to="item.slug" v-else small :key="i" small class="">
               <span >{{ item.name }}</span>
             </v-btn>
             <span v-if="i < items.length - 1" style="color: #0b233f; font-size: 0.9rem" v-bind:key="i + 100">
@@ -141,7 +141,7 @@
         <div>
           <v-btn color="secondary" v-if="!isLogged" depressed small class="px-2 rounded-pill" link
             to="/auth/iniciar-sesion">
-            <span class="ma-3">INCIAR SESIÓN</span>
+            <span class="ma-3">INICIAR SESIÓN</span>
           </v-btn>
           <v-btn color="secondary" v-if="isLogged" depressed small class="px-2 rounded-pill" link
             to="/gym-virtual/agenda">
