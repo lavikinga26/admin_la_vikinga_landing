@@ -1,550 +1,131 @@
 <template>
     <div>
-        <v-toolbar color="primary" dark class="mb-1">
-            <v-toolbar-title class="tit_h2_pink d-none d-sm-flex" style="font-size: 3.0rem; color: white">GYM VIRTUAL</v-toolbar-title>
-            <v-spacer></v-spacer>
-        
-            <span style="width: 250px;"><v-select :items="levels" v-model="id_level" label="Nivel" item-text="level"
-                placeholder="Seleciona" item-value="id_level" v-on:change="filterByLevel()" class="mt-8" outlined></v-select></span>
-            <span style="color: #fff; font-size: 0.9rem;"> | </span>
-        
-            <v-btn v-if="show_descarga_plan" text small link @click="descargarPlan()">
-                <v-icon color="#FFFFFF">mdi-download</v-icon> DESCARGAR PLAN
-            </v-btn>
-        </v-toolbar>
         <v-container>
-            <v-col cols="12">
-                <div>
-                    <v-btn @click="showRatingDialog()" medium class="mx-2 float-left" color="secondary">
-                        <v-icon dark small>
-                            mdi-star
-                        </v-icon> Danos tu opinión
-                    </v-btn>
-                </div>
-            </v-col>
-            <div v-for="(n, index) in userPlans" :key="'plan_alert_'+index" class="text-left my-3">
-                <v-alert border="top"
-                    v-if="show_alert && new Date(n.expiration_date) > actual_date && (Math.ceil((new Date(n.expiration_date).getTime() - actual_date.getTime()) / (1000 * 3600 * 24)) <= 15)"
-                    type="error" colored-border color="pink accent-4" elevation="2">
-                    Recuerda que la membresía de tu plan <b>{{n.name}}</b> vence el <b>{{ n.expiration_date | formatDate
-                    }}</b>. Renueva tu plan haciendo <a :href="'/inscripciones'"
-                        style="text-decoration: none;"><b>CLICK AQUÍ</b>.</a>
-                </v-alert>
-            </div>
+            <v-row>
+                <v-col xs="12" sm="12" md="6" lg="6">
+                    <h2 class="text_box_title">Próxima Clase</h2>
+                    <v-card :img="require('../../../assets/img/gym_virtual/torso_intermedio.png')" height="300" class="box_gym_virtual" >
+                        <v-badge
+                        color="#E7004C"
+                        content="Mi, 17 - 2pm"
+                        inline
+                        class="badge_pink"
+                        ></v-badge>
+                        <h1 class="text_box_gym align-center justify-center">Torso Intermedio</h1>
+                    </v-card>
 
-            <div v-if="id_level==null" key="popup_level" class="text-left my-3">
-                <v-alert border="top" type="info" colored-border color="pink accent-4" elevation="2">
-                    Selecciona tu nivel en la parte superior. Adaptaremos los entrenamientos según tu nivel de entrenamiento.
-                </v-alert>
-            </div>
+                    <h2 class="text_box_title mt-4">Rutinas</h2>
+                    <v-card height="200" class="box_gym_virtual" color="#0A2240">
+                        <v-card height="60" class="box_rutina" color="#E7004C">
+                            <h4 class="font_rutina pt-2 pl-1">RUTINA PARA EL GIMNASIO</h4>
+                            <v-btn class="white_btn" prepend-icon="save">Descargar <v-icon size="small">mdi-file-download-outline</v-icon></v-btn>
+                        </v-card>
+                    </v-card>
 
-            <div class="text-center pt-5">
-                <v-sheet class="mx-auto" max-width="240">
-                    <v-slide-group show-arrows v-model="model2" center-active
-                        @click:next="model2=model2+1; current_month=planMonths[model2]; model=null;"
-                        @click:prev="model2=model2-1; current_month=planMonths[model2]; model=null;">
-                        <v-slide-item v-for="(n, index) in planMonths" :key="'month_'+index" v-slot="{ toggle }">
-                            <v-btn max-width="120" min-width="120" class="mx-2"
-                                :input-value="current_month._month+'-'+current_month._year == n._month+'-'+n._year"
-                                active-class="secondary white--text" depressed rounded @click="toggle; current_month=n">
-                                {{ months[n._month - 1] }}
-                            </v-btn>
-                        </v-slide-item>
-                    </v-slide-group>
-                </v-sheet>
-            </div>
-            <br>
+                    <h2 class="text_box_title mt-4">ÚLTIMAS CLASES GRABADAS</h2>
+                    <v-card height="680" class="box_gym_virtual" color="#0A2240">
+                        <v-row class="pa-3">
+                            <v-col cols="12" md="12" sm="12" xs="12">
+                                <v-card height="400" class="box_rutina" color="#E7004C" :img="require('../../../assets/img/gym_virtual/video.png')"></v-card>
+                            </v-col>
+                        </v-row>
+                        <v-row class="pa-2">
+                            <v-col cols="4" md="4" sm="12" xs="12">
+                                <v-card height="200" class="box_rutina" color="#E7004C" :img="require('../../../assets/img/gym_virtual/video2.png')"></v-card>
+                            </v-col>
+                            <v-col cols="4" md="4" sm="12" xs="12">
+                                <v-card height="200" class="box_rutina" color="#E7004C" :img="require('../../../assets/img/gym_virtual/video3.png')"></v-card>
+                            </v-col>
+                            <v-col cols="4" md="4" sm="12" xs="12">
+                                <v-card height="200" class="box_rutina" color="#E7004C" :img="require('../../../assets/img/gym_virtual/video4.png')"></v-card>
+                            </v-col>
 
-            <div class="text-center py-5">
-                <v-sheet class="mx-auto" max-width="1000">
-                    <v-slide-group center-active show-arrows v-model="model">
-                        <v-slide-item v-for="(n,index) in planSectionsFilter()" :key="'class_day_'+index"
-                            v-slot="{ toggle }">
-                            <!--; getActivities(index)-->
-                            <v-btn max-width="120" min-width="120" class="mx-3" :input-value="index==model"
-                                active-class="primary white--text" depressed rounded @click="getActivities(index, n)">
-                                {{ n.dias_avb }}
-                            </v-btn>
-                        </v-slide-item>
-                    </v-slide-group>
-                </v-sheet>
-            </div>
-        </v-container>
-        <div class="grey lighten-3" style="min-height:70vh;">
-            <v-container>
-                <v-row>
-                    <v-col v-if="current_date.activities.length==0">
-                        <v-container style="min-height:70vh;" class="d-flex align-center">
-                            <div style="text-align: center; width: 100%" class="pa-10">
-                                <img style="width: 180px;" src="@/assets/img/logo_vikinga_icon.png" alt="Logo" />
-                                <p class="tit_h1_staff_pink text_entrena txt_uppercase mb-6" style="font-size: 2rem">
-                                    SIN ACTIVIDADES
-                                </p>
-                            </div>
-                        </v-container>
-                    </v-col>
-                    <v-col cols="12" align="center">
-                        <div class="text-center pa-3 px-10 activity-class" >
-                            <b style="color:white;">CLASES EN VIVO</b>
-                        </div>
-                        <div v-for="(activity, i) in clases_vivo" :key="'col_activity_'+i">
-                            <v-card color="grey lighten-5" class="my-3 mx-4" elevation="3" min-height="250"
-                                max-width="1000" :key="'activity_'+i" v-if="activity.link_video == null">
-                                <!--<div class="text-left pa-3 px-10 d-flex" v-bind:class="{ 
-                                    'activity-class': activity.type=='class' || activity.type=='masterclass', 
-                                    'activity-taller': activity.type=='taller', 
-                                    'activity-descanso': activity.type=='descanso', 
-                                    'activity-nutrition': activity.type=='nutricion', 
-                                    'white--text': activity.type!='descanso' ,
-                                    'black--text': activity.type=='descanso' 
-                                }">
-                                    <b>{{activity.name}}</b>
-                                    <v-spacer></v-spacer>
-                                    <div
-                                        v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)">
-                                        <v-icon color="#FFFFFF">mdi-access-point</v-icon>
-                                        &nbsp;&nbsp;
-                                        <b>En vivo</b>
-                                    </div>
+                        </v-row>
+                    </v-card>
+                </v-col>
+                <v-col xs="12" sm="12" md="6" lg="6">
+                    <h2 class="text_box_title">Próximas Clases en vivo</h2>
+                    <v-card height="300" class="box_gym_virtual" color="#0A2240">
+                        <v-row class="pa-3">
+                            <v-col cols="4" md="4" sm="12" xs="12">
+                                <v-card height="270" class="box_gym_virtual" :img="require('../../../assets/img/gym_virtual/desafio1.png')" color="#0A2240">
+                                    <v-badge
+                                    color="#E7004C"
+                                    content="Mi, 17 - 2pm"
+                                    inline
+                                    class="badge_pink"
+                                    ></v-badge>
+                                    <h4 class="font_box_prox_clase card_text_bottom">Torso Intermedio</h4>
+                                </v-card>
+                            </v-col>
+                            <v-col cols="4" md="4" sm="12" xs="12">
+                                <v-card height="270" class="box_gym_virtual" :img="require('../../../assets/img/gym_virtual/desafio2.png')" color="#0A2240">
+                                    <v-badge
+                                    color="#E7004C"
+                                    content="Mi, 17 - 2pm"
+                                    inline
+                                    class="badge_pink"
+                                    ></v-badge>
+                                    <h4 class="font_box_prox_clase card_text_bottom">Torso Intermedio</h4>
+                                </v-card>
+                            </v-col>
+                            <v-col cols="4" md="4" sm="12" xs="12">
+                                <v-card height="270" class="box_gym_virtual" :img="require('../../../assets/img/gym_virtual/desafio3.png')" color="#0A2240">
+                                    <v-badge
+                                    color="#E7004C"
+                                    content="Mi, 17 - 2pm"
+                                    inline
+                                    class="badge_pink"
+                                    ></v-badge>
+                                    <h4 class="font_box_prox_clase card_text_bottom">Torso Intermedio</h4>
+                                </v-card>
+                            </v-col>
+                        </v-row>
+                    </v-card>
 
-                                </div>-->
-                                <v-card-text>
-                                    <v-row height="250">
-                                        <v-col cols="12" md="4" class="pa-4" align-items="center" v-if="activity.id_level===3">
-                                                <v-img src="@/assets/img/video_portada/avanzados.jpg" height="180px" width="270" class="ma-auto">
-                                                <v-row class="fill-height ma-0" align="center" justify="center">
-                                                    <v-btn
-                                                        v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)"
-                                                        :href="activity.link_class" target="_blank" icon
-                                                        class="white--text">
-                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
-                                                            mdi-access-point</v-icon>
-                                                    </v-btn>
-                                                    <v-btn v-if="activity.link_video" icon class="white--text"
-                                                        @click="getVideoActivity(activity)">
-                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
-                                                            mdi-motion-play-outline</v-icon>
-                                                    </v-btn>
-                                                </v-row>
-                                            </v-img>
+                    <h2 class="text_box_title mt-4">Registro de Pesos</h2>
+                    <v-card height="300" class="box_gym_virtual" color="#0A2240">
+                        <v-row class="pa-3">
+                            <v-col cols="12">
+                                <v-card height="270" class="box_gym_virtual" color="#0A2240">
+                                    <v-row class="pa-2">
+                                        <v-col cols="12">
+                                            <h4 class="text_title_registro_pesos">Ejercicio</h4>
+                                            <v-select
+                                                :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                                                variant="outlined"
+                                            ></v-select>
                                         </v-col>
-                                        <v-col cols="12" md="4" class="pa-4" align-items="center" v-if="activity.id_level===2">
-                                            <v-img src="@/assets/img/video_portada/intermedio.jpg" height="180px" width="270" class="ma-auto">
-                                                <v-row class="fill-height ma-0" align="center" justify="center">
-                                                    <v-btn v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)"
-                                                        :href="activity.link_class" target="_blank" icon class="white--text">
-                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
-                                                            mdi-access-point</v-icon>
-                                                    </v-btn>
-                                                    <v-btn v-if="activity.link_video" icon class="white--text" @click="getVideoActivity(activity)">
-                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
-                                                            mdi-motion-play-outline</v-icon>
-                                                    </v-btn>
-                                                </v-row>
-                                            </v-img>
-                                        </v-col>
-                                        <v-col cols="12" md="4" class="pa-4" align-items="center" v-if="activity.id_level===1">
-                                            <v-img src="@/assets/img/video_portada/principiantes.jpg" height="180px" width="270" class="ma-auto">
-                                                <v-row class="fill-height ma-0" align="center" justify="center">
-                                                    <v-btn v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)"
-                                                        :href="activity.link_class" target="_blank" icon class="white--text">
-                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
-                                                            mdi-access-point</v-icon>
-                                                    </v-btn>
-                                                    <v-btn v-if="activity.link_video" icon class="white--text" @click="getVideoActivity(activity)">
-                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
-                                                            mdi-motion-play-outline</v-icon>
-                                                    </v-btn>
-                                                </v-row>
-                                            </v-img>
-                                        </v-col>
-                                        <v-col cols="12" md="4" class="pa-4" align-items="center" v-if="activity.name==='POWER TRAINING'">
-                                            <v-img src="@/assets/img/video_portada/power-training.jpg" height="180px" width="270" class="ma-auto">
-                                                <v-row class="fill-height ma-0" align="center" justify="center">
-                                                    <v-btn v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)"
-                                                        :href="activity.link_class" target="_blank" icon class="white--text">
-                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
-                                                            mdi-access-point</v-icon>
-                                                    </v-btn>
-                                                    <v-btn v-if="activity.link_video" icon class="white--text" @click="getVideoActivity(activity)">
-                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
-                                                            mdi-motion-play-outline</v-icon>
-                                                    </v-btn>
-                                                </v-row>
-                                            </v-img>
-                                        </v-col>
-                                        <v-col cols="12" md="4" class="pa-4" align-items="center" v-if="activity.name==='YOGA'">
-                                            <v-img src="@/assets/img/video_portada/yoga.jpg" height="180px" width="270" class="ma-auto">
-                                                <v-row class="fill-height ma-0" align="center" justify="center">
-                                                    <v-btn v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)"
-                                                        :href="activity.link_class" target="_blank" icon class="white--text">
-                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
-                                                            mdi-access-point</v-icon>
-                                                    </v-btn>
-                                                    <v-btn v-if="activity.link_video" icon class="white--text" @click="getVideoActivity(activity)">
-                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
-                                                            mdi-motion-play-outline</v-icon>
-                                                    </v-btn>
-                                                </v-row>
-                                            </v-img>
-                                        </v-col>
-                                        <v-col cols="12" md="4" class="pa-4" align-items="center" v-if="activity.name ==='DANCE HIT' || activity.name ==='DANCE HIIT'">
-                                            <v-img src="@/assets/img/video_portada/dance-hiit.jpg" height="180px" width="270" class="ma-auto">
-                                                <v-row class="fill-height ma-0" align="center" justify="center">
-                                                    <v-btn v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)"
-                                                        :href="activity.link_class" target="_blank" icon class="white--text">
-                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
-                                                            mdi-access-point</v-icon>
-                                                    </v-btn>
-                                                    <v-btn v-if="activity.link_video" icon class="white--text" @click="getVideoActivity(activity)">
-                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
-                                                            mdi-motion-play-outline</v-icon>
-                                                    </v-btn>
-                                                </v-row>
-                                            </v-img>
-                                        </v-col>
-                                        <v-col cols="12" md="4" class="pa-4" align-items="center" v-if="activity.name ==='FUNCIONAL'">
-                                            <v-img src="@/assets/img/video_portada/funcional.jpg" height="180px" width="270" class="ma-auto">
-                                                <v-row class="fill-height ma-0" align="center" justify="center">
-                                                    <v-btn v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)"
-                                                        :href="activity.link_class" target="_blank" icon class="white--text">
-                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
-                                                            mdi-access-point</v-icon>
-                                                    </v-btn>
-                                                    <v-btn v-if="activity.link_video" icon class="white--text" @click="getVideoActivity(activity)">
-                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
-                                                            mdi-motion-play-outline</v-icon>
-                                                    </v-btn>
-                                                </v-row>
-                                            </v-img>
-                                        </v-col>
-                                        <v-col cols="12" md="4" class="pa-4" align-items="center" v-if="activity.name ==='CARDIO HIT' || activity.name ==='CARDIO HIIT'">
-                                            <v-img src="@/assets/img/video_portada/cardio-hiit.jpg" height="180px" width="270" class="ma-auto">
-                                                <v-row class="fill-height ma-0" align="center" justify="center">
-                                                    <v-btn v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)"
-                                                        :href="activity.link_class" target="_blank" icon class="white--text">
-                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
-                                                            mdi-access-point</v-icon>
-                                                    </v-btn>
-                                                    <v-btn v-if="activity.link_video" icon class="white--text" @click="getVideoActivity(activity)">
-                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
-                                                            mdi-motion-play-outline</v-icon>
-                                                    </v-btn>
-                                                </v-row>
-                                            </v-img>
-                                        </v-col>
-                                        <v-col cols="12" md="4" class="pa-4" align-items="center" v-if="activity.name ==='TORSO'">
-                                            <v-img src="@/assets/img/video_portada/torso.jpg" height="180px" width="270" class="ma-auto">
-                                                <v-row class="fill-height ma-0" align="center" justify="center">
-                                                    <v-btn v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)"
-                                                        :href="activity.link_class" target="_blank" icon class="white--text">
-                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
-                                                            mdi-access-point</v-icon>
-                                                    </v-btn>
-                                                    <v-btn v-if="activity.link_video" icon class="white--text" @click="getVideoActivity(activity)">
-                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
-                                                            mdi-motion-play-outline</v-icon>
-                                                    </v-btn>
-                                                </v-row>
-                                            </v-img>
-                                        </v-col>
-                                        <v-col cols="12" md="4" class="pa-4" align-items="center" v-if="activity.name ==='HIPOPRESIVOS'">
-                                            <v-img src="@/assets/img/video_portada/hipopresivos.jpg" height="180px" width="270" class="ma-auto">
-                                                <v-row class="fill-height ma-0" align="center" justify="center">
-                                                    <v-btn v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)"
-                                                        :href="activity.link_class" target="_blank" icon class="white--text">
-                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
-                                                            mdi-access-point</v-icon>
-                                                    </v-btn>
-                                                    <v-btn v-if="activity.link_video" icon class="white--text" @click="getVideoActivity(activity)">
-                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
-                                                            mdi-motion-play-outline</v-icon>
-                                                    </v-btn>
-                                                </v-row>
-                                            </v-img>
-                                        </v-col>
-                                        <v-col cols="12" md="4" class="pa-4" align-items="center" v-if="activity.name ==='TALLER DE NUTRICIÓN'">
-                                            <v-img src="@/assets/img/video_portada/nutricion.jpg" height="180px" width="270" class="ma-auto">
-                                                <v-row class="fill-height ma-0" align="center" justify="center">
-                                                    <v-btn v-if="!activity.link_video && activity.link_class && isOnlive(current_date.dat, activity.hour_class)"
-                                                        :href="activity.link_class" target="_blank" icon class="white--text">
-                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
-                                                            mdi-access-point</v-icon>
-                                                    </v-btn>
-                                                    <v-btn v-if="activity.link_video" icon class="white--text" @click="getVideoActivity(activity)">
-                                                        <v-icon style="font-size: 50px" class="white--text" color="#FFFFFF">
-                                                            mdi-motion-play-outline</v-icon>
-                                                    </v-btn>
-                                                </v-row>
-                                            </v-img>
-                                        </v-col>
-                                        <v-col cols="12" md="7" class="text-left align-center d-flex">
-                                            <v-container>
-                                                <v-row class="my-3">
-                                                    <v-col cols="12" md="4">
-                                                        <h3>{{activity.name}}</h3>
-                                                        <div>HORA: {{current_date.dat + ' ' +activity.hour_class | formatTime}}
-                                                        </div>
-                                                    </v-col>
-                                                    <v-col cols="12" md="4">
-                                                        <h5>PROFESOR:</h5>
-                                                        <div>{{activity.staff.name}}</div>
-                                                    </v-col>
-                                                    <v-col cols="12" md="4">
-                                                        <h5>NIVEL:</h5>
-                                                        <div>{{activity.level.level}}</div>
-                                                    </v-col>
-                                                </v-row>
-                                                
-                                                <v-row class="my-3">
-                                                    <v-col cols="12" md="4">
-                                                        <h5>TIEMPO:</h5>
-                                                        <div>1:00 HR APROX.</div>
-                                                    </v-col>
-                                                    <v-col cols="12" md="4">
-                                                        <h5>ENFOQUE:</h5>
-                                                        <div>{{activity.focus}}</div>
-                                                    </v-col>
-                                                    <v-col cols="12" md="4">
-                                                        <h5>MATERIAL:</h5>
-                                                        <div>{{activity.material}}</div>
-                                                    </v-col>
-                                                </v-row>
-                                                <v-btn tile color="secondary" class="rounded" dark
-                                                    :href="activity.link_class" target="_blank"
-                                                    v-if="!activity.link_video && activity.link_class">
-                                                    <v-icon left>
-                                                        mdi-access-point
-                                                    </v-icon>
-                                                    Ingresar
-                                                </v-btn>
-                                                <!--<p style="font-size: 0.7rem"
-                                                    v-if="!activity.link_video && activity.link_class && !isOnlive(current_date.dat, activity.hour_class)"
-                                                >
-                                                    * Clase en vivo finalizada, en momentos podras ver el video.
-                                                </p>-->
-                                            </v-container>
-                                        </v-col>
-                                        <v-col cols="12" md="1" class="text-center align-center justify-center d-flex">
-                                            <v-icon color="secondary" @click="saveAttempts(activity, current_date.dat, i); "
-                                                v-if="activity.sessions.length==0">
-                                                mdi-heart-outline
-                                            </v-icon>
-                                            <v-icon color="secondary" v-else>
-                                                mdi-heart
-                                            </v-icon>
-                                        </v-col>
-
                                     </v-row>
-                                </v-card-text>
-                            </v-card>
-                        </div>
-                        <div class="text-center pa-3 px-10 activity-class" >
-                            <b style="color:white;">CLASES GRABADAS</b>
-                        </div>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col cols="12">
-                        <v-sheet class="mx-auto" elevation="8" max-width="1920">
-                            <v-slide-group v-model="carousel" active-class="success" class="py-6 px-2" show-arrows>
-                                <v-slide-item v-for="(item, index) in clases_grabadas" :key="index" v-slot="{ active, toggle }">
-                                    <v-card color="primary" class="card-outter mr-4 card-clase" @click="getVideoActivity(item);" >
-                                        <v-img src="@/assets/img/video_portada/avanzados.jpg"
-                                            class=" white--text clase-img" v-if="item.id_level === 3">
-                                            <v-card-title class="titulo-container">
-                                                <div style="border-left: 4px solid #E30E4F; text-align: left; " class="pl-1">
-                                                    <span style="font-size: 18px; font-weight: bold;" class="titulo-clase">{{ item.name}}</span><br>
-                                                    <span style="font-size: 14px;" class="subtitulo-clase">con {{ item.staff.name }}</span>
-                                                </div>
-                                                <p></p>
-                                            </v-card-title>
-                                        </v-img>
-
-                                        <v-img src="@/assets/img/video_portada/intermedio.jpg" class=" white--text clase-img" v-if="item.id_level === 2">
-                                            <v-card-title class="titulo-container">
-                                                <div style="border-left: 4px solid #E30E4F; text-align: left; " class="pl-1">
-                                                    <span style="font-size: 18px; font-weight: bold;" class="titulo-clase">{{ item.name}}</span><br>
-                                                    <span style="font-size: 14px;" class="subtitulo-clase">con {{ item.staff.name }}</span>
-                                                </div>
-                                                <p></p>
-                                            </v-card-title>
-                                        </v-img>
-
-                                        <v-img src="@/assets/img/video_portada/principiantes.jpg" class="white--text clase-img" v-if="item.id_level === 1">
-                                            <v-card-title class="titulo-container">
-                                                <div style="border-left: 4px solid #E30E4F; text-align: left; " class="pl-1">
-                                                    <span style="font-size: 18px; font-weight: bold;" class="titulo-clase">{{ item.name}}</span><br>
-                                                    <span style="font-size: 14px;" class="subtitulo-clase">con {{ item.staff.name }}</span>
-                                                </div>
-                                                <p></p>
-                                            </v-card-title>
-                                        </v-img>
-
-                                        <v-img src="@/assets/img/video_portada/power-training.jpg"  class="white--text clase-img" v-if="item.name === 'POWER TRAINING'">
-                                            <v-card-title class="titulo-container">
-                                                <div style="border-left: 4px solid #E30E4F; text-align: left; " class="pl-1">
-                                                    <span style="font-size: 18px; font-weight: bold;" class="titulo-clase">{{ item.name}}</span><br>
-                                                    <span style="font-size: 14px;" class="subtitulo-clase">con {{ item.staff.name }}</span>
-                                                </div>
-                                                <p></p>
-                                            </v-card-title>
-                                        </v-img>
-
-                                        <v-img src="@/assets/img/video_portada/yoga.jpg" class="white--text clase-img" v-if="item.name === 'YOGA'">
-                                            <v-card-title class="titulo-container">
-                                                <div style="border-left: 4px solid #E30E4F; text-align: left; " class="pl-1">
-                                                    <span style="font-size: 18px; font-weight: bold;" class="titulo-clase">{{ item.name}}</span><br>
-                                                    <span style="font-size: 14px;" class="subtitulo-clase">con {{ item.staff.name }}</span>
-                                                </div>
-                                                <p></p>
-                                            </v-card-title>
-                                        </v-img>
-
-                                        <v-img src="@/assets/img/video_portada/dance-hiit.jpg" class="white--text clase-img" v-if="item.name === 'DANCE HIT' || item.name === 'DANCE HIIT'">
-                                            <v-card-title class="titulo-container">
-                                                <div style="border-left: 4px solid #E30E4F; text-align: left; " class="pl-1">
-                                                    <span style="font-size: 18px; font-weight: bold;" class="titulo-clase">{{ item.name}}</span><br>
-                                                    <span style="font-size: 14px;" class="subtitulo-clase">con {{ item.staff.name }}</span>
-                                                </div>
-                                                <p></p>
-                                            </v-card-title>
-                                        </v-img>
-
-                                        <v-img src="@/assets/img/video_portada/funcional.jpg" class="white--text clase-img" v-if="item.name === 'FUNCIONAL'">
-                                            <v-card-title class="titulo-container">
-                                                <div style="border-left: 4px solid #E30E4F; text-align: left; " class="pl-1">
-                                                    <span style="font-size: 18px; font-weight: bold;" class="titulo-clase">{{ item.name}}</span><br>
-                                                    <span style="font-size: 14px;" class="subtitulo-clase">con {{ item.staff.name }}</span>
-                                                </div>
-                                                <p></p>
-                                            </v-card-title>
-                                        </v-img>
-
-                                        <v-img src="@/assets/img/video_portada/cardio-hiit.jpg" class="white--text clase-img"
-                                            v-if="item.name === 'CARDIO HIT' || item.name === 'CARDIO HIIT'">
-                                            <v-card-title class="titulo-container">
-                                                <div style="border-left: 4px solid #E30E4F; text-align: left; " class="pl-1">
-                                                    <span style="font-size: 18px; font-weight: bold;" class="titulo-clase">{{ item.name}}</span><br>
-                                                    <span style="font-size: 14px;" class="subtitulo-clase">con {{ item.staff.name }}</span>
-                                                </div>
-                                                <p></p>
-                                            </v-card-title>
-                                        </v-img>
-
-                                        <v-img src="@/assets/img/video_portada/torso.jpg" height="300" class="white--text clase-img"
-                                            v-if="item.name === 'TORSO'">
-                                            <v-card-title class="titulo-container">
-                                                <div style="border-left: 4px solid #E30E4F; text-align: left; " class="pl-1">
-                                                    <span style="font-size: 18px; font-weight: bold;" class="titulo-clase">{{ item.name}}</span><br>
-                                                    <span style="font-size: 14px;" class="subtitulo-clase">con {{ item.staff.name }}</span>
-                                                </div>
-                                                <p></p>
-                                            </v-card-title>
-                                        </v-img>
-
-                                        <v-img src="@/assets/img/video_portada/hipopresivos.jpg" height="300" class="white--text clase-img"
-                                            v-if="item.name === 'HIPOPRESIVOS'">
-                                            <v-card-title class="titulo-container">
-                                                <div style="border-left: 4px solid #E30E4F; text-align: left; " class="pl-1">
-                                                    <span style="font-size: 18px; font-weight: bold;" class="titulo-clase">{{ item.name}}</span><br>
-                                                    <span style="font-size: 14px;" class="subtitulo-clase">con {{ item.staff.name }}</span>
-                                                </div>
-                                                <p></p>
-                                            </v-card-title>
-                                        </v-img>
-
-                                        <v-img src="@/assets/img/video_portada/nutricion.jpg" height="300" class="white--text clase-img"
-                                            v-if="item.name === 'TALLER DE NUTRICIÓN'">
-                                            <v-card-title class="titulo-container">
-                                                <div style="border-left: 4px solid #E30E4F; text-align: left; " class="pl-1">
-                                                    <span style="font-size: 18px; font-weight: bold;" class="titulo-clase">{{ item.name}}</span><br>
-                                                    <span style="font-size: 14px;" class="subtitulo-clase">con {{ item.staff.name }}</span>
-                                                </div>
-                                                <p></p>
-                                            </v-card-title>
-                                        </v-img>
-                                    </v-card>
-                                    
-                                </v-slide-item>
-                            </v-slide-group>
-                        </v-sheet>
-                    </v-col>
-                </v-row>
-            </v-container>
-
-            <v-dialog v-model="dialogRating" max-width="500px">
-              <v-card>
-                <v-card-title>Danos tu opinión</v-card-title>
-                <v-card-text>Del 1 al 5, ¿Que tan satisfech@ estás con El Desafío?<br/><br/>
-                    <v-rating
-                        v-model="rating"
-                        background-color="pink lighten-3"
-                        color="pink"
-                        medium
-                    ></v-rating><br/>
-                    Déjanos tu comentario:
-                  <v-text-field label="Comentario" v-model="comentario_rating"></v-text-field>
-                </v-card-text>
-                <v-card-actions>
-                  <v-btn color="error" text @click="dialogRating = false"><v-icon dark small>
-                    mdi-close
-                  </v-icon> Cancelar</v-btn>
-                  <v-btn color="success" text @click="saveRating()"><v-icon dark small>
-                    mdi-send
-                  </v-icon> Enviar</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-
-            <v-dialog transition="dialog-bottom-transition" max-width="600" v-model="dialog">
-                <v-card>
-                    <v-toolbar color="primary" dark elevation="0">
-                        {{currrent_activity.name}}
-                    </v-toolbar>
-                    <v-card-text class="text-center d-flex align-center pt-10 justify-center" v-if="dialog">
-                        <!--<div v-html="currrent_activity.iframe"></div>-->
-                        <iframe :src="currrent_activity.iframe" width="640" height="328" frameborder="0"
-                            allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-                    </v-card-text>
-                    <div class="py-0">
-                        <v-container class="mx-6">
-                            <v-row>
-                                <v-col cols="6" md="4">
-                                    <h6>TIEMPO:</h6>
-                                    <div style="font-size: 0.8rem">1:00 HR APROX.</div>
-                                </v-col>
-                                <v-col cols="6" md="4">
-                                    <h6>ENFOQUE:</h6>
-                                    <div style="font-size: 0.8rem">{{currrent_activity.focus}}</div>
-                                </v-col>
-                                <v-col cols="6" md="4">
-                                    <h6>MATERIAL:</h6>
-                                    <div style="font-size: 0.8rem">{{currrent_activity.material}}</div>
-                                </v-col>
-                            </v-row>
-                        </v-container>
-                    </div>
-                    <v-card-actions class="justify-end">
-                        <v-btn text @click="dialog  = false">Cerrar</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
-            
-        </div>
-        <v-snackbar v-model="toast.toast" :timeout="toast.timeout" :color="toast.color" dark>
+                                    <v-row class="pa-2">
+                                        <v-col cols="6">
+                                            <h4 class="text_title_registro_pesos">Peso (KG)</h4>
+                                            <v-text-field variant="outlined"></v-text-field>
+                                        </v-col>
+                                        <v-col cols="6">
+                                            <h4 class="text_title_registro_pesos">Fecha</h4>
+                                            <v-text-field variant="outlined"></v-text-field>
+                                        </v-col>
+                                    </v-row>
+                                </v-card>
+                            </v-col>
+                        </v-row>
+                    </v-card>
+                </v-col>
+            </v-row>
+        </v-container>
+        <v-snackbar v-model=" toast.toast " :timeout=" toast.timeout " :color=" toast.color " dark>
             {{ toast.message }}
         </v-snackbar>
     </div>
-    
 </template>
 
 <script>
 import moment from 'moment-timezone'
 import axios from "axios";
 
-  export default {
-    components: { 
+export default {
+    components: {
         axios
     },
     data: () => ({
@@ -553,34 +134,34 @@ import axios from "axios";
         planSections: [],
         carousel: null,
         model: null,
-        model2:null,
-        months: ['ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO','JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE'],
+        model2: null,
+        months: ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'],
 
-        dates:[],
+        dates: [],
         current_month: {
-            month: '', 
-            _month: '', 
+            month: '',
+            _month: '',
             _year: ''
         },
         current_date: {
-            dat: "2022-12-17", 
-            week: 52, 
-            name: "Martes 17", 
+            dat: "2022-12-17",
+            week: 52,
+            name: "Martes 17",
             section: false,
             activities: []
         },
-        colors: ['#0281a5','#0B233F','#E30E4F'],
+        colors: ['#0281a5', '#0B233F', '#E30E4F'],
         id_level: null,
         dialog: false,
         //iframe: '<iframe src=\"https://player.vimeo.com/video/393999309?h=0cd4c9c103&amp;app_id=122963\" width=\"426\" height=\"240\" frameborder=\"0\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen title=\"Creating Video With Your Phone: Getting Started\"></iframe>'
         currrent_activity: {
-            iframe:'',
-            name:'',
-            hour_class:'',
-            focus:'',
-            material:''
+            iframe: '',
+            name: '',
+            hour_class: '',
+            focus: '',
+            material: ''
         },
-        levels:[],
+        levels: [],
         user: {},
         userPlans: {},
         actual_date: null,
@@ -608,8 +189,8 @@ import axios from "axios";
         this.actual_date = new Date();
         let vm = this;
         vm.auth();
-        vm.$store.commit('loader',true);
-        
+        vm.$store.commit('loader', true);
+
         vm.getBaseUrl();
         vm.calendar();
         vm.schedule();
@@ -632,12 +213,12 @@ import axios from "axios";
             return 1;
         }
     },
-    methods:{
+    methods: {
         showRatingDialog() {
             this.dialogRating = true;
         },
-        async saveRating(){
-            try{
+        async saveRating() {
+            try {
                 let rating = {
                     stars: this.rating,
                     comentario: this.comentario_rating
@@ -645,16 +226,16 @@ import axios from "axios";
                 const data = await this.$API.rating.saveRating(rating);
 
 
-                    this.dialogRating = false;
-                    this.showToast("Gracias por tus comentarios!", "green");
-                
+                this.dialogRating = false;
+                this.showToast("Gracias por tus comentarios!", "green");
+
             }
-            catch(e){
+            catch (e) {
                 console.error(e);
-            } 
+            }
         },
-        async saveAttempts(activity, date, indx){
-            try{
+        async saveAttempts(activity, date, indx) {
+            try {
                 this.current_date.activities[indx].sessions.push(1);
                 let attempt = {
                     activity_id: activity.id,
@@ -663,9 +244,9 @@ import axios from "axios";
                 };
                 const data = await this.$API.gymVirtual.saveAttempt(attempt);
             }
-            catch(e){
+            catch (e) {
                 console.error(e);
-            } 
+            }
         },
         async auth() {
             let vm = this;
@@ -694,35 +275,35 @@ import axios from "axios";
                 window.location.replace('/auth/iniciar-sesion');
             }
         },
-        getMonth(){
+        getMonth() {
             let vm = this;
             vm.current_month = {
-                month: this.months[Number(moment().format('MM'))-1],
+                month: this.months[Number(moment().format('MM')) - 1],
                 _month: moment().format('MM'),
                 _year: moment().format('YYYY')
             };
-            vm.model2 = vm.planMonths.findIndex((element) => element._month == vm.current_month._month );
+            vm.model2 = vm.planMonths.findIndex((element) => element._month == vm.current_month._month);
         },
-        async calendar(){
+        async calendar() {
             let vm = this;
-            try{
+            try {
                 const data = await this.$API.gymVirtual.calendar();
                 //console.log(data.data)
                 vm.planMonths = data.data.data;
                 vm.getMonth()
-                vm.$store.commit('loader',false);
+                vm.$store.commit('loader', false);
             }
-            catch(e){
+            catch (e) {
                 console.error(e);
-                vm.$store.commit('loader',false);
+                vm.$store.commit('loader', false);
             }
         },
-        getDate(){
+        getDate() {
             let vm = this;
-           
+
             vm.current_date = {
-                dat:  moment().format('YYYY-MM-DD'),
-                week: moment().format('W'), 
+                dat: moment().format('YYYY-MM-DD'),
+                week: moment().format('W'),
                 name: moment().format('dddd DD'),
                 activities: []
             }
@@ -756,7 +337,7 @@ import axios from "axios";
             let vm = this;
             let id_level = vm.id_level;
             vm.clases_grabadas = vm.clases_grabadas_org;
-            vm.clases_vivo     = vm.clases_vivo_org;
+            vm.clases_vivo = vm.clases_vivo_org;
             //console.log(vm.clases_grabadas);
             let filtro = vm.clases_grabadas.filter((element) => ((element.id_level == id_level || element.id_level == "4") && element.link_video != null));
 
@@ -764,12 +345,12 @@ import axios from "axios";
 
             vm.clases_grabadas = filtro;
             vm.clases_vivo = filtro2;
-            
+
             const data = await this.$API.business_partner.updateLevel(id_level);
         },
-        async schedule(){
+        async schedule() {
             let vm = this;
-            try{
+            try {
                 const data = await this.$API.gymVirtual.schedule();
                 vm.planSections = data.data.data;
                 vm.dates = vm.planSections.map(item => {
@@ -779,21 +360,21 @@ import axios from "axios";
                     return container;
                 });
                 vm.getDate();
-                vm.$store.commit('loader',false);
+                vm.$store.commit('loader', false);
             }
-            catch(e){
+            catch (e) {
                 console.error(e);
-                vm.$store.commit('loader',false);
+                vm.$store.commit('loader', false);
             }
         },
-        async getBaseUrl(){
-            try{
+        async getBaseUrl() {
+            try {
                 const data = await this.$API.configuration.getBaseUrl();
                 this.base_url = data.data;
             }
-            catch(e){
+            catch (e) {
                 console.error(e);
-            } 
+            }
         },
 
         async loadLevels(page = 1, per_page = 50, sortDesc = 0, sortBy = '') {
@@ -809,8 +390,8 @@ import axios from "axios";
         },
 
 
-        planSectionsFilter(){
-            return this.planSections.filter((item)=>item.month==this.current_month._month);
+        planSectionsFilter() {
+            return this.planSections.filter((item) => item.month == this.current_month._month);
         },
 
         getActivities(indx, date) {
@@ -843,7 +424,7 @@ import axios from "axios";
         },
 
         //--------VIDEO-----------
-        getVideoActivity(activity){
+        getVideoActivity(activity) {
             /*axios.get('https://vimeo.com/api/oembed.json?url='+'https://vimeo.com/393999309').then(function(data) {
                 console.log(data.data)
             }.bind(this)).catch(function(e) {
@@ -856,21 +437,21 @@ import axios from "axios";
                 focus: activity.focus,
                 material: activity.material
             }
-            this.dialog= true;
+            this.dialog = true;
         },
 
         descargarPlan() {
             let vm = this;
             let nivel = vm.levels.filter((element) => (element.id_level == vm.id_level));
-            if (nivel.length===0) {
+            if (nivel.length === 0) {
                 this.showToast("Debe seleccionar un nivel primero.", "red");
             } else {
                 window.open(nivel[0].url_plan);
             }
-            
+
         },
 
-        isOnlive(date, hour){
+        isOnlive(date, hour) {
 
             let fecha_class = moment(date + ' ' + hour);//.add(1, 'hour')
             let fecha_class_2 = moment(date + ' ' + hour).add(1, 'hour');
@@ -884,17 +465,18 @@ import axios from "axios";
 }
 </script>
 
-<style>
-.activity-class{
+<style>.activity-class {
     background-color: #0B233F;
 }
-.activity-taller{
+
+.activity-taller {
     background-color: #E30E4F;
 }
-.activity-descanso{
+
+.activity-descanso {
     background-color: #e9e9e9;
 }
-.activity-nutrition{
+
+.activity-nutrition {
     background-color: #0480a4;
-}
-</style>
+}</style>

@@ -26,6 +26,11 @@ $white: #ffffff;
     src: url('../fonts/machprocondbold.otf');
 }
 
+@font-face {
+    font-family: 'Poppins-Regular';
+    src: url('../fonts/Poppins-Regular.ttf');
+}
+
 
 ::-webkit-scrollbar {
     width: 10px;
@@ -487,6 +492,132 @@ body{
 
 .btn_pay_cc{
     margin-left: 12.5em;
+}
+
+.divider_white {
+    border-color: white !important;
+    width: 80%;
+    margin: 10px auto;
+    opacity: 0.3;
+}
+
+.v-list-item__icon{
+    margin: 11px 0!important;
+}
+
+.box_gym_virtual{
+    border-radius: 24px!important;
+    border: 2px solid #293E58!important;
+}
+
+.box_rutina{
+    border-radius: 16px !important;
+}
+
+.badge_pink{
+    margin: 10px 10px;
+    border-radius: 4px!important;
+    background: #E7004C;
+}
+
+#inspire {
+    min-height: 100vh;
+    background: #0A2240;
+}
+
+.fondo_azul{
+    background: #0A2240;
+}
+
+.item_menu{
+    background: #0A2240;
+}
+
+.theme--light.v-list-item--active::before{
+    opacity: 0!important;
+}
+
+.white_btn{
+    border-radius: 8px;
+    border: 2px solid var(--White, #FFF);
+    background: #E7004C!important;
+    color: #fff!important;
+    font-family: 'MachProCondBold';
+    font-weight: 200;
+}
+
+.card_text_bottom{
+    position: absolute;
+    bottom: 0;
+    margin-left: 10px;
+}
+
+/** FONTS **/
+.font_menu {
+    color: #FFF;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: 'MachProCondBold';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    text-transform: uppercase;
+}
+
+.text_box_gym{
+    color: var(--1925-C, #E7004C);
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: 'MachProCondBold';
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 40px;
+    text-transform: uppercase!important;
+}
+
+.text_box_title{
+    color: #FFF;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: 'MachProCondBold';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    text-transform: uppercase!important;
+}
+
+.font_box_prox_clase{
+    color: var(--1925-C, #E7004C);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: 'MachProCondBold';
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+    text-transform: uppercase!important;
+}
+
+.font_rutina{
+    color: #FFF;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: 'MachProCondBold';
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 28px;
+    text-transform: uppercase!important;
+}
+
+.text_title_registro_pesos{
+    color: #FFF;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: 'Poppins-Regular';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    opacity: 0.5;
 }
 
 @media only screen and (min-width: 960px) {

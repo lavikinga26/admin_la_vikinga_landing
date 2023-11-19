@@ -1,8 +1,8 @@
 <template>
     <div>
-
-
-        <Banner />
+        
+        
+        <Banner/>
 
         <div class="d-flex flex-grow-1 flex-column">
             <router-view :key="$route.fullPath" class="flex-grow-1"></router-view>
@@ -24,18 +24,18 @@
 <script>
 import Banner from './components/Banner.vue';
 export default {
-    components: {
+    components: { 
         Banner,
     },
     data: () => ({
 
     }),
 
-    mounted() {
+    mounted(){
         this.auth();
     },
     methods: {
-        async auth() {
+        async auth(){
             try {
                 const response = await this.$API.auth.auth();
             } catch (e) {

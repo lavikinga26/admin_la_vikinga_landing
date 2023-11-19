@@ -34,7 +34,7 @@
                             <br>
                             <div v-html="plan.content"></div>
                         </div>
-                        <div class="my-4">
+                        <div class="my-4" v-if="(plan.promotional_cost == '0.00')">
                             <span class="price_carousel text-center" style="font-family: 'MachProCondBold' !important;">
                                 S/. {{plan.cost}}
                             </span>  

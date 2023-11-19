@@ -55,44 +55,18 @@
                     </v-card-text>
                     <v-card-actions class="card-actions">
                         <v-row align="center">
-                            <v-col cols="12" align="center" class="py-0">
+                            <v-col cols="12" align="center" class="py-0" v-if="item.promotional_cost != '0.00'">
+                                <strike>S/. {{ item.cost }}</strike>
                                 <span class="price_carousel text-center" style="font-family: 'MachProCondBold'!important;">
-                                    S/. {{item.cost}}
+                                    S/. {{item.promotional_cost}}
                                 </span>  
                             </v-col>
+                            <v-col cols="12" align="center" class="py-0" v-if="item.promotional_cost=='0.00'">
+                                    <span class="price_carousel text-center" style="font-family: 'MachProCondBold'!important;">
+                                        S/. {{ item.cost }}
+                                    </span>  
+                                </v-col>
                             <v-col cols="12" align="center">
-                                <!--<v-btn color="secondary"
-                                    v-if="(data_config.allow_sale && item.allow_sale)"
-                                    :href="'/plan/'+item.identifier"
-                                    depressed
-                                    large
-                                    class="px-2">
-                                    <span class="ma-3">COMPRAR AHORA</span>
-                                </v-btn>
-                                <v-btn color="secondary"
-                                    v-if="(!data_config.allow_sale && item.allow_sale)"
-                                    :href="'/plan/'+item.identifier"
-                                    depressed
-                                    large
-                                    class="px-2">
-                                    <span class="ma-3">COMPRAR AHORA</span>
-                                </v-btn>
-                                <v-btn color="secondary"
-                                    v-if="(!data_config.allow_sale && !item.allow_sale)"
-                                    :disabled="true"
-                                    depressed
-                                    large
-                                    class="px-2">
-                                    <span class="ma-3">COMPRAR AHORA</span>
-                                </v-btn>
-                                <v-btn color="secondary"
-                                    v-if="(data_config.allow_sale && !item.allow_sale)"
-                                    :disabled="true"
-                                    depressed
-                                    large
-                                    class="px-2">
-                                    <span class="ma-3">COMPRAR AHORA</span>
-                                </v-btn>-->
                                 <v-btn class="my-2 fb-btn" color="secondary" outlined @click="addToCart(item)"
                                     v-if="(data_config.allow_sale && item.allow_sale)">
                                     INICIAR DESAFÍO
@@ -181,6 +155,7 @@
                 code: itemv.code,
                 image: itemv.base_url + itemv.file_path.path + itemv.file_path.filename,
                 price: Number(itemv.cost),
+                price_promotional: Number(itemv.promotional_cost),
                 quantity: 1,
                 priceCompare: Number(itemv.cost),
                 priceTotal: Number(itemv.cost),
