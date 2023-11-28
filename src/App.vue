@@ -3,12 +3,16 @@
         <v-navigation-drawer
             color="#0A2240"
             class="d-none d-md-flex"
-            permanent
+            v-model="drawer"
+            :permanent="$vuetify.breakpoint.mdAndUp"
+            absolute
+            left
             app
         >
             <v-list>
                 <v-list-item class="d-flex justify-left">
-                <img src="@/assets/img/logo_white.png" alt="Logo" />
+                    <img src="@/assets/img/logo_white.png" alt="Logo" />
+                    
                 </v-list-item>
             </v-list>
             <v-divider color="white" class="divider_white"></v-divider>
@@ -51,7 +55,7 @@
                 <v-list-item link to="/gym-virtual/agenda">
                     <v-list-item-icon>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M8.74773 8.25H7.75363C6.69695 8.25 6.16905 8.25 5.79322 8.46543C5.46341 8.65447 5.20989 8.95309 5.07751 9.30927C4.92674 9.71489 5.01352 10.2352 5.18702 11.2755L5.18739 11.2774L5.94625 15.8274C6.07498 16.5993 6.13977 16.9854 6.33249 17.275C6.50237 17.5303 6.74084 17.7321 7.02075 17.8576C7.3383 17.9999 7.72966 18 8.5127 18H15.4875C16.2705 18 16.6616 17.9999 16.9792 17.8576C17.2591 17.7321 17.4977 17.5303 17.6676 17.275C17.8603 16.9854 17.9248 16.5993 18.0535 15.8274L18.8124 11.2774L18.8131 11.2743C18.9865 10.2348 19.0732 9.71473 18.9225 9.30927C18.7901 8.95309 18.5372 8.65447 18.2074 8.46543C17.8316 8.25 17.3028 8.25 16.2461 8.25H15.2523M8.74773 8.25H15.2523M8.74773 8.25C8.74773 6.45507 10.2038 5 12 5C13.7962 5 15.2523 6.45507 15.2523 8.25" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M15.8889 19C15.8889 16.8522 14.1478 15.1111 12 15.1111C9.85223 15.1111 8.11111 16.8522 8.11111 19M15.8889 19H16.5135C17.383 19 17.8178 19 18.1502 18.8306C18.4429 18.6815 18.6815 18.4429 18.8306 18.1502C19 17.8178 19 17.383 19 16.5135V7.48649C19 6.617 19 6.1816 18.8306 5.84918C18.6815 5.55648 18.4429 5.31868 18.1502 5.16955C17.8174 5 17.3825 5 16.5113 5H7.48904C6.61785 5 6.18193 5 5.84918 5.16955C5.55648 5.31868 5.31868 5.55648 5.16955 5.84918C5 6.18193 5 6.61785 5 7.48904V16.5113C5 17.3825 5 17.8174 5.16955 18.1502C5.31868 18.4429 5.55648 18.6815 5.84918 18.8306C6.1816 19 6.617 19 7.48649 19H8.11111M15.8889 19H8.11111M12 12.7778C10.7113 12.7778 9.66667 11.7331 9.66667 10.4444C9.66667 9.15578 10.7113 8.11111 12 8.11111C13.2887 8.11111 14.3333 9.15578 14.3333 10.4444C14.3333 11.7331 13.2887 12.7778 12 12.7778Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </v-list-item-icon>
                     <v-list-item-title class="font_menu">Tienda</v-list-item-title>
@@ -60,14 +64,35 @@
             <v-divider color="white" class="divider_white"></v-divider>
             <v-list v-if="isLogged">
                 <v-list-item class="d-flex justify-left">
-                    <img src="@/assets/img/logo_white.png" alt="Logo" />
+                    <v-avatar class="profile rounded-circle" color="grey" size="90" tile>
+                        <v-img 
+                            v-if="business_partner.file_path" 
+                            :src="base_url + business_partner.file_path.path + business_partner.file_path.filename">
+                        </v-img>
+                    </v-avatar>
                 </v-list-item>
                 <v-list-item>
-                    <v-list-item-title class="font_menu">nicole bouroncle</v-list-item-title>
+                    <v-list-item-title class="font_menu">{{ business_partner.name }} {{ business_partner.lastname }}</v-list-item-title>
                 </v-list-item>
+                <v-list-item link to="/gym-virtual/agenda">
+                    <v-list-item-icon>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11.8889 15C11.8889 12.8522 10.1478 11.1111 8 11.1111C5.85223 11.1111 4.11111 12.8522 4.11111 15M11.8889 15H12.5135C13.383 15 13.8178 15 14.1502 14.8306C14.4429 14.6815 14.6815 14.4429 14.8306 14.1502C15 13.8178 15 13.383 15 12.5135V3.48649C15 2.617 15 2.1816 14.8306 1.84918C14.6815 1.55648 14.4429 1.31868 14.1502 1.16955C13.8174 1 13.3825 1 12.5113 1H3.48904C2.61785 1 2.18193 1 1.84918 1.16955C1.55648 1.31868 1.31868 1.55648 1.16955 1.84918C1 2.18193 1 2.61785 1 3.48904V12.5113C1 13.3825 1 13.8174 1.16955 14.1502C1.31868 14.4429 1.55648 14.6815 1.84918 14.8306C2.1816 15 2.617 15 3.48649 15H4.11111M11.8889 15H4.11111M8 8.77778C6.71134 8.77778 5.66667 7.73311 5.66667 6.44444C5.66667 5.15578 6.71134 4.11111 8 4.11111C9.28866 4.11111 10.3333 5.15578 10.3333 6.44444C10.3333 7.73311 9.28866 8.77778 8 8.77778Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </v-list-item-icon>
+                    <v-list-item-title class="font_menu">Editar Perfil</v-list-item-title>
+                </v-list-item>
+                <v-list-item link @click="LogoutSession" to="/cuenta/mis-ordenes">
+                <v-list-item-icon>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 14.25L14.25 12M14.25 12L12 9.75M14.25 12H6M6 8.43602V8.40015C6 7.56007 6 7.13972 6.16349 6.81885C6.3073 6.5366 6.5366 6.3073 6.81885 6.16349C7.13972 6 7.56007 6 8.40015 6H15.6001C16.4402 6 16.8597 6 17.1805 6.16349C17.4628 6.3073 17.6929 6.5366 17.8367 6.81885C18 7.1394 18 7.55925 18 8.39768V15.6027C18 16.4411 18 16.8604 17.8367 17.1809C17.6929 17.4632 17.4628 17.6929 17.1805 17.8367C16.86 18 16.4408 18 15.6023 18H8.39768C7.55925 18 7.1394 18 6.81885 17.8367C6.5366 17.6929 6.3073 17.4629 6.16349 17.1807C6 16.8598 6 16.4401 6 15.6V15.5625" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </v-list-item-icon>
+                <v-list-item-title class="font_menu">Salida</v-list-item-title>
+            </v-list-item>
             </v-list>
         </v-navigation-drawer>
-        <v-main class="mt-2">
+        <v-main class="mt-2 fixed_main">
             <router-view  :key="$route.path" /> 
             <v-scale-transition> 
                 <v-btn
@@ -99,7 +124,6 @@ import Loader from "./components/shared/Loader.vue"
 export default {
     name: "App",
     components: {
-        navigation,
         foote,
         Loader
     },
@@ -108,7 +132,8 @@ export default {
         fab: null,
         color: "",
         flat: null,
-
+        drawer: null,
+        business_partner: {},
         //--- User Login/Signup ---
         logged_user: null,
         logged_user_token: null,
@@ -138,6 +163,10 @@ export default {
             (v) => !!v || 'Correo Electrónico es obligatorio',
             (v) => /.+@.+\..+/.test(v) || 'Correo Electrónico debe ser válido'
         ],
+        profileForm: {
+            info_personal: null,
+        },
+        base_url: null
         //--- End ---
     }),
 
@@ -150,7 +179,22 @@ export default {
             this.flat = true;
         }
     },
+    computed: {
+        isLogged() {
+            return this.$store.getters.isLoggedIn;
+        },
+        StoreCart() {
+            return this.$store.getters.StoreCart;
+        },
+        cartCount() {
+            return this.StoreCart.length;
+        },
+    },
     methods: {
+        LogoutSession() {
+            window.localStorage.clear();
+            this.$router.go();
+        },
         onScroll(e) {
             if (typeof window === "undefined") return;
             const top = window.pageYOffset || e.target.scrollTop || 0;
@@ -160,11 +204,27 @@ export default {
             this.$vuetify.goTo(0);
         },
 
+        async getBaseUrl() {
+            try {
+                const data = await this.$API.configuration.getBaseUrl();
+                console.log(data);
+                this.base_url = data.data;
+            }
+            catch (e) {
+                console.error(e);
+            }
+        },
+
         //--- Login/Signup Functions ---
-        getLoggedUser() {
+        async getLoggedUser() {
             if (localStorage.getItem('token')) {
                 this.logged_user = JSON.parse(localStorage.getItem('user_data'));
                 this.logged_user_token = localStorage.getItem('token');
+
+                const response = await this.$API.business_partner.getPartner(this.logged_user.id);
+                this.business_partner = Object.assign(response.data.data[0]);
+
+                console.log(this.business_partner);
             }
         },
         myProfile() {
@@ -204,26 +264,9 @@ export default {
                 }
             }
         },
-        getLoggedUser() {
-            if (localStorage.getItem('token')) {
-                this.logged_user = JSON.parse(localStorage.getItem('user_data'));
-                this.logged_user_token = localStorage.getItem('token');
-
-                this.getPartnerData(this.logged_user.id);
-            } else {
-                localStorage.removeItem('user_data');
-                localStorage.removeItem('token');
-                window.location.replace('/auth/iniciar-sesion');
-            }
-        },
         //--- End ---
     },
 
-    computed: {
-        isLogged() {
-            return this.$store.getters.isLoggedIn;
-        },
-    },
     watch: {
         fab(value) {
             if (value) {

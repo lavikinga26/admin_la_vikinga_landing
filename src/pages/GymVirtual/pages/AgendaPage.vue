@@ -2,7 +2,7 @@
     <div>
         <v-container>
             <v-row>
-                <v-col xs="12" sm="12" md="6" lg="6">
+                <v-col cols="12" xs="12" sm="12" md="6" lg="6">
                     <h2 class="text_box_title">Próxima Clase</h2>
                     <v-card :img="require('../../../assets/img/gym_virtual/torso_intermedio.png')" height="300" class="box_gym_virtual" >
                         <v-badge
@@ -15,39 +15,49 @@
                     </v-card>
 
                     <h2 class="text_box_title mt-4">Rutinas</h2>
-                    <v-card height="200" class="box_gym_virtual" color="#0A2240">
-                        <v-card height="60" class="box_rutina" color="#E7004C">
-                            <h4 class="font_rutina pt-2 pl-1">RUTINA PARA EL GIMNASIO</h4>
-                            <v-btn class="white_btn" prepend-icon="save">Descargar <v-icon size="small">mdi-file-download-outline</v-icon></v-btn>
-                        </v-card>
-                    </v-card>
+                        <v-row class="rutina_download_tab mt-2 mr-4 ml-1 mb-2">
+                            <v-col cols="9">
+                                <h4 class="font_rutina pt-2 pl-1">RUTINA PARA EL GIMNASIO</h4>
+                            </v-col>
+                            <v-col cols="3">
+                                <v-btn class="white_btn" prepend-icon="save">Descargar <v-icon size="small">mdi-file-download-outline</v-icon></v-btn>
+                            </v-col>
+                        </v-row>
+                        <v-row class="rutina_download_tab mt-2 mr-4 ml-1 mb-2">
+                            <v-col cols="9">
+                                <h4 class="font_rutina pt-2 pl-1">RUTINA PARA EL GIMNASIO</h4>
+                            </v-col>
+                            <v-col cols="3">
+                                <v-btn class="white_btn" prepend-icon="save">Descargar <v-icon size="small">mdi-file-download-outline</v-icon></v-btn>
+                            </v-col>
+                        </v-row>
 
                     <h2 class="text_box_title mt-4">ÚLTIMAS CLASES GRABADAS</h2>
-                    <v-card height="680" class="box_gym_virtual" color="#0A2240">
+                    <v-card class="box_gym_virtual" color="#0A2240">
                         <v-row class="pa-3">
                             <v-col cols="12" md="12" sm="12" xs="12">
                                 <v-card height="400" class="box_rutina" color="#E7004C" :img="require('../../../assets/img/gym_virtual/video.png')"></v-card>
                             </v-col>
                         </v-row>
                         <v-row class="pa-2">
-                            <v-col cols="4" md="4" sm="12" xs="12">
-                                <v-card height="200" class="box_rutina" color="#E7004C" :img="require('../../../assets/img/gym_virtual/video2.png')"></v-card>
+                            <v-col cols="12" md="4" sm="12" xs="12">
+                                <v-card min-height="200" class="box_rutina" color="#E7004C" :img="require('../../../assets/img/gym_virtual/video2.png')"></v-card>
                             </v-col>
-                            <v-col cols="4" md="4" sm="12" xs="12">
-                                <v-card height="200" class="box_rutina" color="#E7004C" :img="require('../../../assets/img/gym_virtual/video3.png')"></v-card>
+                            <v-col cols="12" md="4" sm="12" xs="12">
+                                <v-card min-height="200" class="box_rutina" color="#E7004C" :img="require('../../../assets/img/gym_virtual/video3.png')"></v-card>
                             </v-col>
-                            <v-col cols="4" md="4" sm="12" xs="12">
-                                <v-card height="200" class="box_rutina" color="#E7004C" :img="require('../../../assets/img/gym_virtual/video4.png')"></v-card>
+                            <v-col cols="12" md="4" sm="12" xs="12">
+                                <v-card min-height="200" class="box_rutina" color="#E7004C" :img="require('../../../assets/img/gym_virtual/video4.png')"></v-card>
                             </v-col>
 
                         </v-row>
                     </v-card>
                 </v-col>
-                <v-col xs="12" sm="12" md="6" lg="6">
+                <v-col cols="12" xs="12" sm="12" md="6" lg="6">
                     <h2 class="text_box_title">Próximas Clases en vivo</h2>
-                    <v-card height="300" class="box_gym_virtual" color="#0A2240">
+                    <v-card class="box_gym_virtual" color="#0A2240">
                         <v-row class="pa-3">
-                            <v-col cols="4" md="4" sm="12" xs="12">
+                            <v-col cols="12" md="4" sm="12" xs="12">
                                 <v-card height="270" class="box_gym_virtual" :img="require('../../../assets/img/gym_virtual/desafio1.png')" color="#0A2240">
                                     <v-badge
                                     color="#E7004C"
@@ -58,7 +68,7 @@
                                     <h4 class="font_box_prox_clase card_text_bottom">Torso Intermedio</h4>
                                 </v-card>
                             </v-col>
-                            <v-col cols="4" md="4" sm="12" xs="12">
+                            <v-col cols="12" md="4" sm="12" xs="12">
                                 <v-card height="270" class="box_gym_virtual" :img="require('../../../assets/img/gym_virtual/desafio2.png')" color="#0A2240">
                                     <v-badge
                                     color="#E7004C"
@@ -69,7 +79,7 @@
                                     <h4 class="font_box_prox_clase card_text_bottom">Torso Intermedio</h4>
                                 </v-card>
                             </v-col>
-                            <v-col cols="4" md="4" sm="12" xs="12">
+                            <v-col cols="12" md="4" sm="12" xs="12">
                                 <v-card height="270" class="box_gym_virtual" :img="require('../../../assets/img/gym_virtual/desafio3.png')" color="#0A2240">
                                     <v-badge
                                     color="#E7004C"
@@ -84,30 +94,45 @@
                     </v-card>
 
                     <h2 class="text_box_title mt-4">Registro de Pesos</h2>
-                    <v-card height="300" class="box_gym_virtual" color="#0A2240">
-                        <v-row class="pa-3">
+                    <v-card class="box_gym_virtual" color="#0A2240">
+                        <v-row class="pa-2">
                             <v-col cols="12">
-                                <v-card height="270" class="box_gym_virtual" color="#0A2240">
-                                    <v-row class="pa-2">
-                                        <v-col cols="12">
-                                            <h4 class="text_title_registro_pesos">Ejercicio</h4>
-                                            <v-select
-                                                :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-                                                variant="outlined"
-                                            ></v-select>
-                                        </v-col>
-                                    </v-row>
-                                    <v-row class="pa-2">
-                                        <v-col cols="6">
-                                            <h4 class="text_title_registro_pesos">Peso (KG)</h4>
-                                            <v-text-field variant="outlined"></v-text-field>
-                                        </v-col>
-                                        <v-col cols="6">
-                                            <h4 class="text_title_registro_pesos">Fecha</h4>
-                                            <v-text-field variant="outlined"></v-text-field>
-                                        </v-col>
-                                    </v-row>
-                                </v-card>
+                                <h4 class="text_title_registro_pesos">Ejercicio</h4>
+                                <v-select
+                                    :items="ejercicios_list"
+                                    v-model="item"
+                                    class="select_ejercicios"
+                                    outlined
+                                >
+                                    <template slot="selection" slot-scope="data">
+                                        <span :class="data.item.textColor">{{ data.item.text }}</span>
+                                    </template>
+                                    <template slot="item" slot-scope="data">
+                                        <span :class="data.item.textColor">{{ data.item.text }}</span>
+                                    </template>
+                                </v-select>
+                            </v-col>
+                        </v-row>
+                        <v-row class="pa-2">
+                            <v-col cols="6">
+                                <h4 class="text_title_registro_pesos">Peso (KG)</h4>
+                                <v-text-field outlined class="text_peso"></v-text-field>
+                            </v-col>
+                            <v-col cols="6">
+                                <h4 class="text_title_registro_pesos">Fecha</h4>
+                                <v-text-field outlined class="text_peso"></v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row class="pa-2">
+                            <v-col cols="12">
+                                <h4 class="text_title_registro_pesos">Comentarios</h4>
+                                <v-text-field outlined></v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="12">
+            <apexchart type="line" height="350" :options="chartOptions" :series="series"></apexchart>
+
                             </v-col>
                         </v-row>
                     </v-card>
@@ -182,7 +207,71 @@ export default {
         show_descarga_plan: false,
         dialogRating: false,
         comentario_rating: '',
-        rating: null
+        rating: null,
+        ejercicios_list:[
+            { text: "Back Squad", value: 1, textColor: "select_text_color" },
+            { text: "Front Squat", value: 2, textColor: "select_text_color" },
+            { text: "Sumo Squat", value: 3, textColor: "select_text_color" },
+            { text: "Peso Muerto", value: 4, textColor: "select_text_color" },
+            { text: "Peso Muerto Rumano", value: 5, textColor: "select_text_color" },
+            { text: "Hip Thrust", value: 6, textColor: "select_text_color" },
+            { text: "Lunges con barra", value: 7, textColor: "select_text_color" },
+            { text: "Brench press", value: 8, textColor: "select_text_color" },
+            { text: "Shoulder Press", value: 9, textColor: "select_text_color" },
+            { text: "Remo con Barra", value: 10, textColor: "select_text_color" },
+        ],
+        item: null,
+
+
+        series: [{
+            name: "KG",
+            data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+        }],
+        chartOptions: {
+            chart: {
+                height: 350,
+                type: 'line',
+                zoom: {
+                    enabled: false
+                }
+            },
+            colors: ['#E7004C'],
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: 'straight'
+            },
+            /*title: {
+                text: 'Product Trends by Month',
+                align: 'left'
+            },*/
+            grid: {
+                row: {
+                    colors: ['transparent', 'transparent'],
+                    opacity: 0.5
+                },
+            },
+            yaxis: {
+                labels: {
+                    show: true,
+                    style: {
+                        colors: '#fff',
+                        opacity: 0.5
+                    },
+                },
+            },
+            xaxis: {
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+                labels: {
+                    show: true,
+                    style: {
+                        colors: '#fff',
+                        opacity: 0.5
+                    },
+                },
+            }
+        },
     }),
     mounted() {
         moment.locale('es');

@@ -552,6 +552,49 @@ body{
     margin-left: 10px;
 }
 
+.select_text_color{
+    color: var(--1925-C, #E7004C);
+    font-feature-settings: 'clig' off, 'liga' off;
+    /* H4 */
+    font-family: 'MachProCondBold';
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 18px;
+    /* 100% */
+    text-transform: uppercase;
+}
+
+.select_ejercicios{
+    border-radius: 8px;
+    border: 2px solid var(--azul-tenue, #293E58);
+    background: #FFF;
+}
+
+.select_ejercicios .v-input__slot{
+    margin-bottom: 0px!important;
+}
+
+.select_ejercicios .v-text-field__details{
+    display:none!important;
+}
+
+.text_peso .v-text-field__details{
+    display: none !important;
+}
+
+.rutina_download_tab {
+    border-radius: 8px;
+    border: 2px solid var(--azul-tenue, #fff);
+    background: #E7004C;
+    width: 100%;
+}
+
+.fixed_main{
+    height: 100vh;
+    overflow-y: auto;
+}
+
 /** FONTS **/
 .font_menu {
     color: #FFF;
@@ -602,10 +645,10 @@ body{
     color: #FFF;
     font-feature-settings: 'clig' off, 'liga' off;
     font-family: 'MachProCondBold';
-    font-size: 28px;
+    font-size: 1.8em;
     font-style: normal;
     font-weight: 700;
-    line-height: 28px;
+    line-height: 1em;
     text-transform: uppercase!important;
 }
 

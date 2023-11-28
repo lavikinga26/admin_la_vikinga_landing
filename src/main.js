@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import vuetify from './plugins/vuetify';
+import VueApexCharts from 'vue-apexcharts'
 
 // import VueFilterDateFormat from '@vuejs-community/vue-filter-date-format';
 import VueCountdownTimer from 'vuejs-countdown-timer';
@@ -27,6 +28,7 @@ import { Form } from 'vform';
 window.Form = Form; 
 
 Vue.use(VueCountdownTimer);
+Vue.use(VueApexCharts)
 // Vue.use(VueFilterDateFormat);
 
 Vue.component('custom-breadcrumbs', require('./components/shared/CustomBreadcrumbs.vue').default);
@@ -34,6 +36,7 @@ Vue.component('sponsors-section', require('./components/shared/Sponsors.vue').de
 Vue.component('phones-photos', require('./components/shared/PhonePhotos.vue').default);
 Vue.component('frequent-questions', require('./components/shared/FrequentQuestions.vue').default);
 Vue.component('whatsapp', require('./components/Whatsapp.vue').default);
+Vue.component('apexchart', VueApexCharts);
 
 Vue.prototype.$API = API;
 Vue.prototype.$UTILS = UTILS;
