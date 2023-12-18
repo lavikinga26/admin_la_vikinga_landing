@@ -16,19 +16,19 @@
 
                     <h2 class="text_box_title mt-4">Rutinas</h2>
                         <v-row class="rutina_download_tab mt-2 mr-4 ml-1 mb-2">
-                            <v-col cols="9">
+                            <v-col cols="8">
                                 <h4 class="font_rutina pt-2 pl-1">RUTINA PARA EL GIMNASIO</h4>
                             </v-col>
-                            <v-col cols="3">
-                                <v-btn class="white_btn" prepend-icon="save">Descargar <v-icon size="small">mdi-file-download-outline</v-icon></v-btn>
+                            <v-col cols="4">
+                                <v-btn class="white_btn text-center ml-5" prepend-icon="save">Descargar <v-icon size="small">mdi-file-download-outline</v-icon></v-btn>
                             </v-col>
                         </v-row>
                         <v-row class="rutina_download_tab mt-2 mr-4 ml-1 mb-2">
-                            <v-col cols="9">
+                            <v-col cols="8">
                                 <h4 class="font_rutina pt-2 pl-1">RUTINA PARA EL GIMNASIO</h4>
                             </v-col>
-                            <v-col cols="3">
-                                <v-btn class="white_btn" prepend-icon="save">Descargar <v-icon size="small">mdi-file-download-outline</v-icon></v-btn>
+                            <v-col cols="4">
+                                <v-btn class="white_btn text-center ml-5" prepend-icon="save">Descargar <v-icon size="small">mdi-file-download-outline</v-icon></v-btn>
                             </v-col>
                         </v-row>
 
@@ -128,6 +128,13 @@
                                 <h4 class="text_title_registro_pesos">Comentarios</h4>
                                 <v-text-field outlined></v-text-field>
                             </v-col>
+                            <v-col cols="6">
+                                <v-btn class="text_btn_white_title" block depressed color="secondary">Guardar</v-btn>
+                                
+                            </v-col>
+                            <v-col cols="6">
+                                <v-btn class="text_btn_white_title" block depressed color="primary" @click="registroPopup = true">Ver Registro</v-btn>
+                            </v-col>
                         </v-row>
                         <v-row>
                             <v-col cols="12">
@@ -142,6 +149,23 @@
         <v-snackbar v-model=" toast.toast " :timeout=" toast.timeout " :color=" toast.color " dark>
             {{ toast.message }}
         </v-snackbar>
+        
+        <v-dialog
+            v-model="registroPopup"
+            activator="parent"
+            width="auto"
+            >
+            <v-card>
+                <v-card-text>
+                    <v-data-table
+                        :headers="cabeceras"
+                        :items="registrosTabla"
+                        :items-per-page="5"
+                        class="elevation-1"
+                    ></v-data-table>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -154,6 +178,27 @@ export default {
         axios
     },
     data: () => ({
+        cabeceras: [
+            {
+                text: 'Ejercicio',
+                align: 'start',
+                sortable: false,
+                value: 'ejercicio',
+            },
+            { text: 'Fecha', value: 'fecha' },
+            { text: 'Peso (kg)', value: 'peso' },
+            { text: 'Comentarios', value: 'comentarios' },
+            { text: 'Acciones', value: 'acciones' }
+        ],
+        registrosTabla: [
+            {
+                ejercicio: 'Back Squat',
+                fecha: "01/12/2023",
+                peso: 6.0,
+                comentarios: "Aumentar peso proxima semana",
+                acciones: ""
+            }
+        ],
         model: null,
         planMonths: [],
         planSections: [],
@@ -175,6 +220,7 @@ export default {
             section: false,
             activities: []
         },
+        registroPopup: false,
         colors: ['#0281a5', '#0B233F', '#E30E4F'],
         id_level: null,
         dialog: false,

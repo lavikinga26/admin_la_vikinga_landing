@@ -365,18 +365,29 @@ body{
     color: #c70c45;
 }
 
-.bd_desc_carousel{
+/*.bd_desc_carousel{
     background: #0B233F;
 }
-
-.bd_desc_carousel ul li{
+*/
+.bd_desc_carousel_white ul li{
     color: #fff;
-    list-style-image: url(../img/lista_icon.png);
+    list-style-image: url(../img/circle_check_white.png);
     font-family: 'Montserrat';
 }
-.bd_desc_carousel ul li p{
+.bd_desc_carousel_white ul li p{
     margin-bottom: 1px;
 }
+
+.bd_desc_carousel_blue ul li {
+    color: #0A2240;
+    list-style-image: url(../img/circle_check_blue.png);
+    font-family: 'Montserrat';
+}
+
+.bd_desc_carousel_blue ul li p {
+    margin-bottom: 1px;
+}
+
 .desc_plan ul li{
     color: #fff;
     list-style-image: url(../img/lista_icon.png);
@@ -514,6 +525,20 @@ body{
     border-radius: 16px !important;
 }
 
+.title_pink{
+    color: var(--1925-C, #E7004C);
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+    /* H1 */
+    font-family: 'MachProCondBold';
+    font-size: 3em;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 40px;
+    /* 100% */
+    text-transform: uppercase!important;
+}
+
 .badge_pink{
     margin: 10px 10px;
     border-radius: 4px!important;
@@ -522,6 +547,7 @@ body{
 
 #inspire {
     min-height: 100vh;
+    overflow-y: hidden;
     background: #0A2240;
 }
 
@@ -546,6 +572,56 @@ body{
     font-weight: 200;
 }
 
+.white_btn_md {
+    border-radius: 8px;
+    background: #E7004C !important;
+    color: #fff !important;
+    font-family: 'MachProCondBold';
+    font-weight: 200;
+    font-size: 1.5em!important;
+}
+
+.btn_pink_white {
+    background: var(--1925-C, #E7004C)!important;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: 'MachProCondBold';
+    font-size: 2em!important;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 32px;
+    /* 88.889% */
+    text-transform: uppercase!important;
+    color: #fff!important;
+}
+
+.btn_pink_white_submit {
+    background: var(--1925-C, #E7004C) !important;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: 'MachProCondBold';
+    font-size: 1.8em !important;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 60px!important;
+    /* 88.889% */
+    text-transform: uppercase !important;
+    color: #fff !important;
+    border-radius: 12px!important;
+    width: 170px!important;
+    height: 50px!important;
+}
+
+.btn_blue_white {
+    background: var(--289-C, #0A2240)!important;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: 'MachProCondBold';
+    font-size: 2em !important;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 32px;
+    color: #fff!important;
+    text-transform: uppercase !important;
+}
+
 .card_text_bottom{
     position: absolute;
     bottom: 0;
@@ -562,7 +638,7 @@ body{
     font-weight: 500;
     line-height: 18px;
     /* 100% */
-    text-transform: uppercase;
+    text-transform: uppercase!important;
 }
 
 .select_ejercicios{
@@ -595,7 +671,137 @@ body{
     overflow-y: auto;
 }
 
+.register_form.v-input .v-input__slot {
+    border-radius: 8px;
+}
+
+.badge_pink {
+    position: absolute !important;
+    left: 0;
+    transform: translate(50%, -50%);
+    font-weight: bold;
+    font-size:1.5em!important;
+}
+
+.tabs_selector_payment{
+    padding: 20px 140px !important;
+}
+
+.tabs_selector{
+    padding: 20px 147px!important;
+}
+
+.tabs_selector .v-tabs-slider,
+.tabs_selector_payment .v-tabs-slider{
+    background-color: transparent!important;
+}
+
+.tabs_selector .v-slide-group__content,
+.tabs_selector_payment .v-slide-group__content{
+    background: #D9D9D9 !important;
+    border-radius: 50px;
+}
+
+.tabs_selector .v-slide-group__content .v-tab,
+.tabs_selector_payment .v-slide-group__content .v-tab{
+    color: var(--azul-tenue, #293E58)!important;
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: 'MachProCondBold';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px;
+    text-transform: uppercase !important;
+}
+
+.tabs_selector .v-slide-group__content .v-tab--active,
+.tabs_selector_payment .v-slide-group__content .v-tab--active{
+    background: var(--azul-tenue, #293E58) !important;
+    color: #fff!important;
+    border-radius: 50px;
+}
+
+.btn_blue_form{
+    border-radius: 16px;
+    background: var(--azul-tenue, #293E58)!important;
+    color: #FFF!important;
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: 'MachProCondBold';
+    font-size: 20px!important;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    text-transform: uppercase!important;
+}
+
+.theme--light.v-data-table>.v-data-table__wrapper>table>tbody>tr:not(:last-child)>td:not(.v-data-table__mobile-row),
+.theme--light.v-data-table>.v-data-table__wrapper>table>tbody>tr:not(:last-child)>th:not(.v-data-table__mobile-row){
+    border-bottom: 3px solid #293E58!important;
+    border-right: 3px solid #293E58 !important;
+}
+
+.theme--light.v-data-table>.v-data-table__wrapper>table>thead>tr:last-child>th{
+    border-bottom: 3px solid #293E58 !important;
+}
+.v-data-table>.v-data-table__wrapper>table>tbody>tr>td,
+.v-data-table>.v-data-table__wrapper>table>thead>tr>td,
+.v-data-table>.v-data-table__wrapper>table>tfoot>tr>td{
+    border-bottom: 3px solid #293E58 !important;
+}
+.v-data-table>.v-data-table__wrapper>table>tbody>tr>td{
+    border-right: 3px solid #293E58 !important;
+}
+.v-data-table>.v-data-table__wrapper>table>tbody>tr>td:first-child {
+    border-left: 3px solid #293E58 !important;
+}
+
+.theme--light.v-data-table>.v-data-table__wrapper>table>thead>tr:last-child>th{
+    background: #293E58!important;
+    color: #fff;
+}
+
+.price_strike_dark{
+    color: #293E58;
+    font-family: 'MachProCondBold';
+    font-size: 2.5em;
+}
+
+.price_strike_light {
+    color:#fff;
+    font-family: 'MachProCondBold';
+    font-size: 2.5em;
+}
+
+.centered_paragraph{
+    width: 300px;
+    color: #000;
+    font-family: 'Poppins-Regular';
+}
+
+.btn_outlined_pink{
+    border-radius: 16px;
+    border: 2px solid var(--1925-C, #E7004C);
+    font-family: 'MachProCondBold';
+}
+
+.btn_outlined_pink .v-btn__content{
+    color: #E7004C !important;
+    font-size: 2em!important;
+}
+
 /** FONTS **/
+.text_title_white{
+    color: #FFF;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: 'MachProCondBold';
+    font-size: 26px!important;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    text-transform: uppercase !important;
+}
 .font_menu {
     color: #FFF;
     font-feature-settings: 'clig' off, 'liga' off;
@@ -604,7 +810,7 @@ body{
     font-style: normal;
     font-weight: 400;
     line-height: 20px;
-    text-transform: uppercase;
+    text-transform: uppercase!important;
 }
 
 .text_box_gym{
@@ -630,6 +836,17 @@ body{
     text-transform: uppercase!important;
 }
 
+.text_btn_white_title {
+    color: #FFF;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: 'MachProCondBold';
+    font-size: 1.5em!important;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    text-transform: uppercase !important;
+}
+
 .font_box_prox_clase{
     color: var(--1925-C, #E7004C);
     font-feature-settings: 'clig' off, 'liga' off;
@@ -652,6 +869,16 @@ body{
     text-transform: uppercase!important;
 }
 
+.inner_text_white {
+    color: #FFF;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: 'Poppins-Regular';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+}
+
 .text_title_registro_pesos{
     color: #FFF;
     font-feature-settings: 'clig' off, 'liga' off;
@@ -661,6 +888,72 @@ body{
     font-weight: 400;
     line-height: 16px;
     opacity: 0.5;
+}
+
+.text_field_form{
+    color: var(--Black, #000);
+    font-feature-settings: 'clig' off, 'liga' off;
+    /* book 12pt */
+    font-family: 'Poppins-Regular';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    /* 133.333% */
+}
+
+.text_plan_price_blue{
+    color: var(--289-C, #0A2240);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: 'MachProCondBold';
+    font-size: 3em;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 32px;
+    /* 88.889% */
+    text-transform: uppercase!important;
+}
+
+.text_plan_title_blue{
+    color: var(--289-C, #0A2240);
+    font-feature-settings: 'clig' off, 'liga' off;
+    /* H6 */
+    font-family: 'MachProCondBold';
+    font-size: 1.5em;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px;
+    /* 100% */
+    text-transform: uppercase!important;
+}
+
+.text_plan_price_pink {
+    color: var(--1925-C, #E7004C);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: 'MachProCondBold';
+    font-size: 3em;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 32px;
+    /* 88.889% */
+    text-transform: uppercase !important;
+}
+
+.text_plan_title_white {
+    color: #ffffff;
+    font-feature-settings: 'clig' off, 'liga' off;
+    /* H6 */
+    font-family: 'MachProCondBold';
+    font-size: 1.5em;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px;
+    /* 100% */
+    text-transform: uppercase !important;
+}
+
+.formlog .v-text-field--outlined fieldset {
+    color: #D9D9D9 !important;
 }
 
 @media only screen and (min-width: 960px) {

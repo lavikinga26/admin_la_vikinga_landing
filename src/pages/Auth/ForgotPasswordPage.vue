@@ -1,59 +1,40 @@
 <template>
-    <div>
-        <div class="container-fluid bg_pink pt-3 pb-5">
-            <div class="row mt-4">
-                <div class="col-md-12 text-center">
-                    <div class="inline-block">
-                        <span style="color:white; vertical-align: middle;"><b>INICIO</b></span>&nbsp;
-                        <img src="@/assets/img/lista_icon.png" style="max-width: 20px; filter: brightness(0) invert(1); vertical-align: middle;">
-                    </div>
-                    
-                    <p class="tit_h1_white text_entrena">GYM VIRTUAL</p>
-                </div>
-            </div>
-        </div>
-        <div class="bg_login login-container">
-            <div>
-                <div class="rounded-xl pa-8 login-card-container" style="">
-                    <h2 style="text-align:center; padding-bottom: 20px;" class="white--text">¿Se te olvidó tu contraseña?</h2>
-                    <p style="text-align: center;" class="white--text">Ingrese la dirección de correo electrónico de tu cuenta y te enviaremos un enlace para restablecer tu contraseña.</p>
-                    <v-form
-                        ref="loginForm"
-                        v-model="valid"
-                        lazy-validation
-                    >
-                        <div class="sub_h2_white_login" >CORREO ELECTRÓNICO</div>
-                        <v-text-field
-                            solo
-                            type="email"
-                            :rules="emailRules"
-                            v-model="loginForm.email"
-                        ></v-text-field>
-                        <div class="d-flex align-center">
-                            <v-btn
-                                depressed
-                                block
-                                color="secondary"
-                                :disabled="!valid"
-                                @click="sendRecover"
-                                >
-                                    Solicitar restablecimiento de contraseña
-                            </v-btn>
-                        </div>
-                    </v-form>
-                </div>
-            </div>
-            <v-snackbar
-                v-model="toast.toast"
-                :timeout="toast.timeout"
-                :color="toast.color"
-                dark
+    <v-row no-gutters align="center">
+        <v-col cols="12" md="6" class="d-none d-md-flex d-sm-none">
+            <img src="@/assets/img/gym_virtual/login_img.jpg" alt="Imagen Login" style="width:100%;" />
+        </v-col>
+        <v-col cols="12" md="6">
+            <h1 class="title_pink mb-4">¿Se te olvidó tu contraseña?</h1>
+            <p style="font-family:'Poppins-Regular'; text-align:center;" class="mx-5">Ingrese la dirección de correo electrónico de tu cuenta y te enviaremos un enlace para restablecer tu contraseña.</a>
+            </p>
+            <v-sheet width="400" class="mx-auto">
+                <v-form
+                    ref="loginForm"
+                    v-model="valid"
+                    lazy-validation
                 >
-                {{ toast.message }}
-            </v-snackbar>
-        </div>
-    </div>
-</template>
+                    <label class="text_field_form">Email</label>
+                    <v-text-field
+                        outlined 
+                        class="register_form"
+                        type="email"
+                        :rules="emailRules"
+                        v-model="loginForm.email"
+                    ></v-text-field>
+                    <div class="d-flex align-center">
+                        <v-btn
+                            block
+                            class="white_btn_md"
+                            :disabled="!valid"
+                            @click="sendRecover"
+                            >
+                                SOLICITAR RESTABLECIMIENTO
+                        </v-btn>
+                    </div>
+                </v-form>
+            </v-sheet>
+        </v-col>
+</v-row></template>
 <script>
 export default {
     

@@ -28,7 +28,7 @@ import { Form } from 'vform';
 window.Form = Form; 
 
 Vue.use(VueCountdownTimer);
-Vue.use(VueApexCharts)
+Vue.use(VueApexCharts);
 // Vue.use(VueFilterDateFormat);
 
 Vue.component('custom-breadcrumbs', require('./components/shared/CustomBreadcrumbs.vue').default);

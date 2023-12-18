@@ -27,7 +27,7 @@ export const routes = [{
 }, {
     path: '/',
     name: 'home',
-    component: () => import(/* webpackChunkName: "blank" */ '../pages/Home/HomePage.vue'),
+    component: () => import(/* webpackChunkName: "blank" */ '../pages/Buy/BuyPage.vue'),
 }, {
     path: '/inscripciones',
     name: 'inscripciones',

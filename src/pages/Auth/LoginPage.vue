@@ -1,17 +1,52 @@
 <template>
-    <div>
-        <div class="container-fluid bg_pink pt-3 pb-5">
-            <div class="row mt-4">
-                <div class="col-md-12 text-center">
-                    <div class="inline-block">
-                        <span style="color:white; vertical-align: middle;"><b>INICIO</b></span>&nbsp;
-                        <img src="@/assets/img/lista_icon.png" style="max-width: 20px; filter: brightness(0) invert(1); vertical-align: middle;">
+    <v-row no-gutters align="center">
+        <v-col cols="12" md="6" class="d-none d-md-flex d-sm-none">
+            <img src="@/assets/img/gym_virtual/login_img.jpg" alt="Imagen Login" style="width:100%;"/>
+        </v-col>
+        <v-col cols="12" md="6">
+            <h1 class="title_pink mb-4">INICIAR SESIÓN</h1>
+            <v-sheet width="350" class="mx-auto">
+                <v-form
+                    ref="loginForm"
+                    class="formlog"
+                    v-model="valid"
+                    lazy-validation
+                >
+                    <div>Usuario</div>
+                    <v-text-field
+                        outlined
+                        type="email"
+                        :rules="emailRules"
+                        v-model="loginForm.email"
+                    ></v-text-field>
+                    <div>Contraseña</div>
+                    <v-text-field
+                        outlined
+                        :append-icon="show_pwd ? 'mdi-eye' : 'mdi-eye-off'"
+                        @click:append="() => (show_pwd = !show_pwd)"
+                        :type="show_pwd ? 'password' : 'text'"
+                        :rules="rules"
+                        v-model="loginForm.password"
+                        @keydown.enter="loginUser"
+                    ></v-text-field>
+                    <div class="text-right mb-4">
+                        <a href="/auth/olvide-contrasena" style="font-size: 0.8rem; color: #000; font-family:'Poppins-Regular';"><b>¿Olvidaste tu contraseña?</b></a>
                     </div>
-                    
-                    <p class="tit_h1_white text_entrena">GYM VIRTUAL</p>
-                </div>
-            </div>
-        </div>
+                        <v-btn
+                            class="text_btn_white_title"
+                            block
+                            depressed
+                            color="secondary"
+                            :disabled="!valid"
+                            @click="loginUser"
+                            >
+                                INICIAR SESIÓN
+                        </v-btn>
+                </v-form>
+            </v-sheet>
+        </v-col>
+    </v-row>
+    <!--<div>
         <div class="bg_login login-container">
             <div>
                 <h2 class="tit_h1_white" style="text-align:center; padding-bottom: 20px">UNA VIKINGA NO ABANDONA</h2>
@@ -63,7 +98,7 @@
             >
             {{ toast.message }}
         </v-snackbar>
-    </div>
+    </div>-->
 </template>
 <script>
 export default {
@@ -154,24 +189,6 @@ export default {
 }
 </script>
 <style scoped>
-.login-container{
-    height: 800px;
-     width:100%;
-     display: flex;
-     justify-content: center;
-     align-items: center;
-}
-.login-card-container{
-    max-width: 450px;
-    margin: auto;
-    background: rgba(255, 255, 255, 0.418);
-    text-align: left;
-}
-@media (max-width: 520px) {
-    .login-container{
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-}
+
 
 </style>

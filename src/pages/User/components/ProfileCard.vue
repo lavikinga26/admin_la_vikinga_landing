@@ -1,150 +1,154 @@
 <template>
     <div class="my-5">
-        <v-card class="my-10 rounded-xl pa-10">
-            <v-form ref="profileForm" v-model="validProfileForm" @submit.prevent="updateProfileInfo()" lazy-validation>
-                <v-row>
-                    <v-col cols="12" md="3" sm="12" align="center">
-                        <v-avatar class="profile rounded-circle" color="grey" size="164" tile>
-                            <v-img 
-                                v-if="profileForm.file_path" 
-                                :src="base_url + profileForm.file_path.path + profileForm.file_path.filename">
-                            </v-img>
-                        </v-avatar>
-                        <h3 class="mx-10 my-5"><b>{{profileForm.name}} {{profileForm.lastname}}</b></h3>
-                        <v-btn @click="profileImgDialog = true" color="pink" dark>Cambiar Foto</v-btn>
-                        <div style="background: #f6e4e9; min-height: 200px" class="pa-5 mx-2 my-10 rounded-lg" >
-                            <h5 class="mb-5">MIS INSIGNIAS</h5>
-                            <!--<img :src='require(`@/assets/img/icons/${insignia.insignia}`)' alt="">-->
-                            <v-row align="center" v-if="insignias.length > 0">
-                                <v-col class="pa-5" cols="6" md="6" v-for="(ing, index) in insignias" :key="'insignia_'+index">
-                                    <img :src='require(`@/assets/img/icons/${ing}`)' alt="" height="80px">
-                                </v-col>
-                            </v-row>
-                            <v-row align="center" v-else>
-                                <v-col class="pa-5" cols="6" md="6">
-                                    <img src="@/assets/img/icons/insignia_casco_grey.svg" alt="" height="80px">
-                                </v-col>
-                                <v-col class="pa-5" cols="6" md="6">
-                                    <img src="@/assets/img/icons/insignia_medalla_grey.svg" alt="" height="80px">
-                                </v-col>
-                                <v-col class="pa-5" cols="6" md="6">
-                                    <img src="@/assets/img/icons/insignia_escudo_grey.svg" alt="" height="80px">
-                                </v-col>
-                                <v-col class="pa-5" cols="6" md="6">
-                                    <img src="@/assets/img/icons/insignia_espada_grey.svg" alt="" height="80px">
-                                </v-col>
-                            </v-row>
-                        </div>
-                    </v-col>
-                    <v-col cols="12" md="9" sm="12" class="px-15">
-                        <div class="tit_h1_staff_pink text_entrena txt_uppercase mb-6">MI INFORMACIÓN PERSONAL</div>
-                        <v-row class="align-center">
-                            <v-col cols="12" md="4" sm="12"><span style="font-size: 0.9em;">NOMBRES</span></v-col>
-                            <v-col cols="12" md="8" sm="12">
+        <v-row>
+            <v-col cols="12" md="6">
+                <div class="text_title_white">MI INFORMACIÓN PERSONAL</div>
+                <v-card class="my-5 pa-10" dark  color="transparent" style="border: 2px solid #293E58!important; border-radius: 16px;">
+                    <v-form ref="profileForm" v-model="validProfileForm" @submit.prevent="updateProfileInfo()" lazy-validation>
+                        <v-row>
+                            <v-col cols="12" md="4">
+                                <v-avatar class="rounded-circle" color="grey" size="120" tile>
+                                    <v-img 
+                                        v-if="profileForm.file_path" 
+                                        :src="base_url + profileForm.file_path.path + profileForm.file_path.filename">
+                                    </v-img>
+                                </v-avatar>
+                            </v-col>
+                            <v-col cols="12" md="8">
+                                <h3><b>{{ profileForm.name }} {{ profileForm.lastname }}</b></h3><br>
+                                <v-btn @click="profileImgDialog = true" color="pink" dark>Cambiar Foto</v-btn>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="12" md="6" sm="12">
+                                <label>Nombres</label>
                                 <v-text-field
                                     v-model="profileForm.name"
                                     class="ma-0 pt-0"
                                     hide-details
-                                    single-line
+                                    outlined
                                     placeholder="Ingresa aquí tu nombre completo"
                                 ></v-text-field>
                             </v-col>
-                            <v-col cols="12" md="4" sm="12"><span style="font-size: 0.9em;">APELLIDOS</span></v-col>
-                            <v-col cols="12" md="8" sm="12">
+                            <v-col cols="12" md="6" sm="12">
+                                <label>Apellidos</label>
                                 <v-text-field
                                     v-model="profileForm.lastname"
                                     class="ma-0 pt-0"
                                     hide-details
+                                    outlined
                                     placeholder="Ingresa aquí tu apellido completo"
                                 ></v-text-field>
                             </v-col>
-                            <v-col cols="12" md="4" sm="12"><span style="font-size: 0.9em;">DNI</span></v-col>
-                            <v-col cols="12" md="8" sm="12">
+                            <v-col cols="12" md="6" sm="12">
+                                <label>DNI</label>
                                 <v-text-field
                                     v-model="profileForm.nro_doc"
                                     class="ma-0 pt-0"
                                     hide-details
+                                    outlined
                                     placeholder="Ingresa aquí tu DNI"
                                 ></v-text-field>
                             </v-col>
-                            <v-col cols="12" md="4" sm="12"><span style="font-size: 0.9em;">Teléfono</span></v-col>
-                            <v-col cols="12" md="8" sm="12">
+                            <v-col cols="12" md="6" sm="12">
+                                <label>Teléfono</label>
                                 <v-text-field
                                     v-model="profileForm.phone"
                                     class="ma-0 pt-0"
                                     hide-details
+                                    outlined
                                     placeholder="Ingresa aquí tu Teléfono"
                                 ></v-text-field>
                             </v-col>
-                            <v-col cols="12" md="4" sm="12"><span style="font-size: 0.9em;">EDAD</span></v-col>
-                            <v-col cols="12" md="8" sm="12">
+                            <v-col cols="12" md="6" sm="12">
+                                <label>Edad</label>
                                 <v-text-field
                                     v-model="infoPersonal.age"
                                     class="ma-0 pt-0"
                                     hide-details
+                                    outlined
                                     placeholder="Ingresa aquí tu edad"
                                 ></v-text-field>
                             </v-col>
-                            <v-col cols="12" md="4" sm="12"><span style="font-size: 0.9em;">GÉNERO</span></v-col>
-                            <v-col cols="12" md="8" sm="12">
-                                <v-radio-group
+                            <v-col cols="12" md="6" sm="12">
+                                <label>Género</label>
+                                <v-select
                                     v-model="infoPersonal.gender"
                                     class="ma-0 pt-0"
-                                    row
+                                    outlined
+                                    :items="genders"
+                                    item-text="text"
+                                    item-value="value"
                                     hide-details>
-                                    <v-radio
-                                        label="Femenino"
-                                        :value="1"
-                                    ></v-radio>
-                                    <v-radio
-                                        label="Masculino"
-                                        :value="2"
-                                    ></v-radio>
-                                    <v-radio
-                                        label="Otro"
-                                        :value="3"
-                                    ></v-radio>
-                                </v-radio-group>
+                                </v-select>
                             </v-col>
-                            <v-col cols="12" md="4" sm="12"><span style="font-size: 0.9em;">ESTADO CIVIL</span></v-col>
-                            <v-col cols="12" md="8" sm="12">
-                                <v-radio-group
+                            <v-col cols="12" md="6" sm="12">
+                                <label>Estado civil</label>
+                                <v-select
                                     v-model="infoPersonal.civil_status"
                                     class="ma-0 pt-0"
-                                    row
+                                    outlined
+                                    :items="civil_status"
+                                    item-text="text"
+                                    item-value="value"
                                     hide-details>
-                                    <v-radio
-                                        label="Soltera(o)"
-                                        :value="1"
-                                    ></v-radio>
-                                    <v-radio
-                                        label="Casada(o)"
-                                        :value="2"
-                                    ></v-radio>
-                                    <v-radio
-                                        label="Viuda(o)"
-                                        :value="3"
-                                    ></v-radio>
-                                </v-radio-group>
+                                </v-select>
                             </v-col>
-                            <v-col cols="12" md="4" sm="12"><span style="font-size: 0.9em;">MADRE/PADRE FAMILIA</span></v-col>
-                            <v-col cols="12" md="4" sm="12">
-                                <v-switch
+                            <v-col cols="12" md="6" sm="12">
+                                <label>Madre/Padre de familia</label>
+                                <v-select
                                     v-model="infoPersonal.family_guy"
-                                    :label="`${infoPersonal.family_guy != true ? 'No' : 'Si'}`"
-                                    hide-details
-                                ></v-switch>
+                                    class="ma-0 pt-0"
+                                    outlined
+                                    :items="family_guy"
+                                    item-text="text"
+                                    item-value="value"
+                                    hide-details>
+                                </v-select>
                             </v-col>
                         </v-row>
-                    </v-col>
-                </v-row>
-                <br>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn type="submit" color="primary" :disabled="!validProfileForm">Guardar</v-btn>
-                </v-card-actions>
-            </v-form>
-        </v-card>
+                        <br>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn type="submit" class="btn_pink_white_submit" :disabled="!validProfileForm">Guardar</v-btn>
+                        </v-card-actions>
+                    </v-form>
+                </v-card>
+            </v-col>
+            <v-col cols="12" md="6" sm="6">
+                <div class="text_title_white">CAMBIAR MI CONTRASEÑA</div>
+                <v-card class="my-5 pa-10" dark  color="transparent" style="border: 2px solid #293E58!important; border-radius: 16px;">
+                    <p>Aquí podrás cambiar tu contraseña para acceder a tu cuenta</p>
+                    <v-row>
+                        <v-col cols="12" md="12" sm="12">
+                            <label>Contraseña actual</label>
+                            <v-text-field
+                                class="ma-0 pt-0"
+                                hide-details
+                                outlined
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="12" sm="12">
+                            <label>Nueva contraseña</label>
+                            <v-text-field
+                                class="ma-0 pt-0"
+                                hide-details
+                                outlined
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="12" sm="12">
+                            <label>Confirmar contraseña</label>
+                            <v-text-field
+                                class="ma-0 pt-0"
+                                hide-details
+                                outlined
+                            ></v-text-field>
+                        </v-col>
+                        <v-btn type="submit" class="btn_pink_white_submit" :disabled="!validProfileForm">Guardar</v-btn>
+                    </v-row>
+                </v-card>
+            </v-col>
+        </v-row>
 
         <!-- Profile Image Dialog -->
         <v-dialog v-model="profileImgDialog" max-width="40%">
@@ -200,11 +204,25 @@ export default {
     },
     data: () => ({
         validProfileForm: false,
-        profileForm:{
+        profileForm: {
             info_personal: null,
         },
-        infoPersonal:{
+        infoPersonal: {
         },
+        genders: [
+            { "text": "Femenino", "value": 1 },
+            { "text": "Masculino", "value": 2 },
+            { "text": "Otro", "value": 3 }
+        ],
+        civil_status: [
+            { "text": "Casada(o)", "value": 2 },
+            { "text": "Soltera(o)", "value": 1 },
+            { "text": "Viuda (o)", "value": 3 }
+        ],
+        family_guy: [
+            { "text": "Si", "value": true },
+            { "text": "No", "value": false }
+        ],
         insignia: {
         },
         insignias: [],

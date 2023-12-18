@@ -2,7 +2,7 @@ export default [
     {
         path: '/cuenta/mi-perfil',
         component: () => import(/* webpackChunkName: "auth-signup" */ '../pages/User/ProfilePage.vue'),
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: true, template : 'SidebarTemplate' }
     },
     {
         path: '/cuenta/mis-ordenes',
