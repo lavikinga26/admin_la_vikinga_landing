@@ -5,9 +5,11 @@
     </v-app>
 </template>
 <script>
+import Loader from "../components/shared/Loader.vue"
 export default {
     name: "FullTemplate",
     components: {
+        Loader
     },
     data: (e) => ({
         fab: null,

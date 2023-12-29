@@ -8,7 +8,7 @@
             <v-sheet width="350" class="mx-auto">
                 <v-form
                     ref="loginForm"
-                    class="formlog"
+                    class="formlogBlue"
                     v-model="valid"
                     lazy-validation
                 >
@@ -45,51 +45,6 @@
                 </v-form>
             </v-sheet>
         </v-col>
-    </v-row>
-    <!--<div>
-        <div class="bg_login login-container">
-            <div>
-                <h2 class="tit_h1_white" style="text-align:center; padding-bottom: 20px">UNA VIKINGA NO ABANDONA</h2>
-                <div class="rounded-xl pa-8 login-card-container" style="">
-                    <v-form
-                        ref="loginForm"
-                        v-model="valid"
-                        lazy-validation
-                    >
-                        <div class="sub_h2_white_login" >USUARIO</div>
-                        <v-text-field
-                            solo
-                            type="email"
-                            :rules="emailRules"
-                            v-model="loginForm.email"
-                        ></v-text-field>
-                        <div class="sub_h2_white_login" >CONTRASEÑA</div>
-                        <v-text-field
-                            solo
-                            :append-icon="show_pwd ? 'mdi-eye' : 'mdi-eye-off'"
-                            @click:append="() => (show_pwd = !show_pwd)"
-                            :type="show_pwd ? 'password' : 'text'"
-                            :rules="rules"
-                            v-model="loginForm.password"
-                            @keydown.enter="loginUser"
-                        ></v-text-field>
-                        <div class="d-flex align-center">
-                            <a href="/auth/olvide-contrasena" class="secondary--text" style="font-size: 0.8rem; text-decoration: underline;"><b>OLVIDE MI CONTRASEÑA</b></a>
-                            <v-spacer></v-spacer>
-                            <v-btn
-                                depressed
-                                color="secondary"
-                                class="ml-5"
-                                :disabled="!valid"
-                                @click="loginUser"
-                                >
-                                    ENTRAR
-                            </v-btn>
-                        </div>
-                    </v-form>
-                </div>
-            </div>
-        </div>
         <v-snackbar
             v-model="toast.toast"
             :timeout="toast.timeout"
@@ -98,7 +53,7 @@
             >
             {{ toast.message }}
         </v-snackbar>
-    </div>-->
+    </v-row>
 </template>
 <script>
 export default {
@@ -131,7 +86,7 @@ export default {
         ],
         emailRules: [
             (v) => !!v || 'Campo obligatorio',
-            (v) => /.+@.+\..+/.test(v) || 'Correo Electrónico debe ser válido'
+            (v) => /.+@.+\..+/.test(v) || 'Correo electrónico debe ser válido'
         ],
         //--- End ---
         valid: true,
@@ -175,7 +130,7 @@ export default {
                     }, 3000);
                     //this.$router.go();
                 } catch (e) {
-                    this.showToast('Correo Electrónico y/o contraseña incorrecta',"error");
+                    this.showToast('Correo electrónico y/o contraseña incorrecta',"error");
                     this.$store.commit('loader',false);
                     console.error(e);
                 }

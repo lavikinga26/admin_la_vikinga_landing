@@ -7,6 +7,11 @@ export default [{
   component: () => import(/* webpackChunkName: "apps-email-inbox" */ '@/pages/GymVirtual/pages/AgendaPage.vue'),
   meta: { requiresAuth: true, template: 'SidebarTemplate' }
 },{
+  path: 'clases-grabadas',
+  name: 'clases-grabadas',
+  component: () => import(/* webpackChunkName: "apps-email-inbox" */ '@/pages/GymVirtual/pages/ClasesGrabadasPage.vue'),
+  meta: { requiresAuth: true, template: 'SidebarTemplate' }
+},{
   path: 'calendario',
   name: 'apps-calendario',
   component: () => import(/* webpackChunkName: "apps-email-inbox" */ '@/pages/GymVirtual/pages/CalendarPage.vue'),

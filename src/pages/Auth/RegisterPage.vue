@@ -8,35 +8,35 @@
             <p style="font-family:'Poppins-Regular'; text-align:center;">¿Tienes una cuenta? <a href="/auth/iniciar-sesion">Inicia sesión</a>
             </p>
             <v-sheet width="400" class="mx-auto">
-                <v-form ref="loginForm" class="formlog" v-model="valid" lazy-validation>
+                <v-form ref="loginForm" class="formlogBlue" v-model="valid">
                     <v-row class="mt-3">
                         <v-col cols="12" md="6" class="pa-0 px-1">
                             <label class="text_field_form">Nombre</label>
-                            <v-text-field :rules="requiredRule" outlined class="register_form"></v-text-field>
+                            <v-text-field :rules="requiredRule" v-model="userData.nombre" outlined class="register_form"></v-text-field>
                         </v-col>
                         <v-col cols="12" md="6" class="pa-0 px-1">
                             <label class="text_field_form">Apellidos</label>
-                            <v-text-field :rules="requiredRule" outlined class="register_form"></v-text-field>
+                            <v-text-field :rules="requiredRule" v-model="userData.apellidos" outlined class="register_form"></v-text-field>
                         </v-col>
                         <v-col cols="12" md="12" class="pa-0 px-1">
                             <label class="text_field_form">Teléfono</label>
-                            <vue-tel-input-vuetify outlined label="" placeholder=""></vue-tel-input-vuetify>
+                            <vue-tel-input-vuetify outlined label=""  v-model="userData.telefono" :inputOptions={inputtel} :enabledCountryCode=true :clearable=true validCharactersOnly = "true" placeholder="" v-on:country-changed="countryChanged"></vue-tel-input-vuetify>
                         </v-col>
                         <v-col cols="12" md="6" class="pa-0 px-1">
                             <label class="text_field_form">Tipo de Documento</label>
-                            <v-select class="register_form" :rules="requiredRule" :items="documents" label="Tipo Documento" outlined item-text="name" item-value="id"></v-select>
+                            <v-select class="register_form" :rules="requiredRule" :items="documents" outlined item-text="name" item-value="id" v-model="userData.tipo_doc"></v-select>
                         </v-col>
                         <v-col cols="12" md="6" class="pa-0 px-1">
                             <label class="text_field_form">Nro. Documento</label>
-                            <v-text-field :rules="[docRules]" outlined  class="register_form"></v-text-field>
+                            <v-text-field :rules="[docRules]" outlined  v-model="userData.nro_doc" class="register_form"></v-text-field>
                         </v-col>
                         <v-col cols="12" md="6" class="pa-0 px-1">
                             <label class="text_field_form">Contraseña</label>
-                            <v-text-field class="register_form" outlined type="password" :rules="requiredRule"></v-text-field>
+                            <v-text-field class="register_form" outlined v-model="userData.pwd" type="password" :rules="requiredRule"></v-text-field>
                         </v-col>
                         <v-col cols="12" md="6" class="pa-0 px-1">
                             <label class="text_field_form">Confirmar contraseña</label>
-                            <v-text-field class="register_form" outlined type="password" :rules="requiredRule"></v-text-field>
+                            <v-text-field class="register_form" outlined v-model="userData.pwd_rep" type="password" :rules="requiredRule"></v-text-field>
                         </v-col>
                     </v-row>
                     <v-row>
@@ -47,9 +47,9 @@
                         </v-col>
                         <v-col cols="12" md="6" class="pa-0 px-1">
                             <v-btn class="text_btn_white_title" block depressed color="secondary" :disabled="!valid"
-                            @click="nextStep">
-                            SIGUIENTE<v-icon>mdi-chevron-right</v-icon>
-                        </v-btn>
+                                @click="nextStep">
+                                SIGUIENTE<v-icon>mdi-chevron-right</v-icon>
+                            </v-btn>
                         </v-col>
                     </v-row>
                     
@@ -75,8 +75,13 @@ export default {
         documents: [],
         loginUserDialog: false,
         validLoginForm: false,
+        enabledCountryCode: true,
+        clearablebt:true,
         loginForm: {
             token_name: '',
+        },
+        inputtel: {
+            showDialCode:true
         },
         phone: '',
         cart: [],
@@ -86,13 +91,7 @@ export default {
             timeout: 3000,
             color: "success"
         },
-        order: {
-            country: null,
-            password: '',
-            confirmPassword: '',
-            had_invoice: false,
-            coupon: ''
-        },
+        userData: {},
         requiredRule: [
             v => !!v || 'Campo obligatorio',
         ],
@@ -101,7 +100,6 @@ export default {
             (v) => /.+@.+\..+/.test(v) || 'Correo Electrónico debe ser válido'
         ],
         valid: true,
-
         toast: {
             toast: false,
             message: '',
@@ -115,8 +113,13 @@ export default {
 
     },
     methods: {
+        countryChanged(country) {
+            this.country = country.dialCode;
+            this.userData.telefono = "+"+ country.dialCode;
+        },
         async nextStep() {
-            window.location.replace('/proceso_compra/step2');
+            localStorage.datosUsuario = userData; 
+            window.location.replace('/auth/registrarse');
         },
         docRules(v) {
             if (this.order.id_document_type == 2 && !Number.isInteger(Number(v))) {

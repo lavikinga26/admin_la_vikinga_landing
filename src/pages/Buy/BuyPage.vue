@@ -7,13 +7,13 @@
             <h1 class="title_pink mb-4">EMPECEMOS</h1>
             <p style="font-family:'Poppins-Regular'; text-align:center;">¿Tienes una cuenta? <a href="/auth/iniciar-sesion">Inicia sesión</a></p>
             <v-sheet width="350" class="mx-auto">
-                <v-form ref="loginForm" class="formlog" v-model="valid" lazy-validation>
+                <v-form ref="loginForm" class="formlogBlue" v-model="valid">
                     <div>Email</div>
                     <v-text-field outlined type="email" :rules="emailRules" v-model="loginForm.email"></v-text-field>
                     <div class="text-left mb-4" style="font-family: 'Poppins-Regular';">
                         <v-checkbox> 
                             <div slot='label'>Aceptas los <a href="/auth/olvide-contrasena"
-                            style="color: #000; font-family:'Poppins-Regular';" @click.stop><b>términos y condiciones</b></a></div>
+                            style="color: #000; font-family:'Poppins-Regular';" @click.stop><b>términos y condiciones</b></a> y nuestra <a href="#" style="color: #000; font-family:'Poppins-Regular';"><b>política de privacidad</b></a>.</div>
                         </v-checkbox>
                     </div>
                     <v-btn class="text_btn_white_title" block depressed color="secondary" :disabled="!valid"
@@ -59,7 +59,7 @@ export default {
             (v) => /.+@.+\..+/.test(v) || 'Correo Electrónico debe ser válido'
         ],
         //--- End ---
-        valid: true,
+        valid: false,
 
         toast: {
             toast: false,
@@ -83,7 +83,9 @@ export default {
             }
         },
         async nextStep() {
-            window.location.replace('/auth/registrarse');
+            localStorage.emailRegistro = this.loginForm.email;
+            window.location.replace('/proceso_compra/step2');
+            
         },
     }
 }

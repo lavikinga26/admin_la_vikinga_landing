@@ -34,7 +34,16 @@
                 </v-form>
             </v-sheet>
         </v-col>
-</v-row></template>
+        <v-snackbar
+            v-model="toast.toast"
+            :timeout="toast.timeout"
+            :color="toast.color"
+            dark
+            >
+            {{ toast.message }}
+        </v-snackbar>
+    </v-row>
+</template>
 <script>
 export default {
     

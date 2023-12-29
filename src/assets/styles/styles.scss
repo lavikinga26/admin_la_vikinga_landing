@@ -539,11 +539,6 @@ body{
     text-transform: uppercase!important;
 }
 
-.badge_pink{
-    margin: 10px 10px;
-    border-radius: 4px!important;
-    background: #E7004C;
-}
 
 #inspire {
     min-height: 100vh;
@@ -681,6 +676,7 @@ body{
     transform: translate(50%, -50%);
     font-weight: bold;
     font-size:1.5em!important;
+    border-radius: 4px !important;
 }
 
 .tabs_selector_payment{
@@ -789,6 +785,19 @@ body{
 .btn_outlined_pink .v-btn__content{
     color: #E7004C !important;
     font-size: 2em!important;
+}
+
+.select-clases .v-text-field.v-text-field--enclosed .v-text-field__details,
+.select-clases .v-text-field.v-text-field--enclosed>.v-input__control>.v-input__slot {
+    margin: 0;
+    max-height: 35px;
+    min-height: 35px !important;
+    align-items: center !important;
+    border: 1px solid #293E58!important;
+}
+
+.select-clases .v-text-field__details{
+    display:none!important;
 }
 
 /** FONTS **/
@@ -952,7 +961,28 @@ body{
     text-transform: uppercase !important;
 }
 
+.formlogsel .v-text-field--outlined>.v-input__control>.v-input__slot{
+    min-height: 40px!important;
+}
+
+.formlogsel .v-text-field--enclosed .v-input__append-inner{
+    margin-top: 8px!important;
+}
+
 .formlog .v-text-field--outlined fieldset {
+    color: #D9D9D9 !important;
+}
+
+.formlogsel .theme--light.v-icon, .formlogsel .v-label, .formlogsel .v-select__selection{
+    color: #D9D9D9 !important;
+}
+
+.formlog .theme--light.v-input input{
+    color: #D9D9D9 !important;
+}
+
+.flip-card__bottom[data-v-b6b5360c],
+.flip-card__top[data-v-b6b5360c]{
     color: #D9D9D9 !important;
 }
 

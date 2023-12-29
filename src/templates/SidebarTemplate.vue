@@ -17,7 +17,7 @@
             </v-list>
             <v-divider color="white" class="divider_white"></v-divider>
             <v-list>
-                <v-list-item link to="/gym-virtual/agenda" class="item_menu">
+                <v-list-item link to="/gym-virtual/agenda" class="item_menu" >
                     <v-list-item-icon>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <path d="M6 11.8459V15.8568C6 16.6969 6 17.1173 6.16349 17.4381C6.3073 17.7204 6.5366 17.9496 6.81885 18.0934C7.1394 18.2568 7.55925 18.2568 8.39768 18.2568H15.6023C16.4408 18.2568 16.86 18.2568 17.1805 18.0934C17.4628 17.9496 17.6929 17.7204 17.8367 17.4381C18 17.1176 18 16.6979 18 15.8595V11.8459C18 11.4451 17.9997 11.2446 17.9509 11.0582C17.9077 10.8929 17.8369 10.7365 17.7409 10.5952C17.6327 10.4357 17.4822 10.3035 17.1806 10.0396L13.5806 6.88958C13.0206 6.39962 12.7406 6.15476 12.4255 6.06158C12.1479 5.97947 11.852 5.97947 11.5743 6.06158C11.2595 6.15469 10.9799 6.39932 10.4208 6.88854L6.81958 10.0396C6.51798 10.3035 6.36753 10.4357 6.25928 10.5952C6.16334 10.7365 6.09191 10.8929 6.04873 11.0582C6 11.2446 6 11.4451 6 11.8459Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -26,7 +26,7 @@
                     <v-list-item-title class="font_menu">Mi Gym</v-list-item-title>
                 </v-list-item>
 
-                <v-list-item link to="/gym-virtual/agenda">
+                <v-list-item link to="/gym-virtual/clases-grabadas">
                     <v-list-item-icon>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <path d="M14.625 18H9.375M5 12.6268V7.7735C5 6.80275 5 6.317 5.19074 5.94622C5.35852 5.62008 5.62604 5.3551 5.95532 5.18892C6.32967 5 6.82008 5 7.80017 5H16.2002C17.1803 5 17.6696 5 18.044 5.18892C18.3733 5.3551 18.6417 5.62008 18.8094 5.94622C19 6.31664 19 6.80179 19 7.77066V12.6293C19 13.5982 19 14.0827 18.8094 14.4531C18.6417 14.7792 18.3733 15.0451 18.044 15.2113C17.67 15.4 17.1809 15.4 16.2027 15.4H7.7973C6.81912 15.4 6.3293 15.4 5.95532 15.2113C5.62604 15.0451 5.35852 14.7792 5.19074 14.4531C5 14.0823 5 13.5976 5 12.6268ZM14.1875 10.2L10.25 7.6V12.8L14.1875 10.2Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -74,6 +74,10 @@
                 <v-list-item>
                     <v-list-item-title class="font_menu">{{ business_partner.name }} {{ business_partner.lastname }}</v-list-item-title>
                 </v-list-item>
+                <v-list-item  class="formlog formlogsel">
+                    <v-select :items="levels" v-model="id_level" label="Nivel" item-text="level"
+                    placeholder="Seleciona" item-value="id_level" class="mt-8" color="#ffffff" outlined v-on:change="filterByLevel()"></v-select>
+                </v-list-item>
                 <v-list-item link to="/cuenta/mi-perfil">
                     <v-list-item-icon>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -97,25 +101,44 @@
             <v-scale-transition> 
                 <v-btn
                     fab
-                    v-show="fab"
-                    v-scroll="onScroll"
                     dark
                     fixed
                     bottom
                     right
                     color="secondary"
-                    @click="toTop">
-                    <v-icon>mdi-arrow-up</v-icon>
+                    @click="openDialogRating">
+                    <v-icon>mdi-message</v-icon>
                 </v-btn>
             </v-scale-transition>
         </v-main>
         <loader></loader>
+        <v-dialog v-model="dialogRating" max-width="500px">
+            <v-card>
+            <v-card-title class="font_box_prox_clase justify-center">Déjanos tu opinión</v-card-title>
+            <v-card-text class="justify-center">Del 1 al 5, ¿Que tan satisfech@ estás con El Desafío?<br/><br/>
+                <v-rating
+                    v-model="rating"
+                    background-color="pink lighten-3"
+                    color="pink"
+                    medium
+                ></v-rating><br/>
+                Déjanos tu comentario:
+                <v-text-field label="Comentario" v-model="comentario_rating" outlined></v-text-field>
+            </v-card-text>
+            <v-card-actions class="justify-center">
+                <v-btn class="btn_blue_white" text @click="dialogRating = false">Cancelar</v-btn>
+                <v-btn class="btn_pink_white_submit" text @click="saveRating()">Enviar</v-btn>
+            </v-card-actions>
+            </v-card>
+        </v-dialog>
       </v-app>
 </template>
 <script>
+import Loader from "../components/shared/Loader.vue"
     export default {
         name: "SidebarTemplate",
         components: {
+            Loader
         },
         data: (e) => ({
             fab: null,
@@ -125,6 +148,10 @@
             business_partner: {},
             logged_user: null,
             logged_user_token: null,
+            levels: [],
+            id_level: null,
+            base_url: null,
+            dialogRating: false
         }),
         created() {
             this.getLoggedUser();
@@ -134,6 +161,10 @@
                 this.color = "primary";
                 this.flat = true;
             }
+        },
+        mounted() {
+            let vm = this;
+            vm.loadLevels();
         },
         computed: {
             isLogged() {
@@ -147,6 +178,26 @@
             },
         },
     methods: {
+        async loadLevels(page = 1, per_page = 50, sortDesc = 0, sortBy = '') {
+            let vm = this;
+            try {
+                const response = await this.$API.levels.list('?page=' + page + '&itemsPerPage=' + per_page + '&sortDesc=' + sortDesc + '&sortBy=' + sortBy);
+                this.levels = response.data.data;
+                this.levels.splice(3, 1);
+            } catch (e) {
+                this.loadingTable = false;
+                console.error(e);
+            }
+        },
+        openDialogRating() {
+            this.dialogRating = true;
+        },
+        async filterByLevel() {
+            let vm = this;
+            let id_level = vm.id_level;
+
+            const data = await this.$API.business_partner.updateLevel(id_level);
+        },
         LogoutSession() {
             window.localStorage.clear();
             this.$router.go();
@@ -179,6 +230,8 @@
 
                 const response = await this.$API.business_partner.getPartner(this.logged_user.id);
                 this.business_partner = Object.assign(response.data.data[0]);
+
+                this.id_level = this.business_partner.id_level;
 
                 console.log(this.business_partner);
             }

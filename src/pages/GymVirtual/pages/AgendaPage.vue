@@ -12,25 +12,18 @@
                         class="badge_pink"
                         ></v-badge>
                         <h1 class="text_box_gym align-center justify-center">Torso Intermedio</h1>
+                        <flip-countdown deadline="2023-12-23 00:00:00" class="mt-5"></flip-countdown>
                     </v-card>
 
                     <h2 class="text_box_title mt-4">Rutinas</h2>
-                        <v-row class="rutina_download_tab mt-2 mr-4 ml-1 mb-2">
-                            <v-col cols="8">
-                                <h4 class="font_rutina pt-2 pl-1">RUTINA PARA EL GIMNASIO</h4>
-                            </v-col>
-                            <v-col cols="4">
-                                <v-btn class="white_btn text-center ml-5" prepend-icon="save">Descargar <v-icon size="small">mdi-file-download-outline</v-icon></v-btn>
-                            </v-col>
-                        </v-row>
-                        <v-row class="rutina_download_tab mt-2 mr-4 ml-1 mb-2">
-                            <v-col cols="8">
-                                <h4 class="font_rutina pt-2 pl-1">RUTINA PARA EL GIMNASIO</h4>
-                            </v-col>
-                            <v-col cols="4">
-                                <v-btn class="white_btn text-center ml-5" prepend-icon="save">Descargar <v-icon size="small">mdi-file-download-outline</v-icon></v-btn>
-                            </v-col>
-                        </v-row>
+                    <v-row class="rutina_download_tab mt-2 mr-4 ml-1 mb-2" v-for="(item, n) in filtrarRutinas(downloads_list)" :key="n">
+                        <v-col >
+                            <h4 class="font_rutina pt-2 pl-1">{{ item.title }}</h4>
+                        </v-col>
+                        <v-col >
+                            <v-btn :class="{ 'white_btn text-center': $vuetify.breakpoint.smAndDown, 'white_btn text-center ml-5': $vuetify.breakpoint.mdAndUp }" prepend-icon="save" :href="'https://apiweb.lavikingaoficial.com/api/download-file/' + item.code" target="_blank" style="float:right;">Descargar <v-icon size="small">mdi-file-download-outline</v-icon></v-btn>
+                        </v-col>
+                    </v-row>
 
                     <h2 class="text_box_title mt-4">ÚLTIMAS CLASES GRABADAS</h2>
                     <v-card class="box_gym_virtual" color="#0A2240">
@@ -58,7 +51,7 @@
                     <v-card class="box_gym_virtual" color="#0A2240">
                         <v-row class="pa-3">
                             <v-col cols="12" md="4" sm="12" xs="12">
-                                <v-card height="270" class="box_gym_virtual" :img="require('../../../assets/img/gym_virtual/desafio1.png')" color="#0A2240">
+                                <v-card height="270" class="box_gym_virtual" :img="require('../../../assets/img/gym_virtual/torso_intermedio.png')" color="#0A2240">
                                     <v-badge
                                     color="#E7004C"
                                     content="Mi, 17 - 2pm"
@@ -69,7 +62,7 @@
                                 </v-card>
                             </v-col>
                             <v-col cols="12" md="4" sm="12" xs="12">
-                                <v-card height="270" class="box_gym_virtual" :img="require('../../../assets/img/gym_virtual/desafio2.png')" color="#0A2240">
+                                <v-card height="270" class="box_gym_virtual" :img="require('../../../assets/img/gym_virtual/torso_intermedio.png')" color="#0A2240">
                                     <v-badge
                                     color="#E7004C"
                                     content="Mi, 17 - 2pm"
@@ -80,7 +73,7 @@
                                 </v-card>
                             </v-col>
                             <v-col cols="12" md="4" sm="12" xs="12">
-                                <v-card height="270" class="box_gym_virtual" :img="require('../../../assets/img/gym_virtual/desafio3.png')" color="#0A2240">
+                                <v-card height="270" class="box_gym_virtual" :img="require('../../../assets/img/gym_virtual/torso_intermedio.png')" color="#0A2240">
                                     <v-badge
                                     color="#E7004C"
                                     content="Mi, 17 - 2pm"
@@ -94,13 +87,13 @@
                     </v-card>
 
                     <h2 class="text_box_title mt-4">Registro de Pesos</h2>
-                    <v-card class="box_gym_virtual" color="#0A2240">
+                    <v-card class="box_gym_virtual formlog" color="#0A2240">
                         <v-row class="pa-2">
                             <v-col cols="12">
                                 <h4 class="text_title_registro_pesos">Ejercicio</h4>
                                 <v-select
                                     :items="ejercicios_list"
-                                    v-model="item"
+                                    v-model="ejercicio_selected"
                                     class="select_ejercicios"
                                     outlined
                                 >
@@ -116,17 +109,17 @@
                         <v-row class="pa-2">
                             <v-col cols="6">
                                 <h4 class="text_title_registro_pesos">Peso (KG)</h4>
-                                <v-text-field outlined class="text_peso"></v-text-field>
+                                <v-text-field outlined class="text_peso" color="#293E58"></v-text-field>
                             </v-col>
                             <v-col cols="6">
                                 <h4 class="text_title_registro_pesos">Fecha</h4>
-                                <v-text-field outlined class="text_peso"></v-text-field>
+                                <v-text-field outlined hide-details class="text_peso"  color="#293E58"></v-text-field>
                             </v-col>
                         </v-row>
                         <v-row class="pa-2">
                             <v-col cols="12">
                                 <h4 class="text_title_registro_pesos">Comentarios</h4>
-                                <v-text-field outlined></v-text-field>
+                                <v-text-field outlined color="#293E58"></v-text-field>
                             </v-col>
                             <v-col cols="6">
                                 <v-btn class="text_btn_white_title" block depressed color="secondary">Guardar</v-btn>
@@ -138,7 +131,7 @@
                         </v-row>
                         <v-row>
                             <v-col cols="12">
-            <apexchart type="line" height="350" :options="chartOptions" :series="series"></apexchart>
+                                <apexchart type="line" height="350" style="width:93%!important;" :options="chartOptions" :series="series"></apexchart>
 
                             </v-col>
                         </v-row>
@@ -173,9 +166,12 @@
 import moment from 'moment-timezone'
 import axios from "axios";
 
+import FlipCountdown from 'vue2-flip-countdown';
+
 export default {
     components: {
-        axios
+        axios,
+        FlipCountdown
     },
     data: () => ({
         cabeceras: [
@@ -204,6 +200,7 @@ export default {
         planSections: [],
         carousel: null,
         model: null,
+        ejercicio_selected: 1,
         model2: null,
         months: ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'],
 
@@ -244,6 +241,8 @@ export default {
         clases_grabadas_org: [],
         clases_vivo: [],
         clases_vivo_org: [],
+        downloads_list: [],
+        groupList: [],
         toast: {
             toast: false,
             message: '',
@@ -329,7 +328,7 @@ export default {
         vm.getBaseUrl();
         vm.calendar();
         vm.schedule();
-        vm.loadLevels();
+        vm.getDownloads();
     },
     computed: {
         columns() {
@@ -348,9 +347,42 @@ export default {
             return 1;
         }
     },
+    created() {
+        Array.prototype.groupBy = function (field) {
+            let groupedArr = [];
+            this.forEach(function (e) {
+                //look for an existent group
+                let group = groupedArr.find(g => g['field'] === e[field]);
+                if (group == undefined) {
+                    //add new group if it doesn't exist
+                    group = { field: e[field], groupList: [] };
+                    groupedArr.push(group);
+                }
+                //add the element to the group
+                group.groupList.push(e);
+            });
+
+            return groupedArr;
+        }
+    },
     methods: {
+        filtrarRutinas(groupList) {
+            return groupList.filter((item) => item.name_category == "RUTINAS");
+        },
         showRatingDialog() {
             this.dialogRating = true;
+        },
+        async getDownloads() {
+            this.$store.commit('loader', true);
+            try {
+                const response = await this.$API.business_partner.getDownloads();
+                this.downloads_list = response.data.data;
+                this.groupList = this.downloads_list.groupBy('name_category');
+                this.$store.commit('loader', false);
+            } catch (e) {
+                this.$store.commit('loader', false);
+                console.error(e);
+            }
         },
         async saveRating() {
             try {
