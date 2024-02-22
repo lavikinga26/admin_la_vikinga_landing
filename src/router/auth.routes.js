@@ -43,6 +43,12 @@ export default [
         meta : { template : 'FullTemplate' }
     },
     {
+        path: '/proceso_compra/payment',
+        name: 'payment',
+        component: () => import(/* webpackChunkName: "auth-signup" */ '../pages/Buy/StepPaymentPage.vue'),
+        meta : { template : 'FullTemplate' }
+    },
+    {
         path: '/gym-virtual',
         component: () => import(/* webpackChunkName: "apps-email" */ '../pages/GymVirtual/GymVirtualPage.vue'),
         children: [

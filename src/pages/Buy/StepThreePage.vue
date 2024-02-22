@@ -4,137 +4,159 @@
             <img src="@/assets/img/gym_virtual/login_img.jpg" alt="Imagen Login"  style="width:100%; max-height:100vh;"/>
         </v-col>
         <v-col cols="12" md="6" style="height: 100vh; overflow-y:auto;">
+            <v-sheet class="mx-auto" max-width="390">
+                    <v-stepper
+                    non-linear
+                    value="4"
+                    elevation="0"
+                    >
+                        <v-stepper-header>
+                            <v-stepper-step
+                            complete
+                            step="1"
+                            ></v-stepper-step>
+
+                            <v-divider></v-divider>
+
+                            <v-stepper-step
+                            step="2"
+                            complete
+                            ></v-stepper-step>
+
+                            <v-divider></v-divider>
+
+                            <v-stepper-step 
+                            step="3"
+                            complete
+                            ></v-stepper-step>
+                            <v-divider></v-divider>
+
+                            <v-stepper-step 
+                            step="4"
+                            ></v-stepper-step>
+                            <v-divider></v-divider>
+
+                            <v-stepper-step 
+                            step="5"
+                            ></v-stepper-step>
+                        </v-stepper-header>
+                    </v-stepper>
+                </v-sheet>
             <h1 class="title_pink mt-4 mb-4">DETALLES DE PAGO</h1>
-            <v-container class="mx-auto" style="width:450px">
+            <v-container class="mx-auto" style="max-width:450px">
+                <v-row>
+                    <v-col cols="8">{{ cart[0] ? cart[0].title:'' }}</v-col>
+                    <v-col cols="4">S/ {{ cart[0] ? cart[0].price : '' }}</v-col>
+                </v-row>
+                <v-row>
+                    <v-col cols="8"><b>Descuento</b></v-col>
+                    <v-col cols="4">S/ {{ discount }}</v-col>
+                </v-row>
                 <v-row>
                     <v-col cols="8"><b>Total</b></v-col>
-                    <v-col cols="4"><b>S/ 93</b></v-col>
+                    <v-col cols="4"><b>S/ {{ total }}</b></v-col>
                 </v-row>
                 <hr/>
                 <v-row class="mt-5">
                     <v-col cols="8">
-                        <label class="text_field_form">Cupón de descuento</label>
-                        <v-text-field class="register_form" outlined type="text"></v-text-field>
+                        <v-text-field v-model="coupon" class="register_form" outlined type="text" placeholder="Cupón de descuento" hide-details></v-text-field>
                     </v-col>
-                    <v-col cols="4"><v-btn depressed class="btn_blue_form mt-5" style="bottom:0!important;">APLICAR CUPÓN</v-btn></v-col>
+                    <v-col cols="4"><v-btn depressed class="btn_blue_form mt-5" style="bottom:0!important;margin-top:10px!important;" @click="aplicarCupon()">APLICAR CUPÓN</v-btn></v-col>
                     <v-col cols="12">
-                        <v-checkbox v-model="factura" label="Solicitar factura"></v-checkbox>
+                        <v-checkbox v-model="had_invoice" label="Solicitar factura" hide-details style="margin-top: 0px!important;"></v-checkbox>
                     </v-col>
                 </v-row>
-                <v-row v-if="factura == true">
+                <v-row v-if="had_invoice == true">
                     <v-col cols="6">
                         <label class="text_field_form">RUC</label>
-                        <v-text-field class="register_form" outlined type="text"></v-text-field>
+                        <v-text-field class="register_form" outlined type="text" hide-details></v-text-field>
                     </v-col>
                     <v-col cols="6">
                         <label class="text_field_form">Razón social</label>
-                        <v-text-field class="register_form" outlined type="text"></v-text-field>
+                        <v-text-field class="register_form" outlined type="text" hide-details></v-text-field>
                     </v-col>
                     <v-col cols="12">
                         <label class="text_field_form">Domicilio fiscal</label>
-                        <v-text-field class="register_form" outlined type="text"></v-text-field>
+                        <v-text-field class="register_form" outlined type="text" hide-details></v-text-field>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-radio-group v-model="order.id_payment_method" column color="secondary"
+                        class="mt-0" :rules="requiredRule" v-if="total > 0" style="width: 100%;">
+                        <template v-for="(item, index) in paymentMethods">
+                            <v-card :key="'pm_' + index" class="ma-3 pa-3" v-if="show_transfer == true && item.id == 2" elevation="0" outlined>
+                                <div class="d-flex align-center">
+                                    <div>
+                                        <v-radio :value="item.id" color="secondary"></v-radio>
+                                    </div>
+                                    <div>
+                                        <h4>{{ item.name }}</h4>
+                                        <!--<p style="font-size: 0.8rem; margin-bottom: 0px;">
+                                        {{item.description}}
+                                    </p>-->
+                                        <div style="font-size: 0.8rem; margin-bottom: 0px;"
+                                            v-html="item.description">
+                                        </div>
+                                    </div>
+                                </div>
+                            </v-card>
+                            <v-card :key="'pm_' + index" class="ma-3 pa-3" v-if="item.id != 2" elevation="0" outlined>
+                                <div class="d-flex align-center">
+                                    <div>
+                                        <v-radio :value="item.id" color="secondary"></v-radio>
+                                    </div>
+                                    <div>
+                                        <h4>{{ item.name }}</h4>
+                                        <div style="font-size: 0.8rem; margin-bottom: 0px;" v-html="item.description">
+                                        </div>
+                                    </div>
+                                </div>
+                            </v-card>
+                        </template>
+                    </v-radio-group>
+
+                    <v-radio-group v-model="order.id_payment_method" column color="secondary"
+                        class="mt-0" :rules="requiredRule" v-if="total == 0 || total == 0.00">
+                        <v-card :key="'pm_' + index" class="ma-3 pa-3">
+                            <div class="d-flex align-center">
+                                <div>
+                                    <v-radio value="3" color="secondary"></v-radio>
+                                </div>
+                                <div>
+                                    <h4>GRATIS</h4>
+                                    <!--<p style="font-size: 0.8rem; margin-bottom: 0px;">
+                                        {{item.description}}
+                                    </p>-->
+                                    <div style="font-size: 0.8rem; margin-bottom: 0px;">No se
+                                        requiere un pago para esta orden.</div>
+                                </div>
+                            </div>
+                        </v-card>
+                    </v-radio-group>
+                </v-row>
+                <v-row>
+                    <v-col cols="6">
+                        <v-btn class="text_btn_white_title" block depressed color="secondary" @click="volver()">
+                            <v-icon>mdi-chevron-left</v-icon>VOLVER
+                        </v-btn>
+                    </v-col>
+                    <v-col cols="6">
+                        <v-btn class="text_btn_white_title" block depressed color="secondary"
+                            @click="createOrder()">
+                            SIGUIENTE<v-icon>mdi-chevron-right</v-icon>
+                        </v-btn>
                     </v-col>
                 </v-row>
             </v-container>
-            <v-tabs center-active centered class="tabs_selector_payment" v-model="tab_payment">
-                <v-tab key="1">TARJETA DE CRÉDITO/DÉBITO</v-tab>
-                <v-tab key="2">TRANSFERENCIA BANCARIA</v-tab>
-            </v-tabs>
-            <v-tabs-items v-model="tab_payment">
-                <v-tab-item key="1">
-                    <v-container class="mx-auto" style="width:450px">
-                        <v-row>
-                            <v-col cols="12">
-                                <h2 style="font-size:1em; font-family:'Poppins-Regular';">Pago con tarjetas de crédito/débito</h2> 
-                            </v-col>
-                            <v-col cols="12">
-                                <v-radio-group
-                                    v-model="selected_card"
-                                    column
-                                    color="secondary"
-                                    class="mt-0"
-                                    >
-                                    <template v-for="(item, index) in usercc">
-                                        <v-card :key="index" class="ma-3 pa-3">
-                                            <div class="d-flex align-center">    
-                                                <div>
-                                                    <v-radio
-                                                        :value="item"
-                                                        color="secondary"
-                                                    ></v-radio>
-                                                </div>
-                                            
-                                                <div>
-                                                    <img style="max-width: 40px" src="@/assets/img/icons/visa.png" v-if="item.card_brand == 'Visa'"/>
-                                                    <img style="max-width: 40px" src="@/assets/img/icons/mastercard.png" v-if="item.card_brand == 'Mastercard'"/>
-                                                    <img style="max-width: 40px" src="@/assets/img/icons/amex.png" v-if="item.card_brand == 'Amex'"/>
-                                                </div>
-                                                <div style="margin-left: 20px;">
-                                                    <h4> ****{{ item.last_pan }}</h4>
-                                                    <!--<p style="font-size: 0.8rem; margin-bottom: 0px;">
-                                                    {{item.description}}
-                                                </p>
-                                                <div style="font-size: 0.8rem; margin-bottom: 0px;"
-                                                    v-html="item.card_brand">
-                                                </div>-->
-                                                </div>
-                                            </div>
-                                        </v-card>
-                                    </template>
-                                </v-radio-group>
-                            </v-col>
-                            <v-col cols="12">
-                                <v-btn color="secondary"
-                                    outlined
-                                    class="px-2"
-                                    @click="abrirPayme()"
-                                    v-if="hide_btn == false">
-                                    <span class="ma-3">Nueva Tarjeta</span>
-                                </v-btn>
-                            </v-col>
-                            <v-col cols="12">
-                                <div class="d-flex">
-                                    <div id="demo" class="d-flex"></div>
-                                </div>
-                            </v-col>
-                        </v-row>
-                    </v-container>
-                </v-tab-item>
-                <v-tab-item key="2">
-                    <v-container class="mx-auto" style="width:450px">
-                        <v-row>
-                            <p class="centered_paragraph">Sólo queda realizar la transferencia para iniciar el Desafío.</p>
-                        </v-row>
-                        
-                        <v-row>
-                            <v-col cols="8"><b>Total</b></v-col>
-                            <v-col cols="4"><b>S/ 93</b></v-col>
-                        </v-row>
-                        <hr/>
-                        <v-row>
-                            <v-col cols="12">
-                                <v-file-input label="Imágen comprobante"
-                                    accept="image/png, image/jpeg, image/bmp"
-                                    ref="file"
-                                    @change="onFileChange"
-                                    prepend-icon="mdi-camera"
-                                ></v-file-input>
-                                <v-img :src="img_url"
-                                    contain
-                                    max-height="300"
-                                    max-width="600"
-                                    class="ma-5"
-                                />
-                                <v-btn block dark color="secondary" @click="submitFiles()">
-                                    <v-icon>mdi-tray-arrow-up</v-icon>
-                                    &nbsp;&nbsp;ACTUALIZAR
-                                </v-btn>
-                            </v-col>
-                        </v-row>
-                    </v-container>
-                </v-tab-item>
-            </v-tabs-items>
         </v-col>
+        <v-snackbar
+            v-model="toast.toast"
+            :timeout="toast.timeout"
+            :color="toast.color"
+            dark
+            >
+            {{ toast.message }}
+        </v-snackbar>
     </v-row>
 </template>
 <script>
@@ -142,6 +164,7 @@ export default {
     data: (e) => ({
         model: null,
         plans: [],
+        order: {},
         base_url: '',
         data_config: {},
         tab_payment: "1",
@@ -149,21 +172,175 @@ export default {
         hide_btn: false,
         selected_card: 0,
         usercc: {},
-        user: {}
+        user: {},
+        plan_seleccionado: {},
+        discount: 0,
+        coupon: null,
+        cart: [],
+        toast: {
+            toast: false,
+            message: '',
+            timeout: 3000,
+            color: "success"
+        },
+        paymentMethods: [],
+        total: 0,
+        show_transfer: true,
+        requiredRule: [
+            v => !!v || 'Campo obligatorio',
+        ],
+        had_invoice: false,
+        ruc: "",
+        razon_social: "",
+        dom_fiscal: "",
+        toast: {
+            toast: false,
+            message: '',
+            timeout: 3000,
+            color: "success"
+        },
     }),
+    computed: {
+        subtotal() {
+            let total = 0
+
+            this.cart.forEach((c) => {
+                total += c.quantity * Number(c.price)
+            })
+
+            return total
+        },
+        total() {
+            const total = this.subtotal - this.discount
+
+            return total < 0 ? 0 : total
+        },
+        isLogged() {
+            return this.$store.getters.isLoggedIn;
+        },
+        formTitle() {
+            return this.payment ? 'Detalles de pago' : 'Detalles de orden'
+        },
+
+    },
     mounted() {
         let vm = this;
         vm.slug = this.$route.params.slug;
         vm.getConfiguracion();
-        vm.auth();
         vm.getBaseUrl();
-        vm.list();
-        /** Importamos Pay-me */
-        let paymeScript = document.createElement('script');
-        paymeScript.setAttribute('src', 'https://d23b52o2im4p82.cloudfront.net/flex-capture.min.js');
-        document.head.appendChild(paymeScript);
+        vm.getPaymentMethods();
+        vm.cart.push(JSON.parse(localStorage.getItem('planSeleccionado')));
+        vm.total = vm.cart[0] ? vm.cart[0].price :0;
     },
     methods: {
+        async createOrder() {
+            let vm = this;
+            vm.$store.commit('loader', true);
+            try {
+                let datosUser = JSON.parse(localStorage.getItem("datosUsuario"));
+                vm.order.discount = vm.discount
+                vm.order.total = vm.total
+                vm.order.subtotal = vm.subtotal;
+                vm.order.detail = vm.cart;
+                vm.order.name = datosUser.nombre;
+                vm.order.lastname = datosUser.apellidos;
+                vm.order.email = localStorage.getItem("emailRegistro");
+                vm.order.password = datosUser.pwd;
+                vm.order.nro_doc = datosUser.nro_doc;
+                vm.order.id_document_type = datosUser.tipo_doc;
+                vm.order.phone = datosUser.telefono;
+                vm.order.terms_conditions = 1;
+                vm.order.privacy_policy = 1;
+                vm.order.had_invoice = vm.had_invoice;
+                vm.order.cupon = vm.coupon;
+                vm.order.inv_doc = vm.ruc;
+                vm.order.inv_business_name = vm.razon_social;
+                vm.order.inv_address = vm.dom_fiscal;
+                vm.order.address = "-";
+                vm.order.country = datosUser.country;
+                vm.order.total = vm.total;
+                vm.order.subtotal = parseFloat(vm.total / 1.18).toFixed(2);
+                vm.order.igv = parseFloat(vm.total - (vm.total / 1.18)).toFixed(2);
+                if (datosUser.bp_id != undefined && datosUser.bp_id != "") {
+                    vm.order.bp_id = datosUser.bp_id;
+                    vm.order.bd_id = datosUser.bp_id;
+                }
+                const data = await vm.$API.order.register(vm.order);
+                //console.log(data)
+                vm.openToastAlert(true, 'Orden creada correctamente', 'primary');
+                vm.actions = data.data.data.actions;
+
+                if (!this.isLogged) {
+                    const response = await vm.$API.user.login({
+                        email: vm.order.email,
+                        password: vm.order.password,
+                        token_name: "LaVikinga2021"
+                    });
+                    const user = response.data.data.user;
+                    const token = response.data.data.token;
+                    localStorage.setItem('user_data', JSON.stringify(user));
+                    localStorage.setItem('token', token);
+                }
+
+                if ((vm.actions.payment_status == 'pending') && (vm.actions.payment_external == false)) {
+                    vm.$store.dispatch("cleanCart");
+                    //this.$router.push({ path: '/confirmar-pago/'+vm.actions.hash });
+                    window.location.replace('/confirmar-pago/' + vm.actions.hash);
+                }
+                if ((vm.actions.payment_status == 'pending') && (vm.actions.payment_external == true)) {
+                    //Enviamos a payme
+                    //this.$router.push({ path: '/pago-payme/'+vm.actions.hash });
+                    window.location.replace('/pago-payme/' + vm.actions.hash);
+                }
+
+                if ((vm.actions.payment_status == 'approved') && (vm.actions.payment_external == false)) {
+                    window.location.replace('/orden-completada/' + vm.actions.hash);
+                }
+
+                vm.$store.commit('loader', false);
+            }
+            catch (e) {
+
+                this.$store.commit('loader', false);
+                vm.openToastAlert(true, 'Upps! Ocurrio un error. Vuelve a intentarlo', 'Error');
+                setTimeout(() => {
+                    //this.$router.go();
+                }, 1500);
+                console.log(e.response.data);
+                //this.$router.go();
+            }
+        },
+        async getPaymentMethods() {
+            this.$store.commit('loader', true);
+            try {
+                const data = await this.$API.configuration.getPaymentMethods();
+                this.paymentMethods = data.data.data;
+                let renovacion = this.cart.filter((item) => item.renovacion == 1);
+                if (renovacion.length > 0) {
+                    this.show_transfer = false;
+                }
+                this.$store.commit('loader', false);
+            }
+            catch (e) {
+                this.$store.commit('loader', false);
+                console.error(e);
+            }
+        },
+        volver() {
+            if (this.isLogged) {
+                this.$router.push({ path: '/proceso_compra/step2' });
+            } else {
+                this.$router.push({ path: '/auth/registrarse' });
+            }
+        },
+        showToast(msg, color) {
+            this.toast.color = color;
+            this.toast.message = msg;
+            this.toast.toast = true;
+        },
+        nextStep() {
+            window.location.replace('/proceso_compra/payment');
+        },
         async auth() {
             let vm = this;
             try {
@@ -173,28 +350,6 @@ export default {
                 localStorage.removeItem('user_data');
                 localStorage.removeItem('token');
                 window.location.replace('/auth/iniciar-sesion');
-            }
-        },
-        async authPayment() {
-            let vm = this;
-            vm.$store.commit('loader', true);
-            try {
-                /*console.log("CARD: ");
-                console.log(vm.selected_card);*/
-                vm.selected_card.hash_order = vm.slug;
-                const data_auth = await this.$API.payme.authTransaction(vm.selected_card);
-                let auth_resul = data_auth.data;
-
-                let datos_upd = {};
-                datos_upd.hash_order = vm.slug;
-
-                this.$router.push({ path: '/resultado-pago/' + vm.slug });
-
-                vm.$store.commit('loader', false);
-            }
-            catch (e) {
-                console.error(e);
-                vm.$store.commit('loader', false);
             }
         },
         async getConfiguracion() {
@@ -215,124 +370,12 @@ export default {
                 console.error(e);
             }
         },
-        async list() {
-            let vm = this;
-            try {
-                const data = await this.$API.plans.list();
-                vm.plans = data.data.data;
-                vm.temp_plans = data.data.data;
-                const ucards = await this.$API.payme.getUserCards(vm.user);
-                vm.usercc = ucards.data.data.cards;
-                if (vm.usercc.length == 0) {
-                    this.abrirPayme();
-                }
-
-                vm.$store.commit('loader', false);
+        openToastAlert(open, message, color) {
+            this.toast = {
+                toast: open,
+                message: message,
+                color: color
             }
-            catch (e) {
-                console.error(e);
-                vm.$store.commit('loader', false);
-            }
-        },
-        async reqCallback(response) {
-            try {
-                let vm = this;
-
-                this.card_data = response;
-                //console.log(this.card_data);
-                this.card_data.id_user = this.order.customer.id;
-                const data = await this.$API.payme.saveToken(this.card_data);
-
-                let token_resul = data.data.data;
-
-                if (token_resul.success == true) {
-                    //console.log("TOKEN CREADO");
-
-                    token_resul.ucard.hash_order = vm.slug;
-
-                    const data_auth = await this.$API.payme.authTransaction(token_resul.ucard);
-
-                    this.$router.push({ path: '/resultado-pago/' + vm.slug });
-                    vm.$store.commit('loader', false);
-                    //console.log(data_auth);
-                } else {
-                    alert("Error al generar token.");
-                    vm.$store.commit('loader', false);
-                }
-
-            } catch (e) {
-                //this.$store.commit('loader',false);
-                console.error(e);
-            }
-        },
-
-        startCallback() {
-            let vm = this;
-            vm.$store.commit('loader', true);
-            //console.log("-------Click en pagar-------");
-        },
-
-        errorOnPayCallback() {
-            //console.log("-------Error al momento pagar-------");
-        },
-
-        abrirPayme() {
-            this.hide_btn = true;
-            this.selected_card = 0;
-            /*var tokenRequest = {
-                "action": "tokenize",
-                "transaction": {
-                    "meta": {
-                        "internal_operation_number": Math.floor(Date.now()).toString().substring(7),
-                        "additional_fields": {
-                            "user_id": this.order.customer.id_user
-                        }
-                    }
-                },
-                "card_holder": [
-                    {
-                        "first_name": this.order.customer.name,
-                        "last_name": this.order.customer.lastname,
-                        "email_address": this.order.customer.email,
-                        "identity_document_country": "PER",
-                        "identity_document_type": this.order.customer.document_type.name,
-                        "identity_document_identifier": this.order.customer.nro_doc
-                    }
-                ]
-            };*/
-            var tokenRequest = {
-                "action": "tokenize",
-                "transaction": {
-                    "meta": {
-                        "internal_operation_number": Math.floor(Date.now()).toString().substring(7),
-                        "additional_fields": {
-                            "user_id": 45
-                        }
-                    }
-                },
-                "card_holder": [
-                    {
-                        "first_name": "fabricio",
-                        "last_name": "vela",
-                        "email_address": "fabriciovt@gmail.com",
-                        "identity_document_country": "PER",
-                        "identity_document_type": "DNI",
-                        "identity_document_identifier": "73044100"
-                    }
-                ]
-            };
-
-            //console.log(tokenRequest);
-
-            var token_key = "TvqvXinCnJKvnuHfYRReHlHevWHLL8YXOT38HxvOfWgUaN2gcgxi86xlr6J3YbXB";
-
-            var capture = new FlexCapture({
-                "key": token_key,
-                "payload": tokenRequest,
-                "additionalFields": []
-            });
-
-            capture.init(document.querySelector('#demo'), this.reqCallback, this.startCallback, this.errorOnPayCallback);
         },
     }
 }

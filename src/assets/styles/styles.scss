@@ -5,6 +5,10 @@
 $color: #555555;
 $white: #ffffff;
 
+html{
+    overflow-y: hidden;
+}
+
 @font-face {
     /*font-family: 'Gotham';
     src: url('../fonts/GothamBook.ttf'); */
@@ -521,6 +525,10 @@ body{
     border: 2px solid #293E58!important;
 }
 
+.white_card_border{
+    border: 2px solid #D9D9D9!important;
+}
+
 .box_rutina{
     border-radius: 16px !important;
 }
@@ -605,6 +613,22 @@ body{
     height: 50px!important;
 }
 
+.btn_pink_blue_submit {
+    background: var(--1925-C, #0A2240) !important;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: 'MachProCondBold';
+    font-size: 1.8em !important;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 60px !important;
+    /* 88.889% */
+    text-transform: uppercase !important;
+    color: #fff !important;
+    border-radius: 12px !important;
+    width: 170px !important;
+    height: 50px !important;
+}
+
 .btn_blue_white {
     background: var(--289-C, #0A2240)!important;
     font-feature-settings: 'clig' off, 'liga' off;
@@ -619,8 +643,14 @@ body{
 
 .card_text_bottom{
     position: absolute;
-    bottom: 0;
-    margin-left: 10px;
+    bottom: 7px;
+    margin-left: 12px;
+}
+
+.card_text_bottom_focus {
+    position: absolute;
+    bottom: 30px;
+    margin-left: 12px;
 }
 
 .select_text_color{
@@ -679,12 +709,21 @@ body{
     border-radius: 4px !important;
 }
 
+.badge_pink_class {
+    position: absolute !important;
+    left: 0;
+    transform: translate(10%, 0%);
+    font-weight: bold;
+    font-size: 1.5em !important;
+    border-radius: 4px !important;
+}
+
 .tabs_selector_payment{
-    padding: 20px 140px !important;
+    padding: 5% 20% !important;
 }
 
 .tabs_selector{
-    padding: 20px 147px!important;
+    padding: 20px 137px!important;
 }
 
 .tabs_selector .v-tabs-slider,
@@ -800,6 +839,28 @@ body{
     display:none!important;
 }
 
+.select-clases .v-input__icon{
+    height: 35px!important;
+}
+
+.boton_flotante{
+    display: inline-flex;
+    transform: rotate(-90deg);
+    padding: 10px 15px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 12px 12px 0px 0px;
+    border: 2px solid var(--1925-C, #E7004C);
+    background: var(--1925-C, #E7004C);
+    right:-85px!important;
+    margin-top: 15%!important;
+}
+
+.boton_flotante.v-btn--fixed.v-btn--top{
+    top: 15%!important;
+}
+
 /** FONTS **/
 .text_title_white{
     color: #FFF;
@@ -822,6 +883,28 @@ body{
     text-transform: uppercase!important;
 }
 
+.font_menu_active {
+    color: #E7004C;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: 'MachProCondBold';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    text-transform: uppercase !important;
+}
+
+.text_main_class {
+    color: var(--1925-C, #E7004C);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: 'MachProCondBold';
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 40px;
+    text-transform: uppercase !important;
+}
+
 .text_box_gym{
     color: var(--1925-C, #E7004C);
     text-align: center;
@@ -834,11 +917,35 @@ body{
     text-transform: uppercase!important;
 }
 
+.text_box_gym_sm {
+    color: var(--1925-C, #E7004C);
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: 'MachProCondBold';
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 30px;
+    text-transform: uppercase !important;
+}
+
+.text_box_gym_sm_blue {
+    color: var(--1925-C, #0A2240);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: 'MachProCondBold';
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 30px;
+    text-transform: uppercase !important;
+    padding: 10px;
+}
+
 .text_box_title{
     color: #FFF;
     font-feature-settings: 'clig' off, 'liga' off;
     font-family: 'MachProCondBold';
-    font-size: 20px;
+    font-size: 1.7em;
     font-style: normal;
     font-weight: 500;
     line-height: 20px;
@@ -856,6 +963,18 @@ body{
     text-transform: uppercase !important;
 }
 
+.text_btn_white_border {
+    color: #FFF!important;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: 'MachProCondBold'!important;
+    font-size: 1.5em !important;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    text-transform: uppercase !important;
+    border: 1px solid #fff!important;
+}
+
 .font_box_prox_clase{
     color: var(--1925-C, #E7004C);
     font-feature-settings: 'clig' off, 'liga' off;
@@ -865,6 +984,28 @@ body{
     font-weight: 500;
     line-height: 24px;
     text-transform: uppercase!important;
+}
+
+.font_box_prox_clase_modal {
+    color: var(--1925-C, #E7004C);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: 'MachProCondBold';
+    font-size: 26px!important;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+    text-transform: uppercase !important;
+}
+
+.font_box_prox_clase_white {
+    color: var(--1925-C, #fff);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: 'MachProCondBold';
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+    text-transform: uppercase !important;
 }
 
 .font_rutina{
@@ -923,6 +1064,26 @@ body{
     text-transform: uppercase!important;
 }
 
+.v-pagination__item{
+    font-family: 'MachProCondBold'!important;
+    background: #0A2240!important;
+    border: 1px solid #fff!important;
+    color: #fff!important;
+}
+
+.v-pagination__item.v-pagination__item--active{
+    background-color: rgb(227, 14, 79) !important;
+}
+
+.theme--light.v-pagination .v-pagination__navigation{
+    background: #0A2240!important;
+    border: 1px solid #fff!important;
+}
+
+.v-pagination__navigation .v-icon{
+    color: #fff!important;
+}
+
 .text_plan_title_blue{
     color: var(--289-C, #0A2240);
     font-feature-settings: 'clig' off, 'liga' off;
@@ -934,6 +1095,10 @@ body{
     line-height: 16px;
     /* 100% */
     text-transform: uppercase!important;
+}
+
+.v-messages__wrapper{
+    font-size: .8rem!important;
 }
 
 .text_plan_price_pink {
@@ -986,6 +1151,46 @@ body{
     color: #D9D9D9 !important;
 }
 
+.countdown{
+    background: rgba(255, 255, 255, 0.50);
+    text-align: center;
+    border-radius: 12px;
+    margin: 0px 20px;
+}
+
+.countdown span{
+    font-family: 'MachProCondBold';
+    color: #fff;
+    font-size:3em;
+}
+
+.countdownTxt{
+    font-family: 'Poppins-Regular';
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.tablaplanes tbody {
+    tr:hover {
+        background-color: transparent !important;
+    }
+}
+
+.tablaplanes.theme--light.v-data-table{
+    background-color:transparent!important;
+    color: rgba(255,255,255,0.9)!important;
+}
+
+.v-messages{
+    font-size: 14px!important;
+    font-weight: bold!important;
+}
+
+.v-text-field.v-text-field--enclosed .v-text-field__details{
+    //display:none!important;
+}
+
 @media only screen and (min-width: 960px) {
   .navbar .navbar-nav .nav-item .nav-link {
     padding: 0 0.5em;
@@ -994,11 +1199,22 @@ body{
     border-right: 1px solid #0B152A;
     
   }
+  
+}
+
+@media only screen and (min-width: 1900px) {
+    .countdown{
+        margin:0px 40px;
+    }
 }
 
 @media (max-width: 767px) {
     .btn_pay_cc{
         margin-left: 4em;
+    }
+
+    .tabs_selector {
+        padding: 20px 50px !important;
     }
 }
 
@@ -1142,4 +1358,16 @@ body{
     .subtitulo-clase {
         font-size: 12px !important;
     }
-  }
+
+    .countdown {
+        margin: 0px 0px!important;
+    }
+
+    .countdownTxt{
+        font-size:12px!important;
+    }
+
+    .boton_flotante.v-btn--fixed.v-btn--top{
+        top: 30% !important;
+    }
+}

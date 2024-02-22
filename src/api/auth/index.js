@@ -25,7 +25,22 @@ export default {
         },
         saveAttempt(data){
             return callAuthAPI('post', 'api/v1/gymvirtual/save-attempt', {data: data});
-        }
+        },
+        getActivitiesRecorded(id) {
+            return callAuthAPI('get', 'api/v1/gymvirtual/getActivitiesRecorded/'+id);
+        },
+        getActivitiesUpcoming(id) {
+            return callAuthAPI('get', 'api/v1/gymvirtual/getActivitiesUpcoming/'+id);
+        },
+        getActivitiesRecordedFilters(id_level, id_coach, enfoque, pageNum) {
+            return callAuthAPI('get', 'api/v1/gymvirtual/getActivitiesRecordedFilter/'+id_level+'/'+id_coach+'/'+enfoque+'/'+pageNum);
+        },
+        savePeso(data){
+            return callAuthAPI('post', 'api/v1/pesos/guardarPeso', {data: data});
+        },
+        getPesos(id_bp, id_ejercicio) {
+            return callAuthAPI('get', 'api/v1/pesos/getPesos/'+id_bp+'/'+id_ejercicio);
+        },
     },
 
 
@@ -64,7 +79,9 @@ export default {
         },
         getDownloads(){
             return callAuthAPI('get', 'api/v1/business-partner/downloads');
-            
+        },
+        getDownloadsGym(id_level){
+            return callAuthAPI('get', 'api/v1/business-partner/downloadsgym/'+id_level);
         },
         getLibrary(){
             return callAuthAPI('get', 'api/v1/business-partner/library');

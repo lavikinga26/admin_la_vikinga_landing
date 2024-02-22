@@ -574,20 +574,19 @@ export default {
                 const response = await this.$API.business_partner.getPartner(this.logged_user.id);
                 this.logged_affiliate = response.data.data[0];
                 
-                this.order.bd_id     = this.logged_affiliate.id;
+                this.order.bd_id            = this.logged_affiliate.id;
                 this.order.id_document_type = this.logged_affiliate.id_document_type;
-                this.order.name      = this.logged_affiliate.name;
-                this.order.lastname  = this.logged_affiliate.lastname;
-                this.order.nro_doc   = this.logged_affiliate.nro_doc;
-                this.order.address   = this.logged_affiliate.address;
-                this.order.city    = this.logged_affiliate.city;
-                this.order.email   = this.logged_affiliate.email;
-                this.order.phone   = this.logged_affiliate.phone;
-                this.order.terms_conditions   = this.logged_affiliate.terms_conditions;
+                this.order.name             = this.logged_affiliate.name;
+                this.order.lastname         = this.logged_affiliate.lastname;
+                this.order.nro_doc          = this.logged_affiliate.nro_doc;
+                this.order.address          = this.logged_affiliate.address;
+                this.order.city             = this.logged_affiliate.city;
+                this.order.email            = this.logged_affiliate.email;
+                this.order.phone            = this.logged_affiliate.phone;
+                this.order.terms_conditions = this.logged_affiliate.terms_conditions;
                 this.order.privacy_policy   = this.logged_affiliate.privacy_policy;
-                this.order.country = this.countries_list.find(e => e.id == this.logged_affiliate.id_country);
+                this.order.country          = this.countries_list.find(e => e.id == this.logged_affiliate.id_country);
                 
-
                 this.order.had_invoice = false; //?
             }
         },

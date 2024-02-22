@@ -99,7 +99,9 @@ export default {
         },
 
     }),
-
+    mounted() {
+        this.getLoggedUser();
+    },
     methods:{
         showToast(msg,color){
             this.toast.color = color;
@@ -110,6 +112,10 @@ export default {
             if(localStorage.getItem('token')){
                 this.logged_user = JSON.parse(localStorage.getItem('user_data'));
                 this.logged_user_token = localStorage.getItem('token');
+                if (this.logged_user) {
+                    window.location.replace('/gym-virtual/agenda');
+                }
+                
             }
         },
         async loginUser(){

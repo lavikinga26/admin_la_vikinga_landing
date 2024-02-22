@@ -1,91 +1,180 @@
 <template>
     <div>
-        <v-container>
+        <v-container class="mb-5">
+            <v-row v-if="id_level == null" class="hidden-md-and-down">
+                <v-col cols="12">
+                    <div key="popup_level" class="text-left">
+                        <v-alert type="info" color="#E7004C" elevation="0">
+                            <b>IMPORTANTE:</b> Selecciona tu nivel para mostrarte las mejores opciones de entrenamiento.
+                        </v-alert>
+                    </div>
+                </v-col>
+            </v-row>
             <v-row>
                 <v-col cols="12" xs="12" sm="12" md="6" lg="6">
-                    <h2 class="text_box_title">Próxima Clase</h2>
-                    <v-card :img="require('../../../assets/img/gym_virtual/torso_intermedio.png')" height="300" class="box_gym_virtual" >
+                    <h2 class="text_box_title" v-if="clases_vivo.length >0">Próxima Clase</h2>
+                    <v-card :img="base_url + clases_vivo[0].path+ clases_vivo[0].filename" height="350" class="box_gym_virtual" :href="clases_vivo[0].link_class" target="_blank" v-if="clases_vivo.length > 0">
                         <v-badge
                         color="#E7004C"
-                        content="Mi, 17 - 2pm"
+                        :content="getDateBadge(clases_vivo[0]._date, 'es-ES', clases_vivo[0].hour_class)"
                         inline
-                        class="badge_pink"
+                        class="badge_pink_class"
                         ></v-badge>
-                        <h1 class="text_box_gym align-center justify-center">Torso Intermedio</h1>
-                        <flip-countdown deadline="2023-12-23 00:00:00" class="mt-5"></flip-countdown>
+                        <v-sheet style="background:transparent;">
+                            <v-row>
+                                <v-col cols="4"></v-col>
+                                <v-col cols="7"><h1 class="text_main_class" style="margin-top: 35%; right: 0;">{{ clases_vivo[0].nombreclase }}</h1></v-col>
+                            </v-row>
+                            <v-row class="align-center" v-if="timerOutput.days >=0 && timerOutput.hours >= 0 && timerOutput.minutes >= 0">
+                                <v-col cols="2"> </v-col>
+                                <v-col cols="3" style="text-align: center;">
+                                    <div class="countdown">
+                                        <span>{{ timerOutput.days }}</span>
+                                    </div>
+                                    <span class="countdownTxt">Días</span>
+                                </v-col>
+                                <v-col cols="3" style="text-align: center;">
+                                    <div class="countdown">
+                                        <span>{{ timerOutput.hours }}</span>
+                                    </div>
+                                    <span class="countdownTxt">Horas</span>
+                                </v-col>
+                                <v-col cols="3" style="text-align: center;">
+                                    <div class="countdown">
+                                        <span>{{ timerOutput.minutes }}</span>
+                                    </div>
+                                    <span class="countdownTxt">Minutos</span>
+                                </v-col>
+                            </v-row>
+                            <v-row class="align-center" v-else>
+                                <v-col cols="5"></v-col>
+                                <v-col cols="7">
+                                    <v-btn class="text_btn_white_title" color="secondary">Ingresar a clase</v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-sheet>
                     </v-card>
-
+                    </v-col>
+                    <v-col cols="12" xs="12" sm="12" md="6" lg="6">
+                        <h2 class="text_box_title" v-if="clases_vivo.length > 0">Próximas Clases en vivo</h2>
+                        <v-card class="box_gym_virtual" color="#0A2240" v-if="clases_vivo.length > 0">
+                            <v-row class="pa-3">
+                                <v-col cols="12" md="4" sm="12" xs="12" v-for="(item, n) in clases_vivo.slice(1)" :key="n">
+                                    <v-card height="320" class="box_gym_virtual" :img="base_url + item.path + item.filename" color="#0A2240" :href="item.link_class">
+                                        <v-badge
+                                        color="#E7004C"
+                                        :content="getDateBadge(item._date, 'es-ES', item.hour_class)"
+                                        inline
+                                        class="badge_pink_class"
+                                        ></v-badge>
+                                        <h4 class="font_box_prox_clase card_text_bottom">{{ item.nombreclase }}</h4>
+                                    </v-card>
+                                </v-col>
+                            </v-row>
+                        </v-card>
+                    </v-col>
+                </v-row>
+                    
+                <v-row>
+                    <v-col cols="12" xs="12" sm="12" md="6" lg="6">
                     <h2 class="text_box_title mt-4">Rutinas</h2>
                     <v-row class="rutina_download_tab mt-2 mr-4 ml-1 mb-2" v-for="(item, n) in filtrarRutinas(downloads_list)" :key="n">
-                        <v-col >
-                            <h4 class="font_rutina pt-2 pl-1">{{ item.title }}</h4>
+                        <v-col cols="10">
+                            <a :href="'https://apiweb.lavikingaoficial.com/api/download-file/' + item.code" target="_blank" style="text-decoration: none;"><h4 class="font_rutina pt-2 pl-1">{{ item.title }}</h4></a>
                         </v-col>
-                        <v-col >
-                            <v-btn :class="{ 'white_btn text-center': $vuetify.breakpoint.smAndDown, 'white_btn text-center ml-5': $vuetify.breakpoint.mdAndUp }" prepend-icon="save" :href="'https://apiweb.lavikingaoficial.com/api/download-file/' + item.code" target="_blank" style="float:right;">Descargar <v-icon size="small">mdi-file-download-outline</v-icon></v-btn>
+                        <v-col cols="2">
+                            <v-btn class="white_btn text-center" prepend-icon="save" :href="'https://apiweb.lavikingaoficial.com/api/download-file/' + item.code" target="_blank" style="float:right;"><v-icon size="large">mdi-file-download-outline</v-icon></v-btn>
                         </v-col>
                     </v-row>
 
-                    <h2 class="text_box_title mt-4">ÚLTIMAS CLASES GRABADAS</h2>
+                    <v-row>
+                        <v-col cols="8"><h2 class="text_box_title mt-4">ÚLTIMAS CLASES GRABADAS</h2></v-col>
+                        <v-col cols="4"><router-link to="/gym-virtual/clases-grabadas"><h5 class="mt-4" style="float:right; color: #fff;" >Ver todas<v-icon size="large" style="color: #fff!important;">mdi-chevron-right</v-icon></h5></router-link></v-col>
+                    </v-row>
                     <v-card class="box_gym_virtual" color="#0A2240">
-                        <v-row class="pa-3">
+                        <v-row class="pa-3" v-if="clases_grabadas[0]">
                             <v-col cols="12" md="12" sm="12" xs="12">
-                                <v-card height="400" class="box_rutina" color="#E7004C" :img="require('../../../assets/img/gym_virtual/video.png')"></v-card>
+                                <v-card :img="base_url + clases_grabadas[0].path + clases_grabadas[0].filename" height="300" class="box_gym_virtual" @click="openPlayer(clases_grabadas[0].link_video)">
+                                    <v-badge
+                                        color="#E7004C"
+                                        :content="getDateBadge(clases_grabadas[0]._date, 'es-ES', clases_grabadas[0].hour_class)"
+                                        inline
+                                        class="badge_pink_class"
+                                    ></v-badge>
+                                    <h1 class="font_box_prox_clase card_text_bottom_focus" style="padding-top: 90px!important;">{{ clases_grabadas[0].nombreclase }}</h1>
+                                    <h1 class="font_box_prox_clase_white card_text_bottom" style="padding-top: 90px!important;">{{ clases_grabadas[0].focus }}</h1>
+                                </v-card>
                             </v-col>
                         </v-row>
-                        <v-row class="pa-2">
+                        <v-row class="pa-2 hidden-md-and-down" v-if="clases_grabadas[0]">
                             <v-col cols="12" md="4" sm="12" xs="12">
-                                <v-card min-height="200" class="box_rutina" color="#E7004C" :img="require('../../../assets/img/gym_virtual/video2.png')"></v-card>
+                                <v-card min-height="200" class="box_rutina" color="#E7004C" :img="base_url + clases_grabadas[1].path + clases_grabadas[1].filename" @click="openPlayer(clases_grabadas[1].link_video)">
+                                    <v-badge
+                                        color="#E7004C"
+                                        :content="getDateBadge(clases_grabadas[1]._date, 'es-ES', clases_grabadas[1].hour_class)"
+                                        inline
+                                        class="badge_pink_class"
+                                    ></v-badge>
+                                    <h1 class="font_box_prox_clase card_text_bottom_focus" style="padding-top: 90px!important;">{{ clases_grabadas[1].nombreclase }}</h1>
+                                    <h1 class="font_box_prox_clase_white card_text_bottom" style="padding-top: 90px!important;">{{ clases_grabadas[1].focus }}</h1>
+                                </v-card>
                             </v-col>
-                            <v-col cols="12" md="4" sm="12" xs="12">
-                                <v-card min-height="200" class="box_rutina" color="#E7004C" :img="require('../../../assets/img/gym_virtual/video3.png')"></v-card>
+                            <v-col cols="12" md="4" sm="12" xs="12" v-if="clases_grabadas[0]">
+                                <v-card min-height="200" class="box_rutina" color="#E7004C" :img="base_url + clases_grabadas[2].path + clases_grabadas[2].filename" @click="openPlayer(clases_grabadas[2].link_video)">
+                                    <v-badge
+                                        color="#E7004C"
+                                        :content="getDateBadge(clases_grabadas[2]._date, 'es-ES', clases_grabadas[2].hour_class)"
+                                        inline
+                                        class="badge_pink_class"
+                                    ></v-badge>
+                                    <h1 class="font_box_prox_clase card_text_bottom_focus" style="padding-top: 90px!important;">{{ clases_grabadas[2].nombreclase }}</h1>
+                                    <h1 class="font_box_prox_clase_white card_text_bottom" style="padding-top: 90px!important;">{{ clases_grabadas[2].focus }}</h1>
+                                </v-card>
                             </v-col>
-                            <v-col cols="12" md="4" sm="12" xs="12">
-                                <v-card min-height="200" class="box_rutina" color="#E7004C" :img="require('../../../assets/img/gym_virtual/video4.png')"></v-card>
+                            <v-col cols="12" md="4" sm="12" xs="12" v-if="clases_grabadas[0]">
+                                <v-card min-height="200" class="box_rutina" color="#E7004C" :img="base_url + clases_grabadas[3].path + clases_grabadas[3].filename" @click="openPlayer(clases_grabadas[3].link_video)">
+                                    <v-badge
+                                        color="#E7004C"
+                                        :content="getDateBadge(clases_grabadas[3]._date, 'es-ES', clases_grabadas[3].hour_class)"
+                                        inline
+                                        class="badge_pink_class"
+                                    ></v-badge>
+                                    <h1 class="font_box_prox_clase card_text_bottom_focus" style="padding-top: 90px!important;">{{ clases_grabadas[3].nombreclase }}</h1>
+                                    <h1 class="font_box_prox_clase_white card_text_bottom" style="padding-top: 90px!important;">{{ clases_grabadas[3].focus }}</h1>
+                                </v-card>
+                            </v-col>
+
+                        </v-row>
+                        <v-row class="pa-2 hidden-md-and-up">
+                            <v-col cols="6" md="4" sm="6" xs="6" v-if="clases_grabadas[0]">
+                                <v-card min-height="200" class="box_rutina" color="#E7004C" :img="base_url + clases_grabadas[1].path + clases_grabadas[1].filename" @click="openPlayer(clases_grabadas[1].link_video)">
+                                    <v-badge
+                                            color="#E7004C"
+                                            :content="getDateBadge(clases_grabadas[1]._date, 'es-ES', clases_grabadas[1].hour_class)"
+                                            inline
+                                            class="badge_pink_class"
+                                        ></v-badge>
+                                    <h1 class="font_box_prox_clase card_text_bottom_focus" style="padding-top: 90px!important;">{{ clases_grabadas[1].nombreclase }}</h1>
+                                    <h1 class="font_box_prox_clase_white card_text_bottom" style="padding-top: 90px!important;">{{ clases_grabadas[1].focus }}</h1>
+                                </v-card>
+                            </v-col>
+                            <v-col cols="6" md="4" sm="6" xs="6" v-if="clases_grabadas[0]">
+                                <v-card min-height="200" class="box_rutina" color="#E7004C" :img="base_url + clases_grabadas[2].path + clases_grabadas[2].filename" @click="openPlayer(clases_grabadas[2].link_video)">
+                                    <v-badge
+                                            color="#E7004C"
+                                            :content="getDateBadge(clases_grabadas[2]._date, 'es-ES', clases_grabadas[2].hour_class)"
+                                            inline
+                                            class="badge_pink_class"
+                                        ></v-badge>
+                                    <h1 class="font_box_prox_clase card_text_bottom_focus" style="padding-top: 90px!important;">{{ clases_grabadas[2].nombreclase }}</h1>
+                                    <h1 class="font_box_prox_clase_white card_text_bottom" style="padding-top: 90px!important;">{{ clases_grabadas[2].focus }}</h1>
+                                </v-card>
                             </v-col>
 
                         </v-row>
                     </v-card>
                 </v-col>
                 <v-col cols="12" xs="12" sm="12" md="6" lg="6">
-                    <h2 class="text_box_title">Próximas Clases en vivo</h2>
-                    <v-card class="box_gym_virtual" color="#0A2240">
-                        <v-row class="pa-3">
-                            <v-col cols="12" md="4" sm="12" xs="12">
-                                <v-card height="270" class="box_gym_virtual" :img="require('../../../assets/img/gym_virtual/torso_intermedio.png')" color="#0A2240">
-                                    <v-badge
-                                    color="#E7004C"
-                                    content="Mi, 17 - 2pm"
-                                    inline
-                                    class="badge_pink"
-                                    ></v-badge>
-                                    <h4 class="font_box_prox_clase card_text_bottom">Torso Intermedio</h4>
-                                </v-card>
-                            </v-col>
-                            <v-col cols="12" md="4" sm="12" xs="12">
-                                <v-card height="270" class="box_gym_virtual" :img="require('../../../assets/img/gym_virtual/torso_intermedio.png')" color="#0A2240">
-                                    <v-badge
-                                    color="#E7004C"
-                                    content="Mi, 17 - 2pm"
-                                    inline
-                                    class="badge_pink"
-                                    ></v-badge>
-                                    <h4 class="font_box_prox_clase card_text_bottom">Torso Intermedio</h4>
-                                </v-card>
-                            </v-col>
-                            <v-col cols="12" md="4" sm="12" xs="12">
-                                <v-card height="270" class="box_gym_virtual" :img="require('../../../assets/img/gym_virtual/torso_intermedio.png')" color="#0A2240">
-                                    <v-badge
-                                    color="#E7004C"
-                                    content="Mi, 17 - 2pm"
-                                    inline
-                                    class="badge_pink"
-                                    ></v-badge>
-                                    <h4 class="font_box_prox_clase card_text_bottom">Torso Intermedio</h4>
-                                </v-card>
-                            </v-col>
-                        </v-row>
-                    </v-card>
-
                     <h2 class="text_box_title mt-4">Registro de Pesos</h2>
                     <v-card class="box_gym_virtual formlog" color="#0A2240">
                         <v-row class="pa-2">
@@ -93,9 +182,10 @@
                                 <h4 class="text_title_registro_pesos">Ejercicio</h4>
                                 <v-select
                                     :items="ejercicios_list"
-                                    v-model="ejercicio_selected"
+                                    v-model="peso.ejercicio_selected"
                                     class="select_ejercicios"
                                     outlined
+                                    v-on:change="getPesos()"
                                 >
                                     <template slot="selection" slot-scope="data">
                                         <span :class="data.item.textColor">{{ data.item.text }}</span>
@@ -109,30 +199,48 @@
                         <v-row class="pa-2">
                             <v-col cols="6">
                                 <h4 class="text_title_registro_pesos">Peso (KG)</h4>
-                                <v-text-field outlined class="text_peso" color="#293E58"></v-text-field>
+                                <v-text-field v-model="peso.peso_kg" outlined class="text_peso" color="#293E58"></v-text-field>
                             </v-col>
                             <v-col cols="6">
                                 <h4 class="text_title_registro_pesos">Fecha</h4>
-                                <v-text-field outlined hide-details class="text_peso"  color="#293E58"></v-text-field>
+                                <v-menu
+                                    v-model="menuTestDate"
+                                    :close-on-content-click="false"
+                                    :nudge-right="-10"
+                                    transition="scale-transition"
+                                    offset-y
+                                    min-width="auto">
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-text-field
+                                            v-model="formatTestDate"
+                                            v-bind="attrs"
+                                            v-on="on"
+                                            readonly
+                                            outlined
+                                            color="#ffffff"
+                                            class="text_peso"
+                                        ></v-text-field>
+                                    </template>
+                                    <v-date-picker outlined hide-details v-model="peso.date" color="#293E58" @input="menuTestDate = false" locale="es-ES"></v-date-picker>
+                                </v-menu>
                             </v-col>
                         </v-row>
                         <v-row class="pa-2">
                             <v-col cols="12">
                                 <h4 class="text_title_registro_pesos">Comentarios</h4>
-                                <v-text-field outlined color="#293E58"></v-text-field>
+                                <v-text-field v-model="peso.comentarios" outlined color="#293E58"></v-text-field>
                             </v-col>
                             <v-col cols="6">
-                                <v-btn class="text_btn_white_title" block depressed color="secondary">Guardar</v-btn>
+                                <v-btn class="text_btn_white_title" block depressed color="secondary" @click="savePeso()">Añadir Registro</v-btn>
                                 
                             </v-col>
                             <v-col cols="6">
-                                <v-btn class="text_btn_white_title" block depressed color="primary" @click="registroPopup = true">Ver Registro</v-btn>
+                                <v-btn class="text_btn_white_border" block depressed outlined @click="registroPopup = true">Ver Registros</v-btn>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col cols="12">
                                 <apexchart type="line" height="350" style="width:93%!important;" :options="chartOptions" :series="series"></apexchart>
-
                             </v-col>
                         </v-row>
                     </v-card>
@@ -159,21 +267,93 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
+
+        <v-dialog
+            v-model="editarRegistro"
+            activator="parent"
+            width="auto"
+            >
+            <v-card>
+                <v-card-text>
+                    <v-row class="pa-2">
+                        <v-col cols="6">
+                            <h4 class="text_title_registro_pesos">Peso (KG)</h4>
+                            <v-text-field v-model="peso_edit.peso_kg" outlined class="text_peso" color="#293E58"></v-text-field>
+                        </v-col>
+                        <v-col cols="6">
+                            <h4 class="text_title_registro_pesos">Fecha</h4>
+                            <v-menu
+                                v-model="menuTestDate"
+                                :close-on-content-click="false"
+                                :nudge-right="-10"
+                                transition="scale-transition"
+                                offset-y
+                                min-width="auto">
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-text-field
+                                        v-model="formatTestDate"
+                                        v-bind="attrs"
+                                        v-on="on"
+                                        readonly
+                                        outlined
+                                        color="#ffffff"
+                                        class="text_peso"
+                                    ></v-text-field>
+                                </template>
+                                <v-date-picker outlined hide-details v-model="peso_edit.date" color="#293E58" @input="menuTestDate = false" locale="es-ES"></v-date-picker>
+                            </v-menu>
+                        </v-col>
+                    </v-row>
+                    <v-row class="pa-2">
+                        <v-col cols="12">
+                            <h4 class="text_title_registro_pesos">Comentarios</h4>
+                            <v-text-field v-model="peso_edit.comentarios" outlined color="#293E58"></v-text-field>
+                        </v-col>
+                        <v-col cols="12">
+                            <v-btn class="text_btn_white_title" block depressed color="secondary" @click="savePeso()">Editar Registro</v-btn>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12">
+                            <apexchart type="line" height="350" style="width:93%!important;" :options="chartOptions" :series="series"></apexchart>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+        <v-dialog transition="dialog-bottom-transition" max-width="900" v-model="dialogPlayer">
+            <v-card style="background: #000!important;">
+                <v-card-text class="text-center d-flex align-center pt-5 justify-center" v-if="dialogPlayer">
+                    <iframe :src="now_playing" width="900" height="400" frameborder="0"
+                        allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                </v-card-text>
+                <v-card-actions class="justify-end">
+                    <v-btn depressed @click="dialogPlayer = false" color="error">Cerrar</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
 <script>
 import moment from 'moment-timezone'
 import axios from "axios";
-
-import FlipCountdown from 'vue2-flip-countdown';
-
 export default {
     components: {
-        axios,
-        FlipCountdown
+        axios
     },
     data: () => ({
+        base_url: "",
+        menuTestDate: false,
+        editarRegistro: false,
+        peso: {
+            date: null,
+            ejercicio_selected: 1,
+            peso_kg: null,
+            comentarios: ""
+        },
+        peso_edit: {},
         cabeceras: [
             {
                 text: 'Ejercicio',
@@ -183,25 +363,18 @@ export default {
             },
             { text: 'Fecha', value: 'fecha' },
             { text: 'Peso (kg)', value: 'peso' },
-            { text: 'Comentarios', value: 'comentarios' },
-            { text: 'Acciones', value: 'acciones' }
+            { text: 'Comentarios', value: 'comentarios' }
         ],
-        registrosTabla: [
-            {
-                ejercicio: 'Back Squat',
-                fecha: "01/12/2023",
-                peso: 6.0,
-                comentarios: "Aumentar peso proxima semana",
-                acciones: ""
-            }
-        ],
+        registrosTabla: [],
         model: null,
         planMonths: [],
         planSections: [],
         carousel: null,
         model: null,
+        now_playing: null,
         ejercicio_selected: 1,
         model2: null,
+        dialogPlayer: false,
         months: ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'],
 
         dates: [],
@@ -221,7 +394,6 @@ export default {
         colors: ['#0281a5', '#0B233F', '#E30E4F'],
         id_level: null,
         dialog: false,
-        //iframe: '<iframe src=\"https://player.vimeo.com/video/393999309?h=0cd4c9c103&amp;app_id=122963\" width=\"426\" height=\"240\" frameborder=\"0\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen title=\"Creating Video With Your Phone: Getting Started\"></iframe>'
         currrent_activity: {
             iframe: '',
             name: '',
@@ -254,7 +426,7 @@ export default {
         comentario_rating: '',
         rating: null,
         ejercicios_list:[
-            { text: "Back Squad", value: 1, textColor: "select_text_color" },
+            { text: "Back Squat", value: 1, textColor: "select_text_color" },
             { text: "Front Squat", value: 2, textColor: "select_text_color" },
             { text: "Sumo Squat", value: 3, textColor: "select_text_color" },
             { text: "Peso Muerto", value: 4, textColor: "select_text_color" },
@@ -266,14 +438,13 @@ export default {
             { text: "Remo con Barra", value: 10, textColor: "select_text_color" },
         ],
         item: null,
-
-
         series: [{
             name: "KG",
             data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
         }],
         chartOptions: {
             chart: {
+                background: '#0A2240',
                 height: 350,
                 type: 'line',
                 zoom: {
@@ -317,18 +488,18 @@ export default {
                 },
             }
         },
+        countDownToTime: null,
+        timerOutput: null
     }),
     mounted() {
-        moment.locale('es');
-        this.actual_date = new Date();
         let vm = this;
-        vm.auth();
+        moment.locale('es');
         vm.$store.commit('loader', true);
-
+        this.actual_date = new Date();
         vm.getBaseUrl();
-        vm.calendar();
-        vm.schedule();
-        vm.getDownloads();
+        vm.auth();
+        vm.$store.commit('loader', false);
+        setInterval(() => { this.startTimer() }, 1000);
     },
     computed: {
         columns() {
@@ -345,7 +516,15 @@ export default {
             }
 
             return 1;
-        }
+        },
+        formatTestDate: {
+            get: function () {
+                return this.formatDate(this.peso.date);
+            },
+            set: function (newValue) {
+                return this.formatDate(newValue);
+            }
+        },
     },
     created() {
         Array.prototype.groupBy = function (field) {
@@ -366,6 +545,84 @@ export default {
         }
     },
     methods: {
+        async getPesos() {
+            var vm = this;
+            vm.registrosTabla = [];
+            this.$store.commit('loader', true);
+            try {
+                const response = await this.$API.gymVirtual.getPesos(this.user.bp_id, this.peso.ejercicio_selected);
+                let pesos = response.data.data;
+                pesos.sort(function (a, b) {
+                    return new Date(a.date) - new Date(b.date)
+                });
+                let fechasArr = [];
+                let pesosArr = [];
+                var find_ejercicio = vm.ejercicios_list.find(c => c.value == this.peso.ejercicio_selected);
+                pesos.forEach(function (peso) {
+                    let fechaformat = vm.formatDate(peso.date);
+                    fechasArr.push(fechaformat);
+                    pesosArr.push(peso.peso);
+                    let nuevaFila = {
+                        ejercicio: find_ejercicio.text,
+                        fecha: fechaformat,
+                        peso: peso.peso,
+                        comentarios: peso.comentario
+                    };
+                    vm.registrosTabla.push(nuevaFila);
+                });
+
+                this.series = [{
+                    data: pesosArr
+                }]
+                this.chartOptions = {
+                    ...this.chartOptions, ...{
+                        xaxis: {
+                            categories: fechasArr
+                        }
+                    }
+                }
+                this.$store.commit('loader', false);
+            } catch (e) {
+                this.$store.commit('loader', false);
+                console.error(e);
+            }
+        },
+        formatDate(date) {
+            if (!date) return null
+
+            const [year, month, day] = date.split('-')
+            return `${day}/${month}/${year}`
+        },
+        async getLoggedUser() {
+            if (localStorage.getItem('token')) {
+                this.logged_user = JSON.parse(localStorage.getItem('user_data'));
+                this.logged_user_token = localStorage.getItem('token');
+
+                const response = await this.$API.business_partner.getPartner(this.logged_user.id);
+                this.business_partner = Object.assign(response.data.data[0]);
+                this.id_level = this.business_partner.id_level;
+                this.getActivitiesRecordedFilters();
+            }
+        },
+        startTimer () {
+            const timeNow = new Date().getTime();
+            const timeDifference = this.countDownToTime - timeNow;
+            const millisecondsInOneSecond = 1000;
+            const millisecondsInOneMinute = millisecondsInOneSecond * 60;
+            const millisecondsInOneHour = millisecondsInOneMinute * 60;
+            const millisecondsInOneDay = millisecondsInOneHour * 24;
+            const differenceInDays = timeDifference / millisecondsInOneDay;
+            const remainderDifferenceInHours = (timeDifference % millisecondsInOneDay) / millisecondsInOneHour;
+            const remainderDifferenceInMinutes = (timeDifference % millisecondsInOneHour) / millisecondsInOneMinute;
+            const remainderDifferenceInSeconds = (timeDifference % millisecondsInOneMinute) / millisecondsInOneSecond;
+            const remainingDays = Math.floor(differenceInDays);
+            const remainingHours = Math.floor(remainderDifferenceInHours);
+            const remainingMinutes = Math.floor(remainderDifferenceInMinutes);
+            const remainingSeconds = Math.floor(remainderDifferenceInSeconds);
+            this.timerOutput = {
+                days: remainingDays, hours: remainingHours, minutes: remainingMinutes, seconds: remainingSeconds
+            };
+        },
         filtrarRutinas(groupList) {
             return groupList.filter((item) => item.name_category == "RUTINAS");
         },
@@ -375,7 +632,7 @@ export default {
         async getDownloads() {
             this.$store.commit('loader', true);
             try {
-                const response = await this.$API.business_partner.getDownloads();
+                const response = await this.$API.business_partner.getDownloadsGym(this.id_level);
                 this.downloads_list = response.data.data;
                 this.groupList = this.downloads_list.groupBy('name_category');
                 this.$store.commit('loader', false);
@@ -384,23 +641,27 @@ export default {
                 console.error(e);
             }
         },
-        async saveRating() {
+        async savePeso() {
+            this.$store.commit('loader', true);
             try {
-                let rating = {
-                    stars: this.rating,
-                    comentario: this.comentario_rating
+                this.peso.bp_id = this.user.bp_id;
+                const data = await this.$API.gymVirtual.savePeso(this.peso);
+                this.peso = {
+                    date: null,
+                    ejercicio_selected: this.peso.ejercicio_selected,
+                    peso_kg: null,
+                    comentarios: ""
                 };
-                const data = await this.$API.rating.saveRating(rating);
-
-
-                this.dialogRating = false;
-                this.showToast("Gracias por tus comentarios!", "green");
-
+                this.$store.commit('loader', false);
+                this.showToast("Registro guardado correctamente!", "green");
+                this.getPesos();
             }
             catch (e) {
+                this.$store.commit('loader', false);
                 console.error(e);
             }
         },
+        
         async saveAttempts(activity, date, indx) {
             try {
                 this.current_date.activities[indx].sessions.push(1);
@@ -423,6 +684,10 @@ export default {
                 if (this.user.id_level != null) {
                     this.id_level = this.user.id_level;
                 }
+                vm.getActivitiesRecorded();
+                vm.getActivitiesUpcoming();
+                vm.getPesos();
+                vm.getDownloads();
                 this.userPlans = response.data.plans;
                 let fecha_actual = new Date();
                 this.userPlans.map(function (item) {
@@ -436,6 +701,7 @@ export default {
                         vm.show_descarga_plan = true;
                     }
                 });
+                var planes = this.userPlans;
             } catch (e) {
                 localStorage.removeItem('user_data');
                 localStorage.removeItem('token');
@@ -450,55 +716,6 @@ export default {
                 _year: moment().format('YYYY')
             };
             vm.model2 = vm.planMonths.findIndex((element) => element._month == vm.current_month._month);
-        },
-        async calendar() {
-            let vm = this;
-            try {
-                const data = await this.$API.gymVirtual.calendar();
-                //console.log(data.data)
-                vm.planMonths = data.data.data;
-                vm.getMonth()
-                vm.$store.commit('loader', false);
-            }
-            catch (e) {
-                console.error(e);
-                vm.$store.commit('loader', false);
-            }
-        },
-        getDate() {
-            let vm = this;
-
-            vm.current_date = {
-                dat: moment().format('YYYY-MM-DD'),
-                week: moment().format('W'),
-                name: moment().format('dddd DD'),
-                activities: []
-            }
-            vm.model = vm.planSections.findIndex((element) => element.dat == vm.current_date.dat);
-            //vm.current_date = moment().format('YYYY-MM-DD');
-            vm.current_date.activities = vm.planSections[vm.model].activities;
-            vm.original_activities = vm.current_date.activities;
-            let mes_actual = this.planSectionsFilter();
-            vm.model = mes_actual.findIndex((element) => element.dat == vm.current_date.dat);
-
-            let clases_vivo = vm.current_date.activities.filter((element) => (element.link_video == null));
-
-            vm.total_clases_vivo = vm.current_date.activities.length - clases_vivo.length;
-
-            vm.total_clases_grabadas = clases_vivo.length;
-
-            vm.clases_grabadas = vm.current_date.activities.filter((element) => (element.link_video != null));
-            vm.clases_grabadas_org = vm.clases_grabadas;
-
-            vm.clases_vivo = vm.current_date.activities.filter((element) => (element.link_video == null));
-            vm.clases_vivo_org = vm.clases_vivo;
-
-            if (vm.id_level != null) {
-                vm.clases_grabadas = vm.clases_grabadas_org.filter((element) => ((element.id_level == vm.id_level || element.id_level == "4") && element.link_video != null));
-
-                vm.clases_vivo = vm.clases_vivo_org.filter((element) => ((element.id_level == vm.id_level || element.id_level == "4") && element.link_video == null));
-            }
-
         },
         async filterByLevel() {
             let vm = this;
@@ -561,28 +778,6 @@ export default {
             return this.planSections.filter((item) => item.month == this.current_month._month);
         },
 
-        getActivities(indx, date) {
-            let vm = this;
-            this.model = indx;
-            this.current_date = date;
-
-            let clases_vivo = vm.current_date.activities.filter((element) => (element.link_video != null));
-
-            vm.total_clases_vivo = vm.current_date.activities.length - clases_vivo.length;
-
-            vm.total_clases_grabadas = clases_vivo.length;
-            vm.clases_grabadas = vm.current_date.activities.filter((element) => (element.link_video != null));
-            vm.clases_grabadas_org = vm.clases_grabadas;
-
-            vm.clases_vivo = vm.current_date.activities.filter((element) => (element.link_video == null));
-            vm.clases_vivo_org = vm.clases_vivo;
-            if (vm.id_level != null) {
-                vm.clases_grabadas = vm.clases_grabadas_org.filter((element) => ((element.id_level == vm.id_level || element.id_level == "4") && element.link_video != null));
-
-                vm.clases_vivo = vm.clases_vivo_org.filter((element) => ((element.id_level == vm.id_level || element.id_level == "4") && element.link_video == null));
-            }
-
-        },
 
         showToast(msg, color) {
             this.toast.color = color;
@@ -592,11 +787,6 @@ export default {
 
         //--------VIDEO-----------
         getVideoActivity(activity) {
-            /*axios.get('https://vimeo.com/api/oembed.json?url='+'https://vimeo.com/393999309').then(function(data) {
-                console.log(data.data)
-            }.bind(this)).catch(function(e) {
-                this.showToast(e.response.data.message,"red");
-            });*/
             this.currrent_activity = {
                 iframe: activity.link_video,
                 name: activity.name,
@@ -615,7 +805,6 @@ export default {
             } else {
                 window.open(nivel[0].url_plan);
             }
-
         },
 
         isOnlive(date, hour) {
@@ -627,7 +816,38 @@ export default {
 
             let response = (fecha_class <= now && fecha_class_2 >= now);
             return response;
+        },
+
+        async getActivitiesRecorded() {
+            const data = await this.$API.gymVirtual.getActivitiesRecorded(this.id_level);
+            let clasesGrabadas = data.data.data;
+            this.clases_grabadas = clasesGrabadas;
+        },
+
+        async getActivitiesUpcoming() {
+            const data = await this.$API.gymVirtual.getActivitiesUpcoming(this.id_level);
+            let clasesVivo = data.data.data;
+            this.clases_vivo = clasesVivo;
+            let fecha = clasesVivo[0]._date;
+            let hora = clasesVivo[0].hour_class;
+            let fullDatetime = fecha+" "+hora+":00";
+            this.countDownToTime = new Date(fullDatetime).getTime();
+        },
+
+        getDateBadge(dateStr, locale, hour)
+        {
+            var date = new Date(dateStr + " " + hour + ":00");
+            let fecha = date.toLocaleDateString(locale, { weekday: 'short', timeZone: 'America/Lima' });
+            let month = date.toLocaleDateString(locale, { month: 'short', timeZone: 'America/Lima' });
+            let dia = fecha.charAt(0).toUpperCase() + fecha.slice(1);
+            let time = date.toLocaleString(locale, { hour: 'numeric', hour12: true });
+            return dia + ", "+ date.getDate().toString().padStart(2, '0') + " - "+ time;
+        },
+        openPlayer(video_link) {
+            this.now_playing = video_link;
+            this.dialogPlayer = true;
         }
+
     }
 }
 </script>

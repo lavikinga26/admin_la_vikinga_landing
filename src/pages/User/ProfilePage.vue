@@ -25,7 +25,7 @@
                         <v-row class="px-5">
                             <v-col>
                             <div class="mb-2">
-                                <v-simple-table>
+                                <v-simple-table class="tablaplanes">
                                 <template v-slot:default>
                                     <thead>
                                     <tr>
@@ -110,7 +110,7 @@
                         <v-row class="px-5">
                             <v-col>
                             <div class="mb-2">
-                                <v-simple-table>
+                                <v-simple-table class="tablaplanes">
                                 <template v-slot:default>
                                     <thead>
                                     <tr>
@@ -200,6 +200,27 @@
                 </v-tab-item>-->
             </v-tabs-items>
         </v-container>
+        <v-dialog v-model="dialogDelete" max-width="500px">
+            <v-card>
+            <v-card-title>Cancelar Suscripción</v-card-title>
+            <v-card-text>Estas a punto de cancelar la renovación automatica de tu plan. Luego del {{ exp_date_pop | formatDate }} no tendrás más acceso a la plataforma. <br/><br/>
+                Si deseas, puedes dejar un comentario explicando el motivo de la cancelación: <br/><br/>
+                <v-text-field label="Motivo de cancelación" v-model="cancel_suscrip"></v-text-field>
+                ¿Estás seguro?
+            </v-card-text>
+            <v-card-actions>
+                <v-btn color="error" text @click="dialogDelete = false"><v-icon dark small>
+                mdi-close
+                </v-icon> No</v-btn>
+                <v-btn color="success" text @click="cancelarSuscripcion()"><v-icon dark small>
+                mdi-check
+                </v-icon> Si</v-btn>
+            </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <v-snackbar v-model="toast.toast" :timeout="toast.timeout" :color="toast.color" dark>
+                {{ toast.message }}
+              </v-snackbar>
     </div>
 </template>
 <script>
@@ -224,6 +245,16 @@ export default {
         user: {},
         user_cards: [],
         show_btn_add: true,
+        dialogDelete: false,
+        toast: {
+            toast: false,
+            message: '',
+            timeout: 3000,
+            color: "success"
+        },
+        del_id_susc: null,
+        del_id_part: null,
+        cancel_suscrip: ""
     }),
     created() {
         this.getBaseUrl();
@@ -240,6 +271,17 @@ export default {
         document.head.appendChild(paymeScript);
     },
     methods: {
+        showToast(msg, color) {
+            this.toast.color = color;
+            this.toast.message = msg;
+            this.toast.toast = true;
+        },
+        showDeleteDialog(id_suscripcion, id_partner, fecha_venc) {
+            this.dialogDelete = true;
+            this.exp_date_pop = fecha_venc;
+            this.del_id_susc = id_suscripcion;
+            this.del_id_part = id_partner;
+        },
         async auth() {
             try {
                 const response = await this.$API.auth.auth();
@@ -278,6 +320,31 @@ export default {
                 const response = await this.$API.business_partner.getCards();
                 this.user_cards = response.data.data;
                 this.loading = false;
+            } catch (e) {
+                console.error(e);
+            }
+        },
+        async deleteCard(id) {
+            try {
+                this.loading = true;
+                const response = await this.$API.business_partner.deleteCard(id);
+                this.loading = false;
+                this.showToast('Tarjeta eliminada correctamente!', "success");
+                this.getCards();
+            } catch (e) {
+                console.error(e);
+            }
+        },
+        async cancelarSuscripcion() {
+            try {
+                this.$store.commit('loader', true);
+                this.dialogDelete = false;
+                if (this.cancel_suscrip == "") this.cancel_suscrip = "-";
+                const response = await this.$API.business_partner.cancelSuscription(this.del_id_susc, this.cancel_suscrip);
+                this.$store.commit('loader', false);
+                this.showToast('Suscripción cancelada correctamente!', "success");
+
+                this.getPartnerData(this.business_partner.id);
             } catch (e) {
                 console.error(e);
             }

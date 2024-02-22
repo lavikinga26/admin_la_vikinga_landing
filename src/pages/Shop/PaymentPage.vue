@@ -1,9 +1,49 @@
 <template>
-    <div>
-        <v-container>
-            <div class="d-flex justify-center">
-                <v-card max-width="500" min-width="300" width="500" elevation="1" class="px-5 py-2">
-                    <div class="py-2 d-flex align-center">
+    <v-row>
+        <v-col cols="12" md="6" class="d-none d-md-flex d-sm-none">
+            <img src="@/assets/img/gym_virtual/login_img.jpg" alt="Imagen Login" style="width:100%;"/>
+        </v-col>
+        <v-col cols="12" md="6" style="height: 100vh; overflow-y:auto;">
+            <v-sheet class="mx-auto mb-5" max-width="450">
+                    <v-stepper
+                    non-linear
+                    value="5"
+                    elevation="0"
+                    >
+                        <v-stepper-header>
+                            <v-stepper-step
+                            step="1"
+                            complete
+                            ></v-stepper-step>
+
+                            <v-divider></v-divider>
+
+                            <v-stepper-step
+                            step="2"
+                            complete
+                            ></v-stepper-step>
+
+                            <v-divider></v-divider>
+
+                            <v-stepper-step 
+                            step="3"
+                            complete
+                            ></v-stepper-step>
+                            <v-divider></v-divider>
+                            <v-stepper-step 
+                            step="4"
+                            complete
+                            ></v-stepper-step>
+                            <v-divider></v-divider>
+                            <v-stepper-step 
+                            step="5"
+                            ></v-stepper-step>
+                        </v-stepper-header>
+                    </v-stepper>
+                </v-sheet>
+            <h1 class="title_pink mb-4">Realizar pago</h1>
+            <v-sheet max-width="400" class="mx-auto">
+                <div class="py-2 d-flex align-center">
                         <div style="width: 100%" class="text-center">
                             <h3>Sólo queda realizar la transferencia para iniciar el Desafío.</h3>
                         </div>
@@ -81,24 +121,25 @@
                         />
                         <v-btn block dark color="secondary" @click="submitFiles()">
                             <v-icon>mdi-tray-arrow-up</v-icon>
-                            &nbsp;&nbsp;ACTUALIZAR
+                            &nbsp;&nbsp;ENVIAR
                         </v-btn>
                     </template>
-                </v-card>
-            </div>
-            
-            <v-snackbar
-                v-model="toast.toast"
-                :timeout="toast.timeout"
-                :color="toast.color"
-                dark
-                >
-                {{ toast.message }}
-            </v-snackbar>
-
-        </v-container>
-        <whatsapp />
-    </div>
+            </v-sheet>
+        </v-col>
+        <v-col cols="12" class="text-center">
+            <v-btn  block dark color="secondary" href="https://lavikingaoficial.com" target="_blank">
+                Ir a Inicio
+            </v-btn>
+        </v-col>
+        <v-snackbar
+            v-model="toast.toast"
+            :timeout="toast.timeout"
+            :color="toast.color"
+            dark
+            >
+            {{ toast.message }}
+        </v-snackbar>
+    </v-row>
 </template>
 <script>
 import axios from "axios";

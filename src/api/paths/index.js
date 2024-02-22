@@ -70,6 +70,11 @@ export default {
             return callAPI('get', 'api/v1/team/sponsors');
         },
     },
+    countries:{
+        search(iso){
+            return callAPI('get', 'api/v1/searchbyiso/'+iso);
+        }
+    },
     levels:{
         list(data){
             return callAPI('post', 'api/v1/getLevels', { data: data });

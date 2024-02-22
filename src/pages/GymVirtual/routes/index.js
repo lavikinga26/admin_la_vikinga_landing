@@ -12,6 +12,16 @@ export default [{
   component: () => import(/* webpackChunkName: "apps-email-inbox" */ '@/pages/GymVirtual/pages/ClasesGrabadasPage.vue'),
   meta: { requiresAuth: true, template: 'SidebarTemplate' }
 },{
+  path: 'retos',
+  name: 'retos',
+  component: () => import(/* webpackChunkName: "apps-email-inbox" */ '@/pages/GymVirtual/pages/RetosPage.vue'),
+  meta: { requiresAuth: true, template: 'SidebarTemplate' }
+},{
+  path: 'recursos',
+  name: 'recursos',
+  component: () => import(/* webpackChunkName: "apps-email-inbox" */ '@/pages/GymVirtual/pages/RecursosPage.vue'),
+  meta: { requiresAuth: true, template: 'SidebarTemplate' }
+},{
   path: 'calendario',
   name: 'apps-calendario',
   component: () => import(/* webpackChunkName: "apps-email-inbox" */ '@/pages/GymVirtual/pages/CalendarPage.vue'),

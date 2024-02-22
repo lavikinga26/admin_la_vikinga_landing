@@ -41,7 +41,11 @@
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="12" md="6" sm="12">
-                                <label>DNI</label>
+                                <label>Tipo de Documento</label>
+                                <v-select class="register_form" :rules="requiredRule" :items="documents" outlined item-text="name" item-value="id" v-model="profileForm.id_document_type"></v-select>
+                            </v-col>
+                            <v-col cols="12" md="6" sm="12">
+                                <label>Nro. Doc</label>
                                 <v-text-field
                                     v-model="profileForm.nro_doc"
                                     class="ma-0 pt-0"
@@ -50,25 +54,32 @@
                                     placeholder="Ingresa aquí tu DNI"
                                 ></v-text-field>
                             </v-col>
-                            <v-col cols="12" md="6" sm="12">
+                            <v-col cols="12" md="12" sm="12">
                                 <label>Teléfono</label>
-                                <v-text-field
-                                    v-model="profileForm.phone"
-                                    class="ma-0 pt-0"
-                                    hide-details
-                                    outlined
-                                    placeholder="Ingresa aquí tu Teléfono"
-                                ></v-text-field>
+                                <vue-tel-input-vuetify outlined label=""  v-model="profileForm.phone" :enabledCountryCode=true :clearable=true validCharactersOnly = "true" placeholder="" v-on:country-changed="countryChanged" :rules="phoneRules"></vue-tel-input-vuetify>
                             </v-col>
                             <v-col cols="12" md="6" sm="12">
-                                <label>Edad</label>
-                                <v-text-field
-                                    v-model="infoPersonal.age"
-                                    class="ma-0 pt-0"
-                                    hide-details
-                                    outlined
-                                    placeholder="Ingresa aquí tu edad"
-                                ></v-text-field>
+                                <label>Fecha Nac.</label>
+                                <v-menu
+                                    v-model="menuTestDate"
+                                    :close-on-content-click="false"
+                                    :nudge-right="-10"
+                                    transition="scale-transition"
+                                    offset-y
+                                    min-width="auto">
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-text-field
+                                            v-model="formatTestDate"
+                                            v-bind="attrs"
+                                            v-on="on"
+                                            readonly
+                                            outlined
+                                            color="#ffffff"
+                                            class="text_peso"
+                                        ></v-text-field>
+                                    </template>
+                                    <v-date-picker outlined hide-details v-model="profileForm.fecha_nacimiento" color="#293E58" @input="menuTestDate = false" locale="es-ES"></v-date-picker>
+                                </v-menu>
                             </v-col>
                             <v-col cols="12" md="6" sm="12">
                                 <label>Género</label>
@@ -77,30 +88,6 @@
                                     class="ma-0 pt-0"
                                     outlined
                                     :items="genders"
-                                    item-text="text"
-                                    item-value="value"
-                                    hide-details>
-                                </v-select>
-                            </v-col>
-                            <v-col cols="12" md="6" sm="12">
-                                <label>Estado civil</label>
-                                <v-select
-                                    v-model="infoPersonal.civil_status"
-                                    class="ma-0 pt-0"
-                                    outlined
-                                    :items="civil_status"
-                                    item-text="text"
-                                    item-value="value"
-                                    hide-details>
-                                </v-select>
-                            </v-col>
-                            <v-col cols="12" md="6" sm="12">
-                                <label>Madre/Padre de familia</label>
-                                <v-select
-                                    v-model="infoPersonal.family_guy"
-                                    class="ma-0 pt-0"
-                                    outlined
-                                    :items="family_guy"
                                     item-text="text"
                                     item-value="value"
                                     hide-details>
@@ -119,33 +106,34 @@
                 <div class="text_title_white">CAMBIAR MI CONTRASEÑA</div>
                 <v-card class="my-5 pa-10" dark  color="transparent" style="border: 2px solid #293E58!important; border-radius: 16px;">
                     <p>Aquí podrás cambiar tu contraseña para acceder a tu cuenta</p>
-                    <v-row>
-                        <v-col cols="12" md="12" sm="12">
-                            <label>Contraseña actual</label>
-                            <v-text-field
-                                class="ma-0 pt-0"
-                                hide-details
-                                outlined
-                            ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="12" sm="12">
-                            <label>Nueva contraseña</label>
-                            <v-text-field
-                                class="ma-0 pt-0"
-                                hide-details
-                                outlined
-                            ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="12" sm="12">
-                            <label>Confirmar contraseña</label>
-                            <v-text-field
-                                class="ma-0 pt-0"
-                                hide-details
-                                outlined
-                            ></v-text-field>
-                        </v-col>
-                        <v-btn type="submit" class="btn_pink_white_submit" :disabled="!validProfileForm">Guardar</v-btn>
-                    </v-row>
+                    <v-form ref="form_change_password" v-model="isChangePasswordFormValid" lazy-validation>
+                        <v-row>
+                            <v-col cols="12" md="12" sm="12">
+                                <label>Contraseña actual</label>
+                                <v-text-field v-model="last_password" :append-icon="showLastPassword ? 'mdi-eye' : 'mdi-eye-off'
+                                    " :rules="[rules.required]" :type="showLastPassword ? 'text' : 'password'" :error="error"
+                                  :error-messages="errorMessages" name="password"
+                                  @click:append="showLastPassword = !showLastPassword" outlined hide-details></v-text-field>
+                            </v-col>
+                            <v-col cols="12" md="12" sm="12">
+                                <label>Nueva contraseña</label>
+                                <v-text-field v-model="new_password" :append-icon="showNewPassword ? 'mdi-eye' : 'mdi-eye-off'
+                                    " :rules="[rules.required]" :type="showNewPassword ? 'text' : 'password'" :error="error"
+                                  :error-messages="errorMessages" name="password"
+                                  @click:append="showNewPassword = !showNewPassword" outlined hide-details></v-text-field>
+                            </v-col>
+                            <v-col cols="12" md="12" sm="12">
+                                <label>Confirmar contraseña</label>
+                                <v-text-field v-model="new_password_confirm" :rules="pwdConfirm" :error="error"
+                                  :error-messages="errorMessages" type="password" name="password" outlined hide-details></v-text-field>
+                            </v-col>
+                            <v-btn class="btn_pink_white_submit" @click="submitChangePassword"
+                            :loading="loadingChangePassword">
+                            <v-icon left small>mdi-lock-reset</v-icon>
+                            Guardar
+                          </v-btn>
+                        </v-row>
+                    </v-form>
                 </v-card>
             </v-col>
         </v-row>
@@ -182,15 +170,19 @@
                 </v-card-actions> 
             </v-card>
         </v-dialog>
+        <v-snackbar v-model="toast.toast" :timeout="toast.timeout" :color="toast.color" dark>
+            {{ toast.message }}
+          </v-snackbar>
         <!-- Fin -->
     </div>
 </template>
 <script>
 import axios from "axios";
-
+import VueTelInputVuetify from "vue-tel-input-vuetify/lib/vue-tel-input-vuetify.vue";
 export default {
     components: {
         axios,
+        VueTelInputVuetify
     },
     props:{
         base_url: {
@@ -203,10 +195,15 @@ export default {
         },
     },
     data: () => ({
+        isChangePasswordFormValid: true,
+        menuTestDate: false,
         validProfileForm: false,
         profileForm: {
             info_personal: null,
         },
+        requiredRule: [
+            v => !!v || 'Campo obligatorio',
+        ],
         infoPersonal: {
         },
         genders: [
@@ -229,21 +226,123 @@ export default {
         profileImgDialog: false,
         img_file: null,
         img_url: null,
-
+        documents: [],
         //--- Form Rules ---
         rules: {
             file_size_200kb: [
                 value => !value || value.size < 200000 || 'El archivo debe pesar menos de 200 kb!',
             ],
         },
+        inputtel: {
+            showDialCode: true
+        },
+        phoneRules: [
+            (value) => !!value || 'Debe ingresar un teléfono.',
+            (value) => (value && value.length >= 12) || 'Verifique su teléfono.',
+            (value) => /^[0-9 ()+-]+$/.test(value) || 'Debe ingresar solo números.',
+        ],
+        toast: {
+            toast: false,
+            message: '',
+            timeout: 3000,
+            color: "success"
+        },
+        error: false,
+        errorMessages: "",
+        show_btn_add: true,
+        // show password field
+        showLastPassword: false,
+        showNewPassword: false,
+        loadingChangePassword: false,
+
+        isChangePasswordFormValid: true,
+        last_password: "",
+        new_password: "",
+        new_password_confirm: "",
+        pwdRules: [v => !!v || "Este campo es requerido"],
+        pwdConfirm: [
+            v => !!v || "Este campo es requerido",
+            v => v === this.new_password || "Contraseñas no coinciden"
+        ],
         //--- End ---
     }),
     created(){
         this.configPersonalInfo();
         this.getBadge();
+        this.getTypeDocument();
         this.img_url = this.base_url+"/images/default-profile-picture.png";
     },
+    computed: {
+        formatTestDate: {
+            get: function () {
+                return this.formatDate(this.profileForm.fecha_nacimiento);
+            },
+            set: function (newValue) {
+                return this.formatDate(newValue);
+            }
+        },    
+    },
     methods: {
+        submitChangePassword() {
+            this.changePassword();
+        },
+        async changePassword() {
+            let vm = this;
+            this.$store.commit('loader', true);
+            try {
+                vm.loadingChangePassword = true;
+                let data = {
+                    old_password: vm.last_password,
+                    new_password: vm.new_password,
+                };
+                await vm.$API.auth.change_password(data);
+                vm.loadingChangePassword = false;
+
+                vm.$refs.form_change_password.reset();
+                vm.$store.commit('loader', false);
+                vm.showToast('Contraseña actualizada', "success");
+            } catch (error) {
+                vm.loadingChangePassword = false;
+                let err = {
+                    status: error.response.status,
+                    name: error.name,
+                    data: error.response.data,
+                    message: error.message,
+                };
+                vm.last_password = '';
+                vm.new_password = '';
+                vm.new_password_confirm = ''
+                vm.showToast(error.response.data.message + '. Vuelve a intentarlo', "error");
+                vm.$store.commit('loader', false);
+            }
+        },
+        showToast(msg, color) {
+            this.toast.color = color;
+            this.toast.message = msg;
+            this.toast.toast = true;
+        },
+        countryChanged(country) {
+            this.country = country.dialCode;
+            this.userData.telefono = "+" + country.dialCode;
+        },
+        formatDate(date) {
+            if (!date) return null
+
+            const [year, month, day] = date.split('-')
+            return `${day}/${month}/${year}`
+        },
+        async getTypeDocument(type = 2) {
+            this.$store.commit('loader', true);
+            try {
+                const data = await this.$API.configuration.getTypeDocument(type);
+                this.documents = data.data.data;
+                this.$store.commit('loader', false);
+            }
+            catch (e) {
+                this.$store.commit('loader', false);
+                console.error(e);
+            }
+        },
         async getBadge(){
             try {
                 const response = await this.$API.business_partner.getBadge();
@@ -264,8 +363,9 @@ export default {
         },
         configPersonalInfo(){
             this.profileForm = Object.assign({}, this.business_partner);
-            if(this.business_partner.partner_information.info_personal){
+            if (this.business_partner.partner_information.info_personal) {
                 this.infoPersonal = JSON.parse(this.business_partner.partner_information.info_personal);
+                this.profileForm.fecha_nacimiento = this.business_partner.fecha_nacimiento;
             }
         },
         async updateProfileInfo(){
