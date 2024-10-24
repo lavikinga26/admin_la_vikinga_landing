@@ -1,69 +1,67 @@
 <template>
     <v-row no-gutters>
         <v-col cols="12" md="6" class="d-none d-md-flex d-sm-none">
-            <img src="@/assets/img/gym_virtual/login_img.jpg" alt="Imagen Login"  style="width:100%; max-height:100vh;"/>
+            <img src="@/assets/img/gym_virtual/login_img.jpg" alt="Imagen Login"
+                style="width:100%; max-height:100vh;" />
         </v-col>
         <v-col cols="12" md="6" style="height: 100vh; overflow-y:auto;">
             <v-sheet class="mx-auto" max-width="390">
-                    <v-stepper
-                    non-linear
-                    value="4"
-                    elevation="0"
-                    >
-                        <v-stepper-header>
-                            <v-stepper-step
-                            complete
-                            step="1"
-                            ></v-stepper-step>
+                <v-stepper non-linear value="4" elevation="0">
+                    <v-stepper-header>
+                        <v-stepper-step complete step="1"></v-stepper-step>
 
-                            <v-divider></v-divider>
+                        <v-divider></v-divider>
 
-                            <v-stepper-step
-                            step="2"
-                            complete
-                            ></v-stepper-step>
+                        <v-stepper-step step="2" complete></v-stepper-step>
 
-                            <v-divider></v-divider>
+                        <v-divider></v-divider>
 
-                            <v-stepper-step 
-                            step="3"
-                            complete
-                            ></v-stepper-step>
-                            <v-divider></v-divider>
+                        <v-stepper-step step="3" complete></v-stepper-step>
+                        <v-divider></v-divider>
 
-                            <v-stepper-step 
-                            step="4"
-                            ></v-stepper-step>
-                            <v-divider></v-divider>
+                        <v-stepper-step step="4"></v-stepper-step>
+                        <v-divider></v-divider>
 
-                            <v-stepper-step 
-                            step="5"
-                            ></v-stepper-step>
-                        </v-stepper-header>
-                    </v-stepper>
-                </v-sheet>
+                        <v-stepper-step step="5"></v-stepper-step>
+                    </v-stepper-header>
+                </v-stepper>
+            </v-sheet>
             <h1 class="title_pink mt-4 mb-4">DETALLES DE PAGO</h1>
             <v-container class="mx-auto" style="max-width:450px">
                 <v-row>
-                    <v-col cols="8">{{ cart[0] ? cart[0].title:'' }}</v-col>
-                    <v-col cols="4">S/ {{ cart[0] ? cart[0].price : '' }}</v-col>
+                    <v-col cols="8">{{ cart[0] ? cart[0].title : '' }}</v-col>
+                    <v-col cols="4">S/ {{ cart[0] ?
+                        parseFloat(parseFloat(cart[0].price).toFixed(2) + parseFloat(discount).toFixed(2)).toFixed(2) :
+                        ''
+                        }}</v-col>
                 </v-row>
-                <v-row>
+                <v-row v-if="discount > 0">
                     <v-col cols="8"><b>Descuento</b></v-col>
-                    <v-col cols="4">S/ {{ discount }}</v-col>
+                    <v-col cols="4">S/ {{ parseFloat(discount).toFixed(2) }}</v-col>
                 </v-row>
                 <v-row>
-                    <v-col cols="8"><b>Total</b></v-col>
+                    <v-col cols="8"><b>Total a pagar hoy</b></v-col>
                     <v-col cols="4"><b>S/ {{ total }}</b></v-col>
                 </v-row>
-                <hr/>
+
+                <hr />
+
+                <v-alert type="info" color="#E7004C" elevation="0" class="mt-5" v-if="is_trial == 1">
+                    Suscribiéndote a este plan tienes {{ cart[0].dias_trial }} días gratis, no se te cobrará nada hasta
+                    el <b>{{ prox_trial_pay }}</b>. Puedes cancelar cuando quieras.
+                </v-alert>
+
                 <v-row class="mt-5">
                     <v-col cols="8">
-                        <v-text-field v-model="coupon" class="register_form" outlined type="text" placeholder="Cupón de descuento" hide-details></v-text-field>
+                        <v-text-field v-model="coupon" class="register_form" outlined type="text"
+                            placeholder="Cupón de descuento" hide-details></v-text-field>
                     </v-col>
-                    <v-col cols="4"><v-btn depressed class="btn_blue_form mt-5" style="bottom:0!important;margin-top:10px!important;" @click="aplicarCupon()">APLICAR CUPÓN</v-btn></v-col>
+                    <v-col cols="4"><v-btn depressed class="btn_blue_form mt-5"
+                            style="bottom:0!important;margin-top:10px!important;" @click="aplicarCupon()">APLICAR
+                            CUPÓN</v-btn></v-col>
                     <v-col cols="12">
-                        <v-checkbox v-model="had_invoice" label="Solicitar factura" hide-details style="margin-top: 0px!important;"></v-checkbox>
+                        <v-checkbox v-model="had_invoice" label="Solicitar factura" hide-details
+                            style="margin-top: 0px!important;"></v-checkbox>
                     </v-col>
                 </v-row>
                 <v-row v-if="had_invoice == true">
@@ -81,10 +79,11 @@
                     </v-col>
                 </v-row>
                 <v-row>
-                    <v-radio-group v-model="order.id_payment_method" column color="secondary"
-                        class="mt-0" :rules="requiredRule" v-if="total > 0" style="width: 100%;">
+                    <v-radio-group v-model="order.id_payment_method" column color="secondary" class="mt-0"
+                        :rules="requiredRule" v-if="total > 0 || is_trial == 1" style="width: 100%;">
                         <template v-for="(item, index) in paymentMethods">
-                            <v-card :key="'pm_' + index" class="ma-3 pa-3" v-if="show_transfer == true && item.id == 2" elevation="0" outlined>
+                            <v-card :key="'pm_' + index" class="ma-3 pa-3" v-if="show_transfer == true && item.id == 2"
+                                elevation="0" outlined>
                                 <div class="d-flex align-center">
                                     <div>
                                         <v-radio :value="item.id" color="secondary"></v-radio>
@@ -94,8 +93,7 @@
                                         <!--<p style="font-size: 0.8rem; margin-bottom: 0px;">
                                         {{item.description}}
                                     </p>-->
-                                        <div style="font-size: 0.8rem; margin-bottom: 0px;"
-                                            v-html="item.description">
+                                        <div style="font-size: 0.8rem; margin-bottom: 0px;" v-html="item.description">
                                         </div>
                                     </div>
                                 </div>
@@ -115,8 +113,8 @@
                         </template>
                     </v-radio-group>
 
-                    <v-radio-group v-model="order.id_payment_method" column color="secondary"
-                        class="mt-0" :rules="requiredRule" v-if="total == 0 || total == 0.00">
+                    <v-radio-group v-model="order.id_payment_method" column color="secondary" class="mt-0"
+                        :rules="requiredRule" v-if="(total == 0 || total == 0.00) && is_trial == 0">
                         <v-card :key="'pm_' + index" class="ma-3 pa-3">
                             <div class="d-flex align-center">
                                 <div>
@@ -141,20 +139,22 @@
                         </v-btn>
                     </v-col>
                     <v-col cols="6">
-                        <v-btn class="text_btn_white_title" block depressed color="secondary"
-                            @click="createOrder()">
+                        <v-btn class="text_btn_white_title" block depressed color="secondary" @click="createOrder()">
                             SIGUIENTE<v-icon>mdi-chevron-right</v-icon>
                         </v-btn>
                     </v-col>
                 </v-row>
+
+                <v-row>
+                    <v-col>
+                        <div style="height: 300px;">
+                            <p>&nbsp;</p>
+                        </div>
+                    </v-col>
+                </v-row>
             </v-container>
         </v-col>
-        <v-snackbar
-            v-model="toast.toast"
-            :timeout="toast.timeout"
-            :color="toast.color"
-            dark
-            >
+        <v-snackbar v-model="toast.toast" :timeout="toast.timeout" :color="toast.color" dark>
             {{ toast.message }}
         </v-snackbar>
     </v-row>
@@ -170,6 +170,7 @@ export default {
         tab_payment: "1",
         factura: false,
         hide_btn: false,
+        couponDisabled: false,
         selected_card: 0,
         usercc: {},
         user: {},
@@ -199,6 +200,8 @@ export default {
             timeout: 3000,
             color: "success"
         },
+        is_trial: 0,
+        prox_trial_pay: null
     }),
     computed: {
         subtotal() {
@@ -226,19 +229,33 @@ export default {
     mounted() {
         let vm = this;
         vm.slug = this.$route.params.slug;
+        vm.auth();
         vm.getConfiguracion();
         vm.getBaseUrl();
         vm.getPaymentMethods();
         vm.cart.push(JSON.parse(localStorage.getItem('planSeleccionado')));
-        vm.total = vm.cart[0] ? vm.cart[0].price :0;
+        vm.total = vm.cart[0] ? vm.cart[0].price : 0;
+        var da_trial = new Date();
+        da_trial.setDate(da_trial.getDate() + vm.cart[0].dias_trial);
+        vm.prox_trial_pay = vm.formatDate(da_trial);
     },
     methods: {
+        padTo2Digits(num) {
+            return num.toString().padStart(2, '0');
+        },
+        formatDate(date) {
+            return [
+                this.padTo2Digits(date.getDate()),
+                this.padTo2Digits(date.getMonth() + 1),
+                date.getFullYear(),
+            ].join('/');
+        },
         async createOrder() {
             let vm = this;
             vm.$store.commit('loader', true);
             try {
                 let datosUser = JSON.parse(localStorage.getItem("datosUsuario"));
-                vm.order.discount = vm.discount
+                vm.order.discount = parseFloat(vm.discount).toFixed(2);
                 vm.order.total = vm.total
                 vm.order.subtotal = vm.subtotal;
                 vm.order.detail = vm.cart;
@@ -346,10 +363,22 @@ export default {
             try {
                 const response = await this.$API.auth.auth();
                 this.user = response.data;
+                if (this.user.trial_status == 1 && this.cart[0].dias_trial > 0) {
+                    this.total = 0;
+                    this.is_trial = 1;
+                    this.subtotal = 0;
+                    this.igv = 0;
+                }
             } catch (e) {
-                localStorage.removeItem('user_data');
+                if (this.cart[0].dias_trial > 0) {
+                    this.total = 0;
+                    this.is_trial = 1;
+                    this.subtotal = 0;
+                    this.igv = 0;
+                }
+                /*localStorage.removeItem('user_data');
                 localStorage.removeItem('token');
-                window.location.replace('/auth/iniciar-sesion');
+                window.location.replace('/auth/iniciar-sesion');*/
             }
         },
         async getConfiguracion() {
@@ -375,6 +404,48 @@ export default {
                 toast: open,
                 message: message,
                 color: color
+            }
+        },
+        async aplicarCupon() {
+            try {
+                let products = this.cart.map(({ id }) => id);
+                const response = await this.$API.coupon.validate({ cupon: this.coupon, items: products });
+                let datos = response.data;
+                let flag = 0;
+                if (datos.available) {
+                    if (datos.id_plan === null) {
+                        this.discount = (datos.discount_type == 1) ? this.subtotal * (datos.discount / 100) : datos.discount;
+                        for (let index = 0; index < this.cart.length; index++) {
+                            const element = this.cart;
+                            this.cart[index].priceTotal = this.cart[index].price - (this.cart[index].price * (datos.discount / 100))
+                        }
+                    } else {
+                        datos.id_plan = datos.id_plan.map(Number);
+                        let index = this.cart.findIndex((element) => {
+                            if (datos.id_plan.indexOf(element.id) != -1) { return true; }
+                            else { false }
+                        })
+                        if (index != -1) {
+                            if (this.couponDisabled != true) {
+                                this.discount = (datos.discount_type == 1) ? this.cart[index].price * (datos.discount / 100) : datos.discount;
+                                this.cart[index].price = this.cart[index].price - this.discount;
+                                this.couponDisabled = true;
+                                flag = 1;
+                                this.total = this.cart[index].price;
+                                this.showToast("Cupón valido", "success");
+                            }
+                        }
+                    }
+                }
+                if (flag == 0) {
+                    this.toast.color = "red";
+                    this.toast.message = "Cupón inválido.";
+                    this.toast.toast = true;
+                }
+
+            } catch (e) {
+                this.$store.commit('loader', false);
+                console.error(e);
             }
         },
     }

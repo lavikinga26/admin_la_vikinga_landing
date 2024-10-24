@@ -4,6 +4,9 @@
             <div class="col-md-12">
                 <p class="text_title_white text_entrena">MI GYM</p>
             </div>
+            <v-alert type="info" color="#E7004C" elevation="0" v-if="user_cards.length === 1">
+                <b>IMPORTANTE:</b> Recuerda que para eliminar la tarjeta de crédito/débito actual, debes añadir una nueva primero.
+            </v-alert>
             <v-tabs v-model="userProfileTabs" :show-arrows="false" color="#E30E4F" background-color="transparent" dark>
                 <v-tab to="#tabs-info-personal">INFORMACIÓN PERSONAL</v-tab>
                 <v-tab to="#tabs-info-membresia">MEMBRESÍA</v-tab>
@@ -141,7 +144,7 @@
                                         <v-badge color="error" content="No" inline v-if="item.predeterminada == 0"></v-badge>
                                         </td>
                                         <td class="text-center">
-                                        <v-btn @click="deleteCard(item.id_card)" class="mx-2" fab dark small color="error">
+                                        <v-btn @click="deleteCard(item.id_card)" class="mx-2" fab dark small color="error" v-if="item.predeterminada == 0">
                                             <v-icon dark>
                                             mdi-delete
                                             </v-icon>

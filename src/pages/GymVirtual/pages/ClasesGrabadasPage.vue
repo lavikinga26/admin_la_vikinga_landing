@@ -1,6 +1,14 @@
 <template>
     <div>
-        <v-container>
+        <v-container class="mb-5" v-if="has_active_plan === false">
+            <v-row class="text-center">
+                <v-col cols="12" v-if="show_message_plan === true">
+                    <h1 class="text-center text_box_title" style="margin-top: 10%;">Ups! No cuentas con ningún plan activo!</h1>
+                    <v-btn class="text_btn_white_title mt-5" color="secondary" @click="gohome">Renovar/adquirir plan</v-btn>
+                </v-col>
+            </v-row>
+        </v-container>
+        <v-container v-if="has_active_plan === true">
             <v-row>
                 <v-col cols="12" md="6"><h1 class="text_plan_title_white">Clases grabadas</h1></v-col>
                 <v-col cols="12" md="3" class="select-clases formlogsel">
@@ -103,6 +111,8 @@ export default {
         id_level: 0,
         id_staff: null,
         enfoque: null,
+        has_active_plan: false,
+        show_message_plan: false,
         total_paginas: 0,
         pagina: 1,
         enfoqueItems: [
@@ -115,19 +125,49 @@ export default {
         ]
     }),
     mounted() {
+        this.auth();
         this.getBaseUrl();
-        this.getLoggedUser();
+        //this.getLoggedUser();
         this.listStaff();
-        
     },
     computed: {
     },
     created() {
     },
     methods: {
+        gohome(){
+            window.location.replace('https://desafio.lavikingaoficial.com');
+        },
         openPlayer(video_link) {
             this.now_playing = video_link;
             this.dialogPlayer = true;
+        },
+        async auth() {
+            let vm = this;
+            try {
+                const response = await this.$API.auth.auth();
+                this.user = response.data;
+                if (this.user.id_level != null) {
+                    this.id_level = this.user.id_level;
+                }
+                
+                this.userPlans = response.data.plans;
+                let fecha_actual = new Date();
+                this.userPlans.map(function (item) {
+                    if(fecha_actual <= new Date(item.expiration_date) && vm.has_active_plan == false){
+                        vm.has_active_plan = true;
+                    }
+                });
+                if(vm.has_active_plan==true){
+                    this.getActivitiesRecordedFilters();
+                }
+                vm.show_message_plan = vm.has_active_plan === true ? false:true;
+                var planes = this.userPlans;
+            } catch (e) {
+                localStorage.removeItem('user_data');
+                localStorage.removeItem('token');
+                window.location.replace('/auth/iniciar-sesion');
+            }
         },
         async getLoggedUser() {
             if (localStorage.getItem('token')) {

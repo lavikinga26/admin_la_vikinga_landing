@@ -58,6 +58,10 @@
                                 <label>Teléfono</label>
                                 <vue-tel-input-vuetify outlined label=""  v-model="profileForm.phone" :enabledCountryCode=true :clearable=true validCharactersOnly = "true" placeholder="" v-on:country-changed="countryChanged" :rules="phoneRules"></vue-tel-input-vuetify>
                             </v-col>
+                            <v-col cols="12" md="12">
+                                <label>Email</label>
+                                <v-text-field v-model="profileForm.email" outlined class="register_form" readonly hide-details></v-text-field>
+                            </v-col>
                             <v-col cols="12" md="6" sm="12">
                                 <label>Fecha Nac.</label>
                                 <v-menu

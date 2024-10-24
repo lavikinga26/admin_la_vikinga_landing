@@ -66,15 +66,16 @@
                     class="pa-0"
                     center-active
                     >
+                    <template v-for="(item, n) in filtrarPlanesPeriodo(plans, 4)">
                     <v-slide-item
-                        v-for="(item, n) in filtrarPlanesPeriodo(plans, 4)"
+                        v-if="item.allow_sale==1 && item.status==1"
                         :key="n"
                         v-slot="{ toggle }"
                     >
                         <v-card
-                            :color="n % 2 == 0 ? 'primary' : '#ffffff'"
-                            :class="n % 2 == 0 ? 'ma-4 card-outter' : 'ma-4 card-outter white_card_border'"
-                            height="500"
+                            :color="1==1 ? 'primary' : '#ffffff'"
+                            :class="1==1 ? 'ma-4 card-outter' : 'ma-4 card-outter white_card_border'"
+                            height="540"
                             width="270"
                             @click="addToCart(item)"
                             elevation="0"
@@ -85,10 +86,14 @@
                                     <div class="item">
                                         <div class="blog-entry">
                                             <div class="mt-4 mb-4">
-                                                <p><span :class="n % 2 == 0 ? 'text_plan_title_white mb-2' : 'text_plan_title_blue mb-2'">{{ item.title }}</span></p>
-                                                <p><strike v-if="item.promotional_cost != '0.00' && item.promotional_cost != '0'" :class="n % 2 == 0 ? 'price_strike_light mr-3' : 'price_strike_dark mr-3'">{{ item.promotional_cost }}</strike><span :class="n % 2 == 0 ? 'text_plan_price_pink mb-2' : 'text_plan_price_blue mb-2'">S/ {{ item.cost }}</span></p>
+                                                <p><span :class="1==1 ? 'text_plan_title_white mb-2' : 'text_plan_title_blue mb-2'">{{ item.title }}</span></p>
+                                                <p><strike v-if="item.promotional_cost != '0.00' && item.promotional_cost != '0'" :class="1==1 ? 'price_strike_light mr-3' : 'price_strike_dark mr-3'">{{ item.promotional_cost }}</strike><span :class="1==1 ? 'text_plan_price_pink mb-2' : 'text_plan_price_blue mb-2'">S/ {{ item.cost }}</span></p>
+                                                <p style="font-weight: bold; color: #e30e4f" v-if="item.dias_trial > 0 && trial_status==true">
+                                                    Prueba gratis por {{item.dias_trial}} días!
+                                                </p>
+                                                <p style="font-weight: bold; color: #e30e4f" v-else>&nbsp;</p>
                                             </div>
-                                            <div :class="n % 2 == 0 ? 'p-2 bd_desc_carousel_white' : 'p-2 bd_desc_carousel_blue'" v-html="item.content">
+                                            <div :class="1==1 ? 'p-2 bd_desc_carousel_white' : 'p-2 bd_desc_carousel_blue'" v-html="item.content">
 
                                             </div>
                                         </div>
@@ -97,11 +102,11 @@
                             <v-card-actions class="card-actions">
                                 <v-row align="center">
                                     <v-col cols="12" align="center">
-                                        <v-btn block :class="n % 2 == 0 ? 'my-2 fb-btn btn_pink_white' : 'my-2 fb-btn btn_blue_white'" style="padding:0.7em 0px!important;" @click="addToCart(item)"
+                                        <v-btn block :class="1==1 ? 'my-2 fb-btn btn_pink_white' : 'my-2 fb-btn btn_blue_white'" style="padding:0.7em 0px!important;" @click="addToCart(item)"
                                             v-if="(data_config.allow_sale && item.allow_sale)">
                                             INSCRIBETE
                                         </v-btn>
-                                        <v-btn block :class="n % 2 == 0 ? 'my-2 fb-btn btn_pink_white' : 'my-2  fb-btn btn_blue_white'" style="padding:0.7em 0px!important;" @click="addToCart(item)"
+                                        <v-btn block :class="1==1 ? 'my-2 fb-btn btn_pink_white' : 'my-2  fb-btn btn_blue_white'" style="padding:0.7em 0px!important;" @click="addToCart(item)"
                                             v-if="(!data_config.allow_sale && item.allow_sale)">
                                             INSCRIBETE
                                         </v-btn>
@@ -111,6 +116,7 @@
                             </v-card-actions>
                         </v-card>
                     </v-slide-item>
+                </template>
                     </v-slide-group>
                     </v-sheet>
                 </v-tab-item>
@@ -127,15 +133,16 @@
                         class="pa-0"
                         center-active
                         >
+                        <template v-for="(item, n) in filtrarPlanesPeriodo(plans, 12)">
                         <v-slide-item
-                            v-for="(item, n) in filtrarPlanesPeriodo(plans, 12)"
+                        v-if="item.allow_sale==1 && item.status==1"
                             :key="n"
                             v-slot="{ toggle }"
                         >
                             <v-card
                                 :color="n % 2 == 0 ? 'primary' : '#ffffff'"
                                 :class="n % 2 == 0 ? 'ma-4 card-outter' : 'ma-4 card-outter white_card_border'"
-                                height="500"
+                                height="540"
                                 width="300"
                                 @click="addToCart(item)"
                                 elevation="0"
@@ -148,6 +155,10 @@
                                                 <div class="mt-4 mb-4">
                                                     <p><span :class="n % 2 == 0 ? 'text_plan_title_white mb-2' : 'text_plan_title_blue mb-2'">{{ item.title }}</span></p>
                                                     <p><strike v-if="item.promotional_cost != '0.00' && item.promotional_cost != '0'" :class="n % 2 == 0 ? 'price_strike_light mr-3' : 'price_strike_dark mr-3'">{{ item.promotional_cost }}</strike><span :class="n % 2 == 0 ? 'text_plan_price_pink mb-2' : 'text_plan_price_blue mb-2'">S/ {{ item.cost }}</span></p>
+                                                    <p style="font-weight: bold; color: #e30e4f" v-if="item.dias_trial > 0 && trial_status==true">
+                                                        Prueba gratis por {{item.dias_trial}} días!
+                                                    </p>
+                                                    <p style="font-weight: bold; color: #e30e4f" v-else>&nbsp;</p>
                                                 </div>
                                                 <div :class="n % 2 == 0 ? 'p-2 bd_desc_carousel_white' : 'p-2 bd_desc_carousel_blue'" v-html="item.content">
 
@@ -172,6 +183,7 @@
                                 </v-card-actions>
                             </v-card>
                         </v-slide-item>
+                        </template>
                         </v-slide-group>
                     </v-sheet>
                 </v-tab-item>
@@ -188,15 +200,16 @@
                         class="pa-0"
                         center-active
                         >
-                        <v-slide-item
-                            v-for="(item, n) in filtrarPlanesPeriodo(plans, 24)"
+                        <template v-for="(item, n) in filtrarPlanesPeriodo(plans, 24)">
+                    <v-slide-item
+                        v-if="item.allow_sale==1 && item.status==1"
                             :key="n"
                             v-slot="{ toggle }"
                         >
                             <v-card
-                                :color="n % 2 != 0 ? 'primary' : '#ffffff'"
-                                :class="n % 2 != 0 ? 'ma-4 card-outter' : 'ma-4 card-outter white_card_border'"
-                                height="500"
+                                :color="1==1 ? 'primary' : '#ffffff'"
+                                :class="1==1 ? 'ma-4 card-outter' : 'ma-4 card-outter white_card_border'"
+                                height="540"
                                 width="300"
                                 @click="addToCart(item)"
                                 elevation="0"
@@ -207,10 +220,14 @@
                                         <div class="item">
                                             <div class="blog-entry">
                                                 <div class="mt-4 mb-4">
-                                                    <p><span :class="n % 2 == 0 ? 'text_plan_title_white mb-2' : 'text_plan_title_blue mb-2'">{{ item.title }}</span></p>
-                                                    <p><strike v-if="item.promotional_cost != '0.00' && item.promotional_cost != '0'" :class="n % 2 == 0 ? 'price_strike_light mr-3' : 'price_strike_dark mr-3'">{{ item.promotional_cost }}</strike><span :class="n % 2 == 0 ? 'text_plan_price_pink mb-2' : 'text_plan_price_blue mb-2'">S/ {{ item.cost }}</span></p>
+                                                    <p><span :class="1==1 ? 'text_plan_title_white mb-2' : 'text_plan_title_blue mb-2'">{{ item.title }}</span></p>
+                                                    <p><strike v-if="item.promotional_cost != '0.00' && item.promotional_cost != '0'" :class="1==1 ? 'price_strike_light mr-3' : 'price_strike_dark mr-3'">{{ item.promotional_cost }}</strike><span :class="1==1 ? 'text_plan_price_pink mb-2' : 'text_plan_price_blue mb-2'">S/ {{ item.cost }}</span></p>
+                                                    <p style="font-weight: bold; color: #e30e4f" v-if="item.dias_trial > 0 && trial_status==true">
+                                                        Prueba gratis por {{item.dias_trial}} días!
+                                                    </p>
+                                                    <p style="font-weight: bold; color: #e30e4f" v-else>&nbsp;</p>
                                                 </div>
-                                                <div :class="n % 2 == 0 ? 'p-2 bd_desc_carousel_white' : 'p-2 bd_desc_carousel_blue'" v-html="item.content">
+                                                <div :class="1==1 ? 'p-2 bd_desc_carousel_white' : 'p-2 bd_desc_carousel_blue'" v-html="item.content">
 
                                                 </div>
                                             </div>
@@ -219,11 +236,11 @@
                                 <v-card-actions class="card-actions">
                                     <v-row align="center">
                                         <v-col cols="12" align="center">
-                                            <v-btn block :class="n % 2 == 0 ? 'my-2 fb-btn btn_pink_white' : 'my-2 fb-btn btn_blue_white'" style="padding:0.7em 0px!important;" @click="addToCart(item)"
+                                            <v-btn block :class="1==1 ? 'my-2 fb-btn btn_pink_white' : 'my-2 fb-btn btn_blue_white'" style="padding:0.7em 0px!important;" @click="addToCart(item)"
                                                 v-if="(data_config.allow_sale && item.allow_sale)">
                                                 INSCRIBETE
                                             </v-btn>
-                                            <v-btn block :class="n % 2 == 0 ? 'my-2 fb-btn btn_pink_white' : 'my-2  fb-btn btn_blue_white'" style="padding:0.7em 0px!important;" @click="addToCart(item)"
+                                            <v-btn block :class="1==1 ? 'my-2 fb-btn btn_pink_white' : 'my-2  fb-btn btn_blue_white'" style="padding:0.7em 0px!important;" @click="addToCart(item)"
                                                 v-if="(!data_config.allow_sale && item.allow_sale)">
                                                 INSCRIBETE
                                             </v-btn>
@@ -233,6 +250,7 @@
                                 </v-card-actions>
                             </v-card>
                         </v-slide-item>
+                        </template>
                         </v-slide-group>
                     </v-sheet>
                 </v-tab-item>
@@ -249,15 +267,16 @@
                         class="pa-0"
                         center-active
                         >
-                        <v-slide-item
-                            v-for="(item, n) in filtrarPlanesPeriodo(plans, 48)"
+                        <template v-for="(item, n) in filtrarPlanesPeriodo(plans, 48)">
+                    <v-slide-item
+                        v-if="item.allow_sale==1 && item.status==1"
                             :key="n"
                             v-slot="{ toggle }"
                         >
                             <v-card
-                                :color="n % 2 == 0 ? 'primary' : '#ffffff'"
-                                :class="n % 2 == 0 ? 'ma-4 card-outter' : 'ma-4 card-outter white_card_border'"
-                                height="500"
+                                :color="1==1 ? 'primary' : '#ffffff'"
+                                :class="1==1 ? 'ma-4 card-outter' : 'ma-4 card-outter white_card_border'"
+                                height="540"
                                 width="300"
                                 @click="addToCart(item)"
                                 elevation="0"
@@ -268,10 +287,14 @@
                                         <div class="item">
                                             <div class="blog-entry">
                                                 <div class="mt-4 mb-4">
-                                                    <p><span :class="n % 2 == 0 ? 'text_plan_title_white mb-2' : 'text_plan_title_blue mb-2'">{{ item.title }}</span></p>
-                                                    <p><strike v-if="item.promotional_cost != '0.00' && item.promotional_cost != '0'" :class="n % 2 == 0 ? 'price_strike_light mr-3' : 'price_strike_dark mr-3'">{{ item.promotional_cost }}</strike><span :class="n % 2 == 0 ? 'text_plan_price_pink mb-2' : 'text_plan_price_blue mb-2'">S/ {{ item.cost }}</span></p>
+                                                    <p><span :class="1==1 ? 'text_plan_title_white mb-2' : 'text_plan_title_blue mb-2'">{{ item.title }}</span></p>
+                                                    <p><strike v-if="item.promotional_cost != '0.00' && item.promotional_cost != '0'" :class="1==1 ? 'price_strike_light mr-3' : 'price_strike_dark mr-3'">{{ item.promotional_cost }}</strike><span :class="1==1 ? 'text_plan_price_pink mb-2' : 'text_plan_price_blue mb-2'">S/ {{ item.cost }}</span></p>
+                                                    <p style="font-weight: bold; color: #e30e4f" v-if="item.dias_trial > 0 && trial_status==true">
+                                                    Prueba gratis por 7 días!
+                                                </p>
+                                                <p style="font-weight: bold; color: #e30e4f" v-else>&nbsp;</p>
                                                 </div>
-                                                <div :class="n % 2 == 0 ? 'p-2 bd_desc_carousel_white' : 'p-2 bd_desc_carousel_blue'" v-html="item.content">
+                                                <div :class="1==1 ? 'p-2 bd_desc_carousel_white' : 'p-2 bd_desc_carousel_blue'" v-html="item.content">
 
                                                 </div>
                                             </div>
@@ -280,11 +303,11 @@
                                 <v-card-actions class="card-actions">
                                     <v-row align="center">
                                         <v-col cols="12" align="center">
-                                            <v-btn block :class="n % 2 == 0 ? 'my-2 fb-btn btn_pink_white' : 'my-2 fb-btn btn_blue_white'" style="padding:0.7em 0px!important;" @click="addToCart(item)"
+                                            <v-btn block :class="1==1 ? 'my-2 fb-btn btn_pink_white' : 'my-2 fb-btn btn_blue_white'" style="padding:0.7em 0px!important;" @click="addToCart(item)"
                                                 v-if="(data_config.allow_sale && item.allow_sale)">
                                                 INSCRIBETE
                                             </v-btn>
-                                            <v-btn block :class="n % 2 == 0 ? 'my-2 fb-btn btn_pink_white' : 'my-2  fb-btn btn_blue_white'" style="padding:0.7em 0px!important;" @click="addToCart(item)"
+                                            <v-btn block :class="1==1 ? 'my-2 fb-btn btn_pink_white' : 'my-2  fb-btn btn_blue_white'" style="padding:0.7em 0px!important;" @click="addToCart(item)"
                                                 v-if="(!data_config.allow_sale && item.allow_sale)">
                                                 INSCRIBETE
                                             </v-btn>
@@ -294,6 +317,7 @@
                                 </v-card-actions>
                             </v-card>
                         </v-slide-item>
+                        </template>
                         </v-slide-group>
                     </v-sheet>
                 </v-tab-item>
@@ -377,6 +401,8 @@ export default {
         periodicidad: null,
         interval: 0,
         show_gym: false,
+        business_partner: [],
+        trial_status: false,
         tabs: [
             { key: "mensual", value: "Mensual", show: true },
             { key: "trimestral", value: "Trimestral", show: true },
@@ -388,15 +414,36 @@ export default {
         let vm = this;
         this.pq = localStorage.getItem('paquete_seleccionado');
         vm.slug = this.$route.params.slug;
+        vm.getLoggedUser();
         vm.getConfiguracion();
         vm.getBaseUrl();
         vm.list();
     },
     methods: {
         async getLoggedUser() {
+            this.$store.commit('loader', true);
             if (localStorage.getItem('token')) {
-                this.show_gym = true;
+                this.logged_user = JSON.parse(localStorage.getItem('user_data'));
+                this.logged_user_token = localStorage.getItem('token');
+
+                const response = await this.$API.business_partner.getPartner(this.logged_user.id);
+                
+                if(response!=null){
+                    this.business_partner = Object.assign(response.data.data[0]);
+                    this.show_gym = true;
+                    
+                    if(this.business_partner.trial_status == 1){
+                        this.trial_status = true;
+                    }
+                }else{
+                    console.log("DAD");
+                    this.trial_status = true;
+                }
+                
+            }else{
+                this.trial_status = true;
             }
+            this.$store.commit('loader', false);
         },
         checkPlan() {
             var itemv = this.plans.find(element => element.code == this.pq);
@@ -413,7 +460,8 @@ export default {
                 priceTotal: Number(itemv.cost),
                 currency: itemv.currency.symbol,
                 renovacion: itemv.renovacion_automatica,
-                category_id: itemv.category_id
+                category_id: itemv.category_id,
+                dias_trial: itemv.dias_trial
             };
             localStorage.planSeleccionado = JSON.stringify(item);
             this.$store.dispatch("addItem", item);
@@ -423,7 +471,7 @@ export default {
             this.$router.push({ path: '/' });
         },
         filtrarPlanesPeriodo(planes, period) {
-            let listaPlanes = planes.filter((plan) => plan.months == period);
+            let listaPlanes = planes.filter((plan) => plan.months == period && plan.active==1);
             let estado = listaPlanes.length == 0 ? false : true;
             switch (period) {
                 case 4:
@@ -490,7 +538,8 @@ export default {
                 priceTotal: Number(itemv.cost),
                 currency: itemv.currency.symbol,
                 renovacion: itemv.renovacion_automatica,
-                category_id: itemv.category_id
+                category_id: itemv.category_id,
+                dias_trial: this.trial_status == true?itemv.dias_trial:0
             };
             localStorage.planSeleccionado = JSON.stringify(item);
             this.$store.dispatch("addItem", item);

@@ -12,6 +12,11 @@ export default [{
   component: () => import(/* webpackChunkName: "apps-email-inbox" */ '@/pages/GymVirtual/pages/ClasesGrabadasPage.vue'),
   meta: { requiresAuth: true, template: 'SidebarTemplate' }
 },{
+  path: 'horario',
+  name: 'horario',
+  component: () => import(/* webpackChunkName: "apps-email-inbox" */ '@/pages/GymVirtual/pages/HorarioPage.vue'),
+  meta: { requiresAuth: true, template: 'SidebarTemplate' }
+},{
   path: 'retos',
   name: 'retos',
   component: () => import(/* webpackChunkName: "apps-email-inbox" */ '@/pages/GymVirtual/pages/RetosPage.vue'),

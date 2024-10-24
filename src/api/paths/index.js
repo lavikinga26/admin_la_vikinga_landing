@@ -134,7 +134,9 @@ export default {
         validateEmail(data){
             return callAPI('post', 'api/v1/order/validate-email', { data: data });
         },
-        
+        generatePostInvoice(hash){
+            return callAPI('get', 'api/v1/generatePostInvoice/'+hash );
+        },
     },
 
     coupon:{

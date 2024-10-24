@@ -6,7 +6,7 @@ moment.locale('es');
 
 Vue.filter('formatDate', function(value) {
   if (value) {
-     return moment(String(value)).format('ll')
+     return moment(String(value)).tz("America/Lima").format('ll')
   }
   return ''
 });

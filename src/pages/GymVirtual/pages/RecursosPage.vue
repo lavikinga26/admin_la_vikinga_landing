@@ -1,6 +1,14 @@
 <template>
     <div>
-        <v-container>
+        <v-container class="mb-5" v-if="has_active_plan === false">
+            <v-row class="text-center">
+                <v-col cols="12" v-if="show_message_plan === true">
+                    <h1 class="text-center text_box_title" style="margin-top: 10%;">Ups! No cuentas con ningún plan activo!</h1>
+                    <v-btn class="text_btn_white_title mt-5" color="secondary" @click="gohome">Renovar/adquirir plan</v-btn>
+                </v-col>
+            </v-row>
+        </v-container>
+        <v-container v-if="has_active_plan === true">
             <v-row>
                 <v-col>
                     <h1 class="text_plan_title_white">Recursos</h1>
@@ -23,8 +31,8 @@
                     </v-tabs>
                 </v-col>
             </v-row>
-            <v-row style="border: 2px solid #293E58; border-radius: 16px;">
-                <v-tabs-items v-model="tab" style="background: transparent!important;width:100%!important;">
+            <v-row style="border: 2px solid #293E58; border-radius: 16px;margin-bottom: 10%;">
+                <v-tabs-items v-model="tab" style="background: transparent!important;width:100%!important; margin-bottom: 5%;">
                     <v-tab-item
                       v-for="(item, indx) in groupList"
                       :key="'tab_item_' + indx"
@@ -32,9 +40,9 @@
                     >
                         <v-row class="pa-2">
                             <v-col cols="12" md="3" v-for="(item, indx) in item.groupList" :key="indx">
-                                <v-card min-height="200" min-width="200" class="box_rutina" color="#E7004C" v-if="item.id && flag_mostrar == 1 && item.link_video == null">
+                                <v-card min-height="200" min-width="200" class="box_rutina" color="#E7004C" :href="'https://apiweb.lavikingaoficial.com/api/download-file/' + item.code" v-if="item.id && flag_mostrar == 1 && item.link_video == null && item.link_video != 'null'">
                                     <h1 class="text_box_gym_sm_blue align-left" style="padding-top: 10px!important;">{{ item.title }}</h1>
-                                    <h4 style="padding: 0px 10px; color: #fff; font-family: 'Poppins-Regular'; font-size: 12px;">{{ item.description }}</h4>
+                                    <h4 style="padding: 0px 10px; color: #fff; font-family: 'Poppins-Regular'; font-size: 12px;" v-if="item.description != 'null'">{{ item.description }}</h4>
                                     <v-btn
                                     fab
                                     small
@@ -48,9 +56,9 @@
                                     </v-icon>
                                     </v-btn>
                                 </v-card>
-                                <v-card min-height="200" min-width="200" class="box_rutina" color="#E7004C" v-if="item.id && flag_mostrar == 1 && item.link_video != null">
+                                <v-card min-height="200" min-width="200" class="box_rutina" color="#E7004C" @click="openPlayer(item.link_video)" v-if="item.id && flag_mostrar == 1 && item.link_video != null && item.link_video != 'null'">
                                     <h1 class="text_box_gym_sm_blue align-left" style="padding-top: 10px!important;">{{ item.title }}</h1>
-                                    <h4 style="padding: 0px 10px; color: #fff; font-family: 'Poppins-Regular'; font-size: 12px;">{{ item.description }}</h4>
+                                    <h4 style="padding: 0px 10px; color: #fff; font-family: 'Poppins-Regular'; font-size: 12px;" v-if="item.description != 'null'">{{ item.description }}</h4>
                                     <v-btn
                                     fab
                                     small
@@ -68,25 +76,30 @@
                     </v-tab-item>
                 </v-tabs-items>
             </v-row>
+            <v-row>
+                <v-col cols="12" md="12" class="hidden-md-and-up">
+                    <div style="height: 200px;"></div>
+                </v-col>
+            </v-row>
         </v-container>
         <v-snackbar v-model="toast.toast" :timeout="toast.timeout" :color="toast.color" dark>
             {{ toast.message }}
         </v-snackbar>
 
         <v-dialog transition="dialog-bottom-transition" max-width="800" v-model="dialogPlayer">
-                <v-card>
-                    <!--<v-toolbar color="primary" dark elevation="0">
-                    {{ currrent_activity.name }}
-                </v-toolbar>-->
-                    <v-card-text class="text-center d-flex align-center pt-10 justify-center" v-if="dialogPlayer">
-                        <iframe :src="now_playing" width="800" height="328" frameborder="0"
-                            allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-                    </v-card-text>
-                    <v-card-actions class="justify-end">
-                        <v-btn text @click="dialogPlayer = false">Cerrar</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
+            <v-card>
+                <!--<v-toolbar color="primary" dark elevation="0">
+                {{ currrent_activity.name }}
+            </v-toolbar>-->
+                <v-card-text class="text-center d-flex align-center pt-10 justify-center" v-if="dialogPlayer">
+                    <iframe :src="now_playing" width="800" height="328" frameborder="0"
+                        allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                </v-card-text>
+                <v-card-actions class="justify-end">
+                    <v-btn text @click="dialogPlayer = false">Cerrar</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -135,10 +148,14 @@ export default {
         tab: null,
         flag_mostrar: 1,
         dialogPlayer: false,
-        now_playing: null
+        now_playing: null,
+        has_active_plan: false,
+        show_message_plan: false,
+        id_level: 0,
     }),
     mounted() {
-        this.getDownloads();
+        this.auth();
+        
     },
     computed: {
     },
@@ -161,26 +178,37 @@ export default {
         }
     },
     methods: {
-        async getPartnerData(id) {
-            this.$store.commit('loader', true);
+        gohome(){
+            window.location.replace('https://desafio.lavikingaoficial.com');
+        },
+        async auth() {
+            let vm = this;
             try {
-                const response = await this.$API.auth.auth(id);
+                const response = await this.$API.auth.auth();
                 this.user = response.data;
-                var plans = this.user.plans;
-
-                plans.map(function (element) {
-                    if (element.id_plan == 35 && this.flag_mostrar != 1) { this.flag_mostrar = 0; }
-                }, this);
-                this.$store.commit('loader', false);
+                if (this.user.id_level != null) {
+                    this.id_level = this.user.id_level;
+                }
+                this.getDownloads();
+                this.userPlans = response.data.plans;
+                let fecha_actual = new Date();
+                this.userPlans.map(function (item) {
+                    if(fecha_actual <= new Date(item.expiration_date) && vm.has_active_plan == false){
+                        vm.has_active_plan = true;
+                    }
+                });
+                vm.show_message_plan = vm.has_active_plan === true ? false:true;
+                var planes = this.userPlans;
             } catch (e) {
-                this.$store.commit('loader', false);
-                console.error(e);
+                localStorage.removeItem('user_data');
+                localStorage.removeItem('token');
+                window.location.replace('/auth/iniciar-sesion');
             }
         },
         async getDownloads() {
             this.$store.commit('loader', true);
             try {
-                const response = await this.$API.business_partner.getDownloads();
+                const response = await this.$API.business_partner.getDownloadsGym(this.id_level);
                 this.downloads_list = response.data.data;
 
                 //console.log(this.downloads_list.groupBy('name_category'))

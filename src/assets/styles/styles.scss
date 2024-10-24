@@ -9,6 +9,11 @@ html{
     overflow-y: hidden;
 }
 
+body{
+    background: #F1F1F1;
+    font-family: 'Montserrat';
+}
+
 @font-face {
     /*font-family: 'Gotham';
     src: url('../fonts/GothamBook.ttf'); */
@@ -104,10 +109,6 @@ $font-family:'Montserrat';
 }
 .txt_uppercase{
     text-transform: uppercase !important;
-}
-body{
-    background: #F1F1F1;
-    font-family: 'Montserrat';
 }
 
 .top_bar_blue{

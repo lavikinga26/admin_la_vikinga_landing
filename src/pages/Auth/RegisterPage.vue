@@ -1,97 +1,101 @@
 <template>
     <v-row>
+        <whatsapp />
         <v-col cols="12" md="6" class="d-none d-md-flex d-sm-none">
             <img src="@/assets/img/gym_virtual/login_img.jpg" alt="Imagen Login" style="width:100%;" />
         </v-col>
         <v-col cols="12" md="6" class="pa-4">
-            <v-sheet class="mx-auto mb-5" max-width="450">
-                    <v-stepper
-                    non-linear
-                    value="3"
-                    elevation="0"
-                    >
-                        <v-stepper-header>
-                            <v-stepper-step
-                            complete
-                            step="1"
-                            ></v-stepper-step>
+            <v-sheet class="mx-auto mb-1" max-width="450">
+                <v-stepper non-linear value="3" elevation="0">
+                    <v-stepper-header>
+                        <v-stepper-step complete step="1"></v-stepper-step>
 
-                            <v-divider></v-divider>
+                        <v-divider></v-divider>
 
-                            <v-stepper-step
-                            step="2"
-                            complete
-                            ></v-stepper-step>
+                        <v-stepper-step step="2" complete></v-stepper-step>
 
-                            <v-divider></v-divider>
+                        <v-divider></v-divider>
 
-                            <v-stepper-step 
-                            step="3"
-                            ></v-stepper-step>
-                            <v-divider></v-divider>
+                        <v-stepper-step step="3"></v-stepper-step>
+                        <v-divider></v-divider>
 
-                            <v-stepper-step 
-                            step="4"
-                            ></v-stepper-step>
+                        <v-stepper-step step="4"></v-stepper-step>
 
-                            <v-divider></v-divider>
+                        <v-divider></v-divider>
 
-                                <v-stepper-step 
-                                step="5"
-                                ></v-stepper-step>
-                        </v-stepper-header>
-                    </v-stepper>
-                </v-sheet>
-            <h1 class="title_pink mb-4">Regístrate ahora</h1>
-            <p style="font-family:'Poppins-Regular'; text-align:center;">¿Tienes una cuenta? <a href="/auth/iniciar-sesion">Inicia sesión</a>
+                        <v-stepper-step step="5"></v-stepper-step>
+                    </v-stepper-header>
+                </v-stepper>
+            </v-sheet>
+            <h1 class="title_pink">Regístrate ahora</h1>
+            <p style="font-family:'Poppins-Regular'; text-align:center; margin-bottom: 0px!important;">¿Tienes una
+                cuenta? <a href="/auth/iniciar-sesion">Inicia sesión</a>
             </p>
-            <v-sheet max-width="390" class="mx-auto">
+            <v-sheet max-width="400" class="mx-auto" style="height:100vh;">
                 <v-form ref="loginForm" class="formlogBlue" v-model="valid">
-                    <v-row class="mt-3">
-                        <v-col cols="12" md="6" class="pa-0 px-1">
-                            <label class="text_field_form">Nombre</label>
-                            <v-text-field :rules="requiredRule" v-model="userData.nombre" outlined class="register_form"></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="6" class="pa-0 px-1">
-                            <label class="text_field_form">Apellidos</label>
-                            <v-text-field :rules="requiredRule" v-model="userData.apellidos" outlined class="register_form"></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="12" class="pa-0 px-1">
-                            <label class="text_field_form">Teléfono</label>
-                            <vue-tel-input-vuetify outlined label=""  v-model="userData.telefono" :inputOptions={inputtel} :enabledCountryCode=true :clearable=true validCharactersOnly = "true" placeholder="" v-on:country-changed="countryChanged" :rules="phoneRules"></vue-tel-input-vuetify>
-                        </v-col>
-                        <v-col cols="12" md="6" class="pa-0 px-1">
-                            <label class="text_field_form">Tipo de Documento</label>
-                            <v-select class="register_form" :rules="requiredRule" :items="documents" outlined item-text="name" item-value="id" v-model="userData.tipo_doc"></v-select>
-                        </v-col>
-                        <v-col cols="12" md="6" class="pa-0 px-1">
-                            <label class="text_field_form">Nro. Documento</label>
-                            <v-text-field :rules="nrodocRules" outlined  v-model="userData.nro_doc" class="register_form"></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="6" class="pa-0 px-1">
-                            <label class="text_field_form">Contraseña</label>
-                            <v-text-field class="register_form" outlined v-model="userData.pwd" type="password" :rules="passwordRules"></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="6" class="pa-0 px-1">
-                            <label class="text_field_form">Confirmar contraseña</label>
-                            <v-text-field class="register_form" outlined v-model="userData.pwd_rep" type="password" :rules="[requiredRule, passwordConfirmationRule]"></v-text-field>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col cols="12" md="6" class="pa-0 px-1">
-                            <v-btn class="text_btn_white_title" block depressed color="secondary" @click="volver">
-                            <v-icon>mdi-chevron-left</v-icon>VOLVER
-                        </v-btn>
-                        </v-col>
-                        <v-col cols="12" md="6" class="pa-0 px-1">
-                            <v-btn class="text_btn_white_title" block depressed color="secondary" :disabled="!valid"
-                                @click="nextStep">
-                                SIGUIENTE<v-icon>mdi-chevron-right</v-icon>
-                            </v-btn>
-                        </v-col>
-                    </v-row>
-                    
+                    <v-container>
+                        <v-row class="mt-3">
+                            <v-col cols="12" md="6" class="pa-0 px-1">
+                                <label class="text_field_form">Nombre</label>
+                                <v-text-field :rules="requiredRule" v-model="userData.nombre" outlined
+                                    class="register_form"></v-text-field>
+                            </v-col>
+                            <v-col cols="12" md="6" class="pa-0 px-1">
+                                <label class="text_field_form">Apellidos</label>
+                                <v-text-field :rules="requiredRule" v-model="userData.apellidos" outlined
+                                    class="register_form"></v-text-field>
+                            </v-col>
+                            <v-col cols="12" md="12" class="pa-0 px-1">
+                                <label class="text_field_form">Teléfono</label>
+                                <vue-tel-input-vuetify outlined label="" v-model="userData.telefono" :validate-on-blur=true
+                                :input-options="{showDialCode: true}" :clearable=true
+                                    validCharactersOnly="true" placeholder="" v-on:country-changed="countryChanged"
+                                    ></vue-tel-input-vuetify>
+                            </v-col>
+                            <v-col cols="12" md="6" class="pa-0 px-1">
+                                <label class="text_field_form">Tipo de Documento</label>
+                                <v-select class="register_form" :rules="requiredRule" :items="documents" outlined
+                                    item-text="name" item-value="id" v-model="userData.tipo_doc"></v-select>
+                            </v-col>
+                            <v-col cols="12" md="6" class="pa-0 px-1">
+                                <label class="text_field_form">Nro. Documento</label>
+                                <v-text-field :rules="nrodocRules" outlined v-model="userData.nro_doc"
+                                    class="register_form" autocomplete="null"></v-text-field>
+                            </v-col>
+                            <v-col cols="12" md="6" class="pa-0 px-1">
+                                <label class="text_field_form">Contraseña</label>
+                                <v-text-field class="register_form" outlined v-model="userData.pwd" type="password"
+                                    :rules="passwordRules" autocomplete="null"></v-text-field>
+                            </v-col>
+                            <v-col cols="12" md="6" class="pa-0 px-1">
+                                <label class="text_field_form">Confirmar contraseña</label>
+                                <v-text-field class="register_form" outlined v-model="userData.pwd_rep" type="password" autocomplete="null"
+                                    :rules="[requiredRule, passwordConfirmationRule]"></v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="12" md="6" class="pa-0 px-1">
+                                <v-btn class="text_btn_white_title" block depressed color="secondary" @click="volver">
+                                    <v-icon>mdi-chevron-left</v-icon>VOLVER
+                                </v-btn>
+                            </v-col>
+                            <v-col cols="12" md="6" class="pa-0 px-1">
+                                <v-btn class="text_btn_white_title" block depressed color="secondary" :disabled="!valid"
+                                    @click="nextStep">
+                                    SIGUIENTE<v-icon>mdi-chevron-right</v-icon>
+                                </v-btn>
+
+                            </v-col>
+                        </v-row>
+                    </v-container>
                 </v-form>
+                <v-row style="background: #fff;">
+                    <v-col>
+                        <div style="height: 250px;">
+                            <p>&nbsp;</p>
+                        </div>
+                    </v-col>
+                </v-row>
             </v-sheet>
         </v-col>
     </v-row>
@@ -184,14 +188,13 @@ export default {
             this.$router.push({ path: '/proceso_compra/step2' });
         },
         async countryChanged(country) {
-            this.country = country.dialCode;
-            this.userData.telefono = "+"+ country.dialCode;
+            this.country = "+"+country.dialCode;
             const response = await this.$API.countries.search(country.iso2);
             this.userData.country = {"id": response.data.data.id};
-            //this.userData.countryIso = country.iso2;
         },
         async nextStep() {
-            localStorage.datosUsuario = JSON.stringify(this.userData); 
+            localStorage.datosUsuario = JSON.stringify(this.userData);
+            localStorage.setItem('user_data_tmp', JSON.stringify(this.userData));
             window.location.replace('/proceso_compra/step3');
         },
         docRules(v) {
@@ -229,24 +232,32 @@ export default {
                 this.logged_user = JSON.parse(localStorage.getItem('user_data'));
                 this.logged_user_token = localStorage.getItem('token');
                 const response = await this.$API.business_partner.getPartner(this.logged_user.id);
-                this.logged_affiliate = response.data.data[0];
+                if(response != null){
+                    this.logged_affiliate = response.data.data[0];
 
-                this.userData.bd_id = this.logged_affiliate.id;
-                this.userData.tipo_doc = this.logged_affiliate.id_document_type;
-                this.userData.nombre = this.logged_affiliate.name;
-                this.userData.apellidos = this.logged_affiliate.lastname;
-                this.userData.nro_doc = this.logged_affiliate.nro_doc;
-                this.userData.address = this.logged_affiliate.address;
-                this.userData.city = this.logged_affiliate.city;
-                this.userData.email = this.logged_affiliate.email;
-                this.userData.telefono = this.logged_affiliate.phone;
-                this.userData.bp_id = this.logged_affiliate.id;
-                this.userData.country = {'id': this.logged_affiliate.id_country};
-                //this.userData.country = this.countries_list.find(e => e.id == this.logged_affiliate.id_country);
+                    this.userData.bd_id = this.logged_affiliate.id;
+                    this.userData.tipo_doc = this.logged_affiliate.id_document_type;
+                    this.userData.nombre = this.logged_affiliate.name;
+                    this.userData.apellidos = this.logged_affiliate.lastname;
+                    this.userData.nro_doc = this.logged_affiliate.nro_doc;
+                    this.userData.address = this.logged_affiliate.address;
+                    this.userData.city = this.logged_affiliate.city;
+                    this.userData.email = this.logged_affiliate.email;
+                    this.userData.telefono = this.logged_affiliate.phone;
+                    this.userData.bp_id = this.logged_affiliate.id;
+                    this.userData.country = {'id': this.logged_affiliate.id_country};
+                    this.userData.dialcode = this.country;
+                    //this.userData.country = this.countries_list.find(e => e.id == this.logged_affiliate.id_country);
 
-                this.userData.had_invoice = false;
-                localStorage.datosUsuario = JSON.stringify(this.userData);
-                window.location.replace('/proceso_compra/step3');
+                    this.userData.had_invoice = false;
+                    localStorage.datosUsuario = JSON.stringify(this.userData);
+                    window.location.replace('/proceso_compra/step3');
+                }else{
+                    this.userData = JSON.parse(localStorage.getItem('user_data_tmp'));
+                }
+                
+            }else if(localStorage.getItem('user_data_tmp')){
+                this.userData = JSON.parse(localStorage.getItem('user_data_tmp'));
             }
         },
     }

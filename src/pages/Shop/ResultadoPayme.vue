@@ -21,7 +21,7 @@
             </div>
 
             <div class="d-flex justify-center" v-if="order.id_status == 2">
-                <v-card max-width="450" elevation="0" class="pa-2">
+                <v-card max-width="450" elevation="0" class="pa-2 mt-5">
                     <div class="py-2 d-flex align-center">
                         <div style="width: 40%" class="text-center">
                             <img style="width: 100px" src="@/assets/img/icons/payment_declined.png" />
@@ -114,8 +114,9 @@ export default {
                 const data = await this.$API.order.getAllOrderInfo(vm.slug);
                 console.log(data.data.data);
                 vm.order = data.data.data.order;
-                if(vm.order.id_status==1){
+                if(vm.order.id_status==1 && (vm.order.external_id==null || vm.order.external_id==undefined)){
                     vm.$store.dispatch("cleanCart");
+                    const data = await this.$API.order.generatePostInvoice(vm.slug);
                 }
                 vm.$store.commit('loader',false);
             }

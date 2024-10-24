@@ -99,6 +99,9 @@ export default {
         updateLevel(level){
             return callAuthAPI('get', 'api/v1/business-partner/updateLevel/'+level);
         },
+        getRetos(){
+            return callAuthAPI('get', 'api/v1/business-partner/retosgym');
+        },
     },
     rating:{
         saveRating(data){

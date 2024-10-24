@@ -1,6 +1,14 @@
 <template>
     <div>
-        <v-container class="mb-5">
+        <v-container class="mb-5" v-if="has_active_plan === false">
+            <v-row class="text-center">
+                <v-col cols="12" v-if="show_message_plan === true">
+                    <h1 class="text-center text_box_title" style="margin-top: 10%;">Ups! No cuentas con ningún plan activo!</h1>
+                    <v-btn class="text_btn_white_title mt-5" color="secondary" @click="gohome">Renovar/adquirir plan</v-btn>
+                </v-col>
+            </v-row>
+        </v-container>
+        <v-container class="mb-5" v-if="has_active_plan === true">
             <v-row v-if="id_level == null" class="hidden-md-and-down">
                 <v-col cols="12">
                     <div key="popup_level" class="text-left">
@@ -438,6 +446,8 @@ export default {
             { text: "Remo con Barra", value: 10, textColor: "select_text_color" },
         ],
         item: null,
+        has_active_plan: false,
+        show_message_plan: false,
         series: [{
             name: "KG",
             data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
@@ -545,6 +555,12 @@ export default {
         }
     },
     methods: {
+        goplan(){
+            window.location.replace('https://desafio.lavikingaoficial.com/?paquete=desafiobronce');
+        },
+        gohome(){
+            window.location.replace('https://desafio.lavikingaoficial.com');
+        },
         async getPesos() {
             var vm = this;
             vm.registrosTabla = [];
@@ -684,12 +700,11 @@ export default {
                 if (this.user.id_level != null) {
                     this.id_level = this.user.id_level;
                 }
-                vm.getActivitiesRecorded();
-                vm.getActivitiesUpcoming();
-                vm.getPesos();
-                vm.getDownloads();
+                
                 this.userPlans = response.data.plans;
                 let fecha_actual = new Date();
+                console.log("Planes:");
+                console.log(this.userPlans);
                 this.userPlans.map(function (item) {
                     let init_d = new Date(item.init_date);
                     let end_d = new Date(item.expiration_date);
@@ -700,7 +715,18 @@ export default {
                     if (fecha_actual.getTime() <= end_d.getTime()) {
                         vm.show_descarga_plan = true;
                     }
+
+                    if(fecha_actual <= new Date(item.expiration_date) && vm.has_active_plan == false){
+                        vm.has_active_plan = true;
+                    }
                 });
+                if(vm.has_active_plan == true){
+                    vm.getActivitiesRecorded();
+                    vm.getActivitiesUpcoming();
+                    vm.getPesos();
+                    vm.getDownloads();
+                }
+                vm.show_message_plan = vm.has_active_plan === true ? false:true;
                 var planes = this.userPlans;
             } catch (e) {
                 localStorage.removeItem('user_data');
