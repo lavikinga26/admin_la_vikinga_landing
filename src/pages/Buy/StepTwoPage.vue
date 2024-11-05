@@ -1,553 +1,505 @@
 <template>
-    <v-row>
-        <v-col cols="12" md="6" class="d-none d-md-flex d-sm-none">
-            <img src="@/assets/img/gym_virtual/login_img.jpg" alt="Imagen Login" style="width:100%; max-height:100vh;" />
-        </v-col>
-        <v-col cols="12" md="6" style="height: 100vh; overflow-y:auto;">
-            <v-sheet class="mx-auto mb-5" max-width="450">
-                <v-stepper
-                non-linear
-                value="2"
-                elevation="0"
-                >
-                    <v-stepper-header>
-                        <v-stepper-step
-                        complete
-                        step="1"
-                        ></v-stepper-step>
+	<v-row>
+		<v-col
+			cols="12"
+			md="4"
+			class="d-none d-md-flex d-sm-none"
+			style="position: relative;"
+		>
+			<img
+				src="@/assets/img/gym_virtual/register_img.png"
+				alt="Imagen Login"
+				style="width:100%; max-height:100vh;object-fit: cover;"
+			/>
+			<v-sheet
+				style="position: absolute; left: 0; right: 0; bottom: 10px;"
+				class="mx-auto transparent"
+				elevation="0"
+				max-width="450"
+			>
+				<v-carousel cycle :show-arrows="false" hide-delimiters height="320">
+					<v-carousel-item class="ma-4">
+						<v-card class="rounded-lg" color="#0A2240" width="540" outlined>
+							<div class="align-center justify-center">
+								<p
+									class="pa-3 align-center white--text"
+									style="text-align:center; font-size: 13px;"
+								>
+									<v-rating
+										:value="5"
+										background-color="indigo"
+										color="yellow darken-3"
+										disabled
+									></v-rating>
+									Me gusta la buena vibra de los entrenadores y que sufren igual
+									o más que yo. Y que me acompañen a ir aumentando la carga
+									progresivamente, pero sobre todo a no dejar de moverme 💪.<br /><br />
+									<span style="font-weight:bold; color: #E7004C">Carolina</span>
+								</p>
+							</div>
+						</v-card>
+					</v-carousel-item>
+					<v-carousel-item class="ma-4">
+						<v-card class="rounded-lg" color="#0A2240" width="540" outlined>
+							<div class="align-center justify-center">
+								<p
+									class="pa-3 align-center white--text"
+									style="text-align:center;font-size: 13px;"
+								>
+									<v-rating
+										:value="5"
+										background-color="indigo"
+										color="yellow darken-3"
+										disabled
+									></v-rating>
+									Las clases son todas excelentes, y me ayudan las explicaciones
+									y correcciones. Amo las rutinas, y que sean grabadas así las
+									puedo hacer a la hora que mas me conviene. Y el tener el pdf
+									también me ayuda a que a veces lo hago cuando no tengo buena
+									señal, y lo puedo hacer sola por lo que me han enseñado.<br /><br />
+									<span style="font-weight:bold; color: #E7004C"
+										>Gabriela Francke</span
+									>
+								</p>
+							</div>
+						</v-card>
+					</v-carousel-item>
+					<v-carousel-item class="ma-4">
+						<v-card class="rounded-lg" color="#0A2240" width="540" outlined>
+							<div class="align-center justify-center">
+								<p
+									class="pa-3 align-center white--text"
+									style="text-align:center;font-size: 13px;"
+								>
+									<v-rating
+										:value="5"
+										background-color="indigo"
+										color="yellow darken-3"
+										disabled
+									></v-rating>
+									Me gusta todo, osea la intensidad, la exigencia, la paciencia
+									con la q Sol , Nico y Maggy nos motivan a entrenar, y sobre
+									todo enseñan, me han ayudado a ser más disciplinada aun no lo
+									soy al 100% pero estoy encaminada!!<br /><br />
+									<span style="font-weight:bold; color: #E7004C"
+										>Monica Hurtado</span
+									>
+								</p>
+							</div>
+						</v-card>
+					</v-carousel-item>
+				</v-carousel>
+			</v-sheet>
+		</v-col>
+		<v-col cols="12" md="8" style="height: 100vh; overflow-y:auto;">
+			<v-sheet class="mx-auto mb-5" max-width="450">
+				<v-stepper non-linear value="2" elevation="0">
+					<v-stepper-header>
+						<v-stepper-step complete step="1"></v-stepper-step>
 
-                        <v-divider></v-divider>
+						<v-divider></v-divider>
 
-                        <v-stepper-step
-                        step="2"
-                        ></v-stepper-step>
+						<v-stepper-step step="2"></v-stepper-step>
 
-                        <v-divider></v-divider>
+						<v-divider></v-divider>
 
-                        <v-stepper-step 
-                        step="3"
-                        ></v-stepper-step>
-                        <v-divider></v-divider>
+						<v-stepper-step step="3"></v-stepper-step>
+						<v-divider></v-divider>
 
-                        <v-stepper-step 
-                        step="4"
-                        ></v-stepper-step>
-                        <v-divider></v-divider>
+						<v-stepper-step step="4"></v-stepper-step>
+						<v-divider></v-divider>
 
-                            <v-stepper-step 
-                            step="5"
-                            ></v-stepper-step>
-                    </v-stepper-header>
-                </v-stepper>
-            </v-sheet>
-            <p class="text-center"><a href="/gym-virtual/agenda" style="text-decoration:none; font-weight:bold;font-family: 'Poppins-Regular';"><v-icon style="color: #0b233f;">mdi-weight-lifter</v-icon> Ingresar a Mi Gym</a></p>
-            <h1 class="title_pink mt-4 mb-4">ELIGE TU PLAN</h1>
-            
-            <v-tabs
-            v-model="periodicidad"
-            center-active
-            centered
-            fixed-tabs
-            class="tabs_selector"
-            >
-                <v-tab v-for="(tab, idx) in tabs" :key="tab.key" v-show="tab.show">{{ tab.value }}</v-tab>
-            </v-tabs>
-            <v-tabs-items v-model="periodicidad">
-                <v-tab-item key="mensual">
-                    <v-sheet
-                    class="mx-auto"
-                    elevation="'0'"
-                    max-width="650"
-                    color="#ffffff"
-                    light
-                >
-                    <v-slide-group
-                    v-model="model"
-                    class="pa-0"
-                    center-active
-                    >
-                    <template v-for="(item, n) in filtrarPlanesPeriodo(plans, 4)">
-                    <v-slide-item
-                        v-if="item.allow_sale==1 && item.status==1"
-                        :key="n"
-                        v-slot="{ toggle }"
-                    >
-                        <v-card
-                            :color="1==1 ? 'primary' : '#ffffff'"
-                            :class="1==1 ? 'ma-4 card-outter' : 'ma-4 card-outter white_card_border'"
-                            height="540"
-                            width="270"
-                            @click="addToCart(item)"
-                            elevation="0"
-                        >
-                        <v-badge v-if="item.promotional_cost != '0.00' && item.promotional_cost != '0'" color="#E7004C" class="badge_pink" :content="`Ahorra S/ ${item.promotional_cost - item.cost}`"></v-badge>
-                            <v-card-text 
-                                max-height="300">
-                                    <div class="item">
-                                        <div class="blog-entry">
-                                            <div class="mt-4 mb-4">
-                                                <p><span :class="1==1 ? 'text_plan_title_white mb-2' : 'text_plan_title_blue mb-2'">{{ item.title }}</span></p>
-                                                <p><strike v-if="item.promotional_cost != '0.00' && item.promotional_cost != '0'" :class="1==1 ? 'price_strike_light mr-3' : 'price_strike_dark mr-3'">{{ item.promotional_cost }}</strike><span :class="1==1 ? 'text_plan_price_pink mb-2' : 'text_plan_price_blue mb-2'">S/ {{ item.cost }}</span></p>
-                                                <p style="font-weight: bold; color: #e30e4f" v-if="item.dias_trial > 0 && trial_status==true">
-                                                    Prueba gratis por {{item.dias_trial}} días!
-                                                </p>
-                                                <p style="font-weight: bold; color: #e30e4f" v-else>&nbsp;</p>
-                                            </div>
-                                            <div :class="1==1 ? 'p-2 bd_desc_carousel_white' : 'p-2 bd_desc_carousel_blue'" v-html="item.content">
-
-                                            </div>
-                                        </div>
-                                    </div>
-                            </v-card-text>
-                            <v-card-actions class="card-actions">
-                                <v-row align="center">
-                                    <v-col cols="12" align="center">
-                                        <v-btn block :class="1==1 ? 'my-2 fb-btn btn_pink_white' : 'my-2 fb-btn btn_blue_white'" style="padding:0.7em 0px!important;" @click="addToCart(item)"
-                                            v-if="(data_config.allow_sale && item.allow_sale)">
-                                            INSCRIBETE
-                                        </v-btn>
-                                        <v-btn block :class="1==1 ? 'my-2 fb-btn btn_pink_white' : 'my-2  fb-btn btn_blue_white'" style="padding:0.7em 0px!important;" @click="addToCart(item)"
-                                            v-if="(!data_config.allow_sale && item.allow_sale)">
-                                            INSCRIBETE
-                                        </v-btn>
-                                    </v-col>
-                                </v-row>
-                        
-                            </v-card-actions>
-                        </v-card>
-                    </v-slide-item>
-                </template>
-                    </v-slide-group>
-                    </v-sheet>
-                </v-tab-item>
-                <v-tab-item key="trimestral">
-                    <v-sheet
-                        class="mx-auto"
-                        elevation="'0'"
-                        max-width="550"
-                        color="#ffffff"
-                        light
-                    >
-                        <v-slide-group
-                        v-model="model"
-                        class="pa-0"
-                        center-active
-                        >
-                        <template v-for="(item, n) in filtrarPlanesPeriodo(plans, 12)">
-                        <v-slide-item
-                        v-if="item.allow_sale==1 && item.status==1"
-                            :key="n"
-                            v-slot="{ toggle }"
-                        >
-                            <v-card
-                                :color="n % 2 == 0 ? 'primary' : '#ffffff'"
-                                :class="n % 2 == 0 ? 'ma-4 card-outter' : 'ma-4 card-outter white_card_border'"
-                                height="540"
-                                width="300"
-                                @click="addToCart(item)"
-                                elevation="0"
-                            >
-                            <v-badge v-if="item.promotional_cost == '0.00' && item.promotional_cost != '0'" color="#E7004C" class="badge_pink" :content="`Ahorra S/ ${item.promotional_cost - item.cost}`"></v-badge>
-                                <v-card-text 
-                                    max-height="300">
-                                        <div class="item">
-                                            <div class="blog-entry">
-                                                <div class="mt-4 mb-4">
-                                                    <p><span :class="n % 2 == 0 ? 'text_plan_title_white mb-2' : 'text_plan_title_blue mb-2'">{{ item.title }}</span></p>
-                                                    <p><strike v-if="item.promotional_cost != '0.00' && item.promotional_cost != '0'" :class="n % 2 == 0 ? 'price_strike_light mr-3' : 'price_strike_dark mr-3'">{{ item.promotional_cost }}</strike><span :class="n % 2 == 0 ? 'text_plan_price_pink mb-2' : 'text_plan_price_blue mb-2'">S/ {{ item.cost }}</span></p>
-                                                    <p style="font-weight: bold; color: #e30e4f" v-if="item.dias_trial > 0 && trial_status==true">
-                                                        Prueba gratis por {{item.dias_trial}} días!
-                                                    </p>
-                                                    <p style="font-weight: bold; color: #e30e4f" v-else>&nbsp;</p>
-                                                </div>
-                                                <div :class="n % 2 == 0 ? 'p-2 bd_desc_carousel_white' : 'p-2 bd_desc_carousel_blue'" v-html="item.content">
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                </v-card-text>
-                                <v-card-actions class="card-actions">
-                                    <v-row align="center">
-                                        <v-col cols="12" align="center">
-                                            <v-btn block :class="n % 2 == 0 ? 'my-2 fb-btn btn_pink_white' : 'my-2 fb-btn btn_blue_white'" style="padding:0.7em 0px!important;" @click="addToCart(item)"
-                                                v-if="(data_config.allow_sale && item.allow_sale)">
-                                                INSCRIBETE
-                                            </v-btn>
-                                            <v-btn block :class="n % 2 == 0 ? 'my-2 fb-btn btn_pink_white' : 'my-2  fb-btn btn_blue_white'" style="padding:0.7em 0px!important;" @click="addToCart(item)"
-                                                v-if="(!data_config.allow_sale && item.allow_sale)">
-                                                INSCRIBETE
-                                            </v-btn>
-                                        </v-col>
-                                    </v-row>
-                            
-                                </v-card-actions>
-                            </v-card>
-                        </v-slide-item>
-                        </template>
-                        </v-slide-group>
-                    </v-sheet>
-                </v-tab-item>
-                <v-tab-item key="semestral">
-                    <v-sheet
-                        class="mx-auto"
-                        elevation="'0'"
-                        max-width="550"
-                        color="#ffffff"
-                        light
-                    >
-                        <v-slide-group
-                        v-model="model"
-                        class="pa-0"
-                        center-active
-                        >
-                        <template v-for="(item, n) in filtrarPlanesPeriodo(plans, 24)">
-                    <v-slide-item
-                        v-if="item.allow_sale==1 && item.status==1"
-                            :key="n"
-                            v-slot="{ toggle }"
-                        >
-                            <v-card
-                                :color="1==1 ? 'primary' : '#ffffff'"
-                                :class="1==1 ? 'ma-4 card-outter' : 'ma-4 card-outter white_card_border'"
-                                height="540"
-                                width="300"
-                                @click="addToCart(item)"
-                                elevation="0"
-                            >
-                            <v-badge v-if="item.promotional_cost != '0.00' && item.promotional_cost != '0'" color="#E7004C" class="badge_pink" :content="`Ahorra S/ ${item.promotional_cost - item.cost}`"></v-badge>
-                                <v-card-text 
-                                    max-height="300">
-                                        <div class="item">
-                                            <div class="blog-entry">
-                                                <div class="mt-4 mb-4">
-                                                    <p><span :class="1==1 ? 'text_plan_title_white mb-2' : 'text_plan_title_blue mb-2'">{{ item.title }}</span></p>
-                                                    <p><strike v-if="item.promotional_cost != '0.00' && item.promotional_cost != '0'" :class="1==1 ? 'price_strike_light mr-3' : 'price_strike_dark mr-3'">{{ item.promotional_cost }}</strike><span :class="1==1 ? 'text_plan_price_pink mb-2' : 'text_plan_price_blue mb-2'">S/ {{ item.cost }}</span></p>
-                                                    <p style="font-weight: bold; color: #e30e4f" v-if="item.dias_trial > 0 && trial_status==true">
-                                                        Prueba gratis por {{item.dias_trial}} días!
-                                                    </p>
-                                                    <p style="font-weight: bold; color: #e30e4f" v-else>&nbsp;</p>
-                                                </div>
-                                                <div :class="1==1 ? 'p-2 bd_desc_carousel_white' : 'p-2 bd_desc_carousel_blue'" v-html="item.content">
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                </v-card-text>
-                                <v-card-actions class="card-actions">
-                                    <v-row align="center">
-                                        <v-col cols="12" align="center">
-                                            <v-btn block :class="1==1 ? 'my-2 fb-btn btn_pink_white' : 'my-2 fb-btn btn_blue_white'" style="padding:0.7em 0px!important;" @click="addToCart(item)"
-                                                v-if="(data_config.allow_sale && item.allow_sale)">
-                                                INSCRIBETE
-                                            </v-btn>
-                                            <v-btn block :class="1==1 ? 'my-2 fb-btn btn_pink_white' : 'my-2  fb-btn btn_blue_white'" style="padding:0.7em 0px!important;" @click="addToCart(item)"
-                                                v-if="(!data_config.allow_sale && item.allow_sale)">
-                                                INSCRIBETE
-                                            </v-btn>
-                                        </v-col>
-                                    </v-row>
-                        
-                                </v-card-actions>
-                            </v-card>
-                        </v-slide-item>
-                        </template>
-                        </v-slide-group>
-                    </v-sheet>
-                </v-tab-item>
-                <v-tab-item key="anual">
-                    <v-sheet
-                        class="mx-auto"
-                        elevation="'0'"
-                        max-width="550"
-                        color="#ffffff"
-                        light
-                    >
-                        <v-slide-group
-                        v-model="model"
-                        class="pa-0"
-                        center-active
-                        >
-                        <template v-for="(item, n) in filtrarPlanesPeriodo(plans, 48)">
-                    <v-slide-item
-                        v-if="item.allow_sale==1 && item.status==1"
-                            :key="n"
-                            v-slot="{ toggle }"
-                        >
-                            <v-card
-                                :color="1==1 ? 'primary' : '#ffffff'"
-                                :class="1==1 ? 'ma-4 card-outter' : 'ma-4 card-outter white_card_border'"
-                                height="540"
-                                width="300"
-                                @click="addToCart(item)"
-                                elevation="0"
-                            >
-                            <v-badge v-if="item.promotional_cost != '0.00' && item.promotional_cost != '0'" color="#E7004C" class="badge_pink" :content="`Ahorra S/ ${item.promotional_cost - item.cost}`"></v-badge>
-                                <v-card-text 
-                                    max-height="300">
-                                        <div class="item">
-                                            <div class="blog-entry">
-                                                <div class="mt-4 mb-4">
-                                                    <p><span :class="1==1 ? 'text_plan_title_white mb-2' : 'text_plan_title_blue mb-2'">{{ item.title }}</span></p>
-                                                    <p><strike v-if="item.promotional_cost != '0.00' && item.promotional_cost != '0'" :class="1==1 ? 'price_strike_light mr-3' : 'price_strike_dark mr-3'">{{ item.promotional_cost }}</strike><span :class="1==1 ? 'text_plan_price_pink mb-2' : 'text_plan_price_blue mb-2'">S/ {{ item.cost }}</span></p>
-                                                    <p style="font-weight: bold; color: #e30e4f" v-if="item.dias_trial > 0 && trial_status==true">
-                                                    Prueba gratis por 7 días!
-                                                </p>
-                                                <p style="font-weight: bold; color: #e30e4f" v-else>&nbsp;</p>
-                                                </div>
-                                                <div :class="1==1 ? 'p-2 bd_desc_carousel_white' : 'p-2 bd_desc_carousel_blue'" v-html="item.content">
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                </v-card-text>
-                                <v-card-actions class="card-actions">
-                                    <v-row align="center">
-                                        <v-col cols="12" align="center">
-                                            <v-btn block :class="1==1 ? 'my-2 fb-btn btn_pink_white' : 'my-2 fb-btn btn_blue_white'" style="padding:0.7em 0px!important;" @click="addToCart(item)"
-                                                v-if="(data_config.allow_sale && item.allow_sale)">
-                                                INSCRIBETE
-                                            </v-btn>
-                                            <v-btn block :class="1==1 ? 'my-2 fb-btn btn_pink_white' : 'my-2  fb-btn btn_blue_white'" style="padding:0.7em 0px!important;" @click="addToCart(item)"
-                                                v-if="(!data_config.allow_sale && item.allow_sale)">
-                                                INSCRIBETE
-                                            </v-btn>
-                                        </v-col>
-                                    </v-row>
-                    
-                                </v-card-actions>
-                            </v-card>
-                        </v-slide-item>
-                        </template>
-                        </v-slide-group>
-                    </v-sheet>
-                </v-tab-item>
-            </v-tabs-items>
-            <v-sheet
-                class="mx-auto"
-                elevation="0"
-                max-width="450"
-            >
-                <v-carousel
-                    cycle
-                    :show-arrows="false"
-                    hide-delimiters
-                    height="320"
-                >
-                    <v-carousel-item class="ma-4">
-                        <v-card
-                        color="grey-lighten-1"
-                        width="540"
-                        outlined
-                        >
-                        <div class="align-center justify-center">
-                            <p class="pa-3 align-center" style="text-align:center;">
-                                <v-rating :value="5" background-color="indigo" color="yellow darken-3" disabled></v-rating>
-                                Me gusta la buena vibra de los entrenadores y que sufren igual o más que yo.  Y que me acompañen a ir aumentando la carga progresivamente, pero sobre todo a no dejar de moverme 💪.<br><br>
-                                <span style="font-weight:bold;">Carolina</span>
-                            </p>
-                        </div>
-                        </v-card>
-                    </v-carousel-item>
-                    <v-carousel-item class="ma-4">
-                        <v-card
-                        color="grey-lighten-1"
-                        width="540"
-                        outlined
-                        >
-                        <div class="align-center justify-center">
-                            <p class="pa-3 align-center" style="text-align:center;">
-                                <v-rating :value="5" background-color="indigo" color="yellow darken-3" disabled></v-rating>
-                                Las clases son todas excelentes, y me ayudan las explicaciones y correcciones. Amo las rutinas, y que sean grabadas así las puedo hacer a la hora que mas me conviene. Y el tener el pdf también me ayuda a que a veces lo hago cuando no tengo buena señal, y lo puedo hacer sola por lo que me han enseñado.<br><br>
-                                <span style="font-weight:bold;">Gabriela Francke</span>
-                            </p>
-                        </div>
-                        </v-card>
-                    </v-carousel-item>
-                    <v-carousel-item class="ma-4">
-                        <v-card
-                        color="grey-lighten-1"
-                        width="540"
-                        outlined
-                        >
-                        <div class="align-center justify-center">
-                            <p class="pa-3 align-center" style="text-align:center;">
-                                <v-rating :value="5" background-color="indigo" color="yellow darken-3" disabled></v-rating>
-                                Me gusta todo, osea la intensidad, la exigencia, la paciencia con la q Sol , Nico y Maggy nos motivan a entrenar, y sobre todo enseñan, me han ayudado a ser más disciplinada aun no lo soy al 100% pero estoy encaminada!!<br><br>
-                                <span style="font-weight:bold;">Monica Hurtado</span>
-                            </p>
-                        </div>
-                        </v-card>
-                    </v-carousel-item>
-                </v-carousel>
-            </v-sheet>
-            <v-sheet class="mx-auto" style="width: 100px;">
-                <v-btn class="text_btn_white_title" depressed color="secondary" @click="volver">
-                    <v-icon>mdi-chevron-left</v-icon>VOLVER
-                </v-btn>
-            </v-sheet>
-        </v-col>
-    </v-row>
+						<v-stepper-step step="5"></v-stepper-step>
+					</v-stepper-header>
+				</v-stepper>
+			</v-sheet>
+			<div style="position: relative;">
+				<h1 class="title_pink mt-4 mb-4">ELIGE TU PLAN</h1>
+				<div style="position: absolute; right: 20px; top: 0; bottom: 0;">
+					<div class="toggle-switch">
+						<input v-model="currency" type="checkbox" id="switch" />
+						<label for="switch" class="switch-label">
+							<span class="switch-inner"></span>
+							<span class="switch-text-on">SOL</span>
+							<span class="switch-text-off">USD</span>
+						</label>
+					</div>
+				</div>
+			</div>
+			<v-sheet class="mx-auto" elevation="'0'" color="#ffffff" light>
+				<v-slide-group v-model="model" class="pa-0" center-active>
+					<template v-for="(item, n) in plans">
+						<v-slide-item
+							v-if="item.allow_sale == 1 && item.status == 1"
+							:key="n"
+							v-slot="{ toggle }"
+						>
+							<v-card
+								:color="item.period == 'anual' ? 'primary' : '#ffffff'"
+								:class="
+									item.period == 'anual'
+										? 'ma-4 card-outter'
+										: 'ma-4 card-outter white_card_border'
+								"
+								class="rounded-lg"
+								height="550"
+								width="270"
+								@click="addToCart(item)"
+								elevation="0"
+							>
+								<v-badge
+									v-if="
+										item.promotional_cost != '0.00' &&
+											item.promotional_cost != '0'
+									"
+									color="#E7004C"
+									class="badge_pink"
+									:content="`Ahorra S/ ${item.promotional_cost - item.cost}`"
+								></v-badge>
+								<v-card-text max-height="300">
+									<div class="item">
+										<div class="blog-entry">
+											<div class="mt-4 mb-4">
+												<p>
+													<span
+														:class="
+															item.period == 'anual'
+																? 'text_plan_title_white mb-2'
+																: 'text_plan_title_blue mb-2'
+														"
+														>{{ item.title }} - {{ periods[item.period] }}</span
+													>
+												</p>
+												<p>
+													<strike
+														v-if="
+															item.promotional_cost != '0.00' &&
+																item.promotional_cost != '0'
+														"
+														:class="
+															item.period == 'anual'
+																? 'price_strike_light mr-3'
+																: 'price_strike_dark mr-3'
+														"
+														>{{ item.promotional_cost }}</strike
+													><span
+														:class="
+															item.period == 'anual'
+																? 'text_plan_price_pink mb-2'
+																: 'text_plan_price_blue mb-2'
+														"
+														>{{ !currency ? "S/" : "$" }}
+														{{ getPrice(item.prices) }}</span
+													>
+												</p>
+												<p
+													style="font-weight: bold; color: #e30e4f"
+													v-if="item.dias_trial > 0 && trial_status == true"
+												>
+													Prueba gratis por {{ item.dias_trial }} días!
+												</p>
+												<p style="font-weight: bold; color: #e30e4f" v-else>
+													&nbsp;
+												</p>
+											</div>
+											<div
+												:class="
+													item.period == 'anual'
+														? 'p-2 bd_desc_carousel_white'
+														: 'p-2 bd_desc_carousel_blue'
+												"
+												v-html="item.content"
+											></div>
+										</div>
+									</div>
+								</v-card-text>
+								<v-card-actions class="card-actions">
+									<v-row align="center">
+										<v-col cols="12" align="center">
+											<v-btn
+												block
+												:class="
+													item.period == 'anual'
+														? 'my-2 rounded-lg fb-btn btn_pink_white'
+														: 'my-2 rounded-lg fb-btn btn_blue_white'
+												"
+												style="padding:0.7em 0px!important;"
+												@click="addToCart(item)"
+												v-if="data_config.allow_sale && item.allow_sale"
+											>
+												ELEGIR PLAN
+											</v-btn>
+											<v-btn
+												block
+												:class="
+													item.period == 'anual'
+														? 'my-2 rounded-lg fb-btn btn_pink_white'
+														: 'my-2 rounded-lg fb-btn btn_blue_white'
+												"
+												style="padding:0.7em 0px!important;"
+												@click="addToCart(item)"
+												v-if="!data_config.allow_sale && item.allow_sale"
+											>
+												ELEGIR PLAN
+											</v-btn>
+										</v-col>
+									</v-row>
+								</v-card-actions>
+							</v-card>
+						</v-slide-item>
+					</template>
+				</v-slide-group>
+			</v-sheet>
+			<v-sheet class="mx-auto" style="width: 100px;">
+				<v-btn
+					class="text_btn_white_title"
+					depressed
+					color="secondary"
+					@click="volver"
+				>
+					<v-icon>mdi-chevron-left</v-icon>VOLVER
+				</v-btn>
+			</v-sheet>
+		</v-col>
+	</v-row>
 </template>
 <script>
 export default {
+	data: (e) => ({
+		model: null,
+		pq: null,
+		model2: 0,
+		plans: [],
+		base_url: "",
+		data_config: {},
+		periodicidad: null,
+		interval: 0,
+		show_gym: false,
+		business_partner: [],
+		trial_status: false,
+		currency: false,
+		periods: {
+			mensual: "MENSUAL",
+			trimestral: "TRIMESTRAL",
+			semestral: "SEMESTRAL",
+			anual: "ANUAL",
+		},
+	}),
+	mounted() {
+		let vm = this;
+		this.pq = localStorage.getItem("paquete_seleccionado");
+		vm.slug = this.$route.params.slug;
+		vm.getLoggedUser();
+		vm.getConfiguracion();
+		vm.getBaseUrl();
+		vm.list();
+	},
+	methods: {
+		async getLoggedUser() {
+			this.$store.commit("loader", true);
+			if (localStorage.getItem("token")) {
+				this.logged_user = JSON.parse(localStorage.getItem("user_data"));
+				this.logged_user_token = localStorage.getItem("token");
 
-    data: (e) => ({
-        model: null,
-        pq:null,
-        model2: 0,
-        plans: [],
-        base_url: '',
-        data_config: {},
-        periodicidad: null,
-        interval: 0,
-        show_gym: false,
-        business_partner: [],
-        trial_status: false,
-        tabs: [
-            { key: "mensual", value: "Mensual", show: true },
-            { key: "trimestral", value: "Trimestral", show: true },
-            { key: "semestral", value: "Semestral", show: true },
-            { key: "anual", value: "Anual", show: true },
-        ]
-    }),
-    mounted() {
-        let vm = this;
-        this.pq = localStorage.getItem('paquete_seleccionado');
-        vm.slug = this.$route.params.slug;
-        vm.getLoggedUser();
-        vm.getConfiguracion();
-        vm.getBaseUrl();
-        vm.list();
-    },
-    methods: {
-        async getLoggedUser() {
-            this.$store.commit('loader', true);
-            if (localStorage.getItem('token')) {
-                this.logged_user = JSON.parse(localStorage.getItem('user_data'));
-                this.logged_user_token = localStorage.getItem('token');
+				const response = await this.$API.business_partner.getPartner(
+					this.logged_user.id
+				);
 
-                const response = await this.$API.business_partner.getPartner(this.logged_user.id);
-                
-                if(response!=null){
-                    this.business_partner = Object.assign(response.data.data[0]);
-                    this.show_gym = true;
-                    
-                    if(this.business_partner.trial_status == 1){
-                        this.trial_status = true;
-                    }
-                }else{
-                    console.log("DAD");
-                    this.trial_status = true;
-                }
-                
-            }else{
-                this.trial_status = true;
-            }
-            this.$store.commit('loader', false);
-        },
-        checkPlan() {
-            var itemv = this.plans.find(element => element.code == this.pq);
-            localStorage.removeItem('planSeleccionado');
-            let item = {
-                id: itemv.id,
-                title: itemv.title,
-                code: itemv.code,
-                image: itemv.base_url + itemv.file_path.path + itemv.file_path.filename,
-                price: Number(itemv.cost),
-                price_promotional: Number(itemv.promotional_cost),
-                quantity: 1,
-                priceCompare: Number(itemv.cost),
-                priceTotal: Number(itemv.cost),
-                currency: itemv.currency.symbol,
-                renovacion: itemv.renovacion_automatica,
-                category_id: itemv.category_id,
-                dias_trial: itemv.dias_trial
-            };
-            localStorage.planSeleccionado = JSON.stringify(item);
-            this.$store.dispatch("addItem", item);
-            this.$router.push({ path: '/auth/registrarse' });
-        },
-        volver() {
-            this.$router.push({ path: '/' });
-        },
-        filtrarPlanesPeriodo(planes, period) {
-            let listaPlanes = planes.filter((plan) => plan.months == period && plan.active==1);
-            let estado = listaPlanes.length == 0 ? false : true;
-            switch (period) {
-                case 4:
-                    this.tabs[0].show = estado;
-                    break;
-                case 12:
-                    this.tabs[1].show = estado;
-                    break;
-                case 24:
-                    this.tabs[2].show = estado;
-                    break;
-                case 48:
-                    this.tabs[3].show = estado;
-                    break;
-            }
-            return listaPlanes;
-        },
-        async getConfiguracion() {
-            try {
-                const data = await this.$API.configuration.configuration();
-                this.data_config = data.data.data;
-            }
-            catch (e) {
-                console.error(e);
-            }
-        },
-        async getBaseUrl() {
-            try {
-                const data = await this.$API.configuration.getBaseUrl();
-                this.base_url = data.data;
-            }
-            catch (e) {
-                console.error(e);
-            }
-        },
-        async list() {
-            let vm = this;
-            vm.$store.commit('loader', true);
-            
-            try {
-                const data = await this.$API.plans.list();
-                vm.plans = data.data.data;
-                vm.temp_plans = data.data.data;
-                vm.checkPlan();
-                vm.$store.commit('loader', false);
-            }
-            catch (e) {
-                console.error(e);
-                vm.$store.commit('loader', false);
-            }
-        },
-        addToCart(itemv) {
-            this.$store.commit('loader', true);
-            localStorage.removeItem('planSeleccionado');
-            let item = {
-                id: itemv.id,
-                title: itemv.title,
-                code: itemv.code,
-                image: itemv.base_url + itemv.file_path.path + itemv.file_path.filename,
-                price: Number(itemv.cost),
-                price_promotional: Number(itemv.promotional_cost),
-                quantity: 1,
-                priceCompare: Number(itemv.cost),
-                priceTotal: Number(itemv.cost),
-                currency: itemv.currency.symbol,
-                renovacion: itemv.renovacion_automatica,
-                category_id: itemv.category_id,
-                dias_trial: this.trial_status == true?itemv.dias_trial:0
-            };
-            localStorage.planSeleccionado = JSON.stringify(item);
-            this.$store.dispatch("addItem", item);
-            this.$store.commit('loader', false);
-            //this.$router.push({ path: '/carrito#pago' })
-            this.$router.push({ path: '/auth/registrarse' })
-        }
-    }
-}
+				if (response != null) {
+					this.business_partner = Object.assign(response.data.data[0]);
+					this.show_gym = true;
+
+					if (this.business_partner.trial_status == 1) {
+						this.trial_status = true;
+					}
+				} else {
+					console.log("DAD");
+					this.trial_status = true;
+				}
+			} else {
+				this.trial_status = true;
+			}
+			this.$store.commit("loader", false);
+		},
+		checkPlan() {
+			var itemv = this.plans.find((element) => element.code == this.pq);
+			localStorage.removeItem("planSeleccionado");
+			let item = {
+				id: itemv.id,
+				title: itemv.title,
+				code: itemv.code,
+				image: itemv.base_url + itemv.file_path.path + itemv.file_path.filename,
+				price: Number(itemv.cost),
+				price_promotional: Number(itemv.promotional_cost),
+				quantity: 1,
+				priceCompare: Number(itemv.cost),
+				priceTotal: Number(itemv.cost),
+				currency: itemv.currency.symbol,
+				renovacion: itemv.renovacion_automatica,
+				category_id: itemv.category_id,
+				dias_trial: itemv.dias_trial,
+			};
+			localStorage.planSeleccionado = JSON.stringify(item);
+			this.$store.dispatch("addItem", item);
+			this.$router.push({ path: "/auth/registrarse" });
+		},
+		volver() {
+			this.$router.push({ path: "/" });
+		},
+		getPrice(prices) {
+			const currencyType = !this.currency ? "soles" : "dolar";
+			const price = prices.find(
+				(price) =>
+					price.currency.currency.toLowerCase() === currencyType.toLowerCase()
+			);
+			return price ? price.amount : null;
+		},
+		/* filtrarPlanesPeriodo(planes, period) {
+			let listaPlanes = planes.filter(
+				(plan) => plan.months == period && plan.active == 1
+			);
+			let estado = listaPlanes.length == 0 ? false : true;
+			switch (period) {
+				case 4:
+					this.tabs[0].show = estado;
+					break;
+				case 12:
+					this.tabs[1].show = estado;
+					break;
+				case 24:
+					this.tabs[2].show = estado;
+					break;
+				case 48:
+					this.tabs[3].show = estado;
+					break;
+			}
+			return listaPlanes;
+		}, */
+		async getConfiguracion() {
+			try {
+				const data = await this.$API.configuration.configuration();
+				this.data_config = data.data.data;
+			} catch (e) {
+				console.error(e);
+			}
+		},
+		async getBaseUrl() {
+			try {
+				const data = await this.$API.configuration.getBaseUrl();
+				this.base_url = data.data;
+			} catch (e) {
+				console.error(e);
+			}
+		},
+		async list() {
+			let vm = this;
+			vm.$store.commit("loader", true);
+
+			try {
+				const data = await this.$API.plans.list();
+				vm.plans = data.data.data;
+				vm.temp_plans = data.data.data;
+				vm.checkPlan();
+				vm.$store.commit("loader", false);
+			} catch (e) {
+				console.error(e);
+				vm.$store.commit("loader", false);
+			}
+		},
+		addToCart(itemv) {
+			this.$store.commit("loader", true);
+			localStorage.removeItem("planSeleccionado");
+			let item = {
+				id: itemv.id,
+				title: itemv.title,
+				code: itemv.code,
+				image: itemv.base_url + itemv.file_path.path + itemv.file_path.filename,
+				price: Number(itemv.cost),
+				price_promotional: Number(itemv.promotional_cost),
+				quantity: 1,
+				priceCompare: Number(itemv.cost),
+				priceTotal: Number(itemv.cost),
+				currency: itemv.currency.symbol,
+				renovacion: itemv.renovacion_automatica,
+				category_id: itemv.category_id,
+				dias_trial: this.trial_status == true ? itemv.dias_trial : 0,
+			};
+			localStorage.planSeleccionado = JSON.stringify(item);
+			this.$store.dispatch("addItem", item);
+			this.$store.commit("loader", false);
+			//this.$router.push({ path: '/carrito#pago' })
+			this.$router.push({ path: "/auth/registrarse" });
+		},
+	},
+};
 </script>
-<style scoped></style>
+<style scoped>
+.toggle-switch {
+	position: relative;
+	width: 80px;
+	height: 40px;
+}
+
+input[type="checkbox"] {
+	display: none;
+}
+
+.switch-label {
+	position: relative;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	width: 100%;
+	height: 100%;
+	background-color: #0a2240; /* Color para el estado OFF */
+	border-radius: 20px;
+	overflow: hidden;
+	transition: background-color 0.3s ease;
+}
+
+.switch-inner {
+	position: absolute;
+	left: 4px;
+	width: 32px;
+	height: 32px;
+	background-color: #fff;
+	border-radius: 50%;
+	transition: left 0.3s ease, background-color 0.3s ease;
+}
+
+.switch-text-on,
+.switch-text-off {
+	position: absolute;
+	width: 50%;
+	text-align: center;
+	font-weight: bold;
+	color: white;
+	font-size: 12px;
+}
+
+.switch-text-on {
+	left: 0;
+	color: #0a2240; /* Color del texto ON */
+}
+
+.switch-text-off {
+	right: 0;
+	color: #fff; /* Color del texto OFF */
+}
+
+input[type="checkbox"]:checked + .switch-label {
+	background-color: #0a2240; /* Color para el estado ON */
+}
+
+input[type="checkbox"]:checked + .switch-label .switch-inner {
+	left: 44px; /* Ajuste para la posición al activarse */
+	background-color: #fff;
+}
+input[type="checkbox"]:checked + .switch-label .switch-text-on {
+	color: #fff; /* Color del texto ON */
+}
+
+input[type="checkbox"]:checked + .switch-label .switch-text-off {
+	color: #0a2240; /* Color del texto ON */
+}
+</style>
