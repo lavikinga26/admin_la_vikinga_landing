@@ -3,7 +3,9 @@ import axios from "axios";
 //export const baseURL = 'http://admin_la_vikinga.test/';
 // export const baseURL = 'http://adminlavikinga.test/';
 // export const baseURL = 'https://apiserv.lavikingaoficial.com/';
-export const baseURL = 'https://apiweb.lavikingaoficial.com/';
+// export const baseURL = 'https://apiweb.lavikingaoficial.com/';
+export const baseURL = 'http://127.0.0.1:8000';
+
 const headers = { 
     'Accept': 'application/json',//'*' ,
     'Content-Type': 'application/json',
