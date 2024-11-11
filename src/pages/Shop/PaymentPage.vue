@@ -1,9 +1,98 @@
 <template>
     <v-row>
-        <v-col cols="12" md="6" class="d-none d-md-flex d-sm-none">
-            <img src="@/assets/img/gym_virtual/login_img.jpg" alt="Imagen Login" style="width:100%;"/>
-        </v-col>
-        <v-col cols="12" md="6" style="height: 100vh; overflow-y:auto;">
+        
+        <v-col
+			cols="12"
+			md="4"
+			class="d-none d-md-flex d-sm-none"
+			style="position: relative;"
+		>
+			<img
+				src="@/assets/img/gym_virtual/register-3.png"
+				alt="Imagen Login"
+				style="width:100%; max-height:100vh;object-fit: cover;"
+			/>
+			<v-sheet
+				style="position: absolute; left: 0; right: 0; bottom: 10px;"
+				class="mx-auto transparent"
+				elevation="0"
+				max-width="450"
+			>
+				<v-carousel cycle :show-arrows="false" hide-delimiters height="320">
+					<v-carousel-item class="ma-4">
+						<v-card class="rounded-lg" color="#0A2240" width="540" outlined>
+							<div class="align-center justify-center">
+								<p
+									class="pa-3 align-center white--text"
+									style="text-align:center; font-size: 13px;"
+								>
+									<v-rating
+										:value="5"
+										background-color="indigo"
+										color="yellow darken-3"
+										disabled
+									></v-rating>
+									Me gusta la buena vibra de los entrenadores y que sufren igual
+									o más que yo. Y que me acompañen a ir aumentando la carga
+									progresivamente, pero sobre todo a no dejar de moverme 💪.<br /><br />
+									<span style="font-weight:bold; color: #E7004C">Carolina</span>
+								</p>
+							</div>
+						</v-card>
+					</v-carousel-item>
+					<v-carousel-item class="ma-4">
+						<v-card class="rounded-lg" color="#0A2240" width="540" outlined>
+							<div class="align-center justify-center">
+								<p
+									class="pa-3 align-center white--text"
+									style="text-align:center;font-size: 13px;"
+								>
+									<v-rating
+										:value="5"
+										background-color="indigo"
+										color="yellow darken-3"
+										disabled
+									></v-rating>
+									Las clases son todas excelentes, y me ayudan las explicaciones
+									y correcciones. Amo las rutinas, y que sean grabadas así las
+									puedo hacer a la hora que mas me conviene. Y el tener el pdf
+									también me ayuda a que a veces lo hago cuando no tengo buena
+									señal, y lo puedo hacer sola por lo que me han enseñado.<br /><br />
+									<span style="font-weight:bold; color: #E7004C"
+										>Gabriela Francke</span
+									>
+								</p>
+							</div>
+						</v-card>
+					</v-carousel-item>
+					<v-carousel-item class="ma-4">
+						<v-card class="rounded-lg" color="#0A2240" width="540" outlined>
+							<div class="align-center justify-center">
+								<p
+									class="pa-3 align-center white--text"
+									style="text-align:center;font-size: 13px;"
+								>
+									<v-rating
+										:value="5"
+										background-color="indigo"
+										color="yellow darken-3"
+										disabled
+									></v-rating>
+									Me gusta todo, osea la intensidad, la exigencia, la paciencia
+									con la q Sol , Nico y Maggy nos motivan a entrenar, y sobre
+									todo enseñan, me han ayudado a ser más disciplinada aun no lo
+									soy al 100% pero estoy encaminada!!<br /><br />
+									<span style="font-weight:bold; color: #E7004C"
+										>Monica Hurtado</span
+									>
+								</p>
+							</div>
+						</v-card>
+					</v-carousel-item>
+				</v-carousel>
+			</v-sheet>
+		</v-col>
+        <v-col cols="12" md="8" style="height: 100vh; overflow-y:auto;">
             <v-sheet class="mx-auto mb-5" max-width="450">
                     <v-stepper
                     non-linear

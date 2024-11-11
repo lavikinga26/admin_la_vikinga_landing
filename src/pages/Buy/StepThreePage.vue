@@ -1,10 +1,99 @@
 <template>
     <v-row no-gutters>
-        <v-col cols="12" md="6" class="d-none d-md-flex d-sm-none">
-            <img src="@/assets/img/gym_virtual/login_img.jpg" alt="Imagen Login"
-                style="width:100%; max-height:100vh;" />
-        </v-col>
-        <v-col cols="12" md="6" style="height: 100vh; overflow-y:auto;">
+        <v-col
+			cols="12"
+			md="4"
+			class="d-none d-md-flex d-sm-none"
+			style="position: relative;"
+		>
+			<img
+				src="@/assets/img/gym_virtual/register-2.png"
+				alt="Imagen Login"
+				style="width:100%; max-height:100vh;object-fit: cover;"
+			/>
+			<v-sheet
+				style="position: absolute; left: 0; right: 0; bottom: 10px;"
+				class="mx-auto transparent"
+				elevation="0"
+				max-width="450"
+			>
+				<v-carousel cycle :show-arrows="false" hide-delimiters height="320">
+					<v-carousel-item class="ma-4">
+						<v-card class="rounded-lg" color="#0A2240" width="540" outlined>
+							<div class="align-center justify-center">
+								<p
+									class="pa-3 align-center white--text"
+									style="text-align:center; font-size: 13px;"
+								>
+									<v-rating
+										:value="5"
+										background-color="indigo"
+										color="yellow darken-3"
+										disabled
+									></v-rating>
+									Me gusta la buena vibra de los entrenadores y que sufren igual
+									o más que yo. Y que me acompañen a ir aumentando la carga
+									progresivamente, pero sobre todo a no dejar de moverme 💪.<br /><br />
+									<span style="font-weight:bold; color: #E7004C">Carolina</span>
+								</p>
+							</div>
+						</v-card>
+					</v-carousel-item>
+					<v-carousel-item class="ma-4">
+						<v-card class="rounded-lg" color="#0A2240" width="540" outlined>
+							<div class="align-center justify-center">
+								<p
+									class="pa-3 align-center white--text"
+									style="text-align:center;font-size: 13px;"
+								>
+									<v-rating
+										:value="5"
+										background-color="indigo"
+										color="yellow darken-3"
+										disabled
+									></v-rating>
+									Las clases son todas excelentes, y me ayudan las explicaciones
+									y correcciones. Amo las rutinas, y que sean grabadas así las
+									puedo hacer a la hora que mas me conviene. Y el tener el pdf
+									también me ayuda a que a veces lo hago cuando no tengo buena
+									señal, y lo puedo hacer sola por lo que me han enseñado.<br /><br />
+									<span style="font-weight:bold; color: #E7004C"
+										>Gabriela Francke</span
+									>
+								</p>
+							</div>
+						</v-card>
+					</v-carousel-item>
+					<v-carousel-item class="ma-4">
+						<v-card class="rounded-lg" color="#0A2240" width="540" outlined>
+							<div class="align-center justify-center">
+								<p
+									class="pa-3 align-center white--text"
+									style="text-align:center;font-size: 13px;"
+								>
+									<v-rating
+										:value="5"
+										background-color="indigo"
+										color="yellow darken-3"
+										disabled
+									></v-rating>
+									Me gusta todo, osea la intensidad, la exigencia, la paciencia
+									con la q Sol , Nico y Maggy nos motivan a entrenar, y sobre
+									todo enseñan, me han ayudado a ser más disciplinada aun no lo
+									soy al 100% pero estoy encaminada!!<br /><br />
+									<span style="font-weight:bold; color: #E7004C"
+										>Monica Hurtado</span
+									>
+								</p>
+							</div>
+						</v-card>
+					</v-carousel-item>
+				</v-carousel>
+			</v-sheet>
+		</v-col>
+        <v-col 
+			cols="12"
+			md="8" style="height: 100vh; overflow-y:auto;">
             <v-sheet class="mx-auto" max-width="390">
                 <v-stepper non-linear value="4" elevation="0">
                     <v-stepper-header>
@@ -30,21 +119,21 @@
             <v-container class="mx-auto" style="max-width:450px">
                 <v-row>
                     <v-col cols="8">{{ cart[0] ? cart[0].title : '' }}</v-col>
-                    <v-col cols="4">S/ {{ cart[0] ?
+                    <v-col cols="4"  class="text-right">S/ {{ cart[0] ?
                         parseFloat(parseFloat(cart[0].price).toFixed(2) + parseFloat(discount).toFixed(2)).toFixed(2) :
                         ''
                         }}</v-col>
                 </v-row>
                 <v-row v-if="discount > 0">
                     <v-col cols="8"><b>Descuento</b></v-col>
-                    <v-col cols="4">S/ {{ parseFloat(discount).toFixed(2) }}</v-col>
-                </v-row>
-                <v-row>
-                    <v-col cols="8"><b>Total a pagar hoy</b></v-col>
-                    <v-col cols="4"><b>S/ {{ total }}</b></v-col>
+                    <v-col cols="4" class="text-right">S/ {{ parseFloat(discount).toFixed(2) }}</v-col>
                 </v-row>
 
-                <hr />
+                <hr class="mt-2 mb-2" style="border: 1px dashed #000000;">
+                <v-row>
+                    <v-col cols="8"><b>Total a pagar hoy</b></v-col>
+                    <v-col cols="4" class="text-right"><b>S/ {{ parseFloat(total).toFixed(2) }}</b></v-col>
+                </v-row>
 
                 <v-alert type="info" color="#E7004C" elevation="0" class="mt-5" v-if="is_trial == 1">
                     Suscribiéndote a este plan tienes {{ cart[0].dias_trial }} días gratis, no se te cobrará nada hasta
@@ -53,11 +142,12 @@
 
                 <v-row class="mt-5">
                     <v-col cols="8">
-                        <v-text-field v-model="coupon" class="register_form" outlined type="text"
+                        <label class="text_field_form">Cupón de descuento</label>
+                        <v-text-field dense v-model="coupon" class="register_form" outlined type="text"
                             placeholder="Cupón de descuento" hide-details></v-text-field>
                     </v-col>
-                    <v-col cols="4"><v-btn depressed class="btn_blue_form mt-5"
-                            style="bottom:0!important;margin-top:10px!important;" @click="aplicarCupon()">APLICAR
+                    <v-col cols="4"><v-btn depressed class="btn_blue_form" 
+                            style="bottom:0!important;margin-top: 25px !important;" @click="aplicarCupon()">APLICAR
                             CUPÓN</v-btn></v-col>
                     <v-col cols="12">
                         <v-checkbox v-model="had_invoice" label="Solicitar factura" hide-details

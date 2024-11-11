@@ -1,8 +1,7 @@
 <template>
-
-<v-row>
-        
-        <v-col
+	<v-row>
+		<whatsapp />
+		<v-col
 			cols="12"
 			md="4"
 			class="d-none d-md-flex d-sm-none"
@@ -93,16 +92,76 @@
 				</v-carousel>
 			</v-sheet>
 		</v-col>
-        <v-col cols="12" md="8" style="height: 100vh; overflow-y:auto;">
+		<v-col
+			cols="12"
+			md="8"
+			class="pa-4"
+			style="height: 100vh; overflow-y:auto;"
+		>
+			<v-sheet class="mx-auto mb-1" max-width="450">
+				<v-stepper non-linear value="3" elevation="0">
+					<v-stepper-header>
+						<v-stepper-step complete step="1"></v-stepper-step>
 
-            <v-sheet max-width="400" class="mx-auto py-16">
+						<v-divider></v-divider>
 
-                <h1 class="title_pink mb-4">¡FELICITACIONES!</h1>
-                <p class="title_blue mb-4">Ya casi eres una Vikinga. Completa con tus datos:</p>
-                <v-form ref="loginForm" class="formlogBlue" v-model="valid">
+						<v-stepper-step step="2" complete></v-stepper-step>
+
+						<v-divider></v-divider>
+
+						<v-stepper-step step="3"></v-stepper-step>
+						<v-divider></v-divider>
+
+						<v-stepper-step step="4"></v-stepper-step>
+
+						<v-divider></v-divider>
+
+						<v-stepper-step step="5"></v-stepper-step>
+					</v-stepper-header>
+				</v-stepper>
+			</v-sheet>
+			<h1 class="title_pink">Regístrate ahora</h1>
+			<p
+				style="font-family:'Poppins-Regular'; text-align:center; margin-bottom: 0px!important;"
+			>
+				¿Tienes una cuenta? <a href="/auth/iniciar-sesion">Inicia sesión</a>
+			</p>
+			<v-sheet max-width="400" class="mx-auto" style="height:100vh;">
+				<v-form ref="loginForm" class="formlogBlue" v-model="valid">
 					<v-container>
 						<v-row class="mt-3">
-							
+							<v-col cols="12" md="6" class="pa-0 px-1">
+								<label class="text_field_form">Nombre</label>
+								<v-text-field
+									:rules="requiredRule"
+									v-model="userData.nombre"
+									outlined
+									class="register_form"
+								></v-text-field>
+							</v-col>
+							<v-col cols="12" md="6" class="pa-0 px-1">
+								<label class="text_field_form">Apellidos</label>
+								<v-text-field
+									:rules="requiredRule"
+									v-model="userData.apellidos"
+									outlined
+									class="register_form"
+								></v-text-field>
+							</v-col>
+							<v-col cols="12" md="12" class="pa-0 px-1">
+								<label class="text_field_form">Teléfono</label>
+								<vue-tel-input-vuetify
+									outlined
+									label=""
+									v-model="userData.telefono"
+									:validate-on-blur="true"
+									:input-options="{ showDialCode: true }"
+									:clearable="true"
+									validCharactersOnly="true"
+									placeholder=""
+									v-on:country-changed="countryChanged"
+								></vue-tel-input-vuetify>
+							</v-col>
 							<v-col cols="12" md="6" class="pa-0 px-1">
 								<label class="text_field_form">Tipo de Documento</label>
 								<v-select
@@ -125,7 +184,7 @@
 									autocomplete="null"
 								></v-text-field>
 							</v-col>
-							<v-col cols="12" md="12" class="pa-0 px-1">
+							<v-col cols="12" md="6" class="pa-0 px-1">
 								<label class="text_field_form">Contraseña</label>
 								<v-text-field
 									class="register_form"
@@ -136,7 +195,7 @@
 									autocomplete="null"
 								></v-text-field>
 							</v-col>
-							<v-col cols="12" md="12" class="pa-0 px-1">
+							<v-col cols="12" md="6" class="pa-0 px-1">
 								<label class="text_field_form">Confirmar contraseña</label>
 								<v-text-field
 									class="register_form"
@@ -149,7 +208,18 @@
 							</v-col>
 						</v-row>
 						<v-row>
-							<v-col cols="12" md="12" class="pa-0 px-1">
+							<v-col cols="12" md="6" class="pa-0 px-1">
+								<v-btn
+									class="text_btn_white_title"
+									block
+									depressed
+									color="secondary"
+									@click="volver"
+								>
+									<v-icon>mdi-chevron-left</v-icon>VOLVER
+								</v-btn>
+							</v-col>
+							<v-col cols="12" md="6" class="pa-0 px-1">
 								<v-btn
 									class="text_btn_white_title"
 									block
@@ -158,53 +228,56 @@
 									:disabled="!valid"
 									@click="nextStep"
 								>
-                                INGRESAR AL GYM<v-icon>mdi-chevron-right</v-icon>
+									SIGUIENTE<v-icon>mdi-chevron-right</v-icon>
 								</v-btn>
 							</v-col>
 						</v-row>
 					</v-container>
 				</v-form>
-            </v-sheet>
-
-        </v-col>
-    </v-row>
+				<v-row style="background: #fff;">
+					<v-col>
+						<div style="height: 250px;">
+							<p>&nbsp;</p>
+						</div>
+					</v-col>
+				</v-row>
+			</v-sheet>
+		</v-col>
+	</v-row>
 </template>
+
 <script>
-import axios from "axios";
-import API from "../../api/axios";
+import VueTelInputVuetify from "vue-tel-input-vuetify/lib/vue-tel-input-vuetify.vue";
 export default {
-    components: { 
-        axios
-     },
-
-    data: () => ({
-        category: 0,
-        order:{},
-        base_url: '',
-        slug:'',
-        rules: [
-            value => !value || value.size < 2000000 || '',
-        ],
-        
-        img_file: null,
-        img_url: "../images/default-image.png",
-        
-        toast:{
-            toast: false,
-            message: '',
-            timeout: 3000,
-            color: "success"
-        },
-
-        uploadSuccess: false,
-
-
-		validLoginForm: false,
-		enabledCountryCode: true,
+	components: {
+		VueTelInputVuetify,
+	},
+	data: (e) => ({
+		fab: null,
+		color: "",
+		flat: null,
 		show_pwd: String,
 		logged_user: null,
 		logged_user_token: null,
+		documents: [],
+		loginUserDialog: false,
+		validLoginForm: false,
 		enabledCountryCode: true,
+		clearablebt: true,
+		loginForm: {
+			token_name: "",
+		},
+		inputtel: {
+			showDialCode: true,
+		},
+		phone: "",
+		cart: [],
+		toast: {
+			toast: false,
+			message: "",
+			timeout: 3000,
+			color: "success",
+		},
 		userData: {
 			nombre: "",
 			apellidos: "",
@@ -219,6 +292,13 @@ export default {
 			(v) => !!v || "Campo obligatorio",
 			(v) => /.+@.+\..+/.test(v) || "Correo Electrónico debe ser válido",
 		],
+		valid: true,
+		toast: {
+			toast: false,
+			message: "",
+			timeout: 3000,
+			color: "success",
+		},
 		passwordRules: [
 			(value) => !!value || "Debe ingresar una contraseña.",
 			(value) =>
@@ -239,8 +319,7 @@ export default {
 			(value) => !!value || "Debe confirmar su contraseña.",
 			(value) => value === userData.pwd || "Las contraseñas no coinciden.",
 		],
-    }),
-
+	}),
 	computed: {
 		passwordConfirmationRule() {
 			return (
@@ -249,48 +328,24 @@ export default {
 			);
 		},
 	},
-    
-    mounted() {
-        let vm = this;
-        vm.slug = this.$route.params.hash;
-        vm.getOrder();
+	mounted() {
 		this.getTypeDocument();
 		this.getLoggedUser();
-    },
-
-    watch: {
-    },
-
-    methods: {
-
-        irGym(){
-            this.$router.push({ path: '/gym-virtual/agenda' })
-        },
-        
-        showToast(msg,color){
-            this.toast.color = color;
-            this.toast.message = msg;
-            this.toast.toast = true;
-        },
-
-        async getOrder(){
-            let vm = this;
-            vm.$store.commit('loader',true);
-            try{
-                const data = await this.$API.order.getAllOrderInfo(vm.slug);
-                console.log(data.data.data);
-                vm.order = data.data.data.order;
-                if(vm.order.id_status==1){
-                    vm.$store.dispatch("cleanCart");
-                }
-                vm.$store.commit('loader',false);
-            }
-            catch(e){
-                console.error(e);
-                vm.$store.commit('loader',false);
-            }
-        },
-
+	},
+	methods: {
+		volver() {
+			this.$router.push({ path: "/proceso_compra/step2" });
+		},
+		async countryChanged(country) {
+			this.country = "+" + country.dialCode;
+			const response = await this.$API.countries.search(country.iso2);
+			this.userData.country = { id: response.data.data.id };
+		},
+		async nextStep() {
+			localStorage.datosUsuario = JSON.stringify(this.userData);
+			localStorage.setItem("user_data_tmp", JSON.stringify(this.userData));
+			window.location.replace("/proceso_compra/step3");
+		},
 		docRules(v) {
 			if (this.order.id_document_type == 2 && !Number.isInteger(Number(v))) {
 				return "Ingrese sólo números.";
@@ -304,10 +359,10 @@ export default {
 			}
 			return true;
 		},
-		async countryChanged(country) {
-			this.country = "+" + country.dialCode;
-			const response = await this.$API.countries.search(country.iso2);
-			this.userData.country = { id: response.data.data.id };
+		showToast(msg, color) {
+			this.toast.color = color;
+			this.toast.message = msg;
+			this.toast.toast = true;
 		},
 		async getTypeDocument(type = 2) {
 			this.$store.commit("loader", true);
@@ -346,7 +401,7 @@ export default {
 
 					this.userData.had_invoice = false;
 					localStorage.datosUsuario = JSON.stringify(this.userData);
-					
+					window.location.replace("/proceso_compra/step3");
 				} else {
 					this.userData = JSON.parse(localStorage.getItem("user_data_tmp"));
 				}
@@ -354,14 +409,7 @@ export default {
 				this.userData = JSON.parse(localStorage.getItem("user_data_tmp"));
 			}
 		},
-    },
-}
+	},
+};
 </script>
-<style>
-  .fb-btn.v-btn--outlined {
-    border: 1px solid #E30E4F;
-  }
-  .rounded-lg .round-radius{
-    border-radius: 5px !important; 
-  }
-</style>
+<style scoped></style>
