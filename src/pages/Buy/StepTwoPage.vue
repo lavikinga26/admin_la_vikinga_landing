@@ -135,9 +135,9 @@
 							v-slot="{ toggle }"
 						>
 							<v-card
-								:color="item.period == 'anual' ? 'primary' : '#ffffff'"
+								:color="item.is_outstanding == 1 ? 'primary' : '#ffffff'"
 								:class="
-									item.period == 'anual'
+									item.is_outstanding == 1
 										? 'ma-4 card-outter'
 										: 'ma-4 card-outter white_card_border'
 								"
@@ -163,7 +163,7 @@
 												<p>
 													<span
 														:class="
-															item.period == 'anual'
+															item.is_outstanding == 1
 																? 'text_plan_title_white mb-2'
 																: 'text_plan_title_blue mb-2'
 														"
@@ -177,14 +177,14 @@
 																item.promotional_cost != '0'
 														"
 														:class="
-															item.period == 'anual'
+															item.is_outstanding == 1
 																? 'price_strike_light mr-3'
 																: 'price_strike_dark mr-3'
 														"
 														>{{ item.promotional_cost }}</strike
 													><span
 														:class="
-															item.period == 'anual'
+															item.is_outstanding == 1
 																? 'text_plan_price_pink mb-2'
 																: 'text_plan_price_blue mb-2'
 														"
@@ -204,7 +204,7 @@
 											</div>
 											<div
 												:class="
-													item.period == 'anual'
+													item.is_outstanding == 1
 														? 'p-2 bd_desc_carousel_white'
 														: 'p-2 bd_desc_carousel_blue'
 												"
@@ -219,7 +219,7 @@
 											<v-btn
 												block
 												:class="
-													item.period == 'anual'
+													item.is_outstanding == 1
 														? 'my-2 rounded-lg fb-btn btn_pink_white'
 														: 'my-2 rounded-lg fb-btn btn_blue_white'
 												"
@@ -232,7 +232,7 @@
 											<v-btn
 												block
 												:class="
-													item.period == 'anual'
+													item.is_outstanding == 1
 														? 'my-2 rounded-lg fb-btn btn_pink_white'
 														: 'my-2 rounded-lg fb-btn btn_blue_white'
 												"
