@@ -7,7 +7,7 @@
 			style="height: 100%;"
 		>
 			<img
-				src="@/assets/img/gym_virtual/login_img.jpg"
+				src="@/assets/img/gym_virtual/register_1_img.png"
 				alt="Imagen Login"
 				style="width:100%; object-fit: cover;"
 			/>

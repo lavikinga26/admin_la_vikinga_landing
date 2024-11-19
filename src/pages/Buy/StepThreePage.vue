@@ -423,9 +423,9 @@ export default {
                 const data = await this.$API.configuration.getPaymentMethods();
                 this.paymentMethods = data.data.data;
                 let renovacion = this.cart.filter((item) => item.renovacion == 1);
-                if (renovacion.length > 0) {
+                /* if (renovacion.length > 0) {
                     this.show_transfer = false;
-                }
+                }*/
                 this.$store.commit('loader', false);
             }
             catch (e) {

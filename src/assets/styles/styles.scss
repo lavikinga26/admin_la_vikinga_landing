@@ -1,6 +1,6 @@
 //@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
-@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css");
 $color: #555555;
 $white: #ffffff;
@@ -11,23 +11,23 @@ html {
 
 body {
 	background: #f1f1f1;
-	font-family: "Montserrat";
+	font-family: "Poppins";
 }
 
 @font-face {
 	/*font-family: 'Gotham';
     src: url('../fonts/GothamBook.ttf'); */
 
-	font-family: "Montserrat";
-	src: url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+	font-family: "Poppins";
+	src: url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 }
 
 @font-face {
 	/*font-family: 'GothamBold';
     src: url('../fonts/GothamBold.ttf');*/
 
-	font-family: "MontserratBold";
-	src: url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap");
+	font-family: "PoppinsBold";
+	src: url("https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap");
 }
 
 @font-face {
@@ -61,7 +61,7 @@ body {
 	background: #555;
 }
 
-$font-family: "Montserrat";
+$font-family: "Poppins";
 
 .v-application {
 	[class*="text-"] {
@@ -136,13 +136,13 @@ $font-family: "Montserrat";
 }
 
 .sub_h2_white {
-	font-family: "Montserrat";
+	font-family: "Poppins";
 	color: #fff;
 	font-size: 1em;
 }
 
 .sub_h2_black {
-	font-family: "Montserrat";
+	font-family: "Poppins";
 	color: #333333;
 	font-size: 1em;
 }
@@ -177,7 +177,7 @@ $font-family: "Montserrat";
 }
 
 .tit_h2_staff_pink {
-	font-family: "Montserrat";
+	font-family: "Poppins";
 	color: #e30e4f;
 	font-size: 2em;
 }
@@ -233,7 +233,7 @@ $font-family: "Montserrat";
 .btn_pink {
 	background: #e30e4f;
 	color: #fff;
-	font-family: "Montserrat";
+	font-family: "Poppins";
 }
 
 .btn_pink:hover {
@@ -254,7 +254,7 @@ $font-family: "Montserrat";
 }
 
 .txt_video {
-	font-family: "Montserrat";
+	font-family: "Poppins";
 	font-weight: 300;
 	padding: 20px 80px;
 }
@@ -382,7 +382,7 @@ $font-family: "Montserrat";
 .bd_desc_carousel_white ul li {
 	color: #fff;
 	list-style-image: url(../img/circle_check_white.png);
-	font-family: "Montserrat";
+	font-family: "Poppins";
 }
 .bd_desc_carousel_white ul li p {
 	margin-bottom: 1px;
@@ -391,7 +391,7 @@ $font-family: "Montserrat";
 .bd_desc_carousel_blue ul li {
 	color: #0a2240;
 	list-style-image: url(../img/circle_check_blue.png);
-	font-family: "Montserrat";
+	font-family: "Poppins";
 }
 
 .bd_desc_carousel_blue ul li p {
@@ -401,7 +401,7 @@ $font-family: "Montserrat";
 .desc_plan ul li {
 	color: #fff;
 	list-style-image: url(../img/lista_icon.png);
-	font-family: "Montserrat";
+	font-family: "Poppins";
 }
 
 .price_carousel {
@@ -431,7 +431,7 @@ $font-family: "Montserrat";
 	display: inline-block;
 	margin-bottom: 5px;
 	padding: 10px;
-	font-family: "Montserrat";
+	font-family: "Poppins";
 }
 .filtering span:last-child {
 	margin: 0;
@@ -1141,6 +1141,21 @@ $font-family: "Montserrat";
 
 .v-messages__wrapper {
 	font-size: 0.8rem !important;
+}
+
+.header_plan_pink{
+	background-color: #e7004c;
+	border: 3px solid #e7004c;
+}
+.header_plan_blue{
+	background-color: #0a2240;
+	border: 1px solid #0a2240;
+}
+.header_plan_title_white{
+	font-family: 'Poppins', sans-serif  !important;
+	font-weight: 700;
+	color: #FFFFFF;
+	text-align: center;
 }
 
 .text_plan_price_pink {

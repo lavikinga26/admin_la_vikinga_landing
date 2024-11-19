@@ -134,118 +134,128 @@
 							:key="n"
 							v-slot="{ toggle }"
 						>
-							<v-card
-								:color="item.is_outstanding == 1 ? 'primary' : '#ffffff'"
-								:class="
+							<div :class="
 									item.is_outstanding == 1
-										? 'ma-4 card-outter'
-										: 'ma-4 card-outter white_card_border'
+										? 'header_plan_pink'
+										: 'header_plan_blue'
 								"
-								class="rounded-lg"
-								height="550"
-								width="270"
-								@click="addToCart(item)"
-								elevation="0"
-							>
-								<v-badge
-									v-if="
-										item.promotional_cost != '0.00' &&
-											item.promotional_cost != '0'
+									class="ma-4  rounded-lg">
+								<div class="header_plan_title_white pa-2">
+									{{ periods[item.period] }}
+								</div>
+								<v-card
+									:color="item.is_outstanding == 1 ? 'primary' : '#ffffff'"
+									:class="
+										item.is_outstanding == 1
+											? 'card-outter'
+											: 'card-outter white_card_border'
 									"
-									color="#E7004C"
-									class="badge_pink"
-									:content="`Ahorra S/ ${item.promotional_cost - item.cost}`"
-								></v-badge>
-								<v-card-text max-height="300">
-									<div class="item">
-										<div class="blog-entry">
-											<div class="mt-4 mb-4">
-												<p>
-													<span
-														:class="
-															item.is_outstanding == 1
-																? 'text_plan_title_white mb-2'
-																: 'text_plan_title_blue mb-2'
-														"
-														>{{ item.title }} - {{ periods[item.period] }}</span
+									class="rounded-lg d-flex flex-column"
+									height="570"
+									width="270"
+									@click="addToCart(item)"
+									elevation="0"
+								>
+									<v-badge
+										v-if="
+											item.promotional_cost != '0.00' &&
+												item.promotional_cost != '0'
+										"
+										color="#E7004C"
+										class="badge_pink"
+										:content="`Ahorra S/ ${item.promotional_cost - item.cost}`"
+									></v-badge>
+									<v-card-text max-height="300">
+										<div class="item">
+											<div class="blog-entry">
+												<div class="mt-4 mb-4">
+													<p>
+														<span
+															:class="
+																item.is_outstanding == 1
+																	? 'text_plan_title_white mb-2'
+																	: 'text_plan_title_blue mb-2'
+															"
+															>{{ item.title }}</span
+														>
+													</p>
+													<p>
+														<strike
+															v-if="
+																item.promotional_cost != '0.00' &&
+																	item.promotional_cost != '0'
+															"
+															:class="
+																item.is_outstanding == 1
+																	? 'price_strike_light mr-3'
+																	: 'price_strike_dark mr-3'
+															"
+															>{{ item.promotional_cost }}</strike
+														><span
+															:class="
+																item.is_outstanding == 1
+																	? 'text_plan_price_pink mb-2'
+																	: 'text_plan_price_blue mb-2'
+															"
+															>{{ !currency ? "S/" : "$" }}
+															{{ getPrice(item.prices) }}</span
+														>
+													</p>
+													<p
+														style="font-weight: bold; color: #e30e4f"
+														v-if="item.dias_trial > 0 && trial_status == true"
 													>
-												</p>
-												<p>
-													<strike
-														v-if="
-															item.promotional_cost != '0.00' &&
-																item.promotional_cost != '0'
-														"
-														:class="
-															item.is_outstanding == 1
-																? 'price_strike_light mr-3'
-																: 'price_strike_dark mr-3'
-														"
-														>{{ item.promotional_cost }}</strike
-													><span
-														:class="
-															item.is_outstanding == 1
-																? 'text_plan_price_pink mb-2'
-																: 'text_plan_price_blue mb-2'
-														"
-														>{{ !currency ? "S/" : "$" }}
-														{{ getPrice(item.prices) }}</span
-													>
-												</p>
-												<p
-													style="font-weight: bold; color: #e30e4f"
-													v-if="item.dias_trial > 0 && trial_status == true"
-												>
-													Prueba gratis por {{ item.dias_trial }} días!
-												</p>
-												<p style="font-weight: bold; color: #e30e4f" v-else>
-													&nbsp;
-												</p>
+														Prueba gratis por {{ item.dias_trial }} días!
+													</p>
+													<p style="font-weight: bold; color: #e30e4f" v-else>
+														&nbsp;
+													</p>
+												</div>
+												<div
+													:class="
+														item.is_outstanding == 1
+															? 'p-2 bd_desc_carousel_white'
+															: 'p-2 bd_desc_carousel_blue'
+													"
+													v-html="item.content"
+												></div>
 											</div>
-											<div
-												:class="
-													item.is_outstanding == 1
-														? 'p-2 bd_desc_carousel_white'
-														: 'p-2 bd_desc_carousel_blue'
-												"
-												v-html="item.content"
-											></div>
 										</div>
-									</div>
-								</v-card-text>
-								<v-card-actions class="card-actions">
-									<v-row align="center">
-										<v-col cols="12" align="center">
-											<v-btn
-												block
-												:class="
-													item.is_outstanding == 1
-														? 'my-2 rounded-lg fb-btn btn_pink_white'
-														: 'my-2 rounded-lg fb-btn btn_blue_white'
-												"
-												style="padding:0.7em 0px!important;"
-												@click="addToCart(item)"
-												v-if="data_config.allow_sale && item.allow_sale"
-											>
-												ELEGIR PLAN
-											</v-btn>
-											<v-btn
-												block
-												:class="
-													item.is_outstanding == 1
-														? 'my-2 rounded-lg fb-btn btn_pink_white'
-														: 'my-2 rounded-lg fb-btn btn_blue_white'
-												"
-												style="padding:0.7em 0px!important;"
-												@click="addToCart(item)"
-												v-if="!data_config.allow_sale && item.allow_sale"
-											>
-												ELEGIR PLAN
-											</v-btn>
-										</v-col>
-									</v-row>
-								</v-card-actions>
-							</v-card>
+									</v-card-text>
+									<v-card-actions class="card-actions mt-auto">
+										<v-row align="center">
+											<v-col cols="12" align="center">
+												<v-btn
+													block
+													:class="
+														item.is_outstanding == 1
+															? 'my-2 rounded-lg fb-btn btn_pink_white'
+															: 'my-2 rounded-lg fb-btn btn_blue_white'
+													"
+													style="padding:0.7em 0px!important;"
+													@click="addToCart(item)"
+													v-if="data_config.allow_sale && item.allow_sale"
+												>
+													ELEGIR PLAN
+												</v-btn>
+												<v-btn
+													block
+													:class="
+														item.is_outstanding == 1
+															? 'my-2 rounded-lg fb-btn btn_pink_white'
+															: 'my-2 rounded-lg fb-btn btn_blue_white'
+													"
+													style="padding:0.7em 0px!important;"
+													@click="addToCart(item)"
+													v-if="!data_config.allow_sale && item.allow_sale"
+												>
+													ELEGIR PLAN
+												</v-btn>
+											</v-col>
+										</v-row>
+									</v-card-actions>
+								</v-card>
+							</div>
 						</v-slide-item>
 					</template>
 				</v-slide-group>

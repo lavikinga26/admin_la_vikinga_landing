@@ -103,7 +103,7 @@
 					<v-container>
 						<v-row class="mt-3">
 							
-							<v-col cols="12" md="6" class="pa-0 px-1">
+							<v-col cols="12" md="12" class="pa-0 px-1">
 								<label class="text_field_form">Tipo de Documento</label>
 								<v-select
 									class="register_form"
@@ -114,8 +114,6 @@
 									item-value="id"
 									v-model="userData.tipo_doc"
 								></v-select>
-							</v-col>
-							<v-col cols="12" md="6" class="pa-0 px-1">
 								<label class="text_field_form">Nro. Documento</label>
 								<v-text-field
 									:rules="nrodocRules"
@@ -124,28 +122,14 @@
 									class="register_form"
 									autocomplete="null"
 								></v-text-field>
-							</v-col>
-							<v-col cols="12" md="12" class="pa-0 px-1">
-								<label class="text_field_form">Contraseña</label>
-								<v-text-field
+								<label class="text_field_form">Nivel de entrenamiento</label>
+								<v-select
 									class="register_form"
+									:rules="requiredRule"
+									:items="levels"
 									outlined
-									v-model="userData.pwd"
-									type="password"
-									:rules="passwordRules"
-									autocomplete="null"
-								></v-text-field>
-							</v-col>
-							<v-col cols="12" md="12" class="pa-0 px-1">
-								<label class="text_field_form">Confirmar contraseña</label>
-								<v-text-field
-									class="register_form"
-									outlined
-									v-model="userData.pwd_rep"
-									type="password"
-									autocomplete="null"
-									:rules="[requiredRule, passwordConfirmationRule]"
-								></v-text-field>
+									v-model="userData.id_level"
+								></v-select>
 							</v-col>
 						</v-row>
 						<v-row>
@@ -198,7 +182,12 @@ export default {
 
         uploadSuccess: false,
 
-
+		levels: [
+			{ text: 'Principiante', value: '1' },
+			{ text: 'Intermedio', value: '2' },
+			{ text: 'Avanzado', value: '3' }
+		],
+		valid: true,
 		validLoginForm: false,
 		enabledCountryCode: true,
 		show_pwd: String,
@@ -342,6 +331,7 @@ export default {
 					this.userData.bp_id = this.logged_affiliate.id;
 					this.userData.country = { id: this.logged_affiliate.id_country };
 					this.userData.dialcode = this.country;
+					this.userData.id_level = this.logged_affiliate.id_level;
 					//this.userData.country = this.countries_list.find(e => e.id == this.logged_affiliate.id_country);
 
 					this.userData.had_invoice = false;
