@@ -73,6 +73,10 @@ export const routes = [{
     name: 'payme',
     component: () => import(/* webpackChunkName: "blank" */ '../pages/Shop/PaymePage.vue'),
 },  {
+    path: '/pago-stripe/:hash',
+    name: 'stripe',
+    component: () => import(/* webpackChunkName: "blank" */ '../pages/Shop/StripePage.vue'),
+},  {
     path: '/resultado-pago/:hash',
     name: 'payme-result',
     component: () => import(/* webpackChunkName: "blank" */ '../pages/Shop/ResultadoPayme.vue'),

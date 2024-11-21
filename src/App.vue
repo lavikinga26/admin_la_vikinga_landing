@@ -27,6 +27,12 @@ export default {
         }
     },
 
+    mounted() {
+        const script = document.createElement("script");
+        script.src = "https://js.stripe.com/v3";
+        document.body.appendChild(script);
+    },
+
     data: (e) => ({
         fab: null,
         color: "",

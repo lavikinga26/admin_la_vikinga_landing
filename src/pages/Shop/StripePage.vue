@@ -132,66 +132,17 @@
             <h1 class="title_pink mb-4">Realizar pago</h1>
             <v-sheet max-width="500" class="mx-auto">
                 <v-card elevation="0" class="pa-5">
-                    <div class="py-2 d-flex align-center">
-                        <h2>Pago con tarjetas de crédito/débito</h2>  
-                    </div>
-
-                    <h4 style="font-weight: 100;" class="mx-3" v-if="usercc.length > 0">Selecciona una de tus tarjetas</h4>
-                    <v-radio-group
-                    v-model="selected_card"
-                    column
-                    color="secondary"
-                    class="mt-0"
-                    >
-                        <template v-for="(item, index) in usercc">
-                            <v-card :key="index" class="ma-3 pa-3">
-                                <div class="d-flex align-center">    
-                                    <div>
-                                        <v-radio
-                                            :value="item"
-                                            color="secondary"
-                                        ></v-radio>
-                                    </div>
-                                    
-                                    <div>
-                                        <img style="max-width: 40px" src="@/assets/img/icons/visa.png" v-if="item.card_brand == 'Visa'"/>
-                                        <img style="max-width: 40px" src="@/assets/img/icons/mastercard.png" v-if="item.card_brand == 'Mastercard'"/>
-                                        <img style="max-width: 40px" src="@/assets/img/icons/amex.png" v-if="item.card_brand == 'Amex'"/>
-                                    </div>
-                                    <div style="margin-left: 20px;">
-                                        <h4> ****{{item.last_pan}}</h4>
-                                        <!--<p style="font-size: 0.8rem; margin-bottom: 0px;">
-                                            {{item.description}}
-                                        </p>
-                                        <div style="font-size: 0.8rem; margin-bottom: 0px;"
-                                            v-html="item.card_brand">
-                                        </div>-->
-                                    </div>
-                                </div>
-                            </v-card>
-                        </template>
-                    </v-radio-group>
-                    
                     <div class="mt-2 mb-2 d-flex">
-                        <v-btn color="secondary"
-                            outlined
-                            class="px-2"
-                            @click="abrirPayme()"
-                            v-if="hide_btn==false">
-                            <span class="ma-3">Nueva Tarjeta</span>
-                        </v-btn>
-
-                        <v-btn color="secondary"
-                            depressed
-                            class="btn_pay_cc"
-                            @click="authPayment()"
-                            v-if="selected_card!=0">
-                            <span class="ma-3">Pagar</span>
-                        </v-btn>
-                    </div>
-
-                    <div class="d-flex">
-                        <div id="demo" class="d-flex"></div>
+                        <stripe-checkout
+                            ref="checkoutRef"
+                            mode="subscription"
+                            :pk="publishableKey"
+                            :line-items="lineItems"
+                            :success-url="successURL"
+                            :cancel-url="cancelURL"
+                            @loading="v => loading = v"
+                        />
+                        <button @click="submit">Subscribe!</button>
                     </div>
                 </v-card>
             </v-sheet>
@@ -201,9 +152,11 @@
 <script>
 import axios from "axios";
 import API from "../../api/axios";
+import { StripeCheckout } from '@vue-stripe/vue-stripe';
 export default {
     components: { 
-        axios
+        axios,
+        StripeCheckout
      },
 
     data: () => ({
@@ -227,7 +180,16 @@ export default {
             color: "success"
         },
 
-        uploadSuccess: false,
+        loading: false,
+        publishableKey: "pk_test_51QNKpFBlXSdF8U4GkdWvPXphGUVjMG2bpAutMe0wGRztDCSpFrP0uwfnqsUZLTsCulJd6m6cWSPMxNtuejj5LqCC00K1EHim3Y",
+        lineItems: [
+            {
+                price: 'price_1QNKrbBlXSdF8U4GSR6qi5IE', // The id of the recurring price you created in your Stripe dashboard
+                quantity: 1,
+            },
+        ],
+        successURL: 'https://bytesoluciones.com/vikinga.php',
+        cancelURL: 'https://bytesoluciones.com/vikinga2.php',
     }),
 
     
@@ -235,13 +197,6 @@ export default {
         let vm = this;
         vm.slug = this.$route.params.hash;
         vm.getOrder();
-
-        /** Importamos Pay-me */
-        let paymeScript = document.createElement('script');
-        paymeScript.setAttribute('src', 'https://d23b52o2im4p82.cloudfront.net/flex-capture.min.js');
-        document.head.appendChild(paymeScript);
-
-        
     },
 
     watch: {
@@ -270,18 +225,6 @@ export default {
                 
                 this.$router.push({ path: '/resultado-pago/'+vm.slug });
 
-                /*if(auth_resul.success == true){
-                    datos_upd.status = 1;
-                    console.log("retorna true");
-                    const upd_order = await this.$API.payme.updOrderStatus(datos_upd);
-                }else if(auth_resul.success == false){
-                    datos_upd.status = 2;
-                    console.log("retorna false");
-                    const upd_order = await this.$API.payme.updOrderStatus(datos_upd);
-                }else{
-                    datos_upd.status = 1;
-                    const upd_order = await this.$API.payme.updOrderStatus(datos_upd);
-                }*/
 
                 vm.$store.commit('loader',false);
             }
@@ -312,86 +255,10 @@ export default {
             }
         },
 
-        async reqCallback(response) {
-            try{
-                let vm = this;
-                
-                this.card_data = response;
-                //console.log(this.card_data);
-                this.card_data.id_user = this.order.customer.id;
-                const data = await this.$API.payme.saveToken(this.card_data);
-
-                let token_resul = data.data.data;
-
-                if(token_resul.success == true){
-                    //console.log("TOKEN CREADO");
-
-                    token_resul.ucard.hash_order = vm.slug;
-
-                    const data_auth = await this.$API.payme.authTransaction(token_resul.ucard);
-
-                    this.$router.push({ path: '/resultado-pago/'+vm.slug });
-                    vm.$store.commit('loader',false);
-                    //console.log(data_auth);
-                }else{
-                    alert("Error al generar token.");
-                    vm.$store.commit('loader',false);
-                }
-                
-            }catch(e){
-                //this.$store.commit('loader',false);
-                console.error(e);
-            } 
+        submit () {
+            // You will be redirected to Stripe's secure checkout page
+            this.$refs.checkoutRef.redirectToCheckout();
         },
-
-        startCallback() {
-            let vm = this;
-            vm.$store.commit('loader',true);
-            //console.log("-------Click en pagar-------");
-        },
-
-        errorOnPayCallback() {
-            //console.log("-------Error al momento pagar-------");
-        },
-
-        abrirPayme(){
-            this.hide_btn = true;
-            this.selected_card = 0;
-            var tokenRequest = {
-                    "action": "tokenize",
-                    "transaction": {
-                    "meta": {
-                        "internal_operation_number": Math.floor(Date.now()).toString().substring(7),
-                        "additional_fields": {
-                            "user_id": this.order.customer.id_user
-                        }
-                    }
-                },
-                "card_holder": [
-                    {
-                        "first_name": this.order.customer.name,
-                        "last_name": this.order.customer.lastname,
-                        "email_address": this.order.customer.email,
-                        "identity_document_country": "PER",
-                        "identity_document_type": this.order.customer.document_type.name,
-                        "identity_document_identifier": this.order.customer.nro_doc
-                    }
-                ]
-            };
-
-            //console.log(tokenRequest);
-
-            var token_key = "TvqvXinCnJKvnuHfYRReHlHevWHLL8YXOT38HxvOfWgUaN2gcgxi86xlr6J3YbXB";
-
-            var capture = new FlexCapture({
-                "key": token_key,
-                "payload": tokenRequest,
-                "additionalFields": []
-            });
-
-            capture.init(document.querySelector('#demo'), this.reqCallback, this.startCallback, this.errorOnPayCallback);
-        },
-
     },
 }
 </script>

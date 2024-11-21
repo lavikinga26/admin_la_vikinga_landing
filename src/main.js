@@ -2,7 +2,6 @@ import Vue from 'vue'
 import App from './App.vue'
 import vuetify from './plugins/vuetify';
 import VueApexCharts from 'vue-apexcharts'
-
 // import VueFilterDateFormat from '@vuejs-community/vue-filter-date-format';
 import VueCountdownTimer from 'vuejs-countdown-timer';
 // FILTERS
@@ -26,6 +25,15 @@ import { baseURL } from './api/axios';
 import { Form } from 'vform';
 
 window.Form = Form; 
+
+/*** START Stripe Options */
+const options = {
+    pk: process.env.STRIPE_PUBLISHABLE_KEY,
+    stripeAccount: process.env.STRIPE_ACCOUNT,
+    apiVersion: process.env.API_VERSION,
+    locale: process.env.LOCALE,
+};
+/*** END Stripe Options */
 
 Vue.use(VueCountdownTimer);
 Vue.use(VueApexCharts);

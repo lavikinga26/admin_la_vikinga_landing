@@ -397,7 +397,11 @@ export default {
                 if ((vm.actions.payment_status == 'pending') && (vm.actions.payment_external == true)) {
                     //Enviamos a payme
                     //this.$router.push({ path: '/pago-payme/'+vm.actions.hash });
-                    window.location.replace('/pago-payme/' + vm.actions.hash);
+                    if(this.order.id_payment_method == '3'){
+                        window.location.replace('/pago-payme/' + vm.actions.hash);
+                    }else if(this.order.id_payment_method == '4'){
+                        window.location.replace('/pago-stripe/' + vm.actions.hash);
+                    }
                 }
 
                 if ((vm.actions.payment_status == 'approved') && (vm.actions.payment_external == false)) {
