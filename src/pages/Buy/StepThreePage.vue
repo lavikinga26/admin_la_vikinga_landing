@@ -6,6 +6,12 @@
 			class="d-none d-md-flex d-sm-none"
 			style="position: relative;"
 		>
+			<div class="py-10 px-8" style="position: absolute; top:10px">
+				<h3 class="title_pink" style="text-align: left">APRENDE A ENTRENAR <br/>LA FUERZA</h3>
+				<br/>
+				<p class="subtitle-white">Únete al Desafío y logra el cambio físico y mental que deseas.  
+                    Solo 1 hora al día, con poco equipamientos y desde donde quieras.</p>
+			</div>
 			<img
 				src="@/assets/img/gym_virtual/register-2.png"
 				alt="Imagen Login"

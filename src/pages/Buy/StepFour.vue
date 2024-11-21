@@ -7,6 +7,11 @@
 			class="d-none d-md-flex d-sm-none"
 			style="position: relative;"
 		>
+			<div class="py-10 px-8" style="position: absolute; top:10px">
+				<h3 class="title_pink" style="text-align: left">CONSIGUE RESULTADOS <br/>ENTRENANDO DESDE <br/> CASA</h3>
+				<br/>
+				<p class="subtitle-white">Durante las clases en vivo, recibirás apoyo para mejorar tu técnica y te  animaremos a completar cada entrenamiento de la mejor manera.</p>
+			</div>
 			<img
 				src="@/assets/img/gym_virtual/register-3.png"
 				alt="Imagen Login"

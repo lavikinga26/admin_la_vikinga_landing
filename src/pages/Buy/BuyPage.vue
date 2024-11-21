@@ -6,6 +6,11 @@
 			class="d-none d-md-flex d-sm-none"
 			style="position: relative;"
 		>
+			<div class="py-10 px-8" style="position: absolute; top:10px">
+				<h3 class="title_pink" style="text-align: left">CLASES PARA TODOS <br/>LOS gustos y niveles</h3>
+				<br/>
+				<p class="subtitle-white">Sin importar tu punto de partida, o que tipo de entrenamiento te guste más lo tendrás en el Desafío</p>
+			</div>
 			<img
 				src="@/assets/img/gym_virtual/register_1_img.png"
 				alt="Imagen Login"

@@ -6,6 +6,11 @@
 			class="d-none d-md-flex d-sm-none"
 			style="position: relative;"
 		>
+			<div class="py-10 px-8" style="position: absolute; top:10px">
+				<h3 class="title_pink" style="text-align: left">DEJA DE HACER <br/>EJERCICIO Y COMIENZA <br/>A ENTRENAR</h3>
+				<br/>
+				<p class="subtitle-white">En el Desfío Gym Virtual preparamos una Programación de  Entrenamiento basada en la fuerza y adaptada para 3 niveles de  entrenamiento.</p>
+			</div>
 			<img
 				src="@/assets/img/gym_virtual/register_img.png"
 				alt="Imagen Login"

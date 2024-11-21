@@ -4,8 +4,12 @@
 			cols="12"
 			md="4"
 			class="d-none d-md-flex d-sm-none"
-			style="height: 100%;"
+			style="height: 100%; position: relative;"
 		>
+			<div style="position: absolute; top:10px">
+				<h3 class="itle_pink">CLASES PARA TODOS LOS gustos y niveles</h3>
+				<p class="subtitle-white">Sin importar tu punto de partida, o que tipo de entrenamiento te guste más lo tendrás en el Desafío</p>
+			</div>
 			<img
 				src="@/assets/img/gym_virtual/register_1_img.png"
 				alt="Imagen Login"
