@@ -8,6 +8,11 @@
 			class="d-none d-md-flex d-sm-none"
 			style="position: relative;"
 		>
+			<div class="py-10 px-8" style="position: absolute; top:10px">
+				<h3 class="title_pink" style="text-align: left">Se tu mejor versión, <br/>a tu ritmo</h3>
+				<br/>
+				<p class="subtitle-white">Si eres una persona ocupada, con una agenda abrumadora entre el trabajo y la familia, y aún anhelas conseguir grandes resultados tenemos la  solución perfecta para ti.</p>
+			</div>
 			<img
 				src="@/assets/img/gym_virtual/register-3.png"
 				alt="Imagen Login"
