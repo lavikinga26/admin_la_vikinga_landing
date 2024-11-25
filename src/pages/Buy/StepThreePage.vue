@@ -297,7 +297,10 @@ export default {
             color: "success"
         },
         is_trial: 0,
-        prox_trial_pay: null
+        prox_trial_pay: null,
+        ipData: null,
+      loading: false,
+      error: null,
     }),
     computed: {
         subtotal() {
@@ -325,6 +328,7 @@ export default {
     mounted() {
         let vm = this;
         vm.slug = this.$route.params.slug;
+        vm.fetchIpData();
         vm.auth();
         vm.getConfiguracion();
         vm.getBaseUrl();
@@ -336,6 +340,22 @@ export default {
         vm.prox_trial_pay = vm.formatDate(da_trial);
     },
     methods: {
+        async fetchIpData() {
+            this.loading = true;
+            this.error = null;
+            try {
+                const response = await fetch('http://ip-api.com/json/');
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.status} ${response.statusText}`);
+                }
+                this.ipData = await response.json();
+                console.log(this.ipData)
+            } catch (error) {
+                this.error = error.message;
+            } finally {
+                this.loading = false;
+            }
+        },
         padTo2Digits(num) {
             return num.toString().padStart(2, '0');
         },
@@ -427,7 +447,18 @@ export default {
             this.$store.commit('loader', true);
             try {
                 const data = await this.$API.configuration.getPaymentMethods();
-                this.paymentMethods = data.data.data;
+                let paymentMethods = data.data.data;
+
+                // Filtrar métodos de pago según el countryCode
+                if (this.ipData?.countryCode === 'PE') {
+                    paymentMethods = paymentMethods.filter((method) => method.id !== 4);
+                } else {
+                    paymentMethods = paymentMethods.filter((method) => method.id !== 1);
+                }
+
+                // Asignar los métodos de pago filtrados
+                this.paymentMethods = paymentMethods;
+                
                 let renovacion = this.cart.filter((item) => item.renovacion == 1);
                 /* if (renovacion.length > 0) {
                     this.show_transfer = false;
