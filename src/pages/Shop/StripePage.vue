@@ -19,7 +19,7 @@
 			>
 				<v-carousel cycle :show-arrows="false" hide-delimiters height="320">
 					<v-carousel-item class="ma-4">
-						<v-card class="rounded-lg" color="#0A2240" width="540" outlined>
+						<v-card class="rounded-lg" style="background-color: rgba(10, 34, 64, 0.6);" width="540" outlined>
 							<div class="align-center justify-center">
 								<p
 									class="pa-3 align-center white--text"
@@ -40,7 +40,7 @@
 						</v-card>
 					</v-carousel-item>
 					<v-carousel-item class="ma-4">
-						<v-card class="rounded-lg" color="#0A2240" width="540" outlined>
+						<v-card class="rounded-lg" style="background-color: rgba(10, 34, 64, 0.6);" width="540" outlined>
 							<div class="align-center justify-center">
 								<p
 									class="pa-3 align-center white--text"
@@ -65,7 +65,7 @@
 						</v-card>
 					</v-carousel-item>
 					<v-carousel-item class="ma-4">
-						<v-card class="rounded-lg" color="#0A2240" width="540" outlined>
+						<v-card class="rounded-lg" style="background-color: rgba(10, 34, 64, 0.6);" width="540" outlined>
 							<div class="align-center justify-center">
 								<p
 									class="pa-3 align-center white--text"
@@ -132,17 +132,17 @@
             <h1 class="title_pink mb-4">Realizar pago</h1>
             <v-sheet max-width="500" class="mx-auto">
                 <v-card elevation="0" class="pa-5">
-                    <div class="mt-2 mb-2 d-flex">
-                        <stripe-checkout
-                            ref="checkoutRef"
-                            mode="subscription"
-                            :pk="publishableKey"
-                            :line-items="lineItems"
-                            :success-url="successURL"
-                            :cancel-url="cancelURL"
-                            @loading="v => loading = v"
+                    <div class="mt-2 mb-2 d-flex" id="stripebox">
+                        <stripe-element-card
+                        ref="elementRef"
+                        :pk="publishableKey"
+                        @token="tokenCreated"
+                        :elementStyle = "stylebox"
+                        :hidePostalCode = true
                         />
-                        <button @click="submit">Subscribe!</button>
+                    </div>
+                    <div class="mt-2 mb-2 d-flex">
+                        <v-btn block dark color="secondary" @click="submit">Pagar</v-btn>
                     </div>
                 </v-card>
             </v-sheet>
@@ -152,11 +152,11 @@
 <script>
 import axios from "axios";
 import API from "../../api/axios";
-import { StripeCheckout } from '@vue-stripe/vue-stripe';
+import { StripeElementCard } from '@vue-stripe/vue-stripe';
 export default {
     components: { 
         axios,
-        StripeCheckout
+        StripeElementCard
      },
 
     data: () => ({
@@ -165,6 +165,7 @@ export default {
         usercc:{},
         selected_card: 0,
         base_url: '',
+        stylebox: {width: "100%;"},
         slug:'',
         rules: [
             value => !value || value.size < 2000000 || '',
@@ -172,7 +173,7 @@ export default {
         hide_btn: false,
         img_file: null,
         img_url: "../images/default-image.png",
-        
+        token: null,
         toast:{
             toast: false,
             message: '',
@@ -210,6 +211,26 @@ export default {
             this.toast.toast = true;
         },
 
+        async tokenCreated (token) {
+            this.card_data = token;
+            this.card_data.id_user = this.order.customer.id;
+            const data = await this.$API.stripe.saveToken(token);
+
+            let token_resul = data.data.data;
+
+            if(token_resul.success == true){
+                token_resul.ucard.hash_order = this.slug;
+
+                const data_auth = await this.$API.stripe.authTransaction(token_resul.ucard);
+
+                this.$router.push({ path: '/resultado-pago/'+this.slug });
+                vm.$store.commit('loader',false);
+            }else{
+                alert("Error al generar token.");
+                vm.$store.commit('loader',false);
+            }
+        },
+
         async authPayment(){
             let vm = this;
             vm.$store.commit('loader',true);
@@ -224,8 +245,6 @@ export default {
                 datos_upd.hash_order = vm.slug;
                 
                 this.$router.push({ path: '/resultado-pago/'+vm.slug });
-
-
                 vm.$store.commit('loader',false);
             }
             catch(e){
@@ -242,7 +261,7 @@ export default {
                 const data = await this.$API.order.getAllOrderInfo(vm.slug);
                 //console.log(data.data.data);
                 vm.order = data.data.data.order;
-                const ucards = await this.$API.payme.getUserCards(vm.order.customer);
+                const ucards = await this.$API.stripe.getUserCards(vm.order.customer);
                 vm.usercc = ucards.data.data.cards;
                 if(vm.usercc.length == 0){
                     this.abrirPayme();
@@ -256,8 +275,9 @@ export default {
         },
 
         submit () {
-            // You will be redirected to Stripe's secure checkout page
-            this.$refs.checkoutRef.redirectToCheckout();
+            let vm = this;
+            vm.$store.commit('loader', true);
+            this.$refs.elementRef.submit();
         },
     },
 }
@@ -268,5 +288,8 @@ export default {
     }
     .rounded-lg .round-radius{
         border-radius: 5px !important; 
+    }
+    #stripebox div{
+        width:100%;
     }
 </style>

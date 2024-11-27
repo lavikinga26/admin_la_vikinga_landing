@@ -24,7 +24,7 @@
 			>
 				<v-carousel cycle :show-arrows="false" hide-delimiters height="320">
 					<v-carousel-item class="ma-4">
-						<v-card class="rounded-lg" color="#0A2240" width="540" outlined>
+						<v-card class="rounded-lg" style="background-color: rgba(10, 34, 64, 0.6);" width="540" outlined>
 							<div class="align-center justify-center">
 								<p
 									class="pa-3 align-center white--text"
@@ -45,7 +45,7 @@
 						</v-card>
 					</v-carousel-item>
 					<v-carousel-item class="ma-4">
-						<v-card class="rounded-lg" color="#0A2240" width="540" outlined>
+						<v-card class="rounded-lg" style="background-color: rgba(10, 34, 64, 0.6);" width="540" outlined>
 							<div class="align-center justify-center">
 								<p
 									class="pa-3 align-center white--text"
@@ -70,7 +70,7 @@
 						</v-card>
 					</v-carousel-item>
 					<v-carousel-item class="ma-4">
-						<v-card class="rounded-lg" color="#0A2240" width="540" outlined>
+						<v-card class="rounded-lg" style="background-color: rgba(10, 34, 64, 0.6);" width="540" outlined>
 							<div class="align-center justify-center">
 								<p
 									class="pa-3 align-center white--text"
@@ -163,12 +163,12 @@
 								>
 									<v-badge
 										v-if="
-											item.promotional_cost != '0.00' &&
-												item.promotional_cost != '0'
+											item.prices[currency_id].old_amount != '0.00' &&
+											item.prices[currency_id].old_amount != '0'
 										"
 										color="#E7004C"
 										class="badge_pink"
-										:content="`Ahorra S/ ${item.promotional_cost - item.cost}`"
+										:content="`Ahorra S/ ${getDiscount(item.prices)}`"
 									></v-badge>
 									<v-card-text max-height="300">
 										<div class="item">
@@ -187,15 +187,15 @@
 													<p>
 														<strike
 															v-if="
-																item.promotional_cost != '0.00' &&
-																	item.promotional_cost != '0'
+																item.prices[currency_id].old_amount != '0.00' &&
+																	item.prices[currency_id].old_amount != '0'
 															"
 															:class="
 																item.is_outstanding == 1
 																	? 'price_strike_light mr-3'
 																	: 'price_strike_dark mr-3'
 															"
-															>{{ item.promotional_cost }}</strike
+															>{{ getOldPrice(item.prices) }}</strike
 														><span
 															:class="
 																item.is_outstanding == 1
@@ -293,6 +293,7 @@ export default {
 		business_partner: [],
 		trial_status: false,
 		currency: false,
+		currency_id: 0,
 		periods: {
 			mensual: "MENSUAL",
 			trimestral: "TRIMESTRAL",
@@ -308,6 +309,7 @@ export default {
 		vm.getConfiguracion();
 		vm.getBaseUrl();
 		vm.list();
+		vm.fetchIpData();
 	},
 	methods: {
 		async getLoggedUser() {
@@ -369,6 +371,22 @@ export default {
 			);
 			return price ? price.amount : null;
 		},
+		getDiscount(prices) {
+			const currencyType = !this.currency ? "soles" : "dolar";
+			const price = prices.find(
+				(price) =>
+					price.currency.currency.toLowerCase() === currencyType.toLowerCase()
+			);
+			return price ? price.old_amount - price.amount : null;
+		},
+		getOldPrice(prices) {
+			const currencyType = !this.currency ? "soles" : "dolar";
+			const price = prices.find(
+				(price) =>
+					price.currency.currency.toLowerCase() === currencyType.toLowerCase()
+			);
+			return price.old_amount ? price.old_amount : null;
+		},
 		/* filtrarPlanesPeriodo(planes, period) {
 			let listaPlanes = planes.filter(
 				(plan) => plan.months == period && plan.active == 1
@@ -422,6 +440,8 @@ export default {
 			}
 		},
 		addToCart(itemv) {
+			var selectedCurrency = this.currency == false ? itemv.prices[0] : itemv.prices[1];
+	
 			this.$store.commit("loader", true);
 			localStorage.removeItem("planSeleccionado");
 			let item = {
@@ -429,15 +449,16 @@ export default {
 				title: itemv.title,
 				code: itemv.code,
 				image: itemv.base_url + itemv.file_path.path + itemv.file_path.filename,
-				price: Number(itemv.cost),
+				price: Number(selectedCurrency.amount),
 				price_promotional: Number(itemv.promotional_cost),
 				quantity: 1,
-				priceCompare: Number(itemv.cost),
-				priceTotal: Number(itemv.cost),
-				currency: itemv.currency.symbol,
+				priceCompare: Number(selectedCurrency.amount),
+				priceTotal: Number(selectedCurrency.amount),
+				currency: selectedCurrency.currency_symbol,
 				renovacion: itemv.renovacion_automatica,
 				category_id: itemv.category_id,
 				dias_trial: this.trial_status == true ? itemv.dias_trial : 0,
+				currency_id: selectedCurrency.id
 			};
 			localStorage.planSeleccionado = JSON.stringify(item);
 			this.$store.dispatch("addItem", item);
@@ -445,6 +466,28 @@ export default {
 			//this.$router.push({ path: '/carrito#pago' })
 			this.$router.push({ path: "/auth/registrarse" });
 		},
+		async fetchIpData() {
+            this.loading = true;
+            this.error = null;
+            try {
+                const response = await fetch('http://ip-api.com/json/');
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.status} ${response.statusText}`);
+                }
+                this.ipData = await response.json();
+				if (this.ipData?.countryCode === 'PE') {
+                    this.currency = false;
+					this.currency_id = 1;
+                } else {
+                    this.currency = true;
+					this.currency_id = 2;
+                }
+            } catch (error) {
+                this.error = error.message;
+            } finally {
+                this.loading = false;
+            }
+        },
 	},
 };
 </script>

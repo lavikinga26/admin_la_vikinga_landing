@@ -165,6 +165,17 @@ export default {
             return callAPI('post', 'api/v1/payme/getUserCards', { data: data });
         }
     },
+    stripe:{
+        saveToken(data){
+            return callAPI('post', 'api/v1/stripe/stripeSaveToken', { data: data });
+        },
+        authTransaction(data){
+            return callAPI('post', 'api/v1/stripe/authTransaction', { data: data });
+        },
+        getUserCards(data){
+            return callAPI('post', 'api/v1/stripe/getUserCards', { data: data });
+        }
+    },
     testimonials:{
         get(){
             return callAPI('get','api/v1/testimonials');

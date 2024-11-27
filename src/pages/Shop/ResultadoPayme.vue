@@ -204,7 +204,10 @@ export default {
                 vm.order = data.data.data.order;
                 if(vm.order.id_status==1 && (vm.order.external_id==null || vm.order.external_id==undefined)){
                     vm.$store.dispatch("cleanCart");
-                    const data = await this.$API.order.generatePostInvoice(vm.slug);
+
+                    if(vm.order.id_currency == '1'){
+                        const data = await this.$API.order.generatePostInvoice(vm.slug);
+                    }
                 }
                 vm.$store.commit('loader',false);
             }

@@ -19,7 +19,7 @@
 			>
 				<v-carousel cycle :show-arrows="false" hide-delimiters height="320">
 					<v-carousel-item class="ma-4">
-						<v-card class="rounded-lg" color="#0A2240" width="540" outlined>
+						<v-card class="rounded-lg"  style="background-color: rgba(10, 34, 64, 0.6);" width="540" outlined>
 							<div class="align-center justify-center">
 								<p
 									class="pa-3 align-center white--text"
@@ -40,7 +40,7 @@
 						</v-card>
 					</v-carousel-item>
 					<v-carousel-item class="ma-4">
-						<v-card class="rounded-lg" color="#0A2240" width="540" outlined>
+						<v-card class="rounded-lg"  style="background-color: rgba(10, 34, 64, 0.6);" width="540" outlined>
 							<div class="align-center justify-center">
 								<p
 									class="pa-3 align-center white--text"
@@ -65,7 +65,7 @@
 						</v-card>
 					</v-carousel-item>
 					<v-carousel-item class="ma-4">
-						<v-card class="rounded-lg" color="#0A2240" width="540" outlined>
+						<v-card class="rounded-lg"  style="background-color: rgba(10, 34, 64, 0.6);" width="540" outlined>
 							<div class="align-center justify-center">
 								<p
 									class="pa-3 align-center white--text"

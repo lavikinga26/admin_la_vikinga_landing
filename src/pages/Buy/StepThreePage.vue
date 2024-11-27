@@ -25,7 +25,7 @@
 			>
 				<v-carousel cycle :show-arrows="false" hide-delimiters height="320">
 					<v-carousel-item class="ma-4">
-						<v-card class="rounded-lg" color="#0A2240" width="540" outlined>
+						<v-card class="rounded-lg" style="background-color: rgba(10, 34, 64, 0.6);" width="540" outlined>
 							<div class="align-center justify-center">
 								<p
 									class="pa-3 align-center white--text"
@@ -46,7 +46,7 @@
 						</v-card>
 					</v-carousel-item>
 					<v-carousel-item class="ma-4">
-						<v-card class="rounded-lg" color="#0A2240" width="540" outlined>
+						<v-card class="rounded-lg" style="background-color: rgba(10, 34, 64, 0.6);" width="540" outlined>
 							<div class="align-center justify-center">
 								<p
 									class="pa-3 align-center white--text"
@@ -71,7 +71,7 @@
 						</v-card>
 					</v-carousel-item>
 					<v-carousel-item class="ma-4">
-						<v-card class="rounded-lg" color="#0A2240" width="540" outlined>
+						<v-card class="rounded-lg" style="background-color: rgba(10, 34, 64, 0.6);" width="540" outlined>
 							<div class="align-center justify-center">
 								<p
 									class="pa-3 align-center white--text"
@@ -125,20 +125,20 @@
             <v-container class="mx-auto" style="max-width:450px">
                 <v-row>
                     <v-col cols="8">{{ cart[0] ? cart[0].title : '' }}</v-col>
-                    <v-col cols="4"  class="text-right">S/ {{ cart[0] ?
+                    <v-col cols="4"  class="text-right">{{ cart[0].currency }} {{ cart[0] ?
                         parseFloat(parseFloat(cart[0].price).toFixed(2) + parseFloat(discount).toFixed(2)).toFixed(2) :
                         ''
                         }}</v-col>
                 </v-row>
                 <v-row v-if="discount > 0">
                     <v-col cols="8"><b>Descuento</b></v-col>
-                    <v-col cols="4" class="text-right">S/ {{ parseFloat(discount).toFixed(2) }}</v-col>
+                    <v-col cols="4" class="text-right">{{ cart[0].currency }} {{ parseFloat(discount).toFixed(2) }}</v-col>
                 </v-row>
 
                 <hr class="mt-2 mb-2" style="border: 1px dashed #000000;">
                 <v-row>
                     <v-col cols="8"><b>Total a pagar hoy</b></v-col>
-                    <v-col cols="4" class="text-right"><b>S/ {{ parseFloat(total).toFixed(2) }}</b></v-col>
+                    <v-col cols="4" class="text-right"><b>{{ cart[0].currency }} {{ parseFloat(total).toFixed(2) }}</b></v-col>
                 </v-row>
 
                 <v-alert type="info" color="#E7004C" elevation="0" class="mt-5" v-if="is_trial == 1">
@@ -328,7 +328,7 @@ export default {
     mounted() {
         let vm = this;
         vm.slug = this.$route.params.slug;
-        vm.fetchIpData();
+        //vm.fetchIpData();
         vm.auth();
         vm.getConfiguracion();
         vm.getBaseUrl();
@@ -349,7 +349,6 @@ export default {
                     throw new Error(`Error: ${response.status} ${response.statusText}`);
                 }
                 this.ipData = await response.json();
-                console.log(this.ipData)
             } catch (error) {
                 this.error = error.message;
             } finally {
@@ -387,6 +386,7 @@ export default {
                 vm.order.had_invoice = vm.had_invoice;
                 vm.order.cupon = vm.coupon;
                 vm.order.inv_doc = vm.ruc;
+                vm.order.id_currency = vm.cart[0].currency_id;
                 vm.order.inv_business_name = vm.razon_social;
                 vm.order.inv_address = vm.dom_fiscal;
                 vm.order.address = "-";
@@ -423,7 +423,8 @@ export default {
                 if ((vm.actions.payment_status == 'pending') && (vm.actions.payment_external == true)) {
                     //Enviamos a payme
                     //this.$router.push({ path: '/pago-payme/'+vm.actions.hash });
-                    if(this.order.id_payment_method == '3'){
+                    console.log(this.order.id_payment_method);
+                    if(this.order.id_payment_method == '1'){
                         window.location.replace('/pago-payme/' + vm.actions.hash);
                     }else if(this.order.id_payment_method == '4'){
                         window.location.replace('/pago-stripe/' + vm.actions.hash);
@@ -454,7 +455,7 @@ export default {
                 let paymentMethods = data.data.data;
 
                 // Filtrar métodos de pago según el countryCode
-                if (this.ipData?.countryCode === 'PE') {
+                if (this.cart[0].currency_id === 1) {
                     paymentMethods = paymentMethods.filter((method) => method.id !== 4);
                 } else {
                     paymentMethods = paymentMethods.filter((method) => method.id !== 1);
