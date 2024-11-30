@@ -6,8 +6,8 @@ export default {
     },*/
     
     configuration:{
-        configuration(){
-            return callAPI('get', 'api/v1/configuration/configuration');
+        configuration(params){
+            return callAPI('get', 'api/v1/configuration/configuration?data='+params);
         },
         menu_header(){
             return callAPI('get', 'api/v1/landing/menu');

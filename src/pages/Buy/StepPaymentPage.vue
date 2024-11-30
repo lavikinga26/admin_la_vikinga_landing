@@ -174,6 +174,7 @@ export default {
             try {
                 const data = await this.$API.configuration.configuration();
                 this.data_config = data.data.data;
+                console.log('asdasd',data.data)
             }
             catch (e) {
                 console.error(e);
