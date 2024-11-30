@@ -389,32 +389,10 @@ export default {
 			);
 			return price.old_amount ? price.old_amount : null;
 		},
-		/* filtrarPlanesPeriodo(planes, period) {
-			let listaPlanes = planes.filter(
-				(plan) => plan.months == period && plan.active == 1
-			);
-			let estado = listaPlanes.length == 0 ? false : true;
-			switch (period) {
-				case 4:
-					this.tabs[0].show = estado;
-					break;
-				case 12:
-					this.tabs[1].show = estado;
-					break;
-				case 24:
-					this.tabs[2].show = estado;
-					break;
-				case 48:
-					this.tabs[3].show = estado;
-					break;
-			}
-			return listaPlanes;
-		}, */
 		async getConfiguracion() {
 			try {
 				const data = await this.$API.configuration.configuration(this.dataIP);
 				this.data_config = data.data.data;
-				// console.log('dsadsad',this.data_config)
 
 				if (this.data_config.countryCode === 'PE') {
                     this.currency = false;
@@ -498,12 +476,7 @@ export default {
 		async fetchIpData() {
             this.loading = true;
             this.error = null;
-			console.log('dsadsad',this.data_config)
             try {
-                /*const response = await fetch('http://ip-api.com/json/');
-                if (!response.ok) {
-                    throw new Error(`Error: ${response.status} ${response.statusText}`);
-                }*/
                 this.ipData = this.data_config;
 				if (this.ipData?.countryCode === 'PE') {
                     this.currency = false;
