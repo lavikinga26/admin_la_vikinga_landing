@@ -132,17 +132,75 @@
             <h1 class="title_pink mb-4">Realizar pago</h1>
             <v-sheet max-width="500" class="mx-auto">
                 <v-card elevation="0" class="pa-5">
-                    <div class="mt-2 mb-2 d-flex" id="stripebox">
-                        <stripe-element-card
-                        ref="elementRef"
-                        :pk="publishableKey"
-                        @token="tokenCreated"
-                        :elementStyle = "stylebox"
-                        :hidePostalCode = true
-                        />
+                    <div class="py-2 d-flex align-center">
+                        <h2>Pago con tarjetas de crédito/débito</h2>  
                     </div>
-                    <div class="mt-2 mb-2 d-flex">
-                        <v-btn block dark color="secondary" @click="submit">Pagar</v-btn>
+                    <h4 style="font-weight: 100;" class="mx-3" v-if="usercc.length > 0">Selecciona una de tus tarjetas guardadas:</h4>
+                    <v-radio-group
+                    v-model="selected_card"
+                    column
+                    color="secondary"
+                    class="mt-0"
+                    >
+                        <template v-for="(item, index) in usercc">
+                            <v-card :key="index" class="ma-3 pa-3">
+                                <div class="d-flex align-center">    
+                                    <div>
+                                        <v-radio
+                                            :value="item"
+                                            color="secondary"
+                                        ></v-radio>
+                                    </div>
+                                    
+                                    <div>
+                                        <img style="max-width: 40px" src="@/assets/img/icons/visa.png" v-if="item.card_brand == 'Visa'"/>
+                                        <img style="max-width: 40px" src="@/assets/img/icons/mastercard.png" v-if="item.card_brand == 'Mastercard'"/>
+                                        <img style="max-width: 40px" src="@/assets/img/icons/amex.png" v-if="item.card_brand == 'Amex'"/>
+                                    </div>
+                                    <div style="margin-left: 20px;">
+                                        <h4> ****{{item.last_pan}}</h4>
+                                        <!--<p style="font-size: 0.8rem; margin-bottom: 0px;">
+                                            {{item.description}}
+                                        </p>
+                                        <div style="font-size: 0.8rem; margin-bottom: 0px;"
+                                            v-html="item.card_brand">
+                                        </div>-->
+                                    </div>
+                                </div>
+                            </v-card>
+                        </template>
+                    </v-radio-group>
+                    <div class="mt-2 mb-5 d-flex">
+                        <v-btn color="secondary"
+                            outlined
+                            class="px-2"
+                            @click="abrirStripe()"
+                            v-if="hide_btn==false">
+                            <span class="ma-3">Nueva Tarjeta</span>
+                        </v-btn>
+
+                        <v-btn color="secondary"
+                            depressed
+                            class="btn_pay_cc"
+                            @click="authPayment()"
+                            v-if="selected_card!=0">
+                            <span class="ma-3">Pagar</span>
+                        </v-btn>
+                    </div>
+                    <div class="mt-4" v-if="hide_stripe == false">
+                        <h4>Añade una nueva tarjeta:</h4>
+                        <div class="mt-2 mb-2 d-flex" id="stripebox">
+                            <stripe-element-card
+                            ref="elementRef"
+                            :pk="publishableKey"
+                            @token="tokenCreated"
+                            :elementStyle = "stylebox"
+                            :hidePostalCode = true
+                            />
+                        </div>
+                        <div class="mt-2 mb-2 d-flex">
+                            <v-btn block dark color="secondary" @click="submit">Pagar</v-btn>
+                        </div>
                     </div>
                 </v-card>
             </v-sheet>
@@ -161,6 +219,7 @@ export default {
 
     data: () => ({
         category: 0,
+        hide_stripe: true,
         order:{},
         usercc:{},
         selected_card: 0,
@@ -182,7 +241,7 @@ export default {
         },
 
         loading: false,
-        publishableKey: "pk_test_51QNKpFBlXSdF8U4GkdWvPXphGUVjMG2bpAutMe0wGRztDCSpFrP0uwfnqsUZLTsCulJd6m6cWSPMxNtuejj5LqCC00K1EHim3Y",
+        publishableKey: "pk_live_51Q2FGD03uRtee0qsFACKSeOBgvZ6hyL5UNGJC1aN3N9IO8QLkNIw266Zt1E15M2firivXuby6qVYgCRCID2MSeci00Ifddsi80",
         lineItems: [
             {
                 price: 'price_1QNKrbBlXSdF8U4GSR6qi5IE', // The id of the recurring price you created in your Stripe dashboard
@@ -198,13 +257,16 @@ export default {
         let vm = this;
         vm.slug = this.$route.params.hash;
         vm.getOrder();
+        //pk_test_51QNKpFBlXSdF8U4GkdWvPXphGUVjMG2bpAutMe0wGRztDCSpFrP0uwfnqsUZLTsCulJd6m6cWSPMxNtuejj5LqCC00K1EHim3Y
     },
 
     watch: {
     },
 
     methods: {
-        
+        abrirStripe(){
+            this.hide_stripe = false;
+        },  
         showToast(msg,color){
             this.toast.color = color;
             this.toast.message = msg;
@@ -214,7 +276,7 @@ export default {
         async tokenCreated (token) {
             this.card_data = token;
             this.card_data.id_user = this.order.customer.id;
-            const data = await this.$API.stripe.saveToken(token);
+            const data = await this.$API.stripe.saveToken(this.card_data);
 
             let token_resul = data.data.data;
 
@@ -238,7 +300,7 @@ export default {
                 /*console.log("CARD: ");
                 console.log(vm.selected_card);*/
                 vm.selected_card.hash_order = vm.slug;
-                const data_auth = await this.$API.payme.authTransaction(vm.selected_card);
+                const data_auth = await this.$API.stripe.authTransaction(vm.selected_card);
                 let auth_resul = data_auth.data;
 
                 let datos_upd = {};

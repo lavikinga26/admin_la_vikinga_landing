@@ -93,14 +93,35 @@
 		</v-col>
         <v-col cols="12" md="8" style="height: 100vh; overflow-y:auto;">
             <div class="d-flex justify-center" v-if="order.id_status == 1">
-                <v-card max-width="450" style="margin-top: 15%;" elevation="0" class="pa-2">
+                <v-card max-width="500" style="margin-top: 15%;" elevation="0" class="pa-2">
                     <div class="py-2 d-flex align-center">
                         <div style="" class="text-rigth">
                             <h4 class="title_pink" style="text-align:left!important;">
                                 Felicidades, {{ order.customer_name.split(' ')[0] }}
                             </h4><br>
                             <h3 style="font-weight: 200;">La comunidad vikinga te da la bienvenida al Desafio Gym Virtual. Te hemos enviado un email de confirmación a {{ order.customer_email }}.</h3><br>
-                            <v-btn link to="/gym-virtual/agenda" color="secondary" depressed>Ingresar al gym</v-btn>
+
+                            <v-row class="mt-3">
+                                <v-col cols="12" md="6" class="pa-0 px-1">
+                                    <label class="text_field_form">Tipo de Documento</label>
+                                    <v-select class="register_form" :rules="requiredRule" :items="documents" outlined
+                                        item-text="name" item-value="id" v-model="tipo_doc"></v-select>
+                                </v-col>
+                                <v-col cols="12" md="6" class="pa-0 px-1">
+                                    <label class="text_field_form">Nro. Documento</label>
+                                    <v-text-field :rules="nrodocRules" outlined 
+                                        class="register_form" autocomplete="null" v-model="nro_doc"></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="12" class="pa-0 px-1">
+                                    <label class="text_field_form">Nivel de entrenamiento</label>
+                                    <v-select :items="levels" v-model="id_level" label="Nivel" item-text="level" placeholder="Seleciona" item-value="id_level" color="#ffffff" outlined v-on:change="filterByLevel()"></v-select>
+                                </v-col>
+                                <v-col cols="12" >
+                                    <h5 style="font-weight: 200;">Te hemos enviado un email de confirmación a {{ order.customer_email }}.</h5><br>
+                                </v-col>
+                            </v-row>
+
+                            <v-btn link to="/gym-virtual/agenda" color="secondary" depressed>Guardar e ir al gym</v-btn>
                         </div>     
                         
                     </div>
@@ -161,7 +182,15 @@ export default {
         rules: [
             value => !value || value.size < 2000000 || '',
         ],
-        
+        documents: [],
+        id_level: null,
+        userData: {
+			nombre: "",
+			apellidos: "",
+			telefono: "",
+			pwd: "",
+			pwd_rep: "",
+		},
         img_file: null,
         img_url: "../images/default-image.png",
         
@@ -180,12 +209,26 @@ export default {
         let vm = this;
         vm.slug = this.$route.params.hash;
         vm.getOrder();
+        //vm.getLoggedUser();
+        vm.getTypeDocument();
+        vm.loadLevels();
     },
 
     watch: {
     },
 
     methods: {
+        async loadLevels(page = 1, per_page = 50, sortDesc = 0, sortBy = '') {
+            let vm = this;
+            try {
+                const response = await this.$API.levels.list('?page=' + page + '&itemsPerPage=' + per_page + '&sortDesc=' + sortDesc + '&sortBy=' + sortBy);
+                this.levels = response.data.data;
+                this.levels.splice(3, 1);
+            } catch (e) {
+                this.loadingTable = false;
+                console.error(e);
+            }
+        },
         reintentar(){
             this.$router.push({ path: '/pago-payme/'+this.slug })
         },
@@ -206,7 +249,7 @@ export default {
                     vm.$store.dispatch("cleanCart");
 
                     if(vm.order.id_currency == '1'){
-                        const data = await this.$API.order.generatePostInvoice(vm.slug);
+                        //const data = await this.$API.order.generatePostInvoice(vm.slug);
                     }
                 }
                 vm.$store.commit('loader',false);
@@ -216,6 +259,55 @@ export default {
                 vm.$store.commit('loader',false);
             }
         },
+
+        updateUserData(){
+
+        },
+        async getTypeDocument(type = 2) {
+			this.$store.commit("loader", true);
+			try {
+				const data = await this.$API.configuration.getTypeDocument(type);
+				this.documents = data.data.data;
+				this.$store.commit("loader", false);
+			} catch (e) {
+				this.$store.commit("loader", false);
+				console.error(e);
+			}
+		},
+		async getLoggedUser() {
+			if (localStorage.getItem("token")) {
+				this.logged_user = JSON.parse(localStorage.getItem("user_data"));
+				this.logged_user_token = localStorage.getItem("token");
+				const response = await this.$API.business_partner.getPartner(
+					this.logged_user.id
+				);
+				if (response != null) {
+					this.logged_affiliate = response.data.data[0];
+
+					this.userData.bd_id = this.logged_affiliate.id;
+					this.userData.tipo_doc = this.logged_affiliate.id_document_type;
+					this.userData.nombre = this.logged_affiliate.name;
+					this.userData.apellidos = this.logged_affiliate.lastname;
+					this.userData.nro_doc = this.logged_affiliate.nro_doc;
+					this.userData.address = this.logged_affiliate.address;
+					this.userData.city = this.logged_affiliate.city;
+					this.userData.email = this.logged_affiliate.email;
+					this.userData.telefono = this.logged_affiliate.phone;
+					this.userData.bp_id = this.logged_affiliate.id;
+					this.userData.country = { id: this.logged_affiliate.id_country };
+					this.userData.dialcode = this.country;
+					//this.userData.country = this.countries_list.find(e => e.id == this.logged_affiliate.id_country);
+
+					this.userData.had_invoice = false;
+					localStorage.datosUsuario = JSON.stringify(this.userData);
+					window.location.replace("/proceso_compra/step3");
+				} else {
+					this.userData = JSON.parse(localStorage.getItem("user_data_tmp"));
+				}
+			} else if (localStorage.getItem("user_data_tmp")) {
+				this.userData = JSON.parse(localStorage.getItem("user_data_tmp"));
+			}
+		},
     },
 }
 </script>

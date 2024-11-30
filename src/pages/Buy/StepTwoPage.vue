@@ -168,7 +168,7 @@
 										"
 										color="#E7004C"
 										class="badge_pink"
-										:content="`Ahorra S/ ${getDiscount(item.prices)}`"
+										:content="`Ahorra ${getDiscount(item.prices)}`"
 									></v-badge>
 									<v-card-text max-height="300">
 										<div class="item">
@@ -373,19 +373,22 @@ export default {
 		},
 		getDiscount(prices) {
 			const currencyType = !this.currency ? "soles" : "dolar";
+			const currencySymbol = !this.currency ? "S/ " : "$ ";
 			const price = prices.find(
 				(price) =>
 					price.currency.currency.toLowerCase() === currencyType.toLowerCase()
 			);
-			return price ? price.old_amount - price.amount : null;
+			const finalAmount = price.old_amount - price.amount;
+			return price ? currencySymbol + parseFloat(finalAmount).toFixed(2) : null;
 		},
 		getOldPrice(prices) {
 			const currencyType = !this.currency ? "soles" : "dolar";
+			const currencySymbol = !this.currency ? "S/ " : "$ ";
 			const price = prices.find(
 				(price) =>
 					price.currency.currency.toLowerCase() === currencyType.toLowerCase()
 			);
-			return price.old_amount ? price.old_amount : null;
+			return price.old_amount ? currencySymbol + price.old_amount : null;
 		},
 		/* filtrarPlanesPeriodo(planes, period) {
 			let listaPlanes = planes.filter(
@@ -458,7 +461,7 @@ export default {
 				renovacion: itemv.renovacion_automatica,
 				category_id: itemv.category_id,
 				dias_trial: this.trial_status == true ? itemv.dias_trial : 0,
-				currency_id: selectedCurrency.id
+				currency_id: selectedCurrency.currency_id
 			};
 			localStorage.planSeleccionado = JSON.stringify(item);
 			this.$store.dispatch("addItem", item);
@@ -475,6 +478,7 @@ export default {
                     throw new Error(`Error: ${response.status} ${response.statusText}`);
                 }
                 this.ipData = await response.json();
+				console.log(this.ipData);
 				if (this.ipData?.countryCode === 'PE') {
                     this.currency = false;
 					this.currency_id = 1;

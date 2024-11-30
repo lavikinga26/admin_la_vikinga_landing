@@ -453,12 +453,11 @@ export default {
             try {
                 const data = await this.$API.configuration.getPaymentMethods();
                 let paymentMethods = data.data.data;
-
                 // Filtrar métodos de pago según el countryCode
                 if (this.cart[0].currency_id === 1) {
                     paymentMethods = paymentMethods.filter((method) => method.id !== 4);
                 } else {
-                    paymentMethods = paymentMethods.filter((method) => method.id !== 1);
+                    paymentMethods = paymentMethods.filter((method) => method.id !== 1 && method.id !== 2);
                 }
 
                 // Asignar los métodos de pago filtrados
