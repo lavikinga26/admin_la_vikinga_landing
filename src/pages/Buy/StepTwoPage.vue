@@ -300,13 +300,15 @@ export default {
 			semestral: "SEMESTRAL",
 			anual: "ANUAL",
 		},
+		dataIP: null
 	}),
-	mounted() {
+	async mounted() {
 		let vm = this;
 		this.pq = localStorage.getItem("paquete_seleccionado");
 		vm.slug = this.$route.params.slug;
+		await vm.getIpData();
+		await vm.getConfiguracion();
 		vm.getLoggedUser();
-		vm.getConfiguracion();
 		vm.getBaseUrl();
 		vm.list();
 		vm.fetchIpData();
@@ -390,34 +392,23 @@ export default {
 			);
 			return price.old_amount ? currencySymbol + price.old_amount : null;
 		},
-		/* filtrarPlanesPeriodo(planes, period) {
-			let listaPlanes = planes.filter(
-				(plan) => plan.months == period && plan.active == 1
-			);
-			let estado = listaPlanes.length == 0 ? false : true;
-			switch (period) {
-				case 4:
-					this.tabs[0].show = estado;
-					break;
-				case 12:
-					this.tabs[1].show = estado;
-					break;
-				case 24:
-					this.tabs[2].show = estado;
-					break;
-				case 48:
-					this.tabs[3].show = estado;
-					break;
-			}
-			return listaPlanes;
-		}, */
 		async getConfiguracion() {
 			try {
-				const data = await this.$API.configuration.configuration();
+				const data = await this.$API.configuration.configuration(this.dataIP);
 				this.data_config = data.data.data;
+
+				if (this.data_config.countryCode === 'PE') {
+                    this.currency = false;
+					this.currency_id = 1;
+                } else {
+                    this.currency = true;
+					this.currency_id = 2;
+                }
 			} catch (e) {
 				console.error(e);
-			}
+			} finally {
+                this.loading = false;
+            }
 		},
 		async getBaseUrl() {
 			try {
@@ -435,6 +426,7 @@ export default {
 				const data = await this.$API.plans.list();
 				vm.plans = data.data.data;
 				vm.temp_plans = data.data.data;
+				console.log()
 				vm.checkPlan();
 				vm.$store.commit("loader", false);
 			} catch (e) {
@@ -469,16 +461,26 @@ export default {
 			//this.$router.push({ path: '/carrito#pago' })
 			this.$router.push({ path: "/auth/registrarse" });
 		},
+		async getIpData(){
+			await fetch('https://api.ipify.org?format=json')
+			.then(response => {
+				if (!response.ok) {
+					throw new Error('Error al obtener la IP');
+				}
+				return response.json();
+			})
+			.then(data => {
+				this.dataIP = data.ip;
+			})
+			.catch(error => {
+				console.error('Error:', error);
+			});
+		},
 		async fetchIpData() {
             this.loading = true;
             this.error = null;
             try {
-                const response = await fetch('http://ip-api.com/json/');
-                if (!response.ok) {
-                    throw new Error(`Error: ${response.status} ${response.statusText}`);
-                }
-                this.ipData = await response.json();
-				console.log(this.ipData);
+                this.ipData = this.data_config;
 				if (this.ipData?.countryCode === 'PE') {
                     this.currency = false;
 					this.currency_id = 1;

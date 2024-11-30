@@ -5,7 +5,7 @@ export const baseURL = 'http://admin_la_vikinga.test/';
 // export const baseURL = 'https://apiserv.lavikingaoficial.com/';
 //export const baseURL = "http://127.0.0.1:8000/";
 
-//export const baseURL = "https://vikinga.avance-inmobiliaria.com/";
+// export const baseURL = "https://vikinga.avance-inmobiliaria.com/";
 
 const headers = {
 	Accept: "application/json", //'*' ,
