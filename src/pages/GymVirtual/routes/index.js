@@ -31,4 +31,9 @@ export default [{
   name: 'apps-calendario',
   component: () => import(/* webpackChunkName: "apps-email-inbox" */ '@/pages/GymVirtual/pages/CalendarPage.vue'),
   meta: { requiresAuth: true, template: 'SidebarTemplate' }
+},{
+  path: 'referidos',
+  name: 'apps-referidos',
+  component: () => import(/* webpackChunkName: "apps-email-inbox" */ '@/pages/GymVirtual/pages/ReferidosPage.vue'),
+  meta: { requiresAuth: true, template: 'SidebarTemplate' }
 },]

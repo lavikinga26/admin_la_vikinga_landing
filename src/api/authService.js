@@ -7,7 +7,8 @@ import axios from "axios";
 
 //export const baseURL = "http://127.0.0.1:8000/";
 
-export const baseURL = 'https://vikinga.avance-inmobiliaria.com/';
+// export const baseURL = 'https://vikinga.avance-inmobiliaria.com/';
+export const baseURL = "http://127.0.0.1:8000/"
 
 const headers = {
   Accept: "application/json", //'application/json' ,

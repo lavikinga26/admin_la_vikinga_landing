@@ -107,5 +107,13 @@ export default {
         saveRating(data){
             return callAuthAPI('post', 'api/v1/rating/storeRating', {data: data});
         },
+    },
+    referral:{
+        getReferralCode(){
+            return callAuthAPI('post','api/v1/generate-referral-code');
+        },
+        getReferralDetails(){
+            return callAuthAPI('get','api/v1/referral-details');
+        }
     }
 }
