@@ -122,7 +122,7 @@
 				<h1 class="title_pink mt-4 mb-4">ELIGE TU PLAN</h1>
 				<div style="position: absolute; right: 20px; top: 0; bottom: 0;">
 					<div class="toggle-switch">
-						<input v-model="currency" type="checkbox" id="switch" />
+						<input v-model="currency" type="checkbox" id="switch" v-on:change="updCurrency()"/>
 						<label for="switch" class="switch-label">
 							<span class="switch-inner"></span>
 							<span class="switch-text-on">SOL</span>
@@ -135,7 +135,7 @@
 				<v-slide-group v-model="model" class="pa-0" center-active>
 					<template v-for="(item, n) in plans">
 						<v-slide-item
-							v-if="item.allow_sale == 1 && item.status == 1"
+							v-if="item.allow_sale == 1 && item.status == 1 && item.active == 1"
 							:key="n"
 							v-slot="{ toggle }"
 						>
@@ -293,7 +293,7 @@ export default {
 		business_partner: [],
 		trial_status: false,
 		currency: false,
-		currency_id: 0,
+		currency_id: 1,
 		periods: {
 			mensual: "MENSUAL",
 			trimestral: "TRIMESTRAL",
@@ -304,16 +304,21 @@ export default {
 	}),
 	async mounted() {
 		let vm = this;
-		this.pq = localStorage.getItem("paquete_seleccionado");
+		vm.pq = localStorage.getItem("paquete_seleccionado");
 		vm.slug = this.$route.params.slug;
+		
 		await vm.getIpData();
+		vm.fetchIpData();
 		await vm.getConfiguracion();
+		vm.list();
 		vm.getLoggedUser();
 		vm.getBaseUrl();
-		vm.list();
-		vm.fetchIpData();
 	},
 	methods: {
+		updCurrency(){
+			this.currency_id = !this.currency ? 0 : 1;
+			console.log(this.currency_id);
+		},
 		async getLoggedUser() {
 			this.$store.commit("loader", true);
 			if (localStorage.getItem("token")) {
@@ -341,22 +346,25 @@ export default {
 			this.$store.commit("loader", false);
 		},
 		checkPlan() {
-			var itemv = this.plans.find((element) => element.code == this.pq);
+			var itemv = this.plans.find((element) => element.code == localStorage.getItem("paquete_seleccionado"));
+			console.log("PLAN "+itemv);
 			localStorage.removeItem("planSeleccionado");
+			var selectedCurrency = this.currency == false ? itemv.prices[0] : itemv.prices[1];
 			let item = {
 				id: itemv.id,
 				title: itemv.title,
 				code: itemv.code,
 				image: itemv.base_url + itemv.file_path.path + itemv.file_path.filename,
-				price: Number(itemv.cost),
+				price: Number(selectedCurrency.amount),
 				price_promotional: Number(itemv.promotional_cost),
 				quantity: 1,
-				priceCompare: Number(itemv.cost),
-				priceTotal: Number(itemv.cost),
-				currency: itemv.currency.symbol,
+				priceCompare: Number(selectedCurrency.amount),
+				priceTotal: Number(selectedCurrency.amount),
+				currency: selectedCurrency.currency_symbol,
 				renovacion: itemv.renovacion_automatica,
 				category_id: itemv.category_id,
-				dias_trial: itemv.dias_trial,
+				dias_trial: this.trial_status == true ? itemv.dias_trial : 0,
+				currency_id: selectedCurrency.currency_id
 			};
 			localStorage.planSeleccionado = JSON.stringify(item);
 			this.$store.dispatch("addItem", item);
@@ -367,29 +375,34 @@ export default {
 		},
 		getPrice(prices) {
 			const currencyType = !this.currency ? "soles" : "dolar";
-			const price = prices.find(
+			/*const price = prices.find(
 				(price) =>
 					price.currency.currency.toLowerCase() === currencyType.toLowerCase()
-			);
+			);*/
+			const price = prices[this.currency_id];
 			return price ? price.amount : null;
 		},
 		getDiscount(prices) {
 			const currencyType = !this.currency ? "soles" : "dolar";
 			const currencySymbol = !this.currency ? "S/ " : "$ ";
-			const price = prices.find(
+			const currid = currencyType == "soles" ? 1:2;
+			/*const price = prices.find(
 				(price) =>
 					price.currency.currency.toLowerCase() === currencyType.toLowerCase()
-			);
+			);*/
+			const price = prices[this.currency_id];
 			const finalAmount = price.old_amount - price.amount;
 			return price ? currencySymbol + parseFloat(finalAmount).toFixed(2) : null;
 		},
 		getOldPrice(prices) {
 			const currencyType = !this.currency ? "soles" : "dolar";
 			const currencySymbol = !this.currency ? "S/ " : "$ ";
-			const price = prices.find(
+			const currid = currencyType == "soles" ? 1:2;
+			/*const price = prices.find(
 				(price) =>
 					price.currency.currency.toLowerCase() === currencyType.toLowerCase()
-			);
+			);*/
+			const price = prices[this.currency_id];
 			return price.old_amount ? currencySymbol + price.old_amount : null;
 		},
 		async getConfiguracion() {
@@ -399,10 +412,10 @@ export default {
 
 				if (this.data_config.countryCode === 'PE') {
                     this.currency = false;
-					this.currency_id = 1;
+					this.currency_id = 0;
                 } else {
                     this.currency = true;
-					this.currency_id = 2;
+					this.currency_id = 1;
                 }
 			} catch (e) {
 				console.error(e);
@@ -426,7 +439,7 @@ export default {
 				const data = await this.$API.plans.list();
 				vm.plans = data.data.data;
 				vm.temp_plans = data.data.data;
-				console.log()
+				console.log(vm.plans);
 				vm.checkPlan();
 				vm.$store.commit("loader", false);
 			} catch (e) {
@@ -483,10 +496,10 @@ export default {
                 this.ipData = this.data_config;
 				if (this.ipData?.countryCode === 'PE') {
                     this.currency = false;
-					this.currency_id = 1;
+					this.currency_id = 0;
                 } else {
                     this.currency = true;
-					this.currency_id = 2;
+					this.currency_id = 1;
                 }
             } catch (error) {
                 this.error = error.message;

@@ -174,7 +174,10 @@ export default {
         },
         getUserCards(data){
             return callAPI('post', 'api/v1/stripe/getUserCards', { data: data });
-        }
+        },
+        authTransactionUserToken(data){
+            return callAPI('post', 'api/v1/stripe/authTransactionUserToken', { data: data });
+        },
     },
     testimonials:{
         get(){

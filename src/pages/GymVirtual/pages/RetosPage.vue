@@ -9,8 +9,27 @@
 
             <v-row style="border: 2px solid #293E58; border-radius: 16px;margin-bottom: 10px;">
                 <v-col v-for="(item, indx) in groupList" :key="'col_' + indx" cols="12" md="4">
-                    <v-card min-height="200" min-width="200" class="box_rutina justify-center" :img="require('@/assets/img/gym_virtual/torso_intermedio.png')" color="#0A2240" @click="showReto1()">
+                    <v-card min-height="200" v-if="indx == 0" min-width="200" class="box_rutina justify-center" :img="require('@/assets/img/gym_virtual/poto_en_la_nuca.jpg')" color="#0A2240" @click="showReto(indx)">
+                        <v-card-title>
+                            <v-spacer />
+                            <div class="text-center">
+                                <h1 class="text_box_gym_sm" style="margin-top: 20px;">{{item.field}}</h1>
+                            </div>
+                            <v-spacer />
+                        </v-card-title>
+                    </v-card>
 
+                    <v-card min-height="200" v-if="indx == 1" min-width="200" class="box_rutina justify-center" :img="require('@/assets/img/gym_virtual/vikinga_no_abandona.jpg')" color="#0A2240" @click="showReto(indx)">
+                        <v-card-title>
+                            <v-spacer />
+                            <div class="text-center">
+                                <h1 class="text_box_gym_sm" style="margin-top: 20px;">{{item.field}}</h1>
+                            </div>
+                            <v-spacer />
+                        </v-card-title>
+                    </v-card>
+
+                    <v-card min-height="200" v-if="indx == 2" min-width="200" class="box_rutina justify-center" :img="require('@/assets/img/gym_virtual/reto_nutricion.jpg')" color="#0A2240" @click="showReto(indx)">
                         <v-card-title>
                             <v-spacer />
                             <div class="text-center">
@@ -22,11 +41,10 @@
                 </v-col>
             </v-row>
 
-            <v-row style="border: 2px solid #293E58; border-radius: 16px;margin-bottom: 10%;">
                 <v-row class="pa-2" v-show="show_reto1">
-                    <v-col cols="12" md="3" v-for="(item, indx) in groupList[0].groupList" :key="indx">
-                        <v-card min-height="200" min-width="200" class="box_rutina" :img="require('@/assets/img/gym_virtual/torso_intermedio.png')" color="#0A2240" :href="'https://apiweb.lavikingaoficial.com/api/download-file/' + item.code" v-if="item.id && item.link_video == null && item.link_video != 'null'">
-                            <h1 class="text_box_gym_sm align-left" style="padding-top: 10px!important; position: absolute; bottom:40px;">{{ item.title }}</h1>
+                    <v-col cols="12" md="3" v-for="(item, indx) in reto1" :key="indx">
+                        <v-card min-height="200" min-width="200" class="box_rutina" :img="require('@/assets/img/gym_virtual/poto_en_la_nuca.jpg')" color="#0A2240" :href="'https://apiweb.lavikingaoficial.com/api/download-file/' + item.code" v-if="item.id && item.link_video == null && item.link_video != 'null' && item.filename != null && item.link_external == null">
+                            <h1 class="text_box_gym_sm align-left" style="padding-top: 10px!important; position: absolute; bottom:40px; margin-left: 8px;">{{ item.title }}</h1>
                             <h4 style="padding: 0px 10px; color: #fff; font-family: 'Poppins-Regular'; font-size: 12px;position: absolute; bottom:0px;" v-if="item.description != 'null'">{{ item.description }}</h4>
                             <v-btn
                             fab
@@ -41,8 +59,8 @@
                             </v-icon>
                             </v-btn>
                         </v-card>
-                        <v-card min-height="200" min-width="200" class="box_rutina" color="#0A2240" :img="require('@/assets/img/gym_virtual/torso_intermedio.png')" @click="openPlayer(item.link_video)" v-if="item.id && item.link_video != null && item.link_video != 'null'">
-                            <h1 class="text_box_gym_sm align-left" style="padding-top: 10px!important; position: absolute; bottom:40px;">{{ item.title }}</h1>
+                        <v-card min-height="200" min-width="200" class="box_rutina" color="#0A2240" :img="require('@/assets/img/gym_virtual/poto_en_la_nuca.jpg')" @click="openPlayer(item.link_video)" v-if="item.id && item.link_video != null && item.link_video != 'null'">
+                            <h1 class="text_box_gym_sm align-left" style="padding-top: 10px!important; position: absolute; bottom:40px; margin-left: 8px;">{{ item.title }}</h1>
                             <h4 style="padding: 0px 10px; color: #fff; font-family: 'Poppins-Regular'; font-size: 12px;position: absolute; bottom:0px;" v-if="item.description != 'null'">{{ item.description }}</h4>
                             <v-btn
                             fab
@@ -53,6 +71,21 @@
                             >
                             <v-icon color="#E7004C">
                                 mdi-play
+                            </v-icon>
+                            </v-btn>
+                        </v-card>
+                        <v-card min-height="200" min-width="200" class="box_rutina" color="#0A2240" :img="require('@/assets/img/gym_virtual/poto_en_la_nuca.jpg')" @click="openLink(item.link_video)" v-if="item.id && (item.link_video == null || item.link_video == 'null') && item.filename == null && item.link_external != null">
+                            <h1 class="text_box_gym_sm align-left" style="padding-top: 10px!important; position: absolute; bottom:40px; margin-left: 8px;">{{ item.title }}</h1>
+                            <h4 style="padding: 0px 10px; color: #fff; font-family: 'Poppins-Regular'; font-size: 12px;position: absolute; bottom:0px;" v-if="item.description != 'null'">{{ item.description }}</h4>
+                            <v-btn
+                            fab
+                            small
+                            color="#fff"
+                            @click="openLink(item.link_external)"
+                            style="position: absolute; bottom:15px; right:10px; padding:5px;"
+                            >
+                            <v-icon color="#E7004C">
+                                mdi-link
                             </v-icon>
                             </v-btn>
                         </v-card>
@@ -62,8 +95,8 @@
 
                 <v-row class="pa-2" v-show="show_reto2">
                     <v-col cols="12" md="3" v-for="(item, indx) in reto2" :key="indx">
-                        <v-card min-height="200" min-width="200" class="box_rutina" :img="require('@/assets/img/gym_virtual/torso_intermedio.png')" color="#0A2240" :href="'https://apiweb.lavikingaoficial.com/api/download-file/' + item.code" v-if="item.id && item.link_video == null && item.link_video != 'null'">
-                            <h1 class="text_box_gym_sm align-left" style="padding-top: 10px!important; position: absolute; bottom:40px;">{{ item.title }}</h1>
+                        <v-card min-height="200" min-width="200" class="box_rutina" :img="require('@/assets/img/gym_virtual/vikinga_no_abandona.jpg')" color="#0A2240" :href="'https://apiweb.lavikingaoficial.com/api/download-file/' + item.code" v-if="item.id && item.link_video == null && item.link_video != 'null' && item.filename != null && item.link_external == null">
+                            <h1 class="text_box_gym_sm align-left" style="padding-top: 10px!important; position: absolute; bottom:40px; margin-left: 8px;">{{ item.title }}</h1>
                             <h4 style="padding: 0px 10px; color: #fff; font-family: 'Poppins-Regular'; font-size: 12px;position: absolute; bottom:0px;" v-if="item.description != 'null'">{{ item.description }}</h4>
                             <v-btn
                             fab
@@ -78,8 +111,8 @@
                             </v-icon>
                             </v-btn>
                         </v-card>
-                        <v-card min-height="200" min-width="200" class="box_rutina" color="#0A2240" :img="require('@/assets/img/gym_virtual/torso_intermedio.png')" @click="openPlayer(item.link_video)" v-if="item.id && item.link_video != null && item.link_video != 'null'">
-                            <h1 class="text_box_gym_sm align-left" style="padding-top: 10px!important; position: absolute; bottom:40px;">{{ item.title }}</h1>
+                        <v-card min-height="200" min-width="200" class="box_rutina" color="#0A2240" :img="require('@/assets/img/gym_virtual/vikinga_no_abandona.jpg')" @click="openPlayer(item.link_video)" v-if="item.id && item.link_video != null && item.link_video != 'null'">
+                            <h1 class="text_box_gym_sm align-left" style="padding-top: 10px!important; position: absolute; bottom:40px; margin-left: 8px;">{{ item.title }}</h1>
                             <h4 style="padding: 0px 10px; color: #fff; font-family: 'Poppins-Regular'; font-size: 12px;position: absolute; bottom:0px;" v-if="item.description != 'null'">{{ item.description }}</h4>
                             <v-btn
                             fab
@@ -90,6 +123,73 @@
                             >
                             <v-icon color="#E7004C">
                                 mdi-play
+                            </v-icon>
+                            </v-btn>
+                        </v-card>
+                        <v-card min-height="200" min-width="200" class="box_rutina" color="#0A2240" :img="require('@/assets/img/gym_virtual/vikinga_no_abandona.jpg')" @click="openLink(item.link_video)" v-if="item.id && (item.link_video == null || item.link_video == 'null') && item.filename == null && item.link_external != null">
+                            <h1 class="text_box_gym_sm align-left" style="padding-top: 10px!important; position: absolute; bottom:40px; margin-left: 8px;">{{ item.title }}</h1>
+                            <h4 style="padding: 0px 10px; color: #fff; font-family: 'Poppins-Regular'; font-size: 12px;position: absolute; bottom:0px;" v-if="item.description != 'null'">{{ item.description }}</h4>
+                            <v-btn
+                            fab
+                            small
+                            color="#fff"
+                            @click="openLink(item.link_external)"
+                            style="position: absolute; bottom:15px; right:10px; padding:5px;"
+                            >
+                            <v-icon color="#E7004C">
+                                mdi-link
+                            </v-icon>
+                            </v-btn>
+                        </v-card>
+                    </v-col>
+                </v-row>
+
+
+                <v-row class="pa-2" v-show="show_reto3">
+                    <v-col cols="12" md="3" v-for="(item, indx) in reto3" :key="indx">
+                        <v-card min-height="200" min-width="200" class="box_rutina" :img="require('@/assets/img/gym_virtual/reto_nutricion.jpg')" color="#0A2240" :href="'https://apiweb.lavikingaoficial.com/api/download-file/' + item.code" v-if="item.id && item.link_video == null && item.link_video != 'null' && item.filename != null && item.link_external == null">
+                            <h1 class="text_box_gym_sm align-left" style="padding-top: 10px!important; position: absolute; bottom:40px; margin-left: 8px;">{{ item.title }}</h1>
+                            <h4 style="padding: 0px 10px; color: #fff; font-family: 'Poppins-Regular'; font-size: 12px;position: absolute; bottom:0px;" v-if="item.description != 'null'">{{ item.description }}</h4>
+                            <v-btn
+                            fab
+                            small
+                            color="#fff"
+                            :href="'https://apiweb.lavikingaoficial.com/api/download-file/' + item.code"
+                            target="_blank"
+                            style="position: absolute; bottom:15px; right:10px; padding:5px;"
+                            >
+                            <v-icon color="#E7004C">
+                                mdi-tray-arrow-down
+                            </v-icon>
+                            </v-btn>
+                        </v-card>
+                        <v-card min-height="200" min-width="200" class="box_rutina" color="#0A2240" :img="require('@/assets/img/gym_virtual/reto_nutricion.jpg')" @click="openPlayer(item.link_video)" v-if="item.id && item.link_video != null && item.link_video != 'null'">
+                            <h1 class="text_box_gym_sm align-left" style="padding-top: 10px!important; position: absolute; bottom:40px; margin-left: 8px;">{{ item.title }}</h1>
+                            <h4 style="padding: 0px 10px; color: #fff; font-family: 'Poppins-Regular'; font-size: 12px;position: absolute; bottom:0px;" v-if="item.description != 'null'">{{ item.description }}</h4>
+                            <v-btn
+                            fab
+                            small
+                            color="#fff"
+                            @click="openPlayer(item.link_video)"
+                            style="position: absolute; bottom:15px; right:10px; padding:5px;"
+                            >
+                            <v-icon color="#E7004C">
+                                mdi-play
+                            </v-icon>
+                            </v-btn>
+                        </v-card>
+                        <v-card min-height="200" min-width="200" class="box_rutina" color="#0A2240" :img="require('@/assets/img/gym_virtual/reto_nutricion.jpg')" @click="openLink(item.link_video)" v-if="item.id && (item.link_video == null || item.link_video == 'null') && item.filename == null && item.link_external != null">
+                            <h1 class="text_box_gym_sm align-left" style="padding-top: 10px!important; position: absolute; bottom:40px; margin-left: 8px;">{{ item.title }}</h1>
+                            <h4 style="padding: 0px 10px; color: #fff; font-family: 'Poppins-Regular'; font-size: 12px;position: absolute; bottom:0px;" v-if="item.description != 'null'">{{ item.description }}</h4>
+                            <v-btn
+                            fab
+                            small
+                            color="#fff"
+                            @click="openLink(item.link_external)"
+                            style="position: absolute; bottom:15px; right:10px; padding:5px;"
+                            >
+                            <v-icon color="#E7004C">
+                                mdi-link
                             </v-icon>
                             </v-btn>
                         </v-card>
@@ -160,232 +260,9 @@ export default {
         groupList: [],
         dialogPlayer: false,
         now_playing: null,
-        reto1: [
-            {
-                "id": 16,
-                "plans_id": "5,6,21,22",
-                "category_id": 2,
-                "code": "04042022175110624b765ee5cbd",
-                "title": "REMO CON BARRA",
-                "description": "Lorem ipsum dolor sit amet, consectetur",
-                "link_video": null,
-                "filename": "lavikinga__Vikinga- Plan Aumento 2022.pdf",
-                "mime": "application/pdf",
-                "disk": "uploads",
-                "path": "/downloadable/1649112670__Vikinga- Plan Aumento 2022.pdf",
-                "size": 3206052,
-                "id_level": 4,
-                "active": 1,
-                "status": 1,
-                "created_at": "2022-04-04 17:51:10",
-                "updated_at": "2022-04-04 17:51:10",
-                "name_category": "PLANES"
-            },
-            {
-                "id": 185,
-                "plans_id": "null",
-                "category_id": 14,
-                "code": "051720240131356646f9c7b620b",
-                "title": "HIP THRUST",
-                "description": "Lorem ipsum dolor sit amet, consectetur",
-                "link_video": "https://player.vimeo.com/video/760516493?h=e992de46df&amp",
-                "filename": null,
-                "mime": null,
-                "disk": null,
-                "path": null,
-                "size": null,
-                "id_level": 4,
-                "active": 1,
-                "status": 1,
-                "created_at": "2024-05-17 01:31:35",
-                "updated_at": "2024-05-17 01:31:35",
-                "name_category": "HIPOPRESIVOS"
-            },
-            {
-                "id": 18,
-                "plans_id": "5,6,21,22",
-                "category_id": 2,
-                "code": "04042022175221624b76a5b8f19",
-                "title": "SUMO SQUAT",
-                "description": "Lorem ipsum dolor sit amet, consectetur",
-                "link_video": null,
-                "filename": "lavikinga_Vikinga- Plan Saludable 2022.pdf",
-                "mime": "application/pdf",
-                "disk": "uploads",
-                "path": "/downloadable/1649112741_Vikinga- Plan Saludable 2022.pdf",
-                "size": 3210482,
-                "id_level": 4,
-                "active": 1,
-                "status": 1,
-                "created_at": "2022-04-04 17:52:21",
-                "updated_at": "2022-04-04 17:52:21",
-                "name_category": "PLANES"
-            },
-            {
-                "id": 19,
-                "plans_id": "5,6,21,22",
-                "category_id": 2,
-                "code": "04162022033319625a7f4f934d9",
-                "title": "FRONT SQUAT",
-                "description": "Lorem ipsum dolor sit amet, consectetur",
-                "link_video": null,
-                "filename": "lavikinga_Vikinga- Plan Saludable VEG 2022..pdf",
-                "mime": "application/pdf",
-                "disk": "uploads",
-                "path": "/downloadable/1649112774_Vikinga- Plan Saludable VEG 2022..pdf",
-                "size": 3568607,
-                "id_level": 4,
-                "active": 1,
-                "status": 1,
-                "created_at": "2022-04-04 17:52:54",
-                "updated_at": "2022-04-16 03:33:19",
-                "name_category": "PLANES"
-            },
-            {
-                "id": 187,
-                "plans_id": "null",
-                "category_id": 14,
-                "code": "051720240133236646fa33e8bbf",
-                "title": "SHULDER PRESS",
-                "description": "Lorem ipsum dolor sit amet, consectetur",
-                "link_video": "https://player.vimeo.com/video/753226007?h=91372ed781&amp",
-                "filename": null,
-                "mime": null,
-                "disk": null,
-                "path": null,
-                "size": null,
-                "id_level": 4,
-                "active": 1,
-                "status": 1,
-                "created_at": "2024-05-17 01:33:23",
-                "updated_at": "2024-05-17 01:33:23",
-                "name_category": "HIPOPRESIVOS"
-            },
-        ],
-        reto2: [
-            {
-                "id": 16,
-                "plans_id": "5,6,21,22",
-                "category_id": 2,
-                "code": "04042022175110624b765ee5cbd",
-                "title": "REMO CON BARRA",
-                "description": "Lorem ipsum dolor sit amet, consectetur",
-                "link_video": null,
-                "filename": "lavikinga__Vikinga- Plan Aumento 2022.pdf",
-                "mime": "application/pdf",
-                "disk": "uploads",
-                "path": "/downloadable/1649112670__Vikinga- Plan Aumento 2022.pdf",
-                "size": 3206052,
-                "id_level": 4,
-                "active": 1,
-                "status": 1,
-                "created_at": "2022-04-04 17:51:10",
-                "updated_at": "2022-04-04 17:51:10",
-                "name_category": "PLANES"
-            },
-            {
-                "id": 187,
-                "plans_id": "null",
-                "category_id": 14,
-                "code": "051720240133236646fa33e8bbf",
-                "title": "SHULDER PRESS",
-                "description": "Lorem ipsum dolor sit amet, consectetur",
-                "link_video": "https://player.vimeo.com/video/753226007?h=91372ed781&amp",
-                "filename": null,
-                "mime": null,
-                "disk": null,
-                "path": null,
-                "size": null,
-                "id_level": 4,
-                "active": 1,
-                "status": 1,
-                "created_at": "2024-05-17 01:33:23",
-                "updated_at": "2024-05-17 01:33:23",
-                "name_category": "HIPOPRESIVOS"
-            }
-        ],
-        reto3: [
-            {
-                "id": 16,
-                "plans_id": "5,6,21,22",
-                "category_id": 2,
-                "code": "04042022175110624b765ee5cbd",
-                "title": "REMO CON BARRA",
-                "description": "Lorem ipsum dolor sit amet, consectetur",
-                "link_video": null,
-                "filename": "lavikinga__Vikinga- Plan Aumento 2022.pdf",
-                "mime": "application/pdf",
-                "disk": "uploads",
-                "path": "/downloadable/1649112670__Vikinga- Plan Aumento 2022.pdf",
-                "size": 3206052,
-                "id_level": 4,
-                "active": 1,
-                "status": 1,
-                "created_at": "2022-04-04 17:51:10",
-                "updated_at": "2022-04-04 17:51:10",
-                "name_category": "PLANES"
-            },
-            {
-                "id": 185,
-                "plans_id": "null",
-                "category_id": 14,
-                "code": "051720240131356646f9c7b620b",
-                "title": "HIP THRUST",
-                "description": "Lorem ipsum dolor sit amet, consectetur",
-                "link_video": "https://player.vimeo.com/video/760516493?h=e992de46df&amp",
-                "filename": null,
-                "mime": null,
-                "disk": null,
-                "path": null,
-                "size": null,
-                "id_level": 4,
-                "active": 1,
-                "status": 1,
-                "created_at": "2024-05-17 01:31:35",
-                "updated_at": "2024-05-17 01:31:35",
-                "name_category": "HIPOPRESIVOS"
-            },
-            {
-                "id": 187,
-                "plans_id": "null",
-                "category_id": 14,
-                "code": "051720240133236646fa33e8bbf",
-                "title": "SHULDER PRESS",
-                "description": "Lorem ipsum dolor sit amet, consectetur",
-                "link_video": "https://player.vimeo.com/video/753226007?h=91372ed781&amp",
-                "filename": null,
-                "mime": null,
-                "disk": null,
-                "path": null,
-                "size": null,
-                "id_level": 4,
-                "active": 1,
-                "status": 1,
-                "created_at": "2024-05-17 01:33:23",
-                "updated_at": "2024-05-17 01:33:23",
-                "name_category": "HIPOPRESIVOS"
-            },
-            {
-                "id": 187,
-                "plans_id": "null",
-                "category_id": 14,
-                "code": "051720240133236646fa33e8bbf",
-                "title": "SHULDER PRESS",
-                "description": "Lorem ipsum dolor sit amet, consectetur",
-                "link_video": "https://player.vimeo.com/video/753226007?h=91372ed781&amp",
-                "filename": null,
-                "mime": null,
-                "disk": null,
-                "path": null,
-                "size": null,
-                "id_level": 4,
-                "active": 1,
-                "status": 1,
-                "created_at": "2024-05-17 01:33:23",
-                "updated_at": "2024-05-17 01:33:23",
-                "name_category": "HIPOPRESIVOS"
-            },
-        ]
+        reto1: [],
+        reto2: [],
+        reto3: []
     }),
     mounted() {
         this.getDownloads();
@@ -411,21 +288,24 @@ export default {
         }
     },
     methods: {
-        showReto1(){
-            this.show_reto1 = true;
-            this.show_reto2 = false;
-            this.show_reto3 = false;
-        },
-        showReto2(){
-            this.show_reto1 = false;
-            this.show_reto2 = true;
-            this.show_reto3 = false;
-        },
-        showReto3(){
-            this.show_reto1 = false;
+        showReto(reto){
+            let index = reto + 1;
+            
+            if(index==1){
+                this.show_reto1 = true;
+                this.show_reto2 = false;
+                this.show_reto3 = false;
+            }else if(index==2){
+                this.show_reto1 = false;
+                this.show_reto2 = true;
+                this.show_reto3 = false;
+            }else{
+                this.show_reto1 = false;
             this.show_reto2 = false;
             this.show_reto3 = true;
+            }
         },
+
         async getDownloads() {
             this.$store.commit('loader', true);
             try {
@@ -435,7 +315,10 @@ export default {
                 
                 //console.log(this.downloads_list.groupBy('name_category'))
                 this.groupList = this.retos_list.groupBy('name_category');
-
+                console.log(this.groupList);
+                this.reto1 = this.groupList[0].groupList;
+                this.reto2 = this.groupList[1].groupList;
+                this.reto3 = this.groupList[2].groupList;
                 this.$store.commit('loader', false);
             } catch (e) {
                 this.$store.commit('loader', false);
@@ -445,6 +328,9 @@ export default {
         openPlayer(video_link) {
             this.now_playing = video_link;
             this.dialogPlayer = true;
+        },
+        openLink(link){
+            window.open(link, '_blank')
         }
     }
 }

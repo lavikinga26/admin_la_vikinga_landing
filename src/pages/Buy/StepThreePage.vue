@@ -273,7 +273,13 @@ export default {
         plan_seleccionado: {},
         discount: 0,
         coupon: null,
-        cart: [],
+        cart: [
+            {
+                currency_id:0,
+                title: '',
+                code: ''
+            }
+        ],
         toast: {
             toast: false,
             message: '',
@@ -333,7 +339,7 @@ export default {
         vm.getConfiguracion();
         vm.getBaseUrl();
         vm.getPaymentMethods();
-        vm.cart.push(JSON.parse(localStorage.getItem('planSeleccionado')));
+        vm.cart[0] = JSON.parse(localStorage.getItem('planSeleccionado'));
         vm.total = vm.cart[0] ? vm.cart[0].price : 0;
         var da_trial = new Date();
         da_trial.setDate(da_trial.getDate() + vm.cart[0].dias_trial);
@@ -422,8 +428,6 @@ export default {
                 }
                 if ((vm.actions.payment_status == 'pending') && (vm.actions.payment_external == true)) {
                     //Enviamos a payme
-                    //this.$router.push({ path: '/pago-payme/'+vm.actions.hash });
-                    console.log(this.order.id_payment_method);
                     if(this.order.id_payment_method == '1'){
                         window.location.replace('/pago-payme/' + vm.actions.hash);
                     }else if(this.order.id_payment_method == '4'){
@@ -450,23 +454,23 @@ export default {
         },
         async getPaymentMethods() {
             this.$store.commit('loader', true);
+            
             try {
                 const data = await this.$API.configuration.getPaymentMethods();
                 let paymentMethods = data.data.data;
                 // Filtrar métodos de pago según el countryCode
-                if (this.cart[0].currency_id === 1) {
+                if (this.cart[0].currency_id == 1) {
                     paymentMethods = paymentMethods.filter((method) => method.id !== 4);
                 } else {
                     paymentMethods = paymentMethods.filter((method) => method.id !== 1 && method.id !== 2);
                 }
-
                 // Asignar los métodos de pago filtrados
                 this.paymentMethods = paymentMethods;
                 
                 let renovacion = this.cart.filter((item) => item.renovacion == 1);
-                /* if (renovacion.length > 0) {
+                if (renovacion.length > 0) {
                     this.show_transfer = false;
-                }*/
+                }
                 this.$store.commit('loader', false);
             }
             catch (e) {

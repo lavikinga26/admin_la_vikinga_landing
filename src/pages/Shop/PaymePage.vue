@@ -373,8 +373,8 @@ export default {
                         "last_name": this.order.customer.lastname,
                         "email_address": this.order.customer.email,
                         "identity_document_country": "PER",
-                        "identity_document_type": this.order.customer.document_type.name,
-                        "identity_document_identifier": this.order.customer.nro_doc
+                        "identity_document_type": "DNI",
+                        "identity_document_identifier": "00000000"
                     }
                 ]
             };

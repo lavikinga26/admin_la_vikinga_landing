@@ -276,12 +276,14 @@ export default {
         async tokenCreated (token) {
             this.card_data = token;
             this.card_data.id_user = this.order.customer.id;
+            this.card_data.hash_order = this.slug;
             const data = await this.$API.stripe.saveToken(this.card_data);
 
             let token_resul = data.data.data;
 
             if(token_resul.success == true){
                 token_resul.ucard.hash_order = this.slug;
+                token_resul.ucard.id_card = token_resul.id_card;
 
                 const data_auth = await this.$API.stripe.authTransaction(token_resul.ucard);
 
@@ -300,7 +302,7 @@ export default {
                 /*console.log("CARD: ");
                 console.log(vm.selected_card);*/
                 vm.selected_card.hash_order = vm.slug;
-                const data_auth = await this.$API.stripe.authTransaction(vm.selected_card);
+                const data_auth = await this.$API.stripe.authTransactionUserToken(vm.selected_card);
                 let auth_resul = data_auth.data;
 
                 let datos_upd = {};

@@ -102,7 +102,7 @@
                             <h3 style="font-weight: 200;">La comunidad vikinga te da la bienvenida al Desafio Gym Virtual. Te hemos enviado un email de confirmación a {{ order.customer_email }}.</h3><br>
 
                             <v-row class="mt-3">
-                                <v-col cols="12" md="6" class="pa-0 px-1">
+                                <!--<v-col cols="12" md="6" class="pa-0 px-1">
                                     <label class="text_field_form">Tipo de Documento</label>
                                     <v-select class="register_form" :rules="requiredRule" :items="documents" outlined
                                         item-text="name" item-value="id" v-model="tipo_doc"></v-select>
@@ -111,7 +111,7 @@
                                     <label class="text_field_form">Nro. Documento</label>
                                     <v-text-field :rules="nrodocRules" outlined 
                                         class="register_form" autocomplete="null" v-model="nro_doc"></v-text-field>
-                                </v-col>
+                                </v-col>-->
                                 <v-col cols="12" md="12" class="pa-0 px-1">
                                     <label class="text_field_form">Nivel de entrenamiento</label>
                                     <v-select :items="levels" v-model="id_level" label="Nivel" item-text="level" placeholder="Seleciona" item-value="id_level" color="#ffffff" outlined v-on:change="filterByLevel()"></v-select>
@@ -178,7 +178,9 @@ export default {
         category: 0,
         order:{},
         base_url: '',
+        nro_doc:'',
         slug:'',
+        tipo_doc: 0,
         rules: [
             value => !value || value.size < 2000000 || '',
         ],
@@ -249,7 +251,7 @@ export default {
                     vm.$store.dispatch("cleanCart");
 
                     if(vm.order.id_currency == '1'){
-                        //const data = await this.$API.order.generatePostInvoice(vm.slug);
+                        const data = await this.$API.order.generatePostInvoice(vm.slug);
                     }
                 }
                 vm.$store.commit('loader',false);
@@ -260,8 +262,10 @@ export default {
             }
         },
 
-        updateUserData(){
-
+        async updateUserData(){
+            var datos = {id_level: this.id_level, id_document_type: this.nro_doc, id_document_type: this.tipo_doc};
+            const data = await this.$API.business_partner.updateData(datos);
+            const cpe = await this.$API.order.generatePostInvoice(vm.slug);
         },
         async getTypeDocument(type = 2) {
 			this.$store.commit("loader", true);

@@ -102,6 +102,9 @@ export default {
         getRetos(){
             return callAuthAPI('get', 'api/v1/business-partner/retosgym');
         },
+        updateData(data){
+            return callAuthAPI('post', 'api/v1/business-partner/updateData', {data: data});
+        },
     },
     rating:{
         saveRating(data){

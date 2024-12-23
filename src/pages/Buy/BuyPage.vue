@@ -244,9 +244,12 @@ export default {
 		usuario_registrado: false,
 	}),
 	mounted() {
-		this.getLoggedUser();
 		this.paquete_seleccionado = this.$route.query.paquete;
+		console.log("PAQueTEEEE "+this.paquete_seleccionado);
 		localStorage.paquete_seleccionado = this.paquete_seleccionado;
+		
+		this.getLoggedUser();
+		
 		this.loginForm.email = this.$route.query.email;
 		//this.loginUser();
 	},

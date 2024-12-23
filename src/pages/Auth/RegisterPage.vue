@@ -163,6 +163,16 @@
 								></vue-tel-input-vuetify>
 							</v-col>
 							<v-col cols="12" md="6" class="pa-0 px-1">
+                                <label class="text_field_form">Tipo de Documento</label>
+                                <v-select class="register_form" :rules="requiredRule" :items="documents" outlined
+                                    item-text="name" item-value="id" v-model="userData.tipo_doc"></v-select>
+                            </v-col>
+                            <v-col cols="12" md="6" class="pa-0 px-1">
+                                <label class="text_field_form">Nro. Documento</label>
+                                <v-text-field :rules="nrodocRules" outlined v-model="userData.nro_doc"
+                                    class="register_form" autocomplete="null"></v-text-field>
+                            </v-col>
+							<v-col cols="12" md="6" class="pa-0 px-1">
 								<label class="text_field_form">Contraseña</label>
 								<v-text-field
 									class="register_form"
@@ -379,7 +389,8 @@ export default {
 					localStorage.datosUsuario = JSON.stringify(this.userData);
 					window.location.replace("/proceso_compra/step3");
 				} else {
-					this.userData = JSON.parse(localStorage.getItem("user_data_tmp"));
+					if(localStorage.getItem("user_data_tmp") != null)
+						this.userData = JSON.parse(localStorage.getItem("user_data_tmp"));
 				}
 			} else if (localStorage.getItem("user_data_tmp")) {
 				this.userData = JSON.parse(localStorage.getItem("user_data_tmp"));
