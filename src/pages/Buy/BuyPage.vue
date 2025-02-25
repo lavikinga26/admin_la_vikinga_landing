@@ -261,6 +261,7 @@ export default {
 		},
 		async getLoggedUser() {
 			this.$store.commit("loader", true);
+			localStorage.removeItem("ref_code");
 			if (localStorage.getItem("token")) {
 				this.logged_user = JSON.parse(localStorage.getItem("user_data"));
 				this.logged_user_token = localStorage.getItem("token");

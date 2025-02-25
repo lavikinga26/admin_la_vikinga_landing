@@ -103,52 +103,28 @@
             background: #ffffff;
             padding: 20px;">
           <v-stepper v-model="step" elevation="0" >
-            <!-- PASO 1 -->
-            <v-stepper-header v-show="step!=1" class="elevation-0">
-              <v-stepper-step :complete="step > 1" step="1"></v-stepper-step>
-              <v-divider></v-divider>
-              <v-stepper-step :complete="step > 2" step="2"></v-stepper-step>
-              <v-divider></v-divider>
-              <v-stepper-step :complete="step > 3" step="3"></v-stepper-step>
-            </v-stepper-header>
-
             <!-- CONTENIDO PASO 1 -->
             <v-stepper-items class="pa-4" style="height: 100%;">
               <v-stepper-content step="1">
                 <div class="pa-4">
-                  <h2 class="tit_h3_team_blue">NICOLE TE HA INVITADO A UNIRTE <br/>AL DESAFÍO, OBTÉN:</h2>
-                  <h1 class="tit_h2_pink font-weight-bold">15 DÍAS GRATIS</h1>
-                  <v-card class="pa-5" elevation="4" width="420">
-                    <p>Únete al Desafío y logra el cambio físico y mental que deseas</p>
+                  <img
+                    src="@/assets/img/referidos_icon.png"
+                    alt="Imagen Login"
+                    style=""
+                  />
+                  <h2 class="tit_h3_team_blue" style="margin-bottom: 10px;" v-if="usuario_logeado == false && usuario_logeado != null">NICOLE TE HA INVITADO A UNIRTE<br/>AL DESAFÍO CON UN DESCUENTO ESPECIAL:</h2>
+                  <h2 class="tit_h3_team_blue" style="margin-bottom: 10px;" v-if="usuario_logeado == true && usuario_logeado != null">{{business_partner.name.toUpperCase()}}, NICOLE TE HA INVITADO A UNIRTE<br/>AL DESAFÍO CON UN DESCUENTO ESPECIAL:</h2>
+                  <v-card class="pa-5" elevation="4" width="420" v-if="usuario_logeado == false && usuario_logeado != null">
+                    <p>Ingresa tu email y logra el cambio físico que deseas</p>
                     <v-text-field label="Email" v-model="email" outlined></v-text-field>
                     <v-btn block class="ma-0 secondary white--text" @click="nextStep">INICIAR</v-btn>
+                  </v-card>
+                  <v-card class="pa-5" elevation="4" width="420" v-if="usuario_logeado == true && usuario_logeado != null">
+                    <v-btn block class="ma-0 secondary white--text" @click="nextStep">CONTINUAR</v-btn>
                   </v-card>
                 </div>
               </v-stepper-content>
 
-              <!-- CONTENIDO PASO 2 -->
-              <v-stepper-content step="2">
-                <h3 class="tit_h2_pink font-weight-bold">REGÍSTRATE AHORA</h3>
-                <div style="width: 400px;">
-                  <v-text-field label="Nombres" v-model="firstName" outlined></v-text-field>
-                  <v-text-field label="Apellidos" v-model="lastName" outlined></v-text-field>
-                  <v-text-field label="Teléfono" v-model="phone" outlined></v-text-field>
-                  <v-btn class="grey lighten-2" @click="prevStep">VOLVER</v-btn>
-                  <v-btn class="pink darken-1 white--text" @click="nextStep">SIGUIENTE</v-btn>
-                </div>
-              </v-stepper-content>
-
-              <!-- CONTENIDO PASO 3 -->
-              <v-stepper-content step="3">
-                <h2 class="red--text font-weight-bold">ESTAS LISTO</h2>
-                <v-select :items="documentTypes" label="Tipo de documento" v-model="documentType" outlined></v-select>
-                <v-text-field label="Número de documento" v-model="documentNumber" outlined></v-text-field>
-                <v-text-field label="Contraseña" v-model="password" type="password" outlined></v-text-field>
-                <v-text-field label="Confirmar contraseña" v-model="confirmPassword" type="password" outlined></v-text-field>
-                <v-select :items="levels" label="Nivel de entrenamiento" v-model="level" outlined></v-select>
-                <v-btn class="grey lighten-2" @click="prevStep">VOLVER</v-btn>
-                <v-btn class="pink darken-1 white--text" @click="submitForm">INICIAR</v-btn>
-              </v-stepper-content>
             </v-stepper-items>
           </v-stepper>
       </v-col>
@@ -170,19 +146,48 @@ export default {
       confirmPassword: '',
       level: '',
       documentTypes: ['DNI', 'Pasaporte'],
-      levels: ['Principiante', 'Intermedio', 'Avanzado']
+      levels: ['Principiante', 'Intermedio', 'Avanzado'],
+      usuario_logeado: null,
+      business_partner: [],
+      id_level: null
     };
   },
+  mounted() {
+		this.ref_code = this.$route.query.ref;
+		localStorage.ref_code = this.ref_code;
+    this.getLoggedUser();
+	},
   methods: {
     nextStep() {
-      if (this.step < 3) this.step++;
+      if (this.usuario_logeado == true) {
+				this.$router.push({ path: "/proceso_compra/step2" });
+			} else {
+				localStorage.emailRegistro = this.email;
+				this.$router.push({ path: "/proceso_compra/step2" });
+			}
     },
-    prevStep() {
-      if (this.step > 1) this.step--;
-    },
-    submitForm() {
-      alert('Formulario enviado');
-    }
+    async getLoggedUser() {
+			this.$store.commit("loader", true);
+			if (localStorage.getItem("token")) {
+				this.logged_user = JSON.parse(localStorage.getItem("user_data"));
+				this.logged_user_token = localStorage.getItem("token");
+
+				const response = await this.$API.business_partner.getPartner(
+					this.logged_user.id
+				);
+				if (response) {
+					this.business_partner = Object.assign(response.data.data[0]);
+					this.id_level = this.business_partner.id_level;
+					localStorage.emailRegistro = this.logged_user.email;
+          this.usuario_logeado = true;
+				}else{
+          this.usuario_logeado = false;
+        }
+			}else{
+        this.usuario_logeado = false;
+      }
+			this.$store.commit("loader", false);
+		},
   }
 };
 </script>

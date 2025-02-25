@@ -105,6 +105,9 @@ export default {
         updateData(data){
             return callAuthAPI('post', 'api/v1/business-partner/updateData', {data: data});
         },
+        updateTimezone(id_timezone){
+            return callAuthAPI('get', 'api/v1/business-partner/updateTimezone/'+id_timezone);
+        },
     },
     rating:{
         saveRating(data){

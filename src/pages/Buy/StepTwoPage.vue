@@ -132,7 +132,7 @@
 				</div>
 			</div>
 			<v-sheet class="mx-auto" elevation="'0'" color="#ffffff" light>
-				<v-slide-group v-model="model" class="pa-0" center-active>
+				<v-slide-group v-model="model" class="pa-0" center-active :class="centrarPlanes == true ? 'centrarPlanes': ''">
 					<template v-for="(item, n) in plans">
 						<v-slide-item
 							v-if="item.allow_sale == 1 && item.status == 1 && item.active == 1"
@@ -163,12 +163,13 @@
 								>
 									<v-badge
 										v-if="
-											item.prices[currency_id].old_amount != '0.00' &&
-											item.prices[currency_id].old_amount != '0'
+											(item.prices[currency_id].old_amount != '0.00' &&
+											item.prices[currency_id].old_amount != '0') || 
+											((item.referred_discount_pen  != '0.00' || item.referred_discount_usd != '0.00') && ref_code!=null)
 										"
 										color="#E7004C"
 										class="badge_pink"
-										:content="`Ahorra ${getDiscount(item.prices)}`"
+										:content="`${getDiscount(item.prices, item.referred_discount_pen, item.referred_discount_usd)}`"
 									></v-badge>
 									<v-card-text max-height="300">
 										<div class="item">
@@ -195,7 +196,7 @@
 																	? 'price_strike_light mr-3'
 																	: 'price_strike_dark mr-3'
 															"
-															>{{ getOldPrice(item.prices) }}</strike
+															>{{ getOldPrice(item.prices, item.referred_discount_pen, item.referred_discount_usd) }}</strike
 														><span
 															:class="
 																item.is_outstanding == 1
@@ -203,7 +204,7 @@
 																	: 'text_plan_price_blue mb-2'
 															"
 															>{{ !currency ? "S/" : "$" }}
-															{{ getPrice(item.prices) }}</span
+															{{ getPrice(item.prices, item.referred_discount_pen,  item.referred_discount_usd) }}</span
 														>
 													</p>
 													<p
@@ -300,19 +301,26 @@ export default {
 			semestral: "SEMESTRAL",
 			anual: "ANUAL",
 		},
-		dataIP: null
+		ref_code: null,
+		dataIP: null,
+		centrarPlanes: false
 	}),
 	async mounted() {
 		let vm = this;
 		vm.pq = localStorage.getItem("paquete_seleccionado");
+		vm.ref_code = localStorage.getItem("ref_code");
 		vm.slug = this.$route.params.slug;
-		
+
 		await vm.getIpData();
 		vm.fetchIpData();
 		await vm.getConfiguracion();
-		vm.list();
+		await vm.list();
 		vm.getLoggedUser();
 		vm.getBaseUrl();
+		console.log("REF "+vm.ref_code);
+		if(vm.ref_code != null && vm.ref_code != undefined){
+			vm.calcDiscountReferred();
+		}
 	},
 	methods: {
 		updCurrency(){
@@ -337,7 +345,6 @@ export default {
 						this.trial_status = true;
 					}
 				} else {
-					console.log("DAD");
 					this.trial_status = true;
 				}
 			} else {
@@ -373,37 +380,50 @@ export default {
 		volver() {
 			this.$router.push({ path: "/" });
 		},
-		getPrice(prices) {
+		getPrice(prices, dsc_pen, dsc_usd) {
 			const currencyType = !this.currency ? "soles" : "dolar";
-			/*const price = prices.find(
-				(price) =>
-					price.currency.currency.toLowerCase() === currencyType.toLowerCase()
-			);*/
+
 			const price = prices[this.currency_id];
-			return price ? price.amount : null;
+
+			if(this.ref_code != null && this.ref_code != undefined){
+				return price ? this.calcDiscountReferred(price.amount, dsc_pen, dsc_usd) : null; 
+			}else{
+				return price ? price.amount : null;
+			}
 		},
-		getDiscount(prices) {
+		getDiscount(prices, dsc_pen, dsc_usd) {
 			const currencyType = !this.currency ? "soles" : "dolar";
 			const currencySymbol = !this.currency ? "S/ " : "$ ";
 			const currid = currencyType == "soles" ? 1:2;
-			/*const price = prices.find(
-				(price) =>
-					price.currency.currency.toLowerCase() === currencyType.toLowerCase()
-			);*/
+
 			const price = prices[this.currency_id];
 			const finalAmount = price.old_amount - price.amount;
-			return price ? currencySymbol + parseFloat(finalAmount).toFixed(2) : null;
+
+			if(this.ref_code != null && this.ref_code != undefined){
+				let precioCalcDsct = price.old_amount != '0' && price.old_amount != '0.00' ? price.old_amount : price.amount;
+				const finalAmount = this.calcDiscountReferred(precioCalcDsct, dsc_pen, dsc_usd);
+				return price ? "Dscto. Referido " + currencySymbol + parseFloat(finalAmount).toFixed(2) : null;
+			}else{
+				return price ? "Ahorra " + currencySymbol + parseFloat(finalAmount).toFixed(2) : null;
+			}
 		},
-		getOldPrice(prices) {
+		getOldPrice(prices, dsc_pen, dsc_usd) {
 			const currencyType = !this.currency ? "soles" : "dolar";
 			const currencySymbol = !this.currency ? "S/ " : "$ ";
 			const currid = currencyType == "soles" ? 1:2;
-			/*const price = prices.find(
-				(price) =>
-					price.currency.currency.toLowerCase() === currencyType.toLowerCase()
-			);*/
+
 			const price = prices[this.currency_id];
+
 			return price.old_amount ? currencySymbol + price.old_amount : null;
+		},
+		calcDiscountReferred(price, dsc_pen, dsc_usd){
+			if(this.currency_id == 0){
+				var newprice = price - dsc_pen;
+			}else{
+				var newprice = price - dsc_usd;
+			}
+			
+			return newprice;
 		},
 		async getConfiguracion() {
 			try {
@@ -439,7 +459,10 @@ export default {
 				const data = await this.$API.plans.list();
 				vm.plans = data.data.data;
 				vm.temp_plans = data.data.data;
-				console.log(vm.plans);
+				let activeplans = vm.plans.filter(pl => pl.active == 1 && pl.status == 1);
+				if(activeplans.length <= 2){
+					vm.centrarPlanes = true;
+				}
 				vm.checkPlan();
 				vm.$store.commit("loader", false);
 			} catch (e) {
@@ -449,6 +472,17 @@ export default {
 		},
 		addToCart(itemv) {
 			var selectedCurrency = this.currency == false ? itemv.prices[0] : itemv.prices[1];
+
+			var amoutItem = Number(selectedCurrency.amount);
+			var ref_dscto = 0;
+
+			if(this.currency == false && this.ref_code != null && this.ref_code != undefined){
+				amoutItem = Number(selectedCurrency.amount - itemv.referred_discount_pen);
+				ref_dscto = itemv.referred_discount_pen;
+			}else if(this.currency == true && this.ref_code != null && this.ref_code != undefined){
+				amoutItem = Number(selectedCurrency.amount - itemv.referred_discount_usd);
+				ref_dscto = itemv.referred_discount_usd;
+			}
 	
 			this.$store.commit("loader", true);
 			localStorage.removeItem("planSeleccionado");
@@ -457,16 +491,18 @@ export default {
 				title: itemv.title,
 				code: itemv.code,
 				image: itemv.base_url + itemv.file_path.path + itemv.file_path.filename,
-				price: Number(selectedCurrency.amount),
+				price: amoutItem,
 				price_promotional: Number(itemv.promotional_cost),
 				quantity: 1,
-				priceCompare: Number(selectedCurrency.amount),
-				priceTotal: Number(selectedCurrency.amount),
+				priceCompare: amoutItem,
+				priceTotal: amoutItem,
 				currency: selectedCurrency.currency_symbol,
 				renovacion: itemv.renovacion_automatica,
 				category_id: itemv.category_id,
 				dias_trial: this.trial_status == true ? itemv.dias_trial : 0,
-				currency_id: selectedCurrency.currency_id
+				currency_id: selectedCurrency.currency_id,
+				ref_code: this.ref_code,
+				ref_discount: ref_dscto
 			};
 			localStorage.planSeleccionado = JSON.stringify(item);
 			this.$store.dispatch("addItem", item);
@@ -511,6 +547,26 @@ export default {
 };
 </script>
 <style scoped>
+@media screen 
+  and (min-device-width: 1200px) 
+  and (max-device-width: 1600px) 
+  and (-webkit-min-device-pixel-ratio: 1) { 
+	.centrarPlanes{
+		margin: 0 16%;
+	}
+}
+
+@media (min-width:1650px) {
+	.centrarPlanes{
+		margin: 0 25%;
+	}
+}
+
+@media (min-width:480px) and (max-device-width: 800px)  { 
+	.centrarPlanes{
+		margin: 0 0%;
+	}
+}
 .toggle-switch {
 	position: relative;
 	width: 80px;

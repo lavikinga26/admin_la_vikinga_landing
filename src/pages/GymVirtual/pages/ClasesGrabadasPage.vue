@@ -122,7 +122,8 @@ export default {
             { label: "Torso", term: "TORSO" },
             { label: "Piernas", term: "PIERNAS" },
             { label: "Taller", term: "TALLER" },
-        ]
+        ],
+        timezone: null
     }),
     mounted() {
         this.auth();
@@ -150,7 +151,7 @@ export default {
                 if (this.user.id_level != null) {
                     this.id_level = this.user.id_level;
                 }
-                
+                this.timezone = this.user.timezone.timezone;
                 this.userPlans = response.data.plans;
                 let fecha_actual = new Date();
                 this.userPlans.map(function (item) {
@@ -210,14 +211,15 @@ export default {
             this.total_paginas = data.data.total_pages;
             this.$store.commit('loader', false);
         },
-        getDateBadge(dateStr, locale, hour) {
+        getDateBadge(dateStr, locale, hour)
+        {
             var date = new Date(dateStr + " " + hour + ":00");
-            let fecha = date.toLocaleDateString(locale, { weekday: 'short', timeZone: 'America/Lima' });
+            let fecha = date.toLocaleDateString(locale, { weekday: 'short', timeZone: this.timezone });
+            //let month = date.toLocaleDateString(locale, { month: 'short', timeZone: 'America/Lima' });
+            let ndia = date.toLocaleDateString(locale, { day: 'numeric', timeZone: this.timezone });
             let dia = fecha.charAt(0).toUpperCase() + fecha.slice(1);
-            let time = date.toLocaleString(locale, { hour: 'numeric', hour12: true });
-            let month = date.toLocaleDateString(locale, { month: 'short', timeZone: 'America/Lima' });
-            let mes = month.charAt(0).toUpperCase() + month.slice(1);
-            return mes + ", "+dia + " " + date.getDate().toString().padStart(2, '0') + " - " + time;
+            let time = date.toLocaleString(locale, { hour: 'numeric', hour12: true, timeZone: this.timezone });
+            return dia + ", "+ ndia + " - "+ time;
         }
     }
 }

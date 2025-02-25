@@ -98,7 +98,6 @@ export default {
                 if (this.user.id_level != null) {
                     this.id_level = this.user.id_level;
                 }
-                this.getDownloads();
                 this.userPlans = response.data.plans;
                 let fecha_actual = new Date();
                 this.userPlans.map(function (item) {
@@ -113,24 +112,6 @@ export default {
                 localStorage.removeItem('token');
                 window.location.replace('/auth/iniciar-sesion');
             }
-        },
-        async getDownloads() {
-            this.$store.commit('loader', true);
-            try {
-                const response = await this.$API.business_partner.getDownloadsGym(this.id_level);
-                this.downloads_list = response.data.data;
-
-                //console.log(this.downloads_list.groupBy('name_category'))
-                this.groupList = this.downloads_list.groupBy('name_category');
-                this.$store.commit('loader', false);
-            } catch (e) {
-                this.$store.commit('loader', false);
-                console.error(e);
-            }
-        },
-        openPlayer(video_link) {
-            this.now_playing = video_link;
-            this.dialogPlayer = true;
         },
         async loadBanner(){
             const response  = await this.$API.gym_banner.list('home');

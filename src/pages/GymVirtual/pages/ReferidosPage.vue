@@ -15,14 +15,13 @@
                 <v-text-field
                   dark
                   v-model="referralLink"
-                  append-outer-icon="mdi-content-copy"
                   color="white"
                   class="input-dark white--text"
                   hide-details="false"
                   outlined>
                 </v-text-field>
-                <v-btn block class="pink darken-1 white--text mt-4" @click="shareLink()">COMPARTIR</v-btn>
-                <p class="mt-3 white--text">Recibe <span class="green--text font-weight-bold">15 días gratis</span> por cada persona que se registre a través de tu link</p>
+                <v-btn block class="pink darken-1 white--text mt-4" @click="shareLink()">COPIAR ENLACE</v-btn>
+                <p class="mt-3 white--text">Recibe <span class="green--text font-weight-bold"> días gratis</span> por cada persona que se registre a través de tu link</p>
               </v-col>
               <v-col cols="3">
                 <v-card class="pa-3 dark-card text-center rounded-xl">
@@ -43,64 +42,56 @@
         </v-col>
       </v-row>
 
-      <h3 class="mt-5 white--text">MIS REFERIDOS</h3>
-      <v-card elevation="0" color="#0A2240" outlined class="pa-5 rounded-xl">
-        <table>
-          <thead>
-            <tr>
-              <th>Fecha</th>
-              <th>Usuario</th>
-              <th>Recompensa del usuario</th>
-              <th>Acción</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(user, index) in referrals" :key="index">
-              <td>19/12/2024</td>
-              <td class="user-info">
-                <img src="https://via.placeholder.com/40" alt="Foto de usuario" />
-                Melissa Zeballos
-              </td>
-              <td class="reward">
-                <i class="fas fa-gift"></i> 15 días gratis
-              </td>
-              <td>
-                <button class="button">Reclamar Recompensa</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </v-card>
+      <v-row class="mt-5">
+        <v-col cols="8">
+          <h3 class="mt-5 white--text">MIS REFERIDOS</h3>
+          <v-card elevation="0" color="#0A2240" outlined class="pa-5 rounded-xl">
+            <table>
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Usuario</th>
+                  <th>Recompensa del usuario</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(user, index) in referrals" :key="index">
+                  <td>19/12/2024</td>
+                  <td class="user-info">
+                    <img src="https://via.placeholder.com/40" alt="Foto de usuario" />
+                    {{ user.referred.name }}
+                  </td>
+                  <td class="reward">
+                    <i class="fas fa-gift"></i> 15 días gratis
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </v-card>
+        </v-col>
 
-      <!-- Sección de Ranking -->
-      <h3 class="mt-5 white--text">RANKING</h3>
-      <v-list class="dark-list">
-        <v-list-item v-for="(user, index) in ranking" :key="index">
-          <v-list-item-avatar>
-            <v-img :src="user.avatar"></v-img>
-          </v-list-item-avatar>
-          <v-list-item-content>
-            <v-list-item-title class="white--text">
-              {{ index + 1 }}. {{ user.name }}
-            </v-list-item-title>
-          </v-list-item-content>
-          <v-list-item-action>
-            <span class="white--text">{{ user.points }} pts.</span>
-          </v-list-item-action>
-        </v-list-item>
-      </v-list>
+        <v-col cols="4">
+          <!-- Sección de Ranking -->
+          <h3 class="mt-5 white--text">RANKING</h3>
+          <v-list class="dark-list">
+            <v-list-item v-for="(user, index) in ranking" :key="index">
+              <v-list-item-avatar>
+                <v-img :src="user.avatar"></v-img>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title class="white--text">
+                  {{ index + 1 }}. {{ user.name }}
+                </v-list-item-title>
+              </v-list-item-content>
+              <v-list-item-action>
+                <span class="white--text">{{ user.points }} pts.</span>
+              </v-list-item-action>
+            </v-list-item>
+          </v-list>
+        </v-col>
+      </v-row>
+      
     </v-card>
-      <!--<div>
-        <h3>Mi Código de Referido</h3>
-        <p v-if="code">Código: {{ code }}</p>
-        <button @click="generateCode">Generar Código</button>
-        <h3>Referidos</h3>
-        <ul>
-          <li v-for="ref in referrals" :key="ref.id">
-            {{ ref.referred.name }} - {{ ref.created_at }} - {{ ref.reward_days }} días
-          </li>
-        </ul>
-      </div>-->
     </v-container>
   </div>
 </template>
@@ -126,6 +117,8 @@ export default {
         { date: '28/09/2024', user: 'Mónica Peña', reward: '15 días gratis' }
       ],
       ranking: [
+        { name: 'Melissa Zeballos', points: '125' },
+        { name: 'Karla Perez', points: '100' },
       ]
     };
   },
@@ -133,7 +126,7 @@ export default {
     async generateCode() {
       const response = await this.$API.referral.getReferralCode();
       this.code = response.data.code;
-      this.referralLink = `${this.referralLink}/referidos-registro/${this.code}`
+      this.referralLink = `${this.referralLink}/referidos-registro?ref=${this.code}`
     },
     async loadReferrals() {
       const response = await this.$API.referral.getReferralDetails();

@@ -85,6 +85,10 @@
                     <v-select :items="levels" v-model="id_level" label="Nivel" item-text="level"
                     placeholder="Seleciona" item-value="id_level" class="mt-8" color="#ffffff" outlined v-on:change="filterByLevel()"></v-select>
                 </v-list-item>
+                <v-list-item  class="formlog formlogsel">
+                    <v-select :items="timezones" v-model="id_timezone" label="Zona Horaria" item-text="name"
+                    placeholder="Seleciona" item-value="id_timezone" class="mt-1" color="#ffffff" outlined v-on:change="changeTimezone()"></v-select>
+                </v-list-item>
                 <v-list-item link to="/cuenta/mi-perfil">
                     <v-list-item-icon>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -106,7 +110,8 @@
         <v-row no-gutters class="hidden-md-and-up">
             <v-col cols="10"><img class="pa-2" style="width: 100px;" src="@/assets/img/logo_vikinga_icon_white.png" alt="Logo" /></v-col>
             <v-col cols="2">
-                <img class="pa-2" style="width: 55px;" src="@/assets/img/menu_alt_white.png" @click.stop="drawer = !drawer" alt="Logo" /></v-col>
+                <img class="pa-2" style="width: 55px;" src="@/assets/img/menu_alt_white.png" @click.stop="drawer = !drawer" alt="Logo" />
+            </v-col>
         </v-row>
         <v-row v-if="id_level == null" class="hidden-md-and-up">
             <v-col cols="12">
@@ -174,12 +179,14 @@ import Loader from "../components/shared/Loader.vue"
             logged_user: null,
             logged_user_token: null,
             levels: [],
+            timezones: [],
             id_level: null,
             base_url: null,
             dialogRating: false,
             rating: 0,
             comentario_rating: "",
-            currentRoute: null
+            currentRoute: null,
+            id_timezone: 0
         }),
         created() {
             this.getLoggedUser();
@@ -194,6 +201,7 @@ import Loader from "../components/shared/Loader.vue"
         mounted() {
             let vm = this;
             vm.loadLevels();
+            vm.loadTimezones();
             vm.getBaseUrl();
         },
         computed: {
@@ -239,8 +247,25 @@ import Loader from "../components/shared/Loader.vue"
                 console.error(e);
             }
         },
+        async loadTimezones() {
+            let vm = this;
+            try {
+                const responsetz = await this.$API.timezones.list();
+                this.timezones = responsetz.data.data;
+            } catch (e) {
+                this.loadingTable = false;
+                console.error(e);
+            }
+        },
         openDialogRating() {
             this.dialogRating = true;
+        },
+        async changeTimezone() {
+            let vm = this;
+            let id_timezone = vm.id_timezone;
+
+            const data = await this.$API.business_partner.updateTimezone(id_timezone);
+            location.reload();
         },
         async filterByLevel() {
             let vm = this;
@@ -283,6 +308,7 @@ import Loader from "../components/shared/Loader.vue"
                 this.business_partner = Object.assign(response.data.data[0]);
 
                 this.id_level = this.business_partner.id_level;
+                this.id_timezone = this.business_partner.id_timezone;
             }
         },
         myProfile() {

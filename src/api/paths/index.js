@@ -80,6 +80,11 @@ export default {
             return callAPI('post', 'api/v1/getLevels', { data: data });
         }
     },
+    timezones:{
+        list(){
+            return callAPI('get', 'api/v1/timezonesList', {});
+        }
+    },
     plans:{
         list(){
             return callAPI('get', 'api/v1/plans/list');

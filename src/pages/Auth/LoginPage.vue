@@ -43,20 +43,30 @@
 						v-model="loginForm.password"
 						@keydown.enter="loginUser"
 					></v-text-field>
-					<div class="text-right mb-4">
+					<div>
 						<a
+							href="/"
+							class="text-left"
+							style="float:left; font-size: 0.8rem; color: #000; font-family:'Poppins-Regular';"
+							><b>Registrarme</b></a
+						>
+
+						<a
+							class="text-right"
 							href="/auth/olvide-contrasena"
-							style="font-size: 0.8rem; color: #000; font-family:'Poppins-Regular';"
+							style="float:right; font-size: 0.8rem; color: #000; font-family:'Poppins-Regular';"
 							><b>¿Olvidaste tu contraseña?</b></a
 						>
+						<br/>
 					</div>
 					<v-btn
-						class="text_btn_white_title"
+						class="text_btn_white_title mt-2"
 						block
 						depressed
 						color="secondary"
 						:disabled="!valid"
 						@click="loginUser"
+						style="margin-top:10px;"
 					>
 						INICIAR SESIÓN
 					</v-btn>

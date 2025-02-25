@@ -18,6 +18,104 @@
                     </div>
                 </v-col>
             </v-row>
+
+            <v-row v-if="banners.length > 0">
+                <v-col cols="12">
+                    <v-carousel
+                        hide-delimiter-background
+                        cycle
+                        :show-arrows="false"
+                        hide-delimiters
+                        height="150px"
+                        class="rounded-xl hidden-md-and-down">
+                        <v-carousel-item
+                            v-for="(item,i) in banners"
+                            :key="i"
+                            :src="base_url + item.file_path.path + item.file_path.filename"
+                            gradient="to right, rgba(231, 0, 76, 0.8), rgba(255, 200, 120, 0.7)"
+                        >
+                            <v-container
+                                fill-height
+                                fluid
+                            >
+                                <v-layout>
+                                    <v-flex xs12>
+                                        <v-row align="center">
+                                            <v-col cols="12" md="10" xl="10" sm="12" xs="12" align="left">
+                                                <h2 v-show="item.title != null && item.title != '' " class="display-2 font-weight-bold mb-4 white--text ml-4" style="font-family: 'MachProCondBold'!important;" id="main-title"> {{ item.title }}</h2>
+                                                <h3 v-show="item.subtitle != null && item.subtitle != '' " class="font-weight-light white--text ml-4" id="main-subtitle">
+                                                {{item.subtitle}}
+                                                </h3>
+                                            </v-col>
+                                            <v-col cols="12" md="2" xl="2" sm="12" xs="12" align="center">
+                                                <v-btn
+                                                    v-show="item.link != null && item.link != '' "
+                                                    rounded
+                                                    outlined
+                                                    large
+                                                    dark
+                                                    link
+                                                    class="mt-5"
+                                                    :href="item.link"
+                                                >
+                                                    Ver más
+                                                </v-btn>
+                                            </v-col>
+                                        </v-row>
+                                    </v-flex>
+                                </v-layout>
+                            </v-container>
+                        </v-carousel-item>
+                    </v-carousel>
+
+
+                    <v-carousel
+                        hide-delimiter-background
+                        cycle
+                        :show-arrows="false"
+                        hide-delimiters
+                        height="190px"
+                        class="rounded-xl hidden-md-and-up">
+                        <v-carousel-item
+                            v-for="(item,i) in banners"
+                            :key="i"
+                            :src="base_url + item.file_path.path + item.file_path.filename"
+                            gradient="to right, rgba(231, 0, 76, 0.8), rgba(255, 200, 120, 0.7)"
+                        >
+                            <v-container
+                                fill-height
+                                fluid
+                            >
+                                <v-layout>
+                                    <v-flex xs12>
+                                        <v-row align="center">
+                                            <v-col cols="12" md="10" xl="10" sm="12" xs="12" align="left">
+                                                <h2 v-show="item.title != null && item.title != '' " class="display-2 font-weight-bold mb-4 white--text ml-2" style="font-family: 'MachProCondBold'!important;" id="main-title"> {{ item.title }}</h2>
+                                                <h3 v-show="item.subtitle != null && item.subtitle != '' " class="font-weight-light white--text ml-2" id="main-subtitle">
+                                                {{item.subtitle}}
+                                                </h3>
+                                            </v-col>
+                                            <v-col cols="12" md="2" xl="2" sm="12" xs="12" align="center">
+                                                <v-btn
+                                                    v-show="item.link != null && item.link != '' "
+                                                    rounded
+                                                    outlined
+                                                    large
+                                                    dark
+                                                    link
+                                                    :href="item.link"
+                                                >
+                                                    Ver más
+                                                </v-btn>
+                                            </v-col>
+                                        </v-row>
+                                    </v-flex>
+                                </v-layout>
+                            </v-container>
+                        </v-carousel-item>
+                    </v-carousel>
+                </v-col>
+            </v-row>
             <v-row>
                 <v-col cols="12" xs="12" sm="12" md="6" lg="6">
                     <h2 class="text_box_title" v-if="clases_vivo.length >0">Próxima Clase</h2>
@@ -499,7 +597,11 @@ export default {
             }
         },
         countDownToTime: null,
-        timerOutput: null
+        timerOutput: null,
+        empty_url: "/images/default-image.png",
+        base_url: "",
+        banners: [],
+        timezone: null
     }),
     mounted() {
         let vm = this;
@@ -510,6 +612,7 @@ export default {
         vm.auth();
         vm.$store.commit('loader', false);
         setInterval(() => { this.startTimer() }, 1000);
+        vm.getSliders();
     },
     computed: {
         columns() {
@@ -555,6 +658,11 @@ export default {
         }
     },
     methods: {
+        async getSliders(){
+            let response = await this.$API.sliders.list();
+            this.banners = response.data.data;
+            this.base_url = this.$baseURL;
+        },
         goplan(){
             window.location.replace('https://desafio.lavikingaoficial.com/?paquete=desafiobronce');
         },
@@ -617,6 +725,8 @@ export default {
                 const response = await this.$API.business_partner.getPartner(this.logged_user.id);
                 this.business_partner = Object.assign(response.data.data[0]);
                 this.id_level = this.business_partner.id_level;
+                this.id_timezone = this.business_partner.id_timezone;
+                this.timezone = this.business_partner.timezone.timezone;
                 this.getActivitiesRecordedFilters();
             }
         },
@@ -700,11 +810,10 @@ export default {
                 if (this.user.id_level != null) {
                     this.id_level = this.user.id_level;
                 }
-                
+                this.timezone = this.user.timezone.timezone;
                 this.userPlans = response.data.plans;
                 let fecha_actual = new Date();
-                console.log("Planes:");
-                console.log(this.userPlans);
+                
                 this.userPlans.map(function (item) {
                     let init_d = new Date(item.init_date);
                     let end_d = new Date(item.expiration_date);
@@ -863,15 +972,19 @@ export default {
         getDateBadge(dateStr, locale, hour)
         {
             var date = new Date(dateStr + " " + hour + ":00");
-            let fecha = date.toLocaleDateString(locale, { weekday: 'short', timeZone: 'America/Lima' });
-            let month = date.toLocaleDateString(locale, { month: 'short', timeZone: 'America/Lima' });
+            let fecha = date.toLocaleDateString(locale, { weekday: 'short', timeZone: this.timezone });
+            //let month = date.toLocaleDateString(locale, { month: 'short', timeZone: 'America/Lima' });
+            let ndia = date.toLocaleDateString(locale, { day: 'numeric', timeZone: this.timezone });
             let dia = fecha.charAt(0).toUpperCase() + fecha.slice(1);
-            let time = date.toLocaleString(locale, { hour: 'numeric', hour12: true });
-            return dia + ", "+ date.getDate().toString().padStart(2, '0') + " - "+ time;
+            let time = date.toLocaleString(locale, { hour: 'numeric', hour12: true, timeZone: this.timezone });
+            return dia + ", "+ ndia + " - "+ time;
         },
         openPlayer(video_link) {
             this.now_playing = video_link;
             this.dialogPlayer = true;
+        },
+        convertTZ(date, tzString) {
+            return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("es-ES", {timeZone: tzString}));   
         }
 
     }

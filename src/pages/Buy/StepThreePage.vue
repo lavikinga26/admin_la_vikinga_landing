@@ -126,9 +126,17 @@
                 <v-row>
                     <v-col cols="8">{{ cart[0] ? cart[0].title : '' }}</v-col>
                     <v-col cols="4"  class="text-right">{{ cart[0].currency }} {{ cart[0] ?
-                        parseFloat(parseFloat(cart[0].price).toFixed(2) + parseFloat(discount).toFixed(2)).toFixed(2) :
+                        parseFloat(
+                            parseFloat(cart[0].price).toFixed(2) + 
+                            parseFloat(discount).toFixed(2) + 
+                            ref_des
+                        ).toFixed(2) :
                         ''
                         }}</v-col>
+                </v-row>
+                <v-row v-if="cart[0].ref_code != null && cart[0].ref_code != undefined">
+                    <v-col cols="8"><b>Descuento Referido</b></v-col>
+                    <v-col cols="4" class="text-right">{{ cart[0].currency }} {{ ref_des }}</v-col>
                 </v-row>
                 <v-row v-if="discount > 0">
                     <v-col cols="8"><b>Descuento</b></v-col>
@@ -138,7 +146,7 @@
                 <hr class="mt-2 mb-2" style="border: 1px dashed #000000;">
                 <v-row>
                     <v-col cols="8"><b>Total a pagar hoy</b></v-col>
-                    <v-col cols="4" class="text-right"><b>{{ cart[0].currency }} {{ parseFloat(total).toFixed(2) }}</b></v-col>
+                    <v-col cols="4" class="text-right"><b>{{ cart[0].currency }} {{ parseFloat(total-discount).toFixed(2) }}</b></v-col>
                 </v-row>
 
                 <v-alert type="info" color="#E7004C" elevation="0" class="mt-5" v-if="is_trial == 1">
@@ -146,7 +154,7 @@
                     el <b>{{ prox_trial_pay }}</b>. Puedes cancelar cuando quieras.
                 </v-alert>
 
-                <v-row class="mt-5">
+                <v-row class="mt-5" v-if="show_coupon_box == true && couponDisabled == false">
                     <v-col cols="8">
                         <label class="text_field_form">Cupón de descuento</label>
                         <v-text-field dense v-model="coupon" class="register_form" outlined type="text"
@@ -235,7 +243,10 @@
                         </v-btn>
                     </v-col>
                     <v-col cols="6">
-                        <v-btn class="text_btn_white_title" block depressed color="secondary" @click="createOrder()">
+                        <v-btn class="text_btn_white_title" block depressed color="secondary" v-if="this.show_transfer==1 && data_config.allow_sale" @click="createOrder()">
+                            SIGUIENTE<v-icon>mdi-chevron-right</v-icon>
+                        </v-btn>
+                        <v-btn class="text_btn_white_title" block depressed color="secondary" v-if="data_config.allow_sale && this.show_transfer==0" @click="showModalConditions()">
                             SIGUIENTE<v-icon>mdi-chevron-right</v-icon>
                         </v-btn>
                     </v-col>
@@ -253,6 +264,22 @@
         <v-snackbar v-model="toast.toast" :timeout="toast.timeout" :color="toast.color" dark>
             {{ toast.message }}
         </v-snackbar>
+        <v-dialog v-model="dialogConfirm" max-width="500px">
+            <v-card>
+            <v-card-title>Confirmar Suscripción</v-card-title>
+            <v-card-text>Al suscribirte a un plan con débito automático, autorizas el cobro del próximo mes en tu tarjeta de manera automática, 2 días antes del vencimiento.<br/>
+            ✅ Recuerda que puedes darte de baja en cualquier momento desde tu cuenta.<br/>
+            ¿Aceptas adherirte al débito automático?</v-card-text>
+            <v-card-actions>
+                <v-btn color="error" text @click="dialogConfirm = false"><v-icon dark small>
+                mdi-close
+                </v-icon> No</v-btn>
+                <v-btn color="success" text @click="createOrder()"><v-icon dark small>
+                mdi-check
+                </v-icon> Si</v-btn>
+            </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-row>
 </template>
 <script>
@@ -305,8 +332,12 @@ export default {
         is_trial: 0,
         prox_trial_pay: null,
         ipData: null,
-      loading: false,
-      error: null,
+        loading: false,
+        error: null,
+        ref_code: null,
+        show_coupon_box: true,
+        ref_des: 0,
+        dialogConfirm: false,
     }),
     computed: {
         subtotal() {
@@ -344,8 +375,17 @@ export default {
         var da_trial = new Date();
         da_trial.setDate(da_trial.getDate() + vm.cart[0].dias_trial);
         vm.prox_trial_pay = vm.formatDate(da_trial);
+        vm.ref_code = localStorage.getItem("ref_code");
+        if(vm.ref_code != null && vm.ref_code != undefined){
+			vm.show_coupon_box = false;
+            vm.ref_des = parseFloat(vm.cart[0].ref_discount).toFixed(2);
+		}
+
     },
     methods: {
+        showModalConditions(){
+            this.dialogConfirm = true;
+        },
         async fetchIpData() {
             this.loading = true;
             this.error = null;
@@ -399,6 +439,8 @@ export default {
                 vm.order.country = datosUser.country;
                 vm.order.total = vm.total;
                 vm.order.subtotal = parseFloat(vm.total / 1.18).toFixed(2);
+                vm.order.ref_code = vm.ref_code;
+                vm.order.ref_discount = parseFloat(vm.cart[0].ref_discount).toFixed(2);
                 vm.order.igv = parseFloat(vm.total - (vm.total / 1.18)).toFixed(2);
                 if (datosUser.bp_id != undefined && datosUser.bp_id != "") {
                     vm.order.bp_id = datosUser.bp_id;
@@ -547,13 +589,22 @@ export default {
                 const response = await this.$API.coupon.validate({ cupon: this.coupon, items: products });
                 let datos = response.data;
                 let flag = 0;
+                var dscamount = 0;
+                if (this.cart[0].currency_id == 1) {
+                    dscamount = datos.discount;
+                }else{
+                    dscamount = datos.discount_usd;
+                }
+
                 if (datos.available) {
                     if (datos.id_plan === null) {
-                        this.discount = (datos.discount_type == 1) ? this.subtotal * (datos.discount / 100) : datos.discount;
-                        for (let index = 0; index < this.cart.length; index++) {
-                            const element = this.cart;
-                            this.cart[index].priceTotal = this.cart[index].price - (this.cart[index].price * (datos.discount / 100))
-                        }
+
+                        this.discount = (datos.discount_type == 1) ? this.subtotal * (dscamount / 100) : dscamount;
+                        const element = this.cart;
+                        this.cart[0].priceTotal = this.cart[0].price - (this.cart[0].price * (dscamount / 100))
+                        flag = 1;
+                        this.couponDisabled = true;
+
                     } else {
                         datos.id_plan = datos.id_plan.map(Number);
                         let index = this.cart.findIndex((element) => {
@@ -562,11 +613,11 @@ export default {
                         })
                         if (index != -1) {
                             if (this.couponDisabled != true) {
-                                this.discount = (datos.discount_type == 1) ? this.cart[index].price * (datos.discount / 100) : datos.discount;
-                                this.cart[index].price = this.cart[index].price - this.discount;
+                                this.discount = (datos.discount_type == 1) ? this.cart[0].price * (dscamount / 100) : dscamount;
+                                this.cart[0].price = this.cart[0].price - this.discount;
                                 this.couponDisabled = true;
                                 flag = 1;
-                                this.total = this.cart[index].price;
+                                this.total = this.cart[0].price;
                                 this.showToast("Cupón valido", "success");
                             }
                         }

@@ -56,9 +56,10 @@ export default [
         ]
     },
     {
-        path: '/referidos-registro/:code',
+        path: '/referidos-registro',
         name: 'apps-referidos-registro',
         component: () => import(/* webpackChunkName: "apps-email-inbox" */ '../pages/Buy/ReferralPage.vue'),
         meta: { requiresAuth: true, template: 'FullTemplate' }
       },
+    
 ]
