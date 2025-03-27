@@ -18,5 +18,15 @@ export default [
         path: '/cuenta/mi-biblioteca',
         component: () => import(/* webpackChunkName: "auth-signup" */ '../pages/User/LibraryPage.vue'),
         meta: { requiresAuth: true }
-    }
+    },
+    {
+        path: '/cuenta/cancelar-membresia',
+        component: () => import(/* webpackChunkName: "apps-email-inbox" */ '../pages/User/CancelMembership.vue'),
+        meta: { requiresAuth: true, template : 'SidebarTemplate' }
+    },
+    {
+        path: '/cuenta/extender-prueba',
+        component: () => import(/* webpackChunkName: "apps-email-inbox" */ '../pages/User/ExtenderTrial.vue'),
+        meta: { requiresAuth: true, template : 'SidebarTemplate' }
+    },
 ]

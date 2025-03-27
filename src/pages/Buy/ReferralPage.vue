@@ -112,7 +112,7 @@
                     alt="Imagen Login"
                     style=""
                   />
-                  <h2 class="tit_h3_team_blue" style="margin-bottom: 10px;" v-if="usuario_logeado == false && usuario_logeado != null">NICOLE TE HA INVITADO A UNIRTE<br/>AL DESAFÍO CON UN DESCUENTO ESPECIAL:</h2>
+                  <h2 class="tit_h3_team_blue" style="margin-bottom: 10px;" v-if="usuario_logeado == false && usuario_logeado != null"> {{referralname.toUpperCase()}} TE HA INVITADO A UNIRTE<br/>AL DESAFÍO CON UN DESCUENTO ESPECIAL:</h2>
                   <h2 class="tit_h3_team_blue" style="margin-bottom: 10px;" v-if="usuario_logeado == true && usuario_logeado != null">{{business_partner.name.toUpperCase()}}, NICOLE TE HA INVITADO A UNIRTE<br/>AL DESAFÍO CON UN DESCUENTO ESPECIAL:</h2>
                   <v-card class="pa-5" elevation="4" width="420" v-if="usuario_logeado == false && usuario_logeado != null">
                     <p>Ingresa tu email y logra el cambio físico que deseas</p>
@@ -149,13 +149,15 @@ export default {
       levels: ['Principiante', 'Intermedio', 'Avanzado'],
       usuario_logeado: null,
       business_partner: [],
-      id_level: null
+      id_level: null,
+      referralname: ""
     };
   },
   mounted() {
 		this.ref_code = this.$route.query.ref;
 		localStorage.ref_code = this.ref_code;
     this.getLoggedUser();
+    this.getReferralName();
 	},
   methods: {
     nextStep() {
@@ -186,6 +188,12 @@ export default {
 			}else{
         this.usuario_logeado = false;
       }
+			this.$store.commit("loader", false);
+		},
+    async getReferralName() {
+			this.$store.commit("loader", true);
+			const response = await this.$API.referidos.getReferral(this.ref_code);
+      this.referralname = response.data.name;
 			this.$store.commit("loader", false);
 		},
   }

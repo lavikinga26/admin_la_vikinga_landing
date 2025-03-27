@@ -108,7 +108,13 @@ export const routes = [{
     path: '/post/:slug',
     name: 'slug',
     component: () => import(/* webpackChunkName: "blank" */ '../pages/Blog/PostPage.vue'),
-}, 
+},
+{
+    path: '/referidos-registro',
+    name: 'apps-referidos-registro',
+    component: () => import(/* webpackChunkName: "apps-email-inbox" */ '../pages/Buy/ReferralPage.vue'),
+    meta: { template: 'FullTemplate' }
+},
 
 ...UserRoutes,
 ...AuthRoutes,

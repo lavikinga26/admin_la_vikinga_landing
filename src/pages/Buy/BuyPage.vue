@@ -129,7 +129,7 @@
 				>
 					Ya te encuentras registrado, ingresa tu contraseña.
 				</v-alert>
-				<v-form ref="loginForm" class="formlogBlue" v-model="valid">
+				<v-form ref="loginForm" class="formlogBlue" v-model="valid" v-on:submit.prevent>
 					<div>Email</div>
 					<v-text-field
 						outlined

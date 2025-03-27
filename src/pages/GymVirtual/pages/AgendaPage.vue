@@ -972,8 +972,15 @@ export default {
         getDateBadge(dateStr, locale, hour)
         {
             var date = new Date(dateStr + " " + hour + ":00");
-            let fecha = date.toLocaleDateString(locale, { weekday: 'short', timeZone: this.timezone });
-            //let month = date.toLocaleDateString(locale, { month: 'short', timeZone: 'America/Lima' });
+            var fecha = null;
+            if(this.timezone != "America/Lima"){
+                fecha = date.toLocaleDateString('en-GB', { timeZone: "America/Lima" });
+                let hora = date.toLocaleTimeString(locale, { timeZone: "America/Lima" });
+                fecha = fecha.split("/");
+                
+                date = new Date(fecha[2]+"-"+fecha[1]+"-"+fecha[0]+" "+hora);
+            }
+            fecha = date.toLocaleDateString(locale, { weekday: 'short', timeZone: this.timezone });
             let ndia = date.toLocaleDateString(locale, { day: 'numeric', timeZone: this.timezone });
             let dia = fecha.charAt(0).toUpperCase() + fecha.slice(1);
             let time = date.toLocaleString(locale, { hour: 'numeric', hour12: true, timeZone: this.timezone });

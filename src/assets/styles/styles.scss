@@ -1011,6 +1011,17 @@ $font-family: "Poppins";
 	text-transform: uppercase !important;
 }
 
+.text_btn_grey_title {
+	color: #A3A3A3;
+	font-feature-settings: "clig" off, "liga" off;
+	font-family: "MachProCondBold";
+	font-size: 1.5em !important;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 20px;
+	text-transform: uppercase !important;
+}
+
 .text_btn_white_border {
 	color: #fff !important;
 	font-feature-settings: "clig" off, "liga" off;

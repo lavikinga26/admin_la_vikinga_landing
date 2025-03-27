@@ -540,13 +540,16 @@ export default {
             try {
                 const response = await this.$API.auth.auth();
                 this.user = response.data;
+                console.log(this.cart[0]);
                 if (this.user.trial_status == 1 && this.cart[0].dias_trial > 0) {
                     this.total = 0;
                     this.is_trial = 1;
                     this.subtotal = 0;
                     this.igv = 0;
+                    console.log("entraaaa");
                 }
             } catch (e) {
+                console.log(e);
                 if (this.cart[0].dias_trial > 0) {
                     this.total = 0;
                     this.is_trial = 1;

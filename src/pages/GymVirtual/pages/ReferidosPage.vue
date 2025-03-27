@@ -2,15 +2,13 @@
   <div>
     <v-container class="mb-5">
       <v-card class="pa-5 dark-bg">
-      <h2 class="white--text">SISTEMA DE REFERIDOS</h2>
+      <h2 class="white--text">REFIERE Y GANA</h2>
 
       <!-- Sección de Referir -->
       <v-row class="mt-5">
         <v-col cols="12">
-          <h3 class="white--text">REFERIR</h3>
-          <v-card dark elevation="0" color="#0A2240" outlined class="pa-5 rounded-xl">
             <v-row class="mt-5">
-              <v-col cols="6">
+              <v-col cols="12" md="6">
                 <h3 class="white--text">Tu link de referencia</h3>
                 <v-text-field
                   dark
@@ -23,14 +21,14 @@
                 <v-btn block class="pink darken-1 white--text mt-4" @click="shareLink()">COPIAR ENLACE</v-btn>
                 <p class="mt-3 white--text">Recibe <span class="green--text font-weight-bold"> días gratis</span> por cada persona que se registre a través de tu link</p>
               </v-col>
-              <v-col cols="3">
+              <v-col cols="12" md="3">
                 <v-card class="pa-3 dark-card text-center rounded-xl">
                   <h3 class="white--text">Total de referidos</h3>
                   <h1 class="white--text">{{totalReferals}}</h1>
                   <p class="white--text">AMIGOS REFERIDOS</p>
                 </v-card>
               </v-col>
-              <v-col cols="3">
+              <v-col cols="12" md="3">
                 <v-card class="pa-3 dark-card text-center rounded-xl">
                   <h3 class="white--text">Total recompensas</h3>
                   <h1 class="white--text">{{totalDays}}</h1>
@@ -38,39 +36,36 @@
                 </v-card>
               </v-col>
             </v-row>
-          </v-card>
         </v-col>
       </v-row>
 
       <v-row class="mt-5">
-        <v-col cols="8">
+        <v-col cols="12" md="8">
           <h3 class="mt-5 white--text">MIS REFERIDOS</h3>
-          <v-card elevation="0" color="#0A2240" outlined class="pa-5 rounded-xl">
-            <table>
+            <v-table>
               <thead>
                 <tr>
-                  <th>Fecha</th>
-                  <th>Usuario</th>
-                  <th>Recompensa del usuario</th>
+                  <th class="text-left d-block d-sm-table-cell">Fecha</th>
+                  <th class="text-left d-block d-sm-table-cell">Usuario</th>
+                  <th class="text-left d-block d-sm-table-cell">Recompensa</th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="(user, index) in referrals" :key="index">
-                  <td>19/12/2024</td>
-                  <td class="user-info">
+                  <td class="d-block d-sm-table-cell">19/12/2024</td>
+                  <td class="user-info d-block d-sm-table-cell">
                     <img src="https://via.placeholder.com/40" alt="Foto de usuario" />
                     {{ user.referred.name }}
                   </td>
-                  <td class="reward">
+                  <td class="reward d-block d-sm-table-cell">
                     <i class="fas fa-gift"></i> 15 días gratis
                   </td>
                 </tr>
               </tbody>
-            </table>
-          </v-card>
+            </v-table>
         </v-col>
 
-        <v-col cols="4">
+        <v-col cols="12" md="4">
           <!-- Sección de Ranking -->
           <h3 class="mt-5 white--text">RANKING</h3>
           <v-list class="dark-list">
@@ -101,7 +96,7 @@ export default {
     return {
       code: '',
       // referrals: [],
-      referralLink: 'https://lavikingaoficial.com',
+      referralLink: 'https://desafio.lavikingaoficial.com',
       headers: [
         { text: 'Fecha', value: 'date' },
         { text: 'Usuario', value: 'user' },

@@ -131,8 +131,141 @@
 					</div>
 				</div>
 			</div>
-			<v-sheet class="mx-auto" elevation="'0'" color="#ffffff" light>
-				<v-slide-group v-model="model" class="pa-0" center-active :class="centrarPlanes == true ? 'centrarPlanes': ''">
+			<v-row class="mx-auto justify-center mb-4" elevation="'0'" color="#ffffff" light v-if="centrarPlanes == true">
+				<template v-for="(item, n) in plans">
+					<v-slide-item
+						v-if="item.allow_sale == 1 && item.status == 1 && item.active == 1"
+						:key="n"
+						v-slot="{ toggle }"
+					>
+						<div :class="
+								item.is_outstanding == 1
+									? 'header_plan_pink'
+									: 'header_plan_blue'
+							"
+								class="ma-4  rounded-lg">
+							<div class="header_plan_title_white pa-2">
+								{{ periods[item.period] }}
+							</div>
+							<v-card
+								:color="item.is_outstanding == 1 ? 'primary' : '#ffffff'"
+								:class="
+									item.is_outstanding == 1
+										? 'card-outter'
+										: 'card-outter white_card_border'
+								"
+								class="rounded-lg d-flex flex-column"
+								height="570"
+								width="270"
+								@click="addToCart(item)"
+								elevation="0"
+							>
+								<v-badge
+									v-if="
+										(item.prices[currency_id].old_amount != '0.00' &&
+										item.prices[currency_id].old_amount != '0' && ref_code==null) || 
+										((item.referred_discount_pen  != '0.00' || item.referred_discount_usd != '0.00') && ref_code!=null)
+									"
+									color="#E7004C"
+									class="badge_pink"
+									:content="`${getDiscount(item.prices, item.referred_discount_pen, item.referred_discount_usd)}`"
+								></v-badge>
+								<v-card-text max-height="300">
+									<div class="item">
+										<div class="blog-entry">
+											<div class="mt-4 mb-4">
+												<p>
+													<span
+														:class="
+															item.is_outstanding == 1
+																? 'text_plan_title_white mb-2'
+																: 'text_plan_title_blue mb-2'
+														"
+														>{{ item.title }}</span
+													>
+												</p>
+												<p>
+													<strike
+														v-if="
+															item.prices[currency_id].old_amount != '0.00' &&
+																item.prices[currency_id].old_amount != '0'
+														"
+														:class="
+															item.is_outstanding == 1
+																? 'price_strike_light mr-3'
+																: 'price_strike_dark mr-3'
+														"
+														>{{ getOldPrice(item.prices, item.referred_discount_pen, item.referred_discount_usd) }}</strike
+													><span
+														:class="
+															item.is_outstanding == 1
+																? 'text_plan_price_pink mb-2'
+																: 'text_plan_price_blue mb-2'
+														"
+														>{{ !currency ? "S/" : "$" }}
+														{{ getPrice(item.prices, item.referred_discount_pen,  item.referred_discount_usd) }}</span
+													>
+												</p>
+												<p
+													style="font-weight: bold; color: #e30e4f"
+													v-if="item.dias_trial > 0 && trial_status == true"
+												>
+													Prueba gratis por {{ item.dias_trial }} días!
+												</p>
+												<p style="font-weight: bold; color: #e30e4f" v-else>
+													&nbsp;
+												</p>
+											</div>
+											<div
+												:class="
+													item.is_outstanding == 1
+														? 'p-2 bd_desc_carousel_white'
+														: 'p-2 bd_desc_carousel_blue'
+												"
+												v-html="item.content"
+											></div>
+										</div>
+									</div>
+								</v-card-text>
+								<v-card-actions class="card-actions mt-auto">
+									<v-row align="center">
+										<v-col cols="12" align="center">
+											<v-btn
+												block
+												:class="
+													item.is_outstanding == 1
+														? 'my-2 rounded-lg fb-btn btn_pink_white'
+														: 'my-2 rounded-lg fb-btn btn_blue_white'
+												"
+												style="padding:0.7em 0px!important;"
+												@click="addToCart(item)"
+												v-if="data_config.allow_sale && item.allow_sale"
+											>
+												ELEGIR PLAN
+											</v-btn>
+											<v-btn
+												block
+												:class="
+													item.is_outstanding == 1
+														? 'my-2 rounded-lg fb-btn btn_pink_white'
+														: 'my-2 rounded-lg fb-btn btn_blue_white'
+												"
+												style="padding:0.7em 0px!important;"
+												@click="addToCart(item)"
+												v-if="!data_config.allow_sale && item.allow_sale"
+											>
+												ELEGIR PLAN
+											</v-btn>
+										</v-col>
+									</v-row>
+								</v-card-actions>
+							</v-card>
+						</div>
+					</v-slide-item>
+				</template>
+			</v-row>
+			<v-sheet class="mx-auto" elevation="'0'" color="#ffffff" light v-if="centrarPlanes == false">
+				<v-slide-group v-model="model" class="pa-0" center-active>
 					<template v-for="(item, n) in plans">
 						<v-slide-item
 							v-if="item.allow_sale == 1 && item.status == 1 && item.active == 1"
@@ -370,7 +503,7 @@ export default {
 				currency: selectedCurrency.currency_symbol,
 				renovacion: itemv.renovacion_automatica,
 				category_id: itemv.category_id,
-				dias_trial: this.trial_status == true ? itemv.dias_trial : 0,
+				dias_trial: itemv.dias_trial,
 				currency_id: selectedCurrency.currency_id
 			};
 			localStorage.planSeleccionado = JSON.stringify(item);
@@ -400,9 +533,9 @@ export default {
 			const finalAmount = price.old_amount - price.amount;
 
 			if(this.ref_code != null && this.ref_code != undefined){
-				let precioCalcDsct = price.old_amount != '0' && price.old_amount != '0.00' ? price.old_amount : price.amount;
+				let precioCalcDsct = price.old_amount != "0" && price.old_amount != "0.00" ? price.old_amount : price.amount;
 				const finalAmount = this.calcDiscountReferred(precioCalcDsct, dsc_pen, dsc_usd);
-				return price ? "Dscto. Referido " + currencySymbol + parseFloat(finalAmount).toFixed(2) : null;
+				return this.currency_id == 0 ? "Dscto. Referido " + currencySymbol + parseFloat(dsc_pen).toFixed(2) : "Dscto. Referido " + currencySymbol + parseFloat(dsc_usd).toFixed(2);
 			}else{
 				return price ? "Ahorra " + currencySymbol + parseFloat(finalAmount).toFixed(2) : null;
 			}

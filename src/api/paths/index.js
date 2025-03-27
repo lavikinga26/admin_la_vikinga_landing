@@ -201,13 +201,17 @@ export default {
         },
         getPostsByCategory(id,page){
             return callAPI('get','api/v1/blog/category/posts?page='+page+'&id='+id);
-            
         },
         searchPosts(page,data){
             return callAPI('get','api/v1/blog/search?page='+page+'&search='+data);
         },
         getBySlug(slug){
             return callAPI('get','api/v1/blog/slug/' + slug);
+        }
+    },
+    referidos:{
+        getReferral(code){
+            return callAPI('get','api/v1/validateCode/' + code);
         }
     },
 }

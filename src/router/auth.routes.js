@@ -54,12 +54,6 @@ export default [
         children: [
         ...GymVirtualRoutes
         ]
-    },
-    {
-        path: '/referidos-registro',
-        name: 'apps-referidos-registro',
-        component: () => import(/* webpackChunkName: "apps-email-inbox" */ '../pages/Buy/ReferralPage.vue'),
-        meta: { requiresAuth: true, template: 'FullTemplate' }
-      },
+    }
     
 ]

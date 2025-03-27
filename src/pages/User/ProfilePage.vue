@@ -4,9 +4,7 @@
             <div class="col-md-12">
                 <p class="text_title_white text_entrena">MI GYM</p>
             </div>
-            <v-alert type="info" color="#E7004C" elevation="0" v-if="user_cards.length === 1">
-                <b>IMPORTANTE:</b> Recuerda que para eliminar la tarjeta de crédito/débito actual, debes añadir una nueva primero.
-            </v-alert>
+            
             <v-tabs v-model="userProfileTabs" :show-arrows="false" color="#E30E4F" background-color="transparent" dark>
                 <v-tab to="#tabs-info-personal">INFORMACIÓN PERSONAL</v-tab>
                 <v-tab to="#tabs-info-membresia">MEMBRESÍA</v-tab>
@@ -21,6 +19,9 @@
                     ></profile-card>
                 </v-tab-item>
                 <v-tab-item value="tabs-info-membresia">
+                    <!---<v-alert type="success" color="#e30e4f" elevation="0">
+                        <b>MEJORA TU PLAN:</b> Puedes mejorar tu plan con una oferta especial desde S/ 125.00.
+                    </v-alert>-->
                     <v-card class="rounded-xl" color="transparent">
                         <v-card-title class="text_title_white text_entrena txt_uppercase mb-6">
                             MIS PLANES
@@ -71,12 +72,11 @@
             
                                         </td>
                                         <td>
-                                        <v-btn @click="showDeleteDialog(item.id_suscripcion, item.id_partner, item.expiration_date)" small class="mx-2" color="error"
-                                            v-if="item.renovacion_automatica == 1">
-                                            <v-icon dark small>
-                                            mdi-cancel
-                                            </v-icon> Cancelar
-                                        </v-btn>
+                                            <v-btn @click="showDeleteDialog(item.id_suscripcion, item.id_partner, item.expiration_date)" small class="mx-2" color="error" v-if="item.renovacion_automatica == 1">
+                                                <v-icon dark small>
+                                                mdi-cancel
+                                                </v-icon> Cancelar
+                                            </v-btn>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -106,6 +106,9 @@
                         </v-dialog>
                 </v-tab-item>
                 <v-tab-item value="tabs-info-metodo">
+                    <v-alert type="info" color="#E7004C" elevation="0" v-if="user_cards.length === 1">
+                        <b>IMPORTANTE:</b> Recuerda que para eliminar la tarjeta de crédito/débito actual, debes añadir una nueva primero.
+                    </v-alert>
                     <v-card class="rounded-xl" color="transparent">
                         <v-card-title class="text_title_white text_entrena txt_uppercase">
                             MEDIOS DE PAGO
@@ -284,6 +287,7 @@ export default {
             this.exp_date_pop = fecha_venc;
             this.del_id_susc = id_suscripcion;
             this.del_id_part = id_partner;
+            //this.$router.push({ path: '/cuenta/cancelar-membresia' });
         },
         async auth() {
             try {
