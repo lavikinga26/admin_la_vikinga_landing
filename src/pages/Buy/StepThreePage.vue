@@ -128,8 +128,7 @@
                     <v-col cols="4"  class="text-right">{{ cart[0].currency }} {{ cart[0] ?
                         parseFloat(
                             parseFloat(cart[0].price).toFixed(2) + 
-                            parseFloat(discount).toFixed(2) + 
-                            ref_des
+                            parseFloat(discount).toFixed(2)
                         ).toFixed(2) :
                         ''
                         }}</v-col>
@@ -349,11 +348,11 @@ export default {
 
             return total
         },
-        total() {
+        /*total() {
             const total = this.subtotal - this.discount
 
             return total < 0 ? 0 : total
-        },
+        },*/
         isLogged() {
             return this.$store.getters.isLoggedIn;
         },
@@ -379,6 +378,8 @@ export default {
         if(vm.ref_code != null && vm.ref_code != undefined){
 			vm.show_coupon_box = false;
             vm.ref_des = parseFloat(vm.cart[0].ref_discount).toFixed(2);
+            let vtot = vm.cart[0].price;
+            vm.cart[0].price = parseFloat(vtot) + parseFloat(vm.ref_des);
 		}
 
     },
@@ -540,17 +541,14 @@ export default {
             try {
                 const response = await this.$API.auth.auth();
                 this.user = response.data;
-                console.log(this.cart[0]);
-                if (this.user.trial_status == 1 && this.cart[0].dias_trial > 0) {
+                if (this.user.trial_status == 1 && this.cart[0].dias_trial > 0 && this.ref_code == null) {
                     this.total = 0;
                     this.is_trial = 1;
                     this.subtotal = 0;
                     this.igv = 0;
-                    console.log("entraaaa");
                 }
             } catch (e) {
-                console.log(e);
-                if (this.cart[0].dias_trial > 0) {
+                if (this.cart[0].dias_trial > 0 && this.ref_code == null) {
                     this.total = 0;
                     this.is_trial = 1;
                     this.subtotal = 0;

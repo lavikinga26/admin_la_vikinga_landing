@@ -241,13 +241,17 @@ export default {
 		valid: false,
 		acepta_tos: false,
 		paquete_seleccionado: null,
-		usuario_registrado: false,
+		usuario_registrado: false
 	}),
 	mounted() {
 		this.paquete_seleccionado = this.$route.query.paquete;
-		console.log("PAQueTEEEE "+this.paquete_seleccionado);
-		localStorage.paquete_seleccionado = this.paquete_seleccionado;
 		
+		localStorage.paquete_seleccionado = this.paquete_seleccionado;
+
+		var currency = this.$route.query.currency;
+		if(currency != null && currency != undefined){
+			localStorage.currency = currency;
+		}
 		this.getLoggedUser();
 		
 		this.loginForm.email = this.$route.query.email;

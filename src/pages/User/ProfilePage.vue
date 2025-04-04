@@ -77,6 +77,12 @@
                                                 mdi-cancel
                                                 </v-icon> Cancelar
                                             </v-btn>
+
+                                            <v-btn @click="showReactivateDialog(item.id_suscripcion, item.id_partner)" small class="mx-2" color="success" v-if="item.status == true && item.renovacion_automatica == 0">
+                                                <v-icon dark small>
+                                                mdi-check
+                                                </v-icon> Activar Renovación
+                                            </v-btn>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -224,6 +230,24 @@
             </v-card-actions>
             </v-card>
         </v-dialog>
+
+        <v-dialog v-model="dialogReactivate" max-width="500px">
+            <v-card>
+            <v-card-title>Reactivar suscripción Suscripción</v-card-title>
+            <v-card-text>
+                Estas a punto de reactivar la renovación automatica de tu plan.<br/><br/>
+                ¿Estás seguro?
+            </v-card-text>
+            <v-card-actions>
+                <v-btn color="error" text @click="dialogReactivate = false"><v-icon dark small>
+                mdi-close
+                </v-icon> No</v-btn>
+                <v-btn color="success" text @click="reactivateSuscripcion()"><v-icon dark small>
+                mdi-check
+                </v-icon> Si</v-btn>
+            </v-card-actions>
+            </v-card>
+        </v-dialog>
         <v-snackbar v-model="toast.toast" :timeout="toast.timeout" :color="toast.color" dark>
                 {{ toast.message }}
               </v-snackbar>
@@ -252,6 +276,7 @@ export default {
         user_cards: [],
         show_btn_add: true,
         dialogDelete: false,
+        dialogReactivate: false,
         toast: {
             toast: false,
             message: '',
@@ -260,6 +285,8 @@ export default {
         },
         del_id_susc: null,
         del_id_part: null,
+        react_id_susc: null,
+        react_id_part: null,
         cancel_suscrip: ""
     }),
     created() {
@@ -287,6 +314,12 @@ export default {
             this.exp_date_pop = fecha_venc;
             this.del_id_susc = id_suscripcion;
             this.del_id_part = id_partner;
+            //this.$router.push({ path: '/cuenta/cancelar-membresia' });
+        },
+        showReactivateDialog(id_suscripcion, id_partner) {
+            this.dialogReactivate = true;
+            this.react_id_susc = id_suscripcion;
+            this.react_id_part = id_partner;
             //this.$router.push({ path: '/cuenta/cancelar-membresia' });
         },
         async auth() {
@@ -350,6 +383,19 @@ export default {
                 const response = await this.$API.business_partner.cancelSuscription(this.del_id_susc, this.cancel_suscrip);
                 this.$store.commit('loader', false);
                 this.showToast('Suscripción cancelada correctamente!', "success");
+
+                this.getPartnerData(this.business_partner.id);
+            } catch (e) {
+                console.error(e);
+            }
+        },
+        async reactivateSuscripcion() {
+            try {
+                this.$store.commit('loader', true);
+                this.dialogReactivate = false;
+                const response = await this.$API.business_partner.reactivateSuscription(this.react_id_susc);
+                this.$store.commit('loader', false);
+                this.showToast('Suscripción reactivada correctamente!', "success");
 
                 this.getPartnerData(this.business_partner.id);
             } catch (e) {

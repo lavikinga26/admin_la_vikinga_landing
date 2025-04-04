@@ -188,7 +188,7 @@
 													<strike
 														v-if="
 															item.prices[currency_id].old_amount != '0.00' &&
-																item.prices[currency_id].old_amount != '0'
+																item.prices[currency_id].old_amount != '0' || (ref_code != null && ref_code != undefined)
 														"
 														:class="
 															item.is_outstanding == 1
@@ -208,7 +208,7 @@
 												</p>
 												<p
 													style="font-weight: bold; color: #e30e4f"
-													v-if="item.dias_trial > 0 && trial_status == true"
+													v-if="item.dias_trial > 0 && trial_status == true && ref_code == null"
 												>
 													Prueba gratis por {{ item.dias_trial }} días!
 												</p>
@@ -322,7 +322,7 @@
 														<strike
 															v-if="
 																item.prices[currency_id].old_amount != '0.00' &&
-																	item.prices[currency_id].old_amount != '0'
+																	item.prices[currency_id].old_amount != '0' || (ref_code != null && ref_code != undefined)
 															"
 															:class="
 																item.is_outstanding == 1
@@ -342,7 +342,7 @@
 													</p>
 													<p
 														style="font-weight: bold; color: #e30e4f"
-														v-if="item.dias_trial > 0 && trial_status == true"
+														v-if="item.dias_trial > 0 && trial_status == true && ref_code == null"
 													>
 														Prueba gratis por {{ item.dias_trial }} días!
 													</p>
@@ -436,16 +436,20 @@ export default {
 		},
 		ref_code: null,
 		dataIP: null,
-		centrarPlanes: false
+		centrarPlanes: false,
+		def_currency: null,
+		currency_url: null
 	}),
 	async mounted() {
 		let vm = this;
 		vm.pq = localStorage.getItem("paquete_seleccionado");
 		vm.ref_code = localStorage.getItem("ref_code");
 		vm.slug = this.$route.params.slug;
+		vm.currency_url = localStorage.getItem("currency");
 
 		await vm.getIpData();
 		vm.fetchIpData();
+		
 		await vm.getConfiguracion();
 		await vm.list();
 		vm.getLoggedUser();
@@ -474,7 +478,7 @@ export default {
 					this.business_partner = Object.assign(response.data.data[0]);
 					this.show_gym = true;
 
-					if (this.business_partner.trial_status == 1) {
+					if (this.business_partner.trial_status == 1 && this.ref_code == null) {
 						this.trial_status = true;
 					}
 				} else {
@@ -546,8 +550,11 @@ export default {
 			const currid = currencyType == "soles" ? 1:2;
 
 			const price = prices[this.currency_id];
-
-			return price.old_amount ? currencySymbol + price.old_amount : null;
+			if(this.ref_code != null && this.ref_code != undefined){
+				return price.amount;
+			}else{
+				return price.old_amount ? currencySymbol + price.old_amount : null;
+			}
 		},
 		calcDiscountReferred(price, dsc_pen, dsc_usd){
 			if(this.currency_id == 0){
@@ -563,13 +570,24 @@ export default {
 				const data = await this.$API.configuration.configuration(this.dataIP);
 				this.data_config = data.data.data;
 
-				if (this.data_config.countryCode === 'PE') {
-                    this.currency = false;
-					this.currency_id = 0;
-                } else {
-                    this.currency = true;
-					this.currency_id = 1;
-                }
+				if (this.currency_url == null) {
+					if (this.data_config.countryCode === 'PE') {
+						this.currency = false;
+						this.currency_id = 0;
+					} else {
+						this.currency = true;
+						this.currency_id = 1;
+					}
+				}else {
+					if (this.currency_url == "PEN") {
+						this.currency = false;
+						this.currency_id = 0;
+					} else {
+						this.currency = true;
+						this.currency_id = 1;
+						console.log(this.currency_id);
+					}
+				}
 			} catch (e) {
 				console.error(e);
 			} finally {
@@ -664,12 +682,13 @@ export default {
             try {
                 this.ipData = this.data_config;
 				if (this.ipData?.countryCode === 'PE') {
-                    this.currency = false;
+					this.currency = false;
 					this.currency_id = 0;
-                } else {
-                    this.currency = true;
+				} else {
+					this.currency = true;
 					this.currency_id = 1;
-                }
+				}
+				
             } catch (error) {
                 this.error = error.message;
             } finally {

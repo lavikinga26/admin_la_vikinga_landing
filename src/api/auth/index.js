@@ -96,6 +96,9 @@ export default {
         cancelSuscription(id, motivo){
             return callAuthAPI('get', 'api/v1/business-partner/cancelSuscription/'+id+'/'+motivo);
         },
+        reactivateSuscription(id){
+            return callAuthAPI('get', 'api/v1/business-partner/reactivateSuscription/'+id);
+        },
         updateLevel(level){
             return callAuthAPI('get', 'api/v1/business-partner/updateLevel/'+level);
         },

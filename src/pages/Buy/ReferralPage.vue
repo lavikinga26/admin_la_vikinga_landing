@@ -113,7 +113,7 @@
                     style=""
                   />
                   <h2 class="tit_h3_team_blue" style="margin-bottom: 10px;" v-if="usuario_logeado == false && usuario_logeado != null"> {{referralname.toUpperCase()}} TE HA INVITADO A UNIRTE<br/>AL DESAFÍO CON UN DESCUENTO ESPECIAL:</h2>
-                  <h2 class="tit_h3_team_blue" style="margin-bottom: 10px;" v-if="usuario_logeado == true && usuario_logeado != null">{{business_partner.name.toUpperCase()}}, NICOLE TE HA INVITADO A UNIRTE<br/>AL DESAFÍO CON UN DESCUENTO ESPECIAL:</h2>
+                  <h2 class="tit_h3_team_blue" style="margin-bottom: 10px;" v-if="usuario_logeado == true && usuario_logeado != null">{{business_partner.name.toUpperCase()}}, {{referralname.toUpperCase()}} TE HA INVITADO A UNIRTE<br/>AL DESAFÍO CON UN DESCUENTO ESPECIAL:</h2>
                   <v-card class="pa-5" elevation="4" width="420" v-if="usuario_logeado == false && usuario_logeado != null">
                     <p>Ingresa tu email y logra el cambio físico que deseas</p>
                     <v-text-field label="Email" v-model="email" outlined></v-text-field>

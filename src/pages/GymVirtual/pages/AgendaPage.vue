@@ -122,7 +122,7 @@
                     <v-card :img="base_url + clases_vivo[0].path+ clases_vivo[0].filename" height="350" class="box_gym_virtual" :href="clases_vivo[0].link_class" target="_blank" v-if="clases_vivo.length > 0">
                         <v-badge
                         color="#E7004C"
-                        :content="getDateBadge(clases_vivo[0]._date, 'es-ES', clases_vivo[0].hour_class)"
+                        :content="getDateBadge(clases_vivo[0].horarios, 'es-ES', clases_vivo[0].hour_class)"
                         inline
                         class="badge_pink_class"
                         ></v-badge>
@@ -169,7 +169,7 @@
                                     <v-card height="320" class="box_gym_virtual" :img="base_url + item.path + item.filename" color="#0A2240" :href="item.link_class">
                                         <v-badge
                                         color="#E7004C"
-                                        :content="getDateBadge(item._date, 'es-ES', item.hour_class)"
+                                        :content="getDateBadge(item.horarios, 'es-ES', item.hour_class)"
                                         inline
                                         class="badge_pink_class"
                                         ></v-badge>
@@ -203,7 +203,7 @@
                                 <v-card :img="base_url + clases_grabadas[0].path + clases_grabadas[0].filename" height="300" class="box_gym_virtual" @click="openPlayer(clases_grabadas[0].link_video)">
                                     <v-badge
                                         color="#E7004C"
-                                        :content="getDateBadge(clases_grabadas[0]._date, 'es-ES', clases_grabadas[0].hour_class)"
+                                        :content="getDateBadge(clases_grabadas[0].horarios, 'es-ES', clases_grabadas[0].hour_class)"
                                         inline
                                         class="badge_pink_class"
                                     ></v-badge>
@@ -217,7 +217,7 @@
                                 <v-card min-height="200" class="box_rutina" color="#E7004C" :img="base_url + clases_grabadas[1].path + clases_grabadas[1].filename" @click="openPlayer(clases_grabadas[1].link_video)">
                                     <v-badge
                                         color="#E7004C"
-                                        :content="getDateBadge(clases_grabadas[1]._date, 'es-ES', clases_grabadas[1].hour_class)"
+                                        :content="getDateBadge(clases_grabadas[1].horarios, 'es-ES', clases_grabadas[1].hour_class)"
                                         inline
                                         class="badge_pink_class"
                                     ></v-badge>
@@ -229,7 +229,7 @@
                                 <v-card min-height="200" class="box_rutina" color="#E7004C" :img="base_url + clases_grabadas[2].path + clases_grabadas[2].filename" @click="openPlayer(clases_grabadas[2].link_video)">
                                     <v-badge
                                         color="#E7004C"
-                                        :content="getDateBadge(clases_grabadas[2]._date, 'es-ES', clases_grabadas[2].hour_class)"
+                                        :content="getDateBadge(clases_grabadas[2].horarios, 'es-ES', clases_grabadas[2].hour_class)"
                                         inline
                                         class="badge_pink_class"
                                     ></v-badge>
@@ -241,7 +241,7 @@
                                 <v-card min-height="200" class="box_rutina" color="#E7004C" :img="base_url + clases_grabadas[3].path + clases_grabadas[3].filename" @click="openPlayer(clases_grabadas[3].link_video)">
                                     <v-badge
                                         color="#E7004C"
-                                        :content="getDateBadge(clases_grabadas[3]._date, 'es-ES', clases_grabadas[3].hour_class)"
+                                        :content="getDateBadge(clases_grabadas[3].horarios, 'es-ES', clases_grabadas[3].hour_class)"
                                         inline
                                         class="badge_pink_class"
                                     ></v-badge>
@@ -256,7 +256,7 @@
                                 <v-card min-height="200" class="box_rutina" color="#E7004C" :img="base_url + clases_grabadas[1].path + clases_grabadas[1].filename" @click="openPlayer(clases_grabadas[1].link_video)">
                                     <v-badge
                                             color="#E7004C"
-                                            :content="getDateBadge(clases_grabadas[1]._date, 'es-ES', clases_grabadas[1].hour_class)"
+                                            :content="getDateBadge(clases_grabadas[1].horarios, 'es-ES', clases_grabadas[1].hour_class)"
                                             inline
                                             class="badge_pink_class"
                                         ></v-badge>
@@ -268,7 +268,7 @@
                                 <v-card min-height="200" class="box_rutina" color="#E7004C" :img="base_url + clases_grabadas[2].path + clases_grabadas[2].filename" @click="openPlayer(clases_grabadas[2].link_video)">
                                     <v-badge
                                             color="#E7004C"
-                                            :content="getDateBadge(clases_grabadas[2]._date, 'es-ES', clases_grabadas[2].hour_class)"
+                                            :content="getDateBadge(clases_grabadas[2].horarios, 'es-ES', clases_grabadas[2].hour_class)"
                                             inline
                                             class="badge_pink_class"
                                         ></v-badge>
@@ -601,7 +601,8 @@ export default {
         empty_url: "/images/default-image.png",
         base_url: "",
         banners: [],
-        timezone: null
+        timezone: null,
+        id_timezone: 0
     }),
     mounted() {
         let vm = this;
@@ -727,6 +728,7 @@ export default {
                 this.id_level = this.business_partner.id_level;
                 this.id_timezone = this.business_partner.id_timezone;
                 this.timezone = this.business_partner.timezone.timezone;
+                this.id_timezone = this.business_partner.timezone.id_timezone;
                 this.getActivitiesRecordedFilters();
             }
         },
@@ -811,6 +813,7 @@ export default {
                     this.id_level = this.user.id_level;
                 }
                 this.timezone = this.user.timezone.timezone;
+                this.id_timezone = this.user.timezone.id_timezone;
                 this.userPlans = response.data.plans;
                 let fecha_actual = new Date();
                 
@@ -971,7 +974,7 @@ export default {
 
         getDateBadge(dateStr, locale, hour)
         {
-            var date = new Date(dateStr + " " + hour + ":00");
+            /*var date = new Date(dateStr + " " + hour + ":00");
             var fecha = null;
             if(this.timezone != "America/Lima"){
                 fecha = date.toLocaleDateString('en-GB', { timeZone: "America/Lima" });
@@ -984,7 +987,16 @@ export default {
             let ndia = date.toLocaleDateString(locale, { day: 'numeric', timeZone: this.timezone });
             let dia = fecha.charAt(0).toUpperCase() + fecha.slice(1);
             let time = date.toLocaleString(locale, { hour: 'numeric', hour12: true, timeZone: this.timezone });
-            return dia + ", "+ ndia + " - "+ time;
+            return dia + ", "+ ndia + " - "+ time;*/
+            Object.filter = (obj, predicate) => 
+                Object.keys(obj)
+                    .filter( key => predicate(obj[key]) )
+                    .reduce( (res, key) => (res[key] = obj[key], res), {} );
+
+            var filtered = Object.filter(dateStr, val => val.timezone == this.timezone);
+            let fechaclase = Object.values(filtered)[0];
+            console.log(fechaclase.fecha);
+            return fechaclase.fecha;
         },
         openPlayer(video_link) {
             this.now_playing = video_link;
