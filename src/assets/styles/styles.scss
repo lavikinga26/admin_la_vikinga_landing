@@ -553,7 +553,7 @@ $font-family: "Poppins";
 	text-transform: uppercase !important;
 }
 .title_blue {
-	color: #0A2240;
+	color: #0a2240;
 	text-align: center;
 	font-feature-settings: "clig" off, "liga" off;
 	/* H1 */
@@ -566,8 +566,8 @@ $font-family: "Poppins";
 	text-transform: uppercase !important;
 }
 
-.subtitle-white{
-	color: #FFFFFF;
+.subtitle-white {
+	color: #ffffff;
 	font-family: "Poppins";
 	font-size: 13px;
 }
@@ -621,6 +621,23 @@ $font-family: "Poppins";
 	color: #fff !important;
 }
 
+.btn_white_outlined {
+	background: transparent !important;
+	border: 1.5px solid var(--White, #fff);
+	font-feature-settings: "clig" off, "liga" off;
+	font-family: "MachProCondBold";
+	font-size: 20px !important;
+	font-style: normal;
+	font-weight: 500;
+	line-height: 60px !important;
+	/* 88.889% */
+	text-transform: uppercase !important;
+	color: #fff !important;
+	border-radius: 12px !important;
+	min-width: 170px !important;
+	height: 50px !important;
+}
+
 .btn_pink_white_submit {
 	background: var(--1925-C, #e7004c) !important;
 	font-feature-settings: "clig" off, "liga" off;
@@ -633,7 +650,7 @@ $font-family: "Poppins";
 	text-transform: uppercase !important;
 	color: #fff !important;
 	border-radius: 12px !important;
-	width: 170px !important;
+	min-width: 170px !important;
 	height: 50px !important;
 }
 
@@ -1012,7 +1029,7 @@ $font-family: "Poppins";
 }
 
 .text_btn_grey_title {
-	color: #A3A3A3;
+	color: #a3a3a3;
 	font-feature-settings: "clig" off, "liga" off;
 	font-family: "MachProCondBold";
 	font-size: 1.5em !important;
@@ -1160,18 +1177,18 @@ $font-family: "Poppins";
 	font-size: 0.8rem !important;
 }
 
-.header_plan_pink{
+.header_plan_pink {
 	background-color: #e7004c;
 	border: 3px solid #e7004c;
 }
-.header_plan_blue{
+.header_plan_blue {
 	background-color: #0a2240;
 	border: 1px solid #0a2240;
 }
-.header_plan_title_white{
-	font-family: 'Poppins', sans-serif  !important;
+.header_plan_title_white {
+	font-family: "Poppins", sans-serif !important;
 	font-weight: 700;
-	color: #FFFFFF;
+	color: #ffffff;
 	text-align: center;
 }
 
