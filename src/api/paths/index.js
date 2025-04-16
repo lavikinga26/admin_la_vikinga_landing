@@ -97,7 +97,10 @@ export default {
         },
         category(id){
             return callAPI('get', 'api/v1/plans/category/'+id);
-        }
+        },
+        listAll(){
+            return callAPI('get', 'api/v1/plans/listAll');
+        },
     },
     workouts:{
         list(){
@@ -212,6 +215,9 @@ export default {
     referidos:{
         getReferral(code){
             return callAPI('get','api/v1/validateCode/' + code);
+        },
+        getRanking(){
+            return callAPI('get','api/v1/getRanking');
         }
     },
 }

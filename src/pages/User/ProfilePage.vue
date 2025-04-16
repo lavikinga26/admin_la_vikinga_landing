@@ -78,7 +78,7 @@
                                                 </v-icon> Cancelar
                                             </v-btn>
 
-                                            <v-btn @click="showReactivateDialog(item.id_suscripcion, item.id_partner)" small class="mx-2" color="success" v-if="item.status == true && item.renovacion_automatica == 0">
+                                            <v-btn @click="showReactivateDialog(item.id_suscripcion, item.id_partner)" small class="mx-2" color="success" v-if="item.status == true && item.renovacion_automatica == 0 && checkPlanRenew(item.id_plan) == true">
                                                 <v-icon dark small>
                                                 mdi-check
                                                 </v-icon> Activar Renovación
@@ -287,23 +287,52 @@ export default {
         del_id_part: null,
         react_id_susc: null,
         react_id_part: null,
-        cancel_suscrip: ""
+        cancel_suscrip: "",
+        plansList: []
     }),
     created() {
         this.getBaseUrl();
         this.getLoggedUser();
         this.auth();
+        
     },
     mounted() {
         moment.locale('es');
         this.auth();
         this.getCards();
+        this.getPlans();
         /** Importamos Pay-me */
         let paymeScript = document.createElement('script');
         paymeScript.setAttribute('src', 'https://d23b52o2im4p82.cloudfront.net/flex-capture.min.js');
         document.head.appendChild(paymeScript);
     },
     methods: {
+        async getPlans() {
+            this.$store.commit('loader', true);
+            try {
+                const response = await this.$API.plans.listAll();
+                this.plansList = response.data.data;
+            } catch (e) {
+                console.error(e);
+
+            } finally {
+                this.$store.commit('loader', false);
+            }
+        },
+        checkPlanRenew(id_plan){
+            Object.filter = (obj, predicate) => 
+                Object.keys(obj)
+                    .filter( key => predicate(obj[key]) )
+                    .reduce( (res, key) => (res[key] = obj[key], res), {} );
+
+            var filtered = Object.filter(this.plansList, plan => plan.id == id_plan);
+            let datos = Object.values(filtered)[0];
+            if(datos==1){
+                return true;
+            }else{
+                return false;
+            }
+        },
         showToast(msg, color) {
             this.toast.color = color;
             this.toast.message = msg;

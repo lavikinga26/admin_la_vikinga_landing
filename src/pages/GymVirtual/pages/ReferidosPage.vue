@@ -71,15 +71,14 @@
           <v-list class="dark-list">
             <v-list-item v-for="(user, index) in ranking" :key="index">
               <v-list-item-avatar>
-                <v-img :src="user.avatar"></v-img>
               </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title class="white--text">
-                  {{ index + 1 }}. {{ user.name }}
+                  {{ index + 1 }}. {{ user.nombre }}
                 </v-list-item-title>
               </v-list-item-content>
               <v-list-item-action>
-                <span class="white--text">{{ user.points }} pts.</span>
+                <span class="white--text">{{ user.points }} días</span>
               </v-list-item-action>
             </v-list-item>
           </v-list>
@@ -129,6 +128,11 @@ export default {
       this.totalDays = response.data.total_rewards;
       this.totalReferals = response.data.total_referrals;
     },
+    async loadRanking() {
+      const response = await this.$API.referral.getRanking();
+      this.ranking = response.data.ranking;
+      console.log(this.ranking);
+    },
     shareLink() {
       navigator.clipboard.writeText(this.referralLink);
       alert('Link copiado al portapapeles');
@@ -137,6 +141,7 @@ export default {
   mounted() {
     this.generateCode()
     this.loadReferrals();
+    this.loadRanking();
   },
 }
 </script>

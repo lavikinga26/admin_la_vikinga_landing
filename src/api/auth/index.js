@@ -123,6 +123,9 @@ export default {
         },
         getReferralDetails(){
             return callAuthAPI('get','api/v1/referral-details');
+        },
+        getRanking(){
+            return callAuthAPI('get','api/v1/getRanking');
         }
     }
 }

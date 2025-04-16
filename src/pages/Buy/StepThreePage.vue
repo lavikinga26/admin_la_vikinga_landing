@@ -129,17 +129,17 @@
                         parseFloat(
                             parseFloat(cart[0].price).toFixed(2) + 
                             parseFloat(discount).toFixed(2)
-                        ).toFixed(2) :
+                        ).toFixed(0) :
                         ''
                         }}</v-col>
                 </v-row>
                 <v-row v-if="cart[0].ref_code != null && cart[0].ref_code != undefined">
                     <v-col cols="8"><b>Descuento Referido</b></v-col>
-                    <v-col cols="4" class="text-right">{{ cart[0].currency }} {{ ref_des }}</v-col>
+                    <v-col cols="4" class="text-right">{{ cart[0].currency }} {{ parseFloat(ref_des).toFixed(0) }}</v-col>
                 </v-row>
                 <v-row v-if="discount > 0">
                     <v-col cols="8"><b>Descuento</b></v-col>
-                    <v-col cols="4" class="text-right">{{ cart[0].currency }} {{ parseFloat(discount).toFixed(2) }}</v-col>
+                    <v-col cols="4" class="text-right">{{ cart[0].currency }} {{ parseFloat(discount).toFixed(0) }}</v-col>
                 </v-row>
 
                 <hr class="mt-2 mb-2" style="border: 1px dashed #000000;">
