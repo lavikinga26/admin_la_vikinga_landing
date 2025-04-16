@@ -14,6 +14,7 @@
                 <v-tab-item value="tabs-info-personal">
                     <profile-card
                         v-if="base_url && business_partner"
+                        :user.sync="user"
                         :base_url.sync="base_url"
                         :business_partner.sync="business_partner"
                     ></profile-card>
