@@ -119,7 +119,7 @@ hr {
 	background: #ffffff;
 	border-radius: 20px;
 	padding: 24px;
-	max-width: 700px;
+	max-width: 800px;
 	margin: auto;
 	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
 	font-family: "MachProCondBold", sans-serif;

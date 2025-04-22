@@ -165,7 +165,7 @@
 				</v-card>
 			</v-col>
 			<v-col cols="12" md="6" sm="6">
-				<div class="text_title_white">MEMBRESÍA</div>
+				<!--<div class="text_title_white">MEMBRESÍA</div>
 				<v-card
 					class="my-5 pa-10"
 					dark
@@ -183,7 +183,7 @@
 							</v-btn>
 						</v-row>
 					</v-form>
-				</v-card>
+				</v-card>-->
 				<div class="text_title_white">CAMBIAR MI CONTRASEÑA</div>
 				<v-card
 					class="my-5 pa-10"

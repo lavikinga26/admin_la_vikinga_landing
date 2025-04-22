@@ -112,8 +112,8 @@
                     alt="Imagen Login"
                     style=""
                   />
-                  <h2 class="tit_h3_team_blue" style="margin-bottom: 10px;" v-if="usuario_logeado == false && usuario_logeado != null"> {{referralname.toUpperCase()}} TE HA INVITADO A UNIRTE<br/>AL DESAFÍO CON UN DESCUENTO ESPECIAL:</h2>
-                  <h2 class="tit_h3_team_blue" style="margin-bottom: 10px;" v-if="usuario_logeado == true && usuario_logeado != null">{{business_partner.name.toUpperCase()}}, {{referralname.toUpperCase()}} TE HA INVITADO A UNIRTE<br/>AL DESAFÍO CON UN DESCUENTO ESPECIAL:</h2>
+                  <h2 class="tit_h3_team_blue" style="margin-bottom: 10px;" v-if="usuario_logeado == false && usuario_logeado != null"> {{referralname.toUpperCase()}} TE HA INVITADO A UNIRTE<br/>AL DESAFÍO CON UN DESCUENTO DE HASTA S/ {{parseFloat(max_discount)}}:</h2>
+                  <h2 class="tit_h3_team_blue" style="margin-bottom: 10px;" v-if="usuario_logeado == true && usuario_logeado != null">{{business_partner.name.toUpperCase()}}, {{referralname.toUpperCase()}} TE HA INVITADO A UNIRTE<br/>AL DESAFÍO CON UN DESCUENTO DE HASTA S/ {{parseFloat(max_discount)}}:</h2>
                   <v-card class="pa-5" elevation="4" width="420" v-if="usuario_logeado == false && usuario_logeado != null">
                     <p>Ingresa tu email y logra el cambio físico que deseas</p>
                     <v-text-field label="Email" v-model="email" outlined></v-text-field>
@@ -150,14 +150,26 @@ export default {
       usuario_logeado: null,
       business_partner: [],
       id_level: null,
-      referralname: ""
+      referralname: "",
+      currency: false,
+      currency_id: 0,
+      dataIP: null,
+      plans: [],
+      temp_plans: [],
+      max_discount: 0
     };
   },
-  mounted() {
+  async mounted() {
+    let vm = this;
 		this.ref_code = this.$route.query.ref;
 		localStorage.ref_code = this.ref_code;
     this.getLoggedUser();
     this.getReferralName();
+
+    await vm.getIpData();
+		vm.fetchIpData();
+
+    await vm.list();
 	},
   methods: {
     nextStep() {
@@ -195,6 +207,66 @@ export default {
 			const response = await this.$API.referidos.getReferral(this.ref_code);
       this.referralname = response.data.name;
 			this.$store.commit("loader", false);
+		},
+    async getIpData(){
+			await fetch('https://api.ipify.org?format=json')
+			.then(response => {
+				if (!response.ok) {
+					throw new Error('Error al obtener la IP');
+				}
+				return response.json();
+			})
+			.then(data => {
+				this.dataIP = data.ip;
+			})
+			.catch(error => {
+				console.error('Error:', error);
+			});
+		},
+		async fetchIpData() {
+      this.loading = true;
+      this.error = null;
+      try {
+        this.ipData = this.data_config;
+        if (this.ipData?.countryCode === 'PE') {
+          this.currency = false;
+          this.currency_id = 0;
+        } else {
+          this.currency = true;
+          this.currency_id = 1;
+        }
+      
+      } catch (error) {
+          this.error = error.message;
+      } finally {
+          this.loading = false;
+      }
+    },
+    async list() {
+			let vm = this;
+			vm.$store.commit("loader", true);
+
+			try {
+				const data = await this.$API.plans.list();
+				vm.plans = data.data.data;
+				vm.temp_plans = data.data.data;
+				let activeplans = vm.plans.filter(pl => pl.active == 1 && pl.status == 1);
+        var dscto = parseFloat(0);
+
+        activeplans.forEach((item) => {
+          console.log(item);
+          if(parseFloat(item.referred_discount_pen) > dscto){
+            dscto = parseFloat(item.referred_discount_pen);
+          }
+        });
+
+        vm.max_discount = dscto;
+			
+				vm.$store.commit("loader", false);
+			} catch (e) {
+				console.error(e);
+				vm.$store.commit("loader", false);
+			}
 		},
   }
 };
