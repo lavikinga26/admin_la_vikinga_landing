@@ -58,7 +58,7 @@
 					<h2 class="congrats">¡FELICIDADES!</h2>
 					<p class="message">
 						Tu plan ha sido actualizado con éxito, el próximo cobro se realizará
-						el día <strong>10/12/2024</strong> por un monto de
+						el día <strong>25/05/2025</strong> por un monto de
 						<strong>S/75</strong> correspondiente al plan anual.
 					</p>
 					<button class="button dark">FINALIZAR</button>

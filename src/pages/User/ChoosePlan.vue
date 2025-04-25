@@ -307,6 +307,17 @@
 				</v-slide-item>
 			</template>
 		</v-row>
+		<v-dialog v-model="model2" class="elevation-0">
+			<div class="confirmation-card">
+					<h2 class="congrats">¡FELICIDADES!</h2>
+					<p class="message">
+						Tu plan ha sido actualizado con éxito, el próximo cobro se realizará
+						el día <strong>25/05/2025</strong> por un monto de
+						<strong>S/75</strong> correspondiente al plan anual.
+					</p>
+					<button class="button dark">FINALIZAR</button>
+				</div>
+		</v-dialog>
 		<v-sheet class="mx-auto" style="width: 100px;">
 			<v-btn
 				class="text_btn_white_title"
@@ -324,7 +335,7 @@ export default {
 	data: (e) => ({
 		model: null,
 		pq: null,
-		model2: 0,
+		model2: false,
 		plans: [],
 		base_url: "",
 		data_config: {},
@@ -359,8 +370,8 @@ export default {
 		vm.fetchIpData();
 
 		await vm.getConfiguracion();
-		vm.getLoggedUser();
-		vm.getBaseUrl();
+		await vm.getLoggedUser();
+		await vm.getBaseUrl();
 		await vm.list();
 		if (vm.ref_code != null && vm.ref_code != undefined) {
 			vm.calcDiscountReferred();
@@ -448,8 +459,6 @@ export default {
 				this.currency == "soles"
 					? item.monto_retencion_pen
 					: item.monto_retencion_usd;
-
-			// const price2 = prices[this.currency_id];
 
 			if (this.ref_code != null && this.ref_code != undefined) {
 				return price
@@ -582,7 +591,10 @@ export default {
 		},
 		choosePlan(itemv) {
 			this.$store.commit("loader", true);
-			// this.$router.push({ path: "/cuenta/cancelar-membresia" });
+			setTimeout(() => {
+				// TODO: Reload plan
+				this.model2 = true;
+			}, 2000); 
 			this.$store.commit("loader", false);
 		},
 		async getIpData() {
@@ -706,5 +718,156 @@ input[type="checkbox"]:checked + .switch-label .switch-text-on {
 
 input[type="checkbox"]:checked + .switch-label .switch-text-off {
 	color: #0a2240; /* Color del texto ON */
+}
+</style>
+
+
+<style scoped>
+.card-container {
+	background: #ffffff;
+	border-radius: 20px;
+	padding: 24px;
+	max-width: 800px;
+	margin: auto;
+	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+	font-family: "MachProCondBold", sans-serif;
+}
+
+.trial-title {
+	color: #e7004c;
+	font-size: 24px;
+	text-align: left;
+	font-weight: bold;
+	margin-bottom: 24px;
+	text-transform: uppercase;
+}
+
+.card {
+	border-radius: 12px;
+	padding: 16px;
+	margin-bottom: 16px;
+}
+
+.green-border {
+	border: 2px solid #44bd5e;
+}
+
+.card-content {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.text-section {
+	max-width: 70%;
+}
+
+.card-title {
+	font-size: 16px;
+	font-weight: bold;
+	margin: 0;
+	color: #000;
+}
+
+.subtitle {
+	font-size: 14px;
+	color: #555;
+	margin: 4px 0 0;
+}
+
+.price {
+	color: #44bd5e;
+	font-size: 24px;
+	font-weight: bold;
+	margin: 0;
+}
+
+.per-month {
+	font-size: 16px;
+	margin-left: 4px;
+}
+
+.button {
+	border: none;
+	border-radius: 8px;
+	font-size: 16px;
+	padding: 10px 16px;
+	font-weight: bold;
+	font-family: "MachProCondBold", sans-serif;
+	cursor: pointer;
+	transition: all 0.2s ease-in-out;
+}
+
+.button-green {
+	background-color: #44bd5e;
+	border: 2px solid #44bd5e;
+	color: white;
+}
+
+.button-green-outline {
+	background-color: transparent;
+	border: 2px solid #44bd5e;
+	color: #44bd5e;
+}
+
+.disabled {
+	text-align: center;
+	opacity: 0.8;
+	font-size: 24px;
+}
+
+.button.disabled {
+	background: none;
+	border: none;
+	color: #d9d9d9;
+	cursor: not-allowed;
+	border: 2px solid #d9d9d9;
+}
+
+.confirmation-card {
+	background-color: #ffffff;
+	padding: 32px 24px;
+	border-radius: 20px;
+	text-align: center;
+	max-width: 450px;
+	margin: auto;
+}
+
+.congrats {
+	color: #e7004c;
+	font-size: 40px;
+	margin-bottom: 16px;
+	text-transform: uppercase;
+	font-family: "MachProCondBold", sans-serif;
+}
+
+.message {
+	color: #000;
+	font-size: 16px;
+	line-height: 1.5;
+	margin-bottom: 24px;
+}
+
+.message strong {
+	font-weight: bold;
+}
+
+.button.dark {
+	background-color: #0d1e3f;
+	color: white;
+	padding: 12px 24px;
+	border: none;
+	border-radius: 12px;
+	font-family: "MachProCondBold", sans-serif;
+	font-size: 24px;
+	cursor: pointer;
+	transition: background-color 0.2s ease-in-out;
+}
+
+.button.dark:hover {
+	background-color: #09152e;
+}
+v-dialog v-dialog--active{
+	box-shadow: none !important;
 }
 </style>
