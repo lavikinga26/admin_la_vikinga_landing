@@ -25,6 +25,124 @@
 			light
 			v-if="centrarPlanes == true"
 		>
+			<v-slide-item v-slot="{ toggle }">
+				<div class="ma-4  rounded-lg header_plan_gray">
+					<div class="header_plan_title_white pa-2">
+						MI PLAN ACTUAL
+					</div>
+					<v-card
+						:color="lastPlan.is_outstanding == 1 ? 'primary' : '#ffffff'"
+						:class="
+							lastPlan.is_outstanding == 1
+								? 'card-outter'
+								: 'card-outter gray_card_border'
+						"
+						class="rounded-lg d-flex flex-column"
+						height="580"
+						width="270"
+						@click="choosePlan(item)"
+						elevation="0"
+					>
+						<v-badge
+							v-if="
+								(lastPlan.prices[currency_id].old_amount != '0.00' &&
+									lastPlan.prices[currency_id].old_amount != '0' &&
+									ref_code == null) ||
+									((lastPlan.referred_discount_pen != '0.00' ||
+										lastPlan.referred_discount_usd != '0.00') &&
+										ref_code != null)
+							"
+							color="#E7004C"
+							class="badge_pink"
+							:content="
+								`${getDiscount(
+									lastPlan.prices,
+									lastPlan.referred_discount_pen,
+									lastPlan.referred_discount_usd
+								)}`
+							"
+						></v-badge>
+						<v-card-text max-height="300">
+							<div class="item">
+								<div class="blog-entry">
+									<div class="mt-4 mb-4">
+										<p>
+											<span
+												:class="
+													lastPlan.is_outstanding == 1
+														? 'text_plan_title_white mb-2'
+														: 'text_plan_title_blue mb-2'
+												"
+												>{{ lastPlan.title }}</span
+											>
+										</p>
+										<p>
+											<strike
+												v-if="
+													(lastPlan.prices[currency_id].old_amount != '0.00' &&
+														lastPlan.prices[currency_id].old_amount != '0') ||
+														(ref_code != null && ref_code != undefined)
+												"
+												:class="
+													lastPlan.is_outstanding == 1
+														? 'price_strike_light mr-3'
+														: 'price_strike_dark mr-3'
+												"
+												>{{
+													getOldPrice(
+														lastPlan.prices,
+														lastPlan.referred_discount_pen,
+														lastPlan.referred_discount_usd
+													)
+												}}</strike
+											><span
+												:class="
+													lastPlan.is_outstanding == 1
+														? 'text_plan_price_pink mb-2'
+														: 'text_plan_price_blue mb-2'
+												"
+												>{{ !currency ? "S/" : "$" }}
+												{{
+													getPrice(
+														lastPlan.prices,
+														lastPlan.referred_discount_pen,
+														lastPlan.referred_discount_usd,
+														lastPlan
+													)
+												}}</span
+											>
+										</p>
+									</div>
+									<div class="">
+										<p
+											class="text--primary mb-1 font-weight-bold"
+											style="font-size: 12px;"
+										>
+											Paga {{ !currency ? "S/" : "$" }}
+											{{ getTotalPrice(lastPlan) }} cada mes
+										</p>
+										<p
+											class="text--primary"
+											style="font-size: 12px; line-height: 14px;"
+										>
+											Plan vía Tarjeta de Crédito o Transferencia Bancaria (Solo
+											Perú)
+										</p>
+									</div>
+									<div
+										:class="
+											lastPlan.is_outstanding == 1
+												? 'p-2 bd_desc_carousel_white'
+												: 'p-2 bd_desc_carousel_blue'
+										"
+										v-html="lastPlan.content"
+									></div>
+								</div>
+							</div>
+						</v-card-text>
+					</v-card>
+				</div>
+			</v-slide-item>
 			<template v-for="(item, n) in plans">
 				<v-slide-item
 					v-if="item.allow_sale == 1 && item.status == 1 && item.active == 1"
@@ -48,9 +166,9 @@
 									: 'card-outter white_card_border'
 							"
 							class="rounded-lg d-flex flex-column"
-							height="570"
+							height="580"
 							width="270"
-							@click="addToCart(item)"
+							@click="choosePlan(item)"
 							elevation="0"
 						>
 							<v-badge
@@ -122,18 +240,23 @@
 													}}</span
 												>
 											</p>
+										</div>
+
+										<div class="">
 											<p
-												style="font-weight: bold; color: #e30e4f"
-												v-if="
-													item.dias_trial > 0 &&
-														trial_status == true &&
-														ref_code == null
-												"
+												class="text--primary mb-1 font-weight-bold"
+												style="font-size: 12px;"
 											>
-												Prueba gratis por {{ item.dias_trial }} días!
+												Paga {{ !currency ? "S/" : "$" }}
+												{{ getTotalPrice(lastPlan) }} cada
+												{{ lastPlan.cant_cobros_retencion }} meses
 											</p>
-											<p style="font-weight: bold; color: #e30e4f" v-else>
-												&nbsp;
+											<p
+												class="text--primary"
+												style="font-size: 12px; line-height: 14px;"
+											>
+												Plan vía Tarjeta de Crédito o Transferencia Bancaria
+												(Solo Perú)
 											</p>
 										</div>
 										<div
@@ -158,7 +281,7 @@
 													: 'my-2 rounded-lg fb-btn btn_blue_white'
 											"
 											style="padding:0.7em 0px!important;"
-											@click="addToCart(item)"
+											@click="choosePlan(item)"
 											v-if="data_config.allow_sale && item.allow_sale"
 										>
 											ACTUALIZAR PLAN
@@ -171,7 +294,7 @@
 													: 'my-2 rounded-lg fb-btn btn_blue_white'
 											"
 											style="padding:0.7em 0px!important;"
-											@click="addToCart(item)"
+											@click="choosePlan(item)"
 											v-if="!data_config.allow_sale && item.allow_sale"
 										>
 											ACTUALIZAR PLAN
@@ -184,175 +307,6 @@
 				</v-slide-item>
 			</template>
 		</v-row>
-		<v-sheet
-			class="mx-auto"
-			elevation="'0'"
-			color="#ffffff"
-			light
-			v-if="centrarPlanes == false"
-		>
-			<v-slide-group v-model="model" class="pa-0" center-active>
-				<template v-for="(item, n) in plans">
-					<v-slide-item
-						v-if="item.allow_sale == 1 && item.status == 1 && item.active == 1"
-						:key="n"
-						v-slot="{ toggle }"
-					>
-						<div
-							:class="
-								item.is_outstanding == 1
-									? 'header_plan_pink'
-									: 'header_plan_blue'
-							"
-							class="ma-4  rounded-lg"
-						>
-							<div class="header_plan_title_white pa-2">
-								{{ periods[item.period] }}
-							</div>
-							<v-card
-								:color="item.is_outstanding == 1 ? 'primary' : '#ffffff'"
-								:class="
-									item.is_outstanding == 1
-										? 'card-outter'
-										: 'card-outter white_card_border'
-								"
-								class="rounded-lg d-flex flex-column"
-								height="570"
-								width="270"
-								@click="addToCart(item)"
-								elevation="0"
-							>
-								<v-badge
-									v-if="
-										(item.prices[currency_id].old_amount != '0.00' &&
-											item.prices[currency_id].old_amount != '0') ||
-											((item.referred_discount_pen != '0.00' ||
-												item.referred_discount_usd != '0.00') &&
-												ref_code != null)
-									"
-									color="#E7004C"
-									class="badge_pink"
-									:content="
-										`${getDiscount(
-											item.prices,
-											item.referred_discount_pen,
-											item.referred_discount_usd
-										)}`
-									"
-								></v-badge>
-								<v-card-text max-height="300">
-									<div class="item">
-										<div class="blog-entry">
-											<div class="mt-4 mb-4">
-												<p>
-													<span
-														:class="
-															item.is_outstanding == 1
-																? 'text_plan_title_white mb-2'
-																: 'text_plan_title_blue mb-2'
-														"
-														>{{ item.title }}</span
-													>
-												</p>
-												<p>
-													<strike
-														v-if="
-															(item.prices[currency_id].old_amount != '0.00' &&
-																item.prices[currency_id].old_amount != '0') ||
-																(ref_code != null && ref_code != undefined)
-														"
-														:class="
-															item.is_outstanding == 1
-																? 'price_strike_light mr-3'
-																: 'price_strike_dark mr-3'
-														"
-														>{{
-															getOldPrice(
-																item.prices,
-																item.referred_discount_pen,
-																item.referred_discount_usd
-															)
-														}}</strike
-													><span
-														:class="
-															item.is_outstanding == 1
-																? 'text_plan_price_pink mb-2'
-																: 'text_plan_price_blue mb-2'
-														"
-														>{{ !currency ? "S/" : "$" }}
-														{{
-															getPrice(
-																item.prices,
-																item.referred_discount_pen,
-																item.referred_discount_usd,
-																item
-															)
-														}}</span
-													>
-												</p>
-												<p
-													style="font-weight: bold; color: #e30e4f"
-													v-if="
-														item.dias_trial > 0 &&
-															trial_status == true &&
-															ref_code == null
-													"
-												>
-													Prueba gratis por {{ item.dias_trial }} días!
-												</p>
-												<p style="font-weight: bold; color: #e30e4f" v-else>
-													&nbsp;
-												</p>
-											</div>
-											<div
-												:class="
-													item.is_outstanding == 1
-														? 'p-2 bd_desc_carousel_white'
-														: 'p-2 bd_desc_carousel_blue'
-												"
-												v-html="item.content"
-											></div>
-										</div>
-									</div>
-								</v-card-text>
-								<v-card-actions class="card-actions mt-auto">
-									<v-row align="center">
-										<v-col cols="12" align="center">
-											<v-btn
-												block
-												:class="
-													item.is_outstanding == 1
-														? 'my-2 rounded-lg fb-btn btn_pink_white'
-														: 'my-2 rounded-lg fb-btn btn_blue_white'
-												"
-												style="padding:0.7em 0px!important;"
-												@click="addToCart(item)"
-												v-if="data_config.allow_sale && item.allow_sale"
-											>
-												ELEGIR PLAN
-											</v-btn>
-											<v-btn
-												block
-												:class="
-													item.is_outstanding == 1
-														? 'my-2 rounded-lg fb-btn btn_pink_white'
-														: 'my-2 rounded-lg fb-btn btn_blue_white'
-												"
-												style="padding:0.7em 0px!important;"
-												@click="addToCart(item)"
-												v-if="!data_config.allow_sale && item.allow_sale"
-											>
-												ELEGIR PLAN
-											</v-btn>
-										</v-col>
-									</v-row>
-								</v-card-actions>
-							</v-card>
-						</div>
-					</v-slide-item>
-				</template>
-			</v-slide-group>
-		</v-sheet>
 		<v-sheet class="mx-auto" style="width: 100px;">
 			<v-btn
 				class="text_btn_white_title"
@@ -392,6 +346,7 @@ export default {
 		centrarPlanes: false,
 		def_currency: null,
 		currency_url: null,
+		lastPlan: {},
 	}),
 	async mounted() {
 		let vm = this;
@@ -474,7 +429,16 @@ export default {
 			this.$router.push({ path: "/auth/registrarse" });
 		},
 		volver() {
-			this.$router.push({ path: "/" });
+			this.$router.push({ path: "/cuenta" });
+		},
+		getTotalPrice(plan) {
+			let amount = this.getPrice(
+				plan.prices,
+				plan.referred_discount_pen,
+				plan.referred_discount_usd,
+				plan
+			);
+			return amount * 3; // (amount * plan.cant_cobros_retencion)
 		},
 		getPrice(prices, dsc_pen, dsc_usd, item) {
 			const currencyType = !this.currency ? "soles" : "dolar";
@@ -594,17 +558,20 @@ export default {
 
 				// Agregar el último plan como primer elemento
 				const lastPlan = this.business_partner.plans.pop();
-				if (lastPlan) {
-					vm.plans.unshift(lastPlan);
-				}
+				console.log("lastPlan", lastPlan);
+				vm.lastPlan = lastPlan;
+				// if (lastPlan) {
+				// 	vm.plans.unshift(lastPlan);
+				// }
 
 				let activeplans = vm.plans.filter(
 					(pl) => pl.active == 1 && pl.status == 1
 				);
 
-				if (activeplans.length <= 2) {
-					vm.centrarPlanes = true;
-				}
+				// if (activeplans.length <= 2) {
+				// 	vm.centrarPlanes = true;
+				// }
+				vm.centrarPlanes = true;
 				console.log("vm.plans", vm.plans);
 				vm.checkPlan();
 				vm.$store.commit("loader", false);
@@ -613,58 +580,10 @@ export default {
 				vm.$store.commit("loader", false);
 			}
 		},
-		addToCart(itemv) {
-			var selectedCurrency =
-				this.currency == false ? itemv.prices[0] : itemv.prices[1];
-
-			var amoutItem = Number(selectedCurrency.amount);
-			var ref_dscto = 0;
-
-			if (
-				this.currency == false &&
-				this.ref_code != null &&
-				this.ref_code != undefined
-			) {
-				amoutItem = Number(
-					selectedCurrency.amount - itemv.referred_discount_pen
-				);
-				ref_dscto = itemv.referred_discount_pen;
-			} else if (
-				this.currency == true &&
-				this.ref_code != null &&
-				this.ref_code != undefined
-			) {
-				amoutItem = Number(
-					selectedCurrency.amount - itemv.referred_discount_usd
-				);
-				ref_dscto = itemv.referred_discount_usd;
-			}
-
+		choosePlan(itemv) {
 			this.$store.commit("loader", true);
-			localStorage.removeItem("planSeleccionado");
-			let item = {
-				id: itemv.id,
-				title: itemv.title,
-				code: itemv.code,
-				image: itemv.base_url + itemv.file_path.path + itemv.file_path.filename,
-				price: amoutItem,
-				price_promotional: Number(itemv.promotional_cost),
-				quantity: 1,
-				priceCompare: amoutItem,
-				priceTotal: amoutItem,
-				currency: selectedCurrency.currency_symbol,
-				renovacion: itemv.renovacion_automatica,
-				category_id: itemv.category_id,
-				dias_trial: this.trial_status == true ? itemv.dias_trial : 0,
-				currency_id: selectedCurrency.currency_id,
-				ref_code: this.ref_code,
-				ref_discount: ref_dscto,
-			};
-			localStorage.planSeleccionado = JSON.stringify(item);
-			this.$store.dispatch("addItem", item);
+			// this.$router.push({ path: "/cuenta/cancelar-membresia" });
 			this.$store.commit("loader", false);
-			//this.$router.push({ path: '/carrito#pago' })
-			this.$router.push({ path: "/auth/registrarse" });
 		},
 		async getIpData() {
 			await fetch("https://api.ipify.org?format=json")

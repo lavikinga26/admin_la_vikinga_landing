@@ -535,6 +535,10 @@ $font-family: "Poppins";
 	border: 2px solid #0a2240 !important;
 }
 
+.gray_card_border {
+	border: 2px solid #a3a3a3 !important;
+}
+
 .box_rutina {
 	border-radius: 16px !important;
 }
@@ -1184,6 +1188,10 @@ $font-family: "Poppins";
 .header_plan_blue {
 	background-color: #0a2240;
 	border: 1px solid #0a2240;
+}
+.header_plan_gray {
+	background-color: #a3a3a3;
+	border: 1px solid #a3a3a3;
 }
 .header_plan_title_white {
 	font-family: "Poppins", sans-serif !important;

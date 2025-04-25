@@ -63,6 +63,7 @@
 									block
 									depressed
 									color="secondary"
+									to="/cuenta/elegir-plan"
 									>Continuar con el beneficio</v-btn
 								>
 							</v-col>
