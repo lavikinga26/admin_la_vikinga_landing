@@ -307,16 +307,34 @@
 				</v-slide-item>
 			</template>
 		</v-row>
-		<v-dialog v-model="model2" class="elevation-0">
-			<div class="confirmation-card">
-					<h2 class="congrats">¡FELICIDADES!</h2>
+		<v-dialog v-model="dialogConfirmCancel"  max-width="500px" >
+			<v-card>
+				<v-card-title>Actualizar Plan</v-card-title>
+				<v-card-text>
+					Estas a punto de actualizar tu plan. Luego del {{ exp_date_pop | formatDate }} se realizara el nuevo cobro del plan seleccionado.
+					<br/>
+					¿Estás seguro?
+				</v-card-text>
+				<v-card-actions>
+					<v-btn color="error" @click="dialogConfirmCancel = false">Cancelar</v-btn>
+					<v-btn color="success" > Continuar</v-btn>
+				</v-card-actions>
+			</v-card>
+		</v-dialog>
+		<v-dialog v-model="model2"  max-width="500px" >
+			<v-card>
+				<v-card-text>
+					<div class="pt-8">
+						<h2 class="congrats">¡FELICIDADES!</h2>
+					</div>
 					<p class="message">
 						Tu plan ha sido actualizado con éxito, el próximo cobro se realizará
 						el día <strong>25/05/2025</strong> por un monto de
 						<strong>S/75</strong> correspondiente al plan anual.
 					</p>
 					<button class="button dark">FINALIZAR</button>
-				</div>
+				</v-card-text>
+			</v-card>
 		</v-dialog>
 		<v-sheet class="mx-auto" style="width: 100px;">
 			<v-btn
@@ -358,6 +376,9 @@ export default {
 		def_currency: null,
 		currency_url: null,
 		lastPlan: {},
+		dialogConfirmCancel: false,
+		exp_date_pop: null,
+		plan: {}
 	}),
 	async mounted() {
 		let vm = this;
@@ -369,6 +390,7 @@ export default {
 		await vm.getIpData();
 		vm.fetchIpData();
 
+		await vm.getPartnerData();
 		await vm.getConfiguracion();
 		await vm.getLoggedUser();
 		await vm.getBaseUrl();
@@ -567,8 +589,8 @@ export default {
 
 				// Agregar el último plan como primer elemento
 				const lastPlan = this.business_partner.plans.pop();
-				console.log("lastPlan", lastPlan);
 				vm.lastPlan = lastPlan;
+
 				// if (lastPlan) {
 				// 	vm.plans.unshift(lastPlan);
 				// }
@@ -592,9 +614,10 @@ export default {
 		choosePlan(itemv) {
 			this.$store.commit("loader", true);
 			setTimeout(() => {
-				// TODO: Reload plan
-				this.model2 = true;
-			}, 2000); 
+				// TODO: Reload pla
+				this.dialogConfirmCancel = true;
+				// this.model2 = true;
+			}, 1000); 
 			this.$store.commit("loader", false);
 		},
 		async getIpData() {
@@ -630,6 +653,22 @@ export default {
 				this.loading = false;
 			}
 		},
+		async getPartnerData(id) {
+			this.$store.commit('loader',true);
+			try {
+				const response = await this.$API.auth.auth(id);
+				const user = response.data;
+				this.plan = user.plans.pop();
+
+				this.del_id_susc = this.plan.id_suscripcion;
+				this.exp_date_pop = this.plan.expiration_date;
+
+				this.$store.commit('loader',false);
+			} catch (e) {
+				this.$store.commit('loader',false);
+				console.error(e);
+			}
+    	},
 	},
 };
 </script>

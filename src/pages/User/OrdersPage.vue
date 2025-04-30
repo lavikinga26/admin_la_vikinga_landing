@@ -123,7 +123,7 @@
                                 </v-icon> Cancelar
                               </v-btn>-->
                               <v-btn @click="showDeleteDialog(item.id_suscripcion, item.id_partner, item.expiration_date)" small class="mx-2" color="error"
-                                v-if="item.renovacion_automatica == 1">
+                              >
                                 <v-icon dark small>
                                   mdi-cancel
                                 </v-icon> Cancelar

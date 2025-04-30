@@ -3,6 +3,25 @@
 		<div class="col-md-12">
 			<p class="text_title_white text_entrena">Cancelar Membresía</p>
 		</div>
+
+		<v-dialog v-model="dialogDelete" max-width="500px">
+			<v-card>
+				<v-card-title>Cancelar Suscripción</v-card-title>
+				<v-card-text>Estas a punto de cancelar la renovación automatica de tu plan. Luego del {{ exp_date_pop | formatDate }} no tendrás más acceso a la plataforma. <br/><br/>
+					Si deseas, puedes dejar un comentario explicando el motivo de la cancelación: <br/><br/>
+					<v-text-field label="Motivo de cancelación" v-model="cancel_suscrip"></v-text-field>
+					¿Estás seguro?
+				</v-card-text>
+				<v-card-actions>
+					<v-btn color="error" text @click="dialogDelete = false"><v-icon dark small>
+					mdi-close
+					</v-icon> No</v-btn>
+					<v-btn color="success" text @click="cancelarSuscripcion()"><v-icon dark small>
+					mdi-check
+					</v-icon> Si</v-btn>
+				</v-card-actions>
+			</v-card>
+		</v-dialog>
 		<v-row>
 			<v-col
 				cols="12"
@@ -48,7 +67,7 @@
 								class="d-none d-md-flex d-sm-none"
 								style="position: relative;"
 							>
-								<v-btn class="text_btn_grey_title" block depressed
+								<v-btn  @click="showDeleteDialog(plan.id_suscripcion, plan.id_partner, plan.expiration_date)"  class="text_btn_grey_title" block depressed
 									>Cancelar membresía</v-btn
 								>
 							</v-col>
@@ -75,6 +94,61 @@
 	</v-container>
 </template>
 
+<script>
+export default {
+  data() {
+    return {
+		user: {},
+		dialogDelete: false,
+      	cancel_suscrip: "",
+		exp_date_pop: null,
+		del_id_susc: null,
+		del_id_part: null,
+		plan: {}
+	}
+  },
+  mounted() {
+    this.getPartnerData().then((res) => {
+		console.log(res)
+	});
+  },
+  methods: {
+
+    async getPartnerData(id) {
+      this.$store.commit('loader',true);
+      try {
+        const response = await this.$API.auth.auth(id);
+        this.user = response.data;
+		this.plan = this.user.plans.pop()
+        this.$store.commit('loader',false);
+      } catch (e) {
+        this.$store.commit('loader',false);
+        console.error(e);
+      }
+    },
+    showDeleteDialog(id_suscripcion, id_partner, fecha_venc) {
+      this.dialogDelete = true;
+      this.exp_date_pop = fecha_venc;
+      this.del_id_susc = id_suscripcion;
+      this.del_id_part = id_partner;
+    },
+    async cancelarSuscripcion() {
+      try {
+        this.$store.commit('loader', true);
+        this.dialogDelete = false;
+        if(this.cancel_suscrip=="") this.cancel_suscrip = "-";
+        const response = await this.$API.business_partner.cancelSuscription(this.del_id_susc, this.cancel_suscrip);
+        this.$store.commit('loader', false);
+        this.showToast('Suscripción cancelada correctamente!', "success");
+
+        this.getPartnerData(this.del_id_part);
+      } catch (e) {
+        console.error(e);
+      }
+    },
+  }
+}
+</script>
 <style>
 hr {
 	display: block;
