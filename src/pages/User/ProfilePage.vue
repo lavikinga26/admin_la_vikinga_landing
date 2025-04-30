@@ -289,7 +289,10 @@ export default {
         react_id_susc: null,
         react_id_part: null,
         cancel_suscrip: "",
-        plansList: []
+        plansList: [],
+		exp_date_pop: null,
+		del_id_susc: null,
+		del_id_part: null,
     }),
     created() {
         this.getBaseUrl();

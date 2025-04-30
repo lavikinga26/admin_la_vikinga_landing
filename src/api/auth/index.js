@@ -111,6 +111,15 @@ export default {
         updateTimezone(id_timezone){
             return callAuthAPI('get', 'api/v1/business-partner/updateTimezone/'+id_timezone);
         },
+
+        // Campaña retencion
+        checkActiveRetention(data){
+            return callAuthAPI('post', 'api/v1/retention/check/', data);
+        },
+        // Actualiza plan    retencion
+        updatePlan(data){
+            return callAuthAPI('post', 'api/v1/subscription/plan/update/', data);
+        },
     },
     rating:{
         saveRating(data){

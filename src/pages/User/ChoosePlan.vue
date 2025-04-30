@@ -317,7 +317,7 @@
 				</v-card-text>
 				<v-card-actions>
 					<v-btn color="error" @click="dialogConfirmCancel = false">Cancelar</v-btn>
-					<v-btn color="success" > Continuar</v-btn>
+					<v-btn color="success" @click="updatePlanAndRetention"> Continuar</v-btn>
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
@@ -332,7 +332,7 @@
 						el día <strong>25/05/2025</strong> por un monto de
 						<strong>S/75</strong> correspondiente al plan anual.
 					</p>
-					<button class="button dark">FINALIZAR</button>
+					<button class="button dark" @click="closeConfirm">FINALIZAR</button>
 				</v-card-text>
 			</v-card>
 		</v-dialog>
@@ -462,7 +462,7 @@ export default {
 			this.$router.push({ path: "/auth/registrarse" });
 		},
 		volver() {
-			this.$router.push({ path: "/cuenta" });
+			this.$router.push({ path: "/cuenta/mi-perfil" });
 		},
 		getTotalPrice(plan) {
 			let amount = this.getPrice(
@@ -669,6 +669,36 @@ export default {
 				console.error(e);
 			}
     	},
+		async updatePlanAndRetention() {
+			this.$store.commit('loader', true);
+			try {
+				const payload = {
+					id_partner: this.business_partner.id,
+					new_plan_id: this.plan.id,
+					next_renew_date: this.exp_date_pop, 
+					renew_auto: true, 
+					user_id: this.logged_user.id,
+					subscription_id: this.del_id_susc,
+					currency: this.currency_id === 0 ? 'PEN' : 'USD',
+					retention_amount: this.getTotalPrice(this.plan), // Monto total del nuevo plan
+					total_retention_charges: this.plan.cant_cobros_retencion,
+				};
+
+				// await this.$axios.post('/api/subscription/plan/update', payload);
+				await  this.$API.business_partner.updatePlan(payload);
+				this.dialogConfirmCancel = false;
+				this.model2 = true;
+			} catch (error) {
+				console.error('Error al actualizar el plan:', error);
+				this.$toast.error('No se pudo actualizar el plan');
+			} finally {
+				this.$store.commit('loader', false);
+			}
+		},
+		closeConfirm(){
+			this.model2 = false;
+			this.$router.push({ path: "/cuenta" });
+		}
 	},
 };
 </script>
