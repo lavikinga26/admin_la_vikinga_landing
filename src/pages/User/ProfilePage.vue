@@ -154,7 +154,7 @@
                                         <v-badge color="error" content="No" inline v-if="item.predeterminada == 0"></v-badge>
                                         </td>
                                         <td class="text-center">
-                                        <v-btn @click="deleteCard(item.id_card)" class="mx-2" fab dark small color="error" v-if="item.predeterminada == 0">
+                                        <v-btn @click="deleteCard(item.id_card)" class="mx-2" fab dark small color="error" v-if="disable_card_delete == 0">
                                             <v-icon dark>
                                             mdi-delete
                                             </v-icon>
@@ -293,6 +293,7 @@ export default {
 		exp_date_pop: null,
 		del_id_susc: null,
 		del_id_part: null,
+        disable_card_delete: 0
     }),
     created() {
         this.getBaseUrl();
@@ -380,6 +381,13 @@ export default {
                 this.business_partner = Object.assign(response.data.data[0]);
                 const response2 = await this.$API.auth.auth(id);
                 this.user = response2.data;
+
+                var planes = this.user.plans;
+                planes.forEach((item) => {
+                    if(item.renovacion_automatica == 1){
+                        this.disable_card_delete = 1;
+                    }
+                });
             } catch (e) {
                 console.error(e);
 

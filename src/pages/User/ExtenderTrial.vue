@@ -75,11 +75,9 @@
 				<div class="confirmation-card">
 					<h2 class="congrats">¡SIGUE DISFRUTANDO!</h2>
 					<p class="message">
-						Has obtenido 7 días más de prueba, luego del
-						<strong>17/10/2024</strong> se realizará el cobro por un monto de
-						<strong>S/93</strong> correspondiente al plan mensual.
+						Has obtenido 7 días más de prueba!
 					</p>
-					<button class="button dark">FINALIZAR</button>
+					<button class="button dark" to="/gym-virtual/agenda">FINALIZAR</button>
 				</div>
 			</v-col>
 		</v-row>

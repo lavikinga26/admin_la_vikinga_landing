@@ -82,7 +82,7 @@
 									block
 									depressed
 									color="secondary"
-									to="/cuenta/elegir-plan"
+									@click="beneficioPopup()"
 									>Continuar con el beneficio</v-btn
 								>
 							</v-col>
@@ -91,7 +91,23 @@
 				</v-card>
 			</v-col>
 		</v-row>
+		<v-dialog v-model="dialogConfirmCancel"  max-width="500px" >
+		<v-card>
+			<v-card-title>Aceptar beneficio</v-card-title>
+			<v-card-text>
+				Estas a punto de aceptar el beneficio exclusivo. Luego del {{ exp_date_pop | formatDate }} se realizara el nuevo cobro de con el monto ofrecido.
+				<br/>
+				¿Estás seguro?
+			</v-card-text>
+			<v-card-actions>
+				<v-btn color="error" @click="dialogConfirmCancel = false">Cancelar</v-btn>
+				<v-btn color="success" @click="updatePlanAndRetention"> Continuar</v-btn>
+			</v-card-actions>
+		</v-card>
+	</v-dialog>
 	</v-container>
+
+	
 </template>
 
 <script>
@@ -104,22 +120,55 @@ export default {
 		exp_date_pop: null,
 		del_id_susc: null,
 		del_id_part: null,
-		plan: {}
+		plan: {},
+		dialogConfirmCancel: false,
+		exp_date_pop: null,
+		logged_user: {},
+		business_partner: [],
 	}
   },
   mounted() {
     this.getPartnerData().then((res) => {
 		console.log(res)
 	});
+
+	this.getLoggedUser();
   },
   methods: {
+	beneficioPopup() {
+		this.$store.commit("loader", true);
+		setTimeout(() => {
+			// TODO: Reload pla
+			this.dialogConfirmCancel = true;
+			// this.model2 = true;
+		}, 1000); 
+		this.$store.commit("loader", false);
+	},
+	async getLoggedUser() {
+		this.$store.commit("loader", true);
+		if (localStorage.getItem("token")) {
+			this.logged_user = JSON.parse(localStorage.getItem("user_data"));
+			this.logged_user_token = localStorage.getItem("token");
 
+			const response = await this.$API.business_partner.getPartner(
+				this.logged_user.id
+			);
+
+			if (response != null) {
+				this.business_partner = Object.assign(response.data.data[0]);
+
+			}
+		}
+		this.$store.commit("loader", false);
+	},
     async getPartnerData(id) {
       this.$store.commit('loader',true);
       try {
         const response = await this.$API.auth.auth(id);
         this.user = response.data;
-		this.plan = this.user.plans.pop()
+		this.plan = this.user.plans.pop();
+		this.exp_date_pop = this.plan.expiration_date;
+		console.log(this.plan);
         this.$store.commit('loader',false);
       } catch (e) {
         this.$store.commit('loader',false);
@@ -146,6 +195,31 @@ export default {
         console.error(e);
       }
     },
+	async updatePlanAndRetention() {
+		this.$store.commit('loader', true);
+		const payload = {
+			id_partner: this.business_partner.id,
+			new_plan_id: this.plan.id,
+			next_renew_date: this.exp_date_pop, 
+			renew_auto: true, 
+			user_id: this.logged_user.id,
+			subscription_id: this.del_id_susc,
+			currency: this.currency_id === 0 ? 'PEN' : 'USD',
+			retention_amount: 1, // Monto total del nuevo plan
+			total_retention_charges: this.plan.cant_cobros_retencion,
+		};
+
+		console.log(payload);
+
+		// await this.$axios.post('/api/subscription/plan/update', payload);
+		//const response =  await this.$API.business_partner.updatePlan(payload);
+		this.dialogConfirmCancel = false;
+
+	},
+	closeConfirm(){
+		this.model2 = false;
+		this.$router.push({ path: "/cuenta" });
+	}
   }
 }
 </script>
