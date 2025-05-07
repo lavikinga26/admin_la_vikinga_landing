@@ -391,7 +391,7 @@ export default {
 			(v) => !!v || "Este campo es requerido",
 			(v) => v === this.new_password || "Contraseñas no coinciden",
 		],
-		hasActiveRetention: false
+		hasActiveRetention: false,
 		//--- End ---
 	}),
 	async created() {
@@ -400,7 +400,7 @@ export default {
 		this.getTypeDocument();
 		this.img_url = this.base_url + "/images/default-profile-picture.png";
 	},
-	async mounted(){
+	async mounted() {
 		// await this.checkActiveRetention();
 	},
 	computed: {
@@ -419,8 +419,8 @@ export default {
 		},
 		cancelMembership() {
 			// if(this.hasActiveRetention){
-				// eliminar
-			// } 
+			// eliminar
+			// }
 			// else{
 			this.$router.push({ path: "/cuenta/cancelar-membresia" });
 			// }
@@ -568,9 +568,9 @@ export default {
 				});
 				this.hasActiveRetention = response.data.has_active_retention;
 			} catch (error) {
-				console.error('Error al verificar campaña activa:', error);
+				console.error("Error al verificar campaña activa:", error);
 			}
-		}
+		},
 	},
 	watch: {
 		profileImgDialog() {

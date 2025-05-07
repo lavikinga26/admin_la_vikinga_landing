@@ -13,7 +13,7 @@ export default [
 			import(
 				/* webpackChunkName: "auth-signup" */ "../pages/User/OrdersPage.vue"
 			),
-		meta: { requiresAuth: true },
+		meta: { requiresAuth: true, template: "SidebarTemplate" },
 	},
 	{
 		path: "/cuenta/descargables",
