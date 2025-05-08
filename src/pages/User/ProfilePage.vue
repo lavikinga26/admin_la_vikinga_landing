@@ -73,7 +73,13 @@
             
                                         </td>
                                         <td>
-                                            <v-btn @click="showDeleteDialog(item.id_suscripcion, item.id_partner, item.expiration_date)" small class="mx-2" color="error" v-if="item.renovacion_automatica == 1">
+                                            <!--<v-btn @click="showDeleteDialog(item.id_suscripcion, item.id_partner, item.expiration_date)" small class="mx-2" color="error" v-if="item.renovacion_automatica == 1">
+                                                <v-icon dark small>
+                                                mdi-cancel
+                                                </v-icon> Cancelar
+                                            </v-btn>-->
+
+                                            <v-btn @click="cancelMembership" small class="mx-2" color="error" v-if="item.renovacion_automatica == 1">
                                                 <v-icon dark small>
                                                 mdi-cancel
                                                 </v-icon> Cancelar
@@ -312,6 +318,14 @@ export default {
         document.head.appendChild(paymeScript);
     },
     methods: {
+        cancelMembership() {
+			// if(this.hasActiveRetention){
+			// eliminar
+			// }
+			// else{
+			this.$router.push({ path: "/cuenta/cancelar-membresia" });
+			// }
+		},
         async getPlans() {
             this.$store.commit('loader', true);
             try {

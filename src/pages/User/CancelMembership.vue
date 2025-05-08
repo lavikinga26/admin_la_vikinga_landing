@@ -39,7 +39,7 @@
 			<v-col
 				cols="12"
 				md="12"
-				class="d-none d-md-flex d-sm-none"
+				class="d-md-flex"
 				style="position: relative;"
 			>
 				<v-card
@@ -52,10 +52,9 @@
 							Espera, tenemos algo para ofrecerte
 						</h1>
 						<p
-							class="align-center"
-							style="text-align:center; font-size: 14px; padding: 40px 100px 10px 100px;"
+							class="align-center textretencion"
 						>
-							Eres muy valiosa para nosotros y nos gustaria ofrecerte una oferta
+							Eres muy valiosa para nosotros y nos gustaría ofrecerte una oferta
 							especial para que te quedes entrenando en el desafío, ¿Qué te
 							parece?
 						</p>
@@ -67,20 +66,19 @@
 							Desafío Plus
 						</h1>
 						<p
-							class="align-center"
-							style="text-align:center; font-size: 14px; margin: 2% 360px; color: #6D6D6D; background: rgba(68,189,94, 0.15); border-radius: 20px; padding: 10px;"
+							class="align-center inforetencion"
 						>
 							<span style="color: #44BD5E; font-weight: bold;"
-								>S/ {{ plan.precio_soles_ret }}</span
+								>S/ {{ plan_act.monto_retencion_pen }}</span
 							>
-							en vez de <s>S/ {{ plan.precio_soles }}</s> para los próximos
-							{{ plan.cant_cobros_retencion }} meses.
+							en vez de <s>S/ {{ plan_act.prices[0].amount }}</s> para los próximos
+							{{ plan_act.cant_cobros_retencion }} cobros.
 						</p>
 						<v-row style="max-width: 500px; margin: auto;">
 							<v-col
 								cols="12"
 								md="6"
-								class="d-none d-md-flex d-sm-none"
+								class="d-md-flex"
 								style="position: relative;"
 							>
 								<v-btn
@@ -100,7 +98,7 @@
 							<v-col
 								cols="12"
 								md="6"
-								class="d-none d-md-flex d-sm-none"
+								class="d-md-flex"
 								style="position: relative;"
 							>
 								<v-btn
@@ -174,9 +172,12 @@ export default {
 			logged_user: {},
 			business_partner: [],
 			successModal: false,
+			plans: [],
+			plan_act: null
 		};
 	},
-	mounted() {
+	async mounted() {
+		await this.list();
 		this.getPartnerData().then((res) => {
 			console.log(res);
 		});
@@ -190,7 +191,7 @@ export default {
 				// TODO: Reload pla
 				this.dialogConfirmCancel = true;
 				// this.model2 = true;
-			}, 1000);
+			}, 500);
 			this.$store.commit("loader", false);
 		},
 		async getLoggedUser() {
@@ -216,7 +217,17 @@ export default {
 				this.user = response.data;
 				this.plan = this.user.plans.pop();
 				this.exp_date_pop = this.plan.expiration_date;
-				console.log(this.plan);
+				var planuser = this.plan.id_plan;
+
+				for (const plan of this.plans){
+					if(plan.id == planuser){
+						this.plan_act = plan;
+						console.log(plan);
+						console.log("ACRTUL");
+						console.log(this.plan_act);
+					}
+				}
+
 				this.$store.commit("loader", false);
 			} catch (e) {
 				this.$store.commit("loader", false);
@@ -256,9 +267,9 @@ export default {
 					renew_auto: true,
 					user_id: this.logged_user.id,
 					subscription_id: this.plan.id_suscripcion,
-					currency: 1, // this.currency_id === 0 ? "PEN" : "USD",
-					retention_amount: this.plan.precio_soles_ret, // Monto total del nuevo plan
-					total_retention_charges: this.plan.cant_cobros_retencion,
+					currency: "PEN", // this.currency_id === 0 ? "PEN" : "USD",
+					retention_amount: this.plan_act.monto_retencion_pen, // Monto total del nuevo plan
+					total_retention_charges: this.plan_act.cant_cobros_retencion,
 				};
 				await this.$API.business_partner.updatePlan(payload);
 				this.$store.commit("loader", false);
@@ -271,7 +282,22 @@ export default {
 		},
 		closeConfirm() {
 			this.successModal = false;
-			this.$router.push({ path: "/cuenta/mis-ordenes#mis-planes" });
+			this.$router.push({ path: "/cuenta/mi-perfil#tabs-info-membresia" });
+		},
+		async list() {
+			let vm = this;
+			vm.$store.commit("loader", true);
+
+			try {
+				const data = await this.$API.plans.list();
+
+				vm.plans = data.data.data;
+				
+				vm.$store.commit("loader", false);
+			} catch (e) {
+				console.error(e);
+				vm.$store.commit("loader", false);
+			}
 		},
 	},
 };
@@ -430,6 +456,40 @@ hr {
 .button.dark:hover {
 	background-color: #09152e;
 }
+
+.inforetencion{
+	text-align:center;
+	font-size: 14px;
+	margin: 2% 360px;
+	color: #6D6D6D;
+	background: rgba(68,189,94, 0.15);
+	border-radius: 20px;
+	padding: 10px;
+}
+
+.textretencion{
+	text-align:center;
+	font-size: 14px;
+	padding: 40px 100px 10px 100px;
+}
+
+@media (max-width: 520px) {
+    .textretencion{
+		padding: 0px!important;
+		margin-top: 20px;
+	}
+
+	.inforetencion{
+		text-align:center;
+		font-size: 14px;
+		margin: 2% 10%;
+		color: #6D6D6D;
+		background: rgba(68,189,94, 0.15);
+		border-radius: 20px;
+		padding: 10px;
+	}
+}
+
 v-dialog v-dialog--active {
 	box-shadow: none !important;
 }
