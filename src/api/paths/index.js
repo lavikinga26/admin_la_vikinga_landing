@@ -136,6 +136,9 @@ export default {
         getAllOrderInfo(id){
             return callAPI('get', 'api/v1/order/getAllOrderInfo/'+id );
         }, 
+        getAllOrderInfobyId(id){
+            return callAPI('get', 'api/v1/order/getAllOrderInfobyId/'+id );
+        }, 
         getOrdersByUser(id,page){
             return callAPI('get','api/v1/order/getOrdersByUser/'+id+"?page="+page);
         }, 

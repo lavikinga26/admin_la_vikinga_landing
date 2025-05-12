@@ -32,7 +32,7 @@ export default [
 		meta: { requiresAuth: true },
 	},
 	{
-		path: "/cuenta/cancelar-membresia",
+		path: "/cuenta/cancelar-membresia/:id_order/:id_plan/:id_suscripcion",
 		component: () =>
 			import(
 				/* webpackChunkName: "apps-email-inbox" */ "../pages/User/CancelMembership.vue"

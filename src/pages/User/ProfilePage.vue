@@ -79,7 +79,7 @@
                                                 </v-icon> Cancelar
                                             </v-btn>-->
 
-                                            <v-btn @click="cancelMembership" small class="mx-2" color="error" v-if="item.renovacion_automatica == 1">
+                                            <v-btn @click="cancelMembership(item.id_order, item.id_plan, item.id_suscripcion)" small class="mx-2" color="error" v-if="item.renovacion_automatica == 1">
                                                 <v-icon dark small>
                                                 mdi-cancel
                                                 </v-icon> Cancelar
@@ -318,13 +318,9 @@ export default {
         document.head.appendChild(paymeScript);
     },
     methods: {
-        cancelMembership() {
-			// if(this.hasActiveRetention){
-			// eliminar
-			// }
-			// else{
-			this.$router.push({ path: "/cuenta/cancelar-membresia" });
-			// }
+        cancelMembership(id_order, id_plan, id_suscripcion) {
+			//console.log(id_suscription);
+			this.$router.push({ path: "/cuenta/cancelar-membresia/"+id_order+"/"+id_plan+"/"+id_suscripcion });
 		},
         async getPlans() {
             this.$store.commit('loader', true);

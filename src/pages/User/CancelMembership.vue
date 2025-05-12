@@ -67,11 +67,22 @@
 						</h1>
 						<p
 							class="align-center inforetencion"
+							v-if="id_currency==1"
 						>
 							<span style="color: #44BD5E; font-weight: bold;"
 								>S/ {{ plan_act.monto_retencion_pen }}</span
 							>
 							en vez de <s>S/ {{ plan_act.prices[0].amount }}</s> para los próximos
+							{{ plan_act.cant_cobros_retencion }} cobros.
+						</p>
+						<p
+							class="align-center inforetencion"
+							v-if="id_currency==2"
+						>
+							<span style="color: #44BD5E; font-weight: bold;"
+								>$ {{ plan_act.monto_retencion_usd }}</span
+							>
+							en vez de <s>$ {{ plan_act.prices[1].amount }}</s> para los próximos
 							{{ plan_act.cant_cobros_retencion }} cobros.
 						</p>
 						<v-row style="max-width: 500px; margin: auto;">
@@ -139,15 +150,15 @@
 			<v-card>
 				<v-card-text>
 					<div class="pt-8">
-						<h2 class="congrats">¡FELICIDADES!</h2>
+						<h2 class="congrats">¡Genial, Vikinga!</h2>
 					</div>
-					<p class="message">
-						Has adquirido un nuevo plan de retención por
-						<strong>S/ {{ plan.precio_soles_ret }}</strong
-						>, que estará vigente durante
-						{{ plan.cant_cobros_retencion }} meses. Gracias por seguir confiando
-						en nosotros. Seguiremos trabajando para ofrecerte el mejor servicio
-						posible.
+					<p class="message" v-if="id_currency==1">
+						Renovamos tu plan con un descuento especial, pagarás <strong>S/ {{ plan_act.monto_retencion_pen }}</strong
+							> los próximos {{ plan.cant_cobros_retencion }} cobros. Gracias por seguir confiando en nosotros.
+					</p>
+					<p class="message" v-if="id_currency==2">
+						Renovamos tu plan con un descuento especial, pagarás <strong>$ {{ plan_act.monto_retencion_usd }}</strong
+							> los próximos {{ plan.cant_cobros_retencion }} cobros. Gracias por seguir confiando en nosotros.
 					</p>
 					<button class="button dark" @click="closeConfirm">FINALIZAR</button>
 				</v-card-text>
@@ -173,20 +184,30 @@ export default {
 			business_partner: [],
 			successModal: false,
 			plans: [],
-			plan_act: null
+			plan_act: null,
+			id_order: null,
+			id_plan: null,
+			id_suscripcion: null,
+			id_currency: 1
 		};
 	},
 	async mounted() {
 		await this.list();
+		this.id_order = this.$route.params.id_order;
+		this.id_plan = this.$route.params.id_plan;
+		this.id_suscripcion = this.$route.params.id_suscripcion;
+		await this.obtener_orden(this.id_order);
 		this.getPartnerData().then((res) => {
 			console.log(res);
 		});
 
 		this.getLoggedUser();
+		
 	},
 	methods: {
 		beneficioPopup() {
 			this.$store.commit("loader", true);
+			
 			setTimeout(() => {
 				// TODO: Reload pla
 				this.dialogConfirmCancel = true;
@@ -210,6 +231,18 @@ export default {
 			}
 			this.$store.commit("loader", false);
 		},
+		async obtener_orden(id_order){
+			this.$store.commit("loader", true);
+			try {
+				const response = await this.$API.order.getAllOrderInfobyId(id_order);
+				var order = response.data.data.order;
+				this.id_currency = order.id_currency;
+			}
+            catch (e) {
+                console.error(e);
+            }
+			this.$store.commit("loader", false);
+		},
 		async getPartnerData(id) {
 			this.$store.commit("loader", true);
 			try {
@@ -220,11 +253,8 @@ export default {
 				var planuser = this.plan.id_plan;
 
 				for (const plan of this.plans){
-					if(plan.id == planuser){
+					if(plan.id == this.id_plan){
 						this.plan_act = plan;
-						console.log(plan);
-						console.log("ACRTUL");
-						console.log(this.plan_act);
 					}
 				}
 
@@ -267,8 +297,8 @@ export default {
 					renew_auto: true,
 					user_id: this.logged_user.id,
 					subscription_id: this.plan.id_suscripcion,
-					currency: "PEN", // this.currency_id === 0 ? "PEN" : "USD",
-					retention_amount: this.plan_act.monto_retencion_pen, // Monto total del nuevo plan
+					currency: this.id_currency === 1 ? "PEN" : "USD", // this.currency_id === 0 ? "PEN" : "USD",
+					retention_amount: this.id_currency === 1 ? this.plan_act.monto_retencion_pen:this.plan_act.monto_retencion_usd, // Monto total del nuevo plan
 					total_retention_charges: this.plan_act.cant_cobros_retencion,
 				};
 				await this.$API.business_partner.updatePlan(payload);
