@@ -183,6 +183,16 @@ export default {
 				data: data,
 			});
 		},
+		extendPlan(data) {
+			return callAuthAPI("post", "api/v1/subscription/extend-plan", {
+				data: data,
+			});
+		},
+		extendTrialPlan(data) {
+			return callAuthAPI("post", "api/v1/subscription/extend-trial", {
+				data: data,
+			});
+		},
 	},
 	rating: {
 		saveRating(data) {
