@@ -40,7 +40,7 @@ export default [
 		meta: { requiresAuth: true, template: "SidebarTemplate" },
 	},
 	{
-		path: "/cuenta/extender-prueba",
+		path: "/cuenta/extender-prueba/:id_order/:id_plan",
 		component: () =>
 			import(
 				/* webpackChunkName: "apps-email-inbox" */ "../pages/User/ExtenderTrial.vue"
@@ -48,7 +48,7 @@ export default [
 		meta: { requiresAuth: true, template: "SidebarTemplate" },
 	},
 	{
-		path: "/cuenta/elegir-plan",
+		path: "/cuenta/elegir-plan/:id_plan",
 		component: () =>
 			import(
 				/* webpackChunkName: "apps-email-inbox" */ "../pages/User/ChoosePlan.vue"

@@ -183,6 +183,11 @@ export default {
 				data: data,
 			});
 		},
+		extendPlan(data) {
+			return callAuthAPI("post", "api/v1/subscription/extend-plan", {
+				data: data,
+			});
+		},
 	},
 	rating: {
 		saveRating(data) {

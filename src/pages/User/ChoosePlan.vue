@@ -115,13 +115,6 @@
 									</div>
 									<div class="">
 										<p
-											class="text--primary mb-1 font-weight-bold"
-											style="font-size: 12px;"
-										>
-											Paga {{ !currency ? "S/" : "$" }}
-											{{ getTotalPrice(lastPlan) }} cada mes
-										</p>
-										<p
 											class="text--primary"
 											style="font-size: 12px; line-height: 14px;"
 										>
@@ -244,14 +237,6 @@
 
 										<div class="">
 											<p
-												class="text--primary mb-1 font-weight-bold"
-												style="font-size: 12px;"
-											>
-												Paga {{ !currency ? "S/" : "$" }}
-												{{ getTotalPrice(lastPlan) }} cada
-												{{ lastPlan.cant_cobros_retencion }} meses
-											</p>
-											<p
 												class="text--primary"
 												style="font-size: 12px; line-height: 14px;"
 											>
@@ -307,21 +292,27 @@
 				</v-slide-item>
 			</template>
 		</v-row>
-		<v-dialog v-model="dialogConfirmCancel"  max-width="500px" >
+		<v-dialog v-model="dialogConfirmCancel" max-width="500px">
 			<v-card>
 				<v-card-title>Actualizar Plan</v-card-title>
 				<v-card-text>
-					Estas a punto de actualizar tu plan. Luego del {{ exp_date_pop | formatDate }} se realizara el nuevo cobro del plan seleccionado.
-					<br/>
+					Estas a punto de actualizar tu plan. Luego del
+					{{ exp_date_pop | formatDate }} se realizara el nuevo cobro del plan
+					seleccionado.
+					<br />
 					¿Estás seguro?
 				</v-card-text>
 				<v-card-actions>
-					<v-btn color="error" @click="dialogConfirmCancel = false">Cancelar</v-btn>
-					<v-btn color="success" @click="updatePlanAndRetention"> Continuar</v-btn>
+					<v-btn color="error" @click="dialogConfirmCancel = false"
+						>Cancelar</v-btn
+					>
+					<v-btn color="success" @click="updatePlanAndRetention">
+						Continuar</v-btn
+					>
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
-		<v-dialog v-model="model2"  max-width="500px" >
+		<v-dialog v-model="model2" max-width="500px">
 			<v-card>
 				<v-card-text>
 					<div class="pt-8">
@@ -329,8 +320,9 @@
 					</div>
 					<p class="message">
 						Tu plan ha sido actualizado con éxito, el próximo cobro se realizará
-						el día <strong>25/05/2025</strong> por un monto de
-						<strong>S/75</strong> correspondiente al plan anual.
+						el día
+						<strong>{{ exp_date_pop | formatDate }}</strong> por el plan
+						seleccionado.
 					</p>
 					<button class="button dark" @click="closeConfirm">FINALIZAR</button>
 				</v-card-text>
@@ -351,10 +343,12 @@
 <script>
 export default {
 	data: (e) => ({
+		id_plan: null,
 		model: null,
 		pq: null,
 		model2: false,
 		plans: [],
+		usrplans: { expiration_date: "" },
 		base_url: "",
 		data_config: {},
 		periodicidad: null,
@@ -378,10 +372,12 @@ export default {
 		lastPlan: {},
 		dialogConfirmCancel: false,
 		exp_date_pop: null,
-		plan: {}
+		plan: {},
+		selectedPlan: {},
 	}),
 	async mounted() {
 		let vm = this;
+		this.id_plan = this.$route.params.id_plan;
 		vm.pq = localStorage.getItem("paquete_seleccionado");
 		vm.ref_code = localStorage.getItem("ref_code");
 		vm.slug = this.$route.params.slug;
@@ -402,7 +398,6 @@ export default {
 	methods: {
 		updCurrency() {
 			this.currency_id = !this.currency ? 0 : 1;
-			console.log(this.currency_id);
 		},
 		async getLoggedUser() {
 			this.$store.commit("loader", true);
@@ -433,12 +428,7 @@ export default {
 			this.$store.commit("loader", false);
 		},
 		checkPlan() {
-			var itemv = this.plans.find(
-				(element) =>
-					element.code == localStorage.getItem("paquete_seleccionado")
-			);
-			console.log("PLAN " + itemv);
-			localStorage.removeItem("planSeleccionado");
+			var itemv = this.lastPlan;
 			var selectedCurrency =
 				this.currency == false ? itemv.prices[0] : itemv.prices[1];
 			let item = {
@@ -560,7 +550,6 @@ export default {
 					} else {
 						this.currency = true;
 						this.currency_id = 1;
-						console.log(this.currency_id);
 					}
 				}
 			} catch (e) {
@@ -587,24 +576,12 @@ export default {
 				vm.plans = data.data.data;
 				vm.temp_plans = data.data.data;
 
-				// Agregar el último plan como primer elemento
-				const lastPlan = this.business_partner.plans.pop();
-				vm.lastPlan = lastPlan;
-
-				// if (lastPlan) {
-				// 	vm.plans.unshift(lastPlan);
-				// }
-
-				let activeplans = vm.plans.filter(
-					(pl) => pl.active == 1 && pl.status == 1
+				this.lastPlan = this.business_partner.plans.find(
+					(plan) => plan.id == this.id_plan
 				);
 
-				// if (activeplans.length <= 2) {
-				// 	vm.centrarPlanes = true;
-				// }
+				console.log("lastPlan", this.business_partner.plans);
 				vm.centrarPlanes = true;
-				console.log("vm.plans", vm.plans);
-				vm.checkPlan();
 				vm.$store.commit("loader", false);
 			} catch (e) {
 				console.error(e);
@@ -615,9 +592,10 @@ export default {
 			this.$store.commit("loader", true);
 			setTimeout(() => {
 				// TODO: Reload pla
+				this.selectedPlan = itemv;
 				this.dialogConfirmCancel = true;
 				// this.model2 = true;
-			}, 1000); 
+			}, 1000);
 			this.$store.commit("loader", false);
 		},
 		async getIpData() {
@@ -654,51 +632,46 @@ export default {
 			}
 		},
 		async getPartnerData(id) {
-			this.$store.commit('loader',true);
+			this.$store.commit("loader", true);
 			try {
 				const response = await this.$API.auth.auth(id);
 				const user = response.data;
-				this.plan = user.plans.pop();
-
+				this.usrplans = user.plans.find((plan) => plan.id_plan == this.id_plan);
+				this.plan = this.usrplans;
 				this.del_id_susc = this.plan.id_suscripcion;
 				this.exp_date_pop = this.plan.expiration_date;
 
-				this.$store.commit('loader',false);
+				this.$store.commit("loader", false);
 			} catch (e) {
-				this.$store.commit('loader',false);
+				this.$store.commit("loader", false);
 				console.error(e);
 			}
-    	},
+		},
 		async updatePlanAndRetention() {
-			this.$store.commit('loader', true);
+			this.$store.commit("loader", true);
 			try {
 				const payload = {
-					id_partner: this.business_partner.id,
-					new_plan_id: this.plan.id,
-					next_renew_date: this.exp_date_pop, 
-					renew_auto: true, 
 					user_id: this.logged_user.id,
 					subscription_id: this.del_id_susc,
-					currency: this.currency_id === 0 ? 'PEN' : 'USD',
-					retention_amount: this.getTotalPrice(this.plan), // Monto total del nuevo plan
-					total_retention_charges: this.plan.cant_cobros_retencion,
+					plan_id: this.selectedPlan.id,
+					currency_id: this.currency_id,
+					amount: this.getTotalPrice(this.selectedPlan),
 				};
-
 				// await this.$axios.post('/api/subscription/plan/update', payload);
-				await  this.$API.business_partner.updatePlan(payload);
+				await this.$API.business_partner.extendPlan(payload);
 				this.dialogConfirmCancel = false;
 				this.model2 = true;
 			} catch (error) {
-				console.error('Error al actualizar el plan:', error);
-				this.$toast.error('No se pudo actualizar el plan');
+				console.error("Error al actualizar el plan:", error);
+				this.$toast.error("No se pudo actualizar el plan");
 			} finally {
-				this.$store.commit('loader', false);
+				this.$store.commit("loader", false);
 			}
 		},
-		closeConfirm(){
+		closeConfirm() {
 			this.model2 = false;
-			this.$router.push({ path: "/cuenta" });
-		}
+			this.$router.push({ path: "/cuenta/mi-perfil" });
+		},
 	},
 };
 </script>
@@ -789,7 +762,6 @@ input[type="checkbox"]:checked + .switch-label .switch-text-off {
 	color: #0a2240; /* Color del texto ON */
 }
 </style>
-
 
 <style scoped>
 .card-container {
@@ -936,7 +908,7 @@ input[type="checkbox"]:checked + .switch-label .switch-text-off {
 .button.dark:hover {
 	background-color: #09152e;
 }
-v-dialog v-dialog--active{
+v-dialog v-dialog--active {
 	box-shadow: none !important;
 }
 </style>
