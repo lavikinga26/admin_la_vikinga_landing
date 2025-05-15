@@ -312,7 +312,7 @@ export default {
 		},
 		closeConfirm() {
 			this.successModal = false;
-			this.$router.push({ path: "/cuenta/mi-perfil#tabs-info-membresia" });
+			this.$router.push({ path: "/gym-virtual/agenda" });
 		},
 		async list() {
 			let vm = this;

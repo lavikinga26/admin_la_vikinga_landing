@@ -106,7 +106,7 @@
             <!-- CONTENIDO PASO 1 -->
             <v-stepper-items class="pa-4" style="height: 100%;">
               <v-stepper-content step="1">
-                <div class="pa-4">
+                <div class="pa-4" v-if="allow_reffer==true">
                   <img
                     src="@/assets/img/referidos_icon.png"
                     alt="Imagen Login"
@@ -156,7 +156,8 @@ export default {
       dataIP: null,
       plans: [],
       temp_plans: [],
-      max_discount: 0
+      max_discount: 0,
+      allow_reffer: true
     };
   },
   async mounted() {
