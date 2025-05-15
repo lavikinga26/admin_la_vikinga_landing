@@ -188,6 +188,11 @@ export default {
 				data: data,
 			});
 		},
+		extendTrialPlan(data) {
+			return callAuthAPI("post", "api/v1/subscription/extend-trial", {
+				data: data,
+			});
+		},
 	},
 	rating: {
 		saveRating(data) {

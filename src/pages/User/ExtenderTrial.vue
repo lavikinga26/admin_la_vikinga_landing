@@ -76,9 +76,9 @@
 				<div class="confirmation-card">
 					<h2 class="congrats">¡SIGUE DISFRUTANDO!</h2>
 					<p class="message">
-						Has obtenido 7 días más de prueba!
+						Has extendido más dias de prueba!
 					</p>
-					<button class="button dark" to="/gym-virtual/agenda">
+					<button class="button dark" to="/cuenta/mi-perfil">
 						FINALIZAR
 					</button>
 				</div>
@@ -114,8 +114,22 @@ export default {
 			// this.$route('/cuenta/elegir-plan')
 			this.$router.push({ path: "/cuenta/elegir-plan/" + this.id_plan });
 		},
-		goToExtensionConfirmation() {
-			this.view = "confirmation-extension";
+		async goToExtensionConfirmation() {
+			this.$store.commit("loader", true);
+			try {
+				const payload = {
+					user_id: this.user.id,
+					subscription_id: this.plan_act.id_suscripcion,
+					plan_id: this.id_plan,
+				};
+				await this.$API.business_partner.extendTrialPlan(payload);
+				this.view = "confirmation-extension";
+			} catch (error) {
+				console.error("Error al actualizar el plan:", error);
+				this.$toast.error("No se pudo actualizar el plan");
+			} finally {
+				this.$store.commit("loader", false);
+			}
 		},
 		async obtener_orden(id_order) {
 			this.$store.commit("loader", true);
