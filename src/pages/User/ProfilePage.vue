@@ -113,7 +113,7 @@
 															<v-icon dark small>
 																mdi-cancel
 															</v-icon>
-															Cancelar
+															Cancelar Plan
 														</v-btn>
 
 														<v-btn

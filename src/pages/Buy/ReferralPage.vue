@@ -123,6 +123,16 @@
                     <v-btn block class="ma-0 secondary white--text" @click="nextStep">CONTINUAR</v-btn>
                   </v-card>
                 </div>
+
+                <div class="pa-4" v-if="allow_reffer==false">
+                  <img
+                    src="@/assets/img/referidos_icon.png"
+                    alt="Imagen Login"
+                    style=""
+                  />
+                  <h2 class="tit_h3_team_blue" style="margin-bottom: 10px;">Ups! Ya tienes un plan activo o has sido referido hace poco!</h2>
+
+                </div>
               </v-stepper-content>
 
             </v-stepper-items>
@@ -195,6 +205,18 @@ export default {
 					this.id_level = this.business_partner.id_level;
 					localStorage.emailRegistro = this.logged_user.email;
           this.usuario_logeado = true;
+
+          var userPlans = this.business_partner.plans;
+          let fecha_actual = new Date();
+          userPlans.map(function (item) {
+              let init_d = new Date(item.init_date);
+              let end_d = new Date(item.expiration_date);
+
+              if(fecha_actual <= new Date(item.expiration_date)){
+                  this.allow_reffer = false;
+              }
+          });
+
 				}else{
           this.usuario_logeado = false;
         }
@@ -262,6 +284,10 @@ export default {
         });
 
         vm.max_discount = dscto;
+
+        if(this.referralname.toUpperCase() == this.business_partner.name.toUpperCase()){
+          this.allow_reffer = false;
+        }
 			
 				vm.$store.commit("loader", false);
 			} catch (e) {

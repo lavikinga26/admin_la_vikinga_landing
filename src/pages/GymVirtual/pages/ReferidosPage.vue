@@ -49,7 +49,7 @@
               </thead>
               <tbody>
                 <tr v-for="(user, index) in referrals" :key="index">
-                  <td class="d-block d-sm-table-cell">19/12/2024</td>
+                  <td class="d-block d-sm-table-cell">{{ user.created_at | formatDate }}</td>
                   <td class="user-info d-block d-sm-table-cell">
                     <img src="https://placehold.co/40" alt="Foto de usuario" />
                     {{ user.referred.name }}
