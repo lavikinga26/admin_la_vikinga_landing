@@ -43,25 +43,6 @@
 						@click="choosePlan(item)"
 						elevation="0"
 					>
-						<v-badge
-							v-if="
-								(lastPlan.prices[currency_id].old_amount != '0.00' &&
-									lastPlan.prices[currency_id].old_amount != '0' &&
-									ref_code == null) ||
-									((lastPlan.referred_discount_pen != '0.00' ||
-										lastPlan.referred_discount_usd != '0.00') &&
-										ref_code != null)
-							"
-							color="#E7004C"
-							class="badge_pink"
-							:content="
-								`${getDiscount(
-									lastPlan.prices,
-									lastPlan.referred_discount_pen,
-									lastPlan.referred_discount_usd
-								)}`
-							"
-						></v-badge>
 						<v-card-text max-height="300">
 							<div class="item">
 								<div class="blog-entry">
@@ -164,25 +145,6 @@
 							@click="choosePlan(item)"
 							elevation="0"
 						>
-							<v-badge
-								v-if="
-									(item.prices[currency_id].old_amount != '0.00' &&
-										item.prices[currency_id].old_amount != '0' &&
-										ref_code == null) ||
-										((item.referred_discount_pen != '0.00' ||
-											item.referred_discount_usd != '0.00') &&
-											ref_code != null)
-								"
-								color="#E7004C"
-								class="badge_pink"
-								:content="
-									`${getDiscount(
-										item.prices,
-										item.referred_discount_pen,
-										item.referred_discount_usd
-									)}`
-								"
-							></v-badge>
 							<v-card-text max-height="300">
 								<div class="item">
 									<div class="blog-entry">
@@ -199,18 +161,13 @@
 											</p>
 											<p>
 												<strike
-													v-if="
-														(item.prices[currency_id].old_amount != '0.00' &&
-															item.prices[currency_id].old_amount != '0') ||
-															(ref_code != null && ref_code != undefined)
-													"
 													:class="
 														item.is_outstanding == 1
 															? 'price_strike_light mr-3'
 															: 'price_strike_dark mr-3'
 													"
 													>{{
-														getOldPrice(
+														getPrice(
 															item.prices,
 															item.referred_discount_pen,
 															item.referred_discount_usd
@@ -223,15 +180,25 @@
 															: 'text_plan_price_blue mb-2'
 													"
 													>{{ !currency ? "S/" : "$" }}
-													{{
-														getPrice(
-															item.prices,
-															item.referred_discount_pen,
-															item.referred_discount_usd,
-															item
-														)
-													}}</span
+													{{ getUpgradeDifference(item.prices) }}</span
 												>
+											</p>
+											<p
+												class="text--primary font-weight-bold"
+												style="font-size: 12px; line-height: 18px;"
+											>
+												Pagarás {{ !currency ? "S/" : "$" }}
+												{{ getUpgradeDifference(item.prices) }} por mejorar tu
+												plan luego el pago sera de
+												{{ !currency ? "S/" : "$" }}
+												{{
+													getPrice(
+														item.prices,
+														item.referred_discount_pen,
+														item.referred_discount_usd,
+														item
+													)
+												}}
 											</p>
 										</div>
 
@@ -266,7 +233,7 @@
 													: 'my-2 rounded-lg fb-btn btn_blue_white'
 											"
 											style="padding:0.7em 0px!important;"
-											@click="choosePlan(item)"
+											@click="goToPaymentPage(item)"
 											v-if="data_config.allow_sale && item.allow_sale"
 										>
 											ACTUALIZAR PLAN
@@ -279,7 +246,7 @@
 													: 'my-2 rounded-lg fb-btn btn_blue_white'
 											"
 											style="padding:0.7em 0px!important;"
-											@click="choosePlan(item)"
+											@click="goToPaymentPage(item)"
 											v-if="!data_config.allow_sale && item.allow_sale"
 										>
 											ACTUALIZAR PLAN
@@ -466,48 +433,30 @@ export default {
 		getPrice(prices, dsc_pen, dsc_usd, item) {
 			const currencyType = !this.currency ? "soles" : "dolar";
 
-			const price = {};
-			price.amount =
-				this.currency == "soles"
-					? item.monto_retencion_pen
-					: item.monto_retencion_usd;
-
-			if (this.ref_code != null && this.ref_code != undefined) {
-				return price
-					? this.calcDiscountReferred(price.amount, dsc_pen, dsc_usd)
-					: null;
-			} else {
-				return price ? price.amount : null;
-			}
-		},
-		getDiscount(prices, dsc_pen, dsc_usd) {
-			const currencyType = !this.currency ? "soles" : "dolar";
-			const currencySymbol = !this.currency ? "S/ " : "$ ";
-			const currid = currencyType == "soles" ? 1 : 2;
-
 			const price = prices[this.currency_id];
-			const finalAmount = price.old_amount - price.amount;
 
-			if (this.ref_code != null && this.ref_code != undefined) {
-				let precioCalcDsct =
-					price.old_amount != "0" && price.old_amount != "0.00"
-						? price.old_amount
-						: price.amount;
-				const finalAmount = this.calcDiscountReferred(
-					precioCalcDsct,
-					dsc_pen,
-					dsc_usd
-				);
-				return this.currency_id == 0
-					? "Dscto. Referido " + currencySymbol + parseFloat(dsc_pen).toFixed(2)
-					: "Dscto. Referido " +
-							currencySymbol +
-							parseFloat(dsc_usd).toFixed(2);
-			} else {
-				return price
-					? "Ahorra " + currencySymbol + parseFloat(finalAmount).toFixed(2)
-					: null;
-			}
+			return price.old_amount == "0.00" ? price.amount : price.old_amount;
+		},
+		getUpgradeDifference(newPlanPrices) {
+			const current = this.lastPlan?.prices?.[this.currency_id];
+			const next = newPlanPrices?.[this.currency_id];
+
+			if (!current || !next) return null;
+
+			// Valor actual (el que ya pagó)
+			const currentAmount = parseFloat(current.amount);
+
+			// Valor del nuevo plan (usa old_amount si aplica)
+			const newAmount =
+				parseFloat(next.old_amount) > 0
+					? parseFloat(next.old_amount)
+					: parseFloat(next.amount);
+
+			// Diferencia que tiene que pagar por la mejora
+			const diff = newAmount - currentAmount;
+
+			// Asegura que no sea negativo
+			return diff > 0 ? diff.toFixed(2) : "0.00";
 		},
 		getOldPrice(prices, dsc_pen, dsc_usd) {
 			const currencyType = !this.currency ? "soles" : "dolar";
@@ -515,11 +464,7 @@ export default {
 			const currid = currencyType == "soles" ? 1 : 2;
 
 			const price = prices[this.currency_id];
-			if (this.ref_code != null && this.ref_code != undefined) {
-				return price.amount;
-			} else {
-				return price.old_amount ? currencySymbol + price.old_amount : null;
-			}
+			return price.old_amount == "0.00" ? price.amount : price.old_amount;
 		},
 		calcDiscountReferred(price, dsc_pen, dsc_usd) {
 			if (this.currency_id == 0) {
@@ -572,15 +517,15 @@ export default {
 
 			try {
 				const data = await this.$API.plans.list();
-
-				vm.plans = data.data.data;
-				vm.temp_plans = data.data.data;
+				const allPlans = data.data.data;
 
 				this.lastPlan = this.business_partner.plans.find(
 					(plan) => plan.id == this.id_plan
 				);
 
-				console.log("lastPlan", this.business_partner.plans);
+				vm.plans = allPlans.filter((plan) => plan.id !== this.lastPlan?.id);
+				vm.temp_plans = vm.plans;
+
 				vm.centrarPlanes = true;
 				vm.$store.commit("loader", false);
 			} catch (e) {
@@ -671,6 +616,29 @@ export default {
 		closeConfirm() {
 			this.model2 = false;
 			this.$router.push({ path: "/cuenta/mi-perfil" });
+		},
+		goToPaymentPage(plan) {
+			const payload = {
+				new_plan_id: plan.id,
+				new_plan_title: plan.title,
+				new_plan_price: this.getPrice(
+					plan.prices,
+					plan.referred_discount_pen,
+					plan.referred_discount_usd,
+					plan
+				),
+				upgrade_difference: this.getUpgradeDifference(plan.prices),
+				last_plan_id: this.lastPlan?.id || null,
+				last_plan_price:
+					this.lastPlan?.prices?.[this.currency_id]?.amount || null,
+				subscription_id: this.del_id_susc,
+				currency_id: this.currency_id,
+			};
+
+			this.$router.push({
+				path: "/cuenta/pago-nuevo-plan",
+				query: payload,
+			});
 		},
 	},
 };

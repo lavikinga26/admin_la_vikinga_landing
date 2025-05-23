@@ -127,10 +127,7 @@
 															small
 															class="mx-2"
 															color="error"
-															v-if="
-																item.renovacion_automatica == 1 &&
-																	user.trial_status == 1
-															"
+															v-if="item.is_trial == 1"
 														>
 															<v-icon dark small>
 																mdi-cancel
