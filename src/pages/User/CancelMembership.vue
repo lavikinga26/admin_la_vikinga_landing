@@ -283,9 +283,15 @@ export default {
 				this.showToast("Suscripción cancelada correctamente!", "success");
 
 				this.getPartnerData(this.del_id_part);
+				this.$router.push({ path: "/cuenta/mi-perfil" });
 			} catch (e) {
 				console.error(e);
 			}
+		},
+		showToast(msg, color) {
+			this.toast.color = color;
+			this.toast.message = msg;
+			this.toast.toast = true;
 		},
 		async updatePlanAndRetention() {
 			try {

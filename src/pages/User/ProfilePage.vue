@@ -105,10 +105,7 @@
 															small
 															class="mx-2"
 															color="error"
-															v-if="
-																item.renovacion_automatica == 1 &&
-																	user.trial_status != 1
-															"
+															v-if="item.renovacion_automatica == 1"
 														>
 															<v-icon dark small>
 																mdi-cancel
@@ -116,27 +113,7 @@
 															Cancelar Plan
 														</v-btn>
 
-														<v-btn
-															@click="
-																cancelTrial(
-																	item.id_order,
-																	item.id_plan,
-																	item.id_suscripcion
-																)
-															"
-															small
-															class="mx-2"
-															color="error"
-															v-if="
-																item.renovacion_automatica == 1 &&
-																	user.trial_status == 1
-															"
-														>
-															<v-icon dark small>
-																mdi-cancel
-															</v-icon>
-															Cancelar Trial
-														</v-btn>
+											
 
 														<v-btn
 															@click="
