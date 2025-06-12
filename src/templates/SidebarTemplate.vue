@@ -59,14 +59,6 @@
                     </v-list-item-icon>
                     <v-list-item-title :class="currentRoute == '/gym-virtual/recursos' ? 'font_menu_active' : 'font_menu'">Recursos</v-list-item-title>
                 </v-list-item>
-                <v-list-item link to="/gym-virtual/retos">
-                    <v-list-item-icon>
-                        <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M11.2327 10.8269C11.0762 7.66218 13.0177 5.56453 13.0177 5.56453C12.2311 5.16826 11.6915 4.35273 11.6915 3.41007C11.6915 2.07926 12.7681 1 14.0957 1C15.4233 1 16.5 2.07926 16.5 3.41007C16.5 3.73331 16.4636 4.09712 16.2571 4.60834C16.2571 4.60834 17.2124 8.5237 14.8459 13.9957C14.6179 14.5218 14.1875 14.9465 13.6451 15.1304C12.841 15.4023 12.0625 15.1629 11.597 14.887C8.21864 14.9208 7.09611 13.4345 6.77095 12.7947C6.68865 12.6338 6.51055 12.5513 6.33516 12.5892C5.97088 12.6649 5.58905 12.6906 5.19509 12.6609C3.22526 12.508 1.63996 10.9 1.50909 8.92267C1.35393 6.57481 3.20637 4.62322 5.51485 4.62322C7.41586 4.62322 9.25077 6.08117 9.50577 8.05304L11.4837 8.48583" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </v-list-item-icon>
-                    <v-list-item-title :class="currentRoute == '/gym-virtual/retos' ? 'font_menu_active' : 'font_menu'">Retos</v-list-item-title>
-                </v-list-item>
                 <v-list-item link to="/gym-virtual/referidos">
                     <v-list-item-icon>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
