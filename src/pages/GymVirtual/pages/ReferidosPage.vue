@@ -1,6 +1,14 @@
 <template>
   <div>
-    <v-container class="mb-5">
+    <v-container class="mb-5" v-if="has_active_plan === false">
+        <v-row class="text-center">
+            <v-col cols="12" v-if="show_message_plan === true">
+                <h1 class="text-center text_box_title" style="margin-top: 10%;">Ups! No cuentas con ningún plan activo!</h1>
+                <v-btn class="text_btn_white_title mt-5" color="secondary" @click="gohome">Renovar/adquirir plan</v-btn>
+            </v-col>
+        </v-row>
+    </v-container>
+    <v-container class="mb-5" v-if="has_active_plan === true">
       <h2 class="text_box_title mb-2">Refiere y gana</h2>
       <v-card class="pa-5" color="transparent" style="border: 2px solid #293E58!important; border-radius: 16px;">
       <!-- Sección de Referir -->
@@ -105,6 +113,8 @@ export default {
       ],
       totalDays: 0,
       totalReferals: 0,
+      has_active_plan: false,
+      show_message_plan: false,
       referrals: [
         { date: '13/10/2024', user: 'Melissa Zeballos', reward: '15 días gratis' },
         { date: '11/10/2024', user: 'Renzo Gálvez', reward: '15 días gratis' },
@@ -118,6 +128,28 @@ export default {
     };
   },
   methods: {
+    async auth() {
+      let vm = this;
+      try {
+          const response = await this.$API.auth.auth();
+          this.user = response.data;
+          if (this.user.id_level != null) {
+              this.id_level = this.user.id_level;
+          }
+          let fecha_actual = new Date();
+          this.userPlans = response.data.plans;
+          this.userPlans.map(function (item) {
+              if(fecha_actual <= new Date(item.expiration_date) && vm.has_active_plan == false){
+                  vm.has_active_plan = true;
+              }
+          });
+          vm.show_message_plan = vm.has_active_plan === true ? false:true;
+      } catch (e) {
+          localStorage.removeItem('user_data');
+          localStorage.removeItem('token');
+          window.location.replace('/auth/iniciar-sesion');
+      }
+  },
     async generateCode() {
       const response = await this.$API.referral.getReferralCode();
       this.code = response.data.code;
@@ -143,6 +175,7 @@ export default {
     this.generateCode()
     this.loadReferrals();
     this.loadRanking();
+    this.auth();
   },
 }
 </script>

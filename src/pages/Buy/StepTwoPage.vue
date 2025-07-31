@@ -653,7 +653,7 @@ export default {
 				dias_trial: this.trial_status == true ? itemv.dias_trial : 0,
 				currency_id: selectedCurrency.currency_id,
 				ref_code: this.ref_code,
-				ref_discount: ref_dscto
+				ref_discount: parseFloat(ref_dscto).toFixed(2)
 			};
 			localStorage.planSeleccionado = JSON.stringify(item);
 			this.$store.dispatch("addItem", item);

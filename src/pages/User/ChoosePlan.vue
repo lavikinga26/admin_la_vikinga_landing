@@ -38,7 +38,7 @@
 								: 'card-outter gray_card_border'
 						"
 						class="rounded-lg d-flex flex-column"
-						height="580"
+						height="650"
 						width="270"
 						@click="choosePlan(item)"
 						elevation="0"
@@ -140,12 +140,12 @@
 									: 'card-outter white_card_border'
 							"
 							class="rounded-lg d-flex flex-column"
-							height="580"
+							height="650"
 							width="270"
 							@click="choosePlan(item)"
 							elevation="0"
 						>
-							<v-card-text max-height="300">
+							<v-card-text max-height="450">
 								<div class="item">
 									<div class="blog-entry">
 										<div class="mt-4 mb-4">
@@ -189,7 +189,7 @@
 											>
 												Pagarás {{ !currency ? "S/" : "$" }}
 												{{ getUpgradeDifference(item.prices) }} por mejorar tu
-												plan luego el pago sera de
+												plan, el próximo cobro será de
 												{{ !currency ? "S/" : "$" }}
 												{{
 													getPrice(

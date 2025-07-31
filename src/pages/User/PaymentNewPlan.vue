@@ -229,7 +229,16 @@ export default {
 		async getPaymentMethods() {
 			try {
 				const response = await this.$API.configuration.getPaymentMethods();
+				var paymentMethods = response.data.data;
 				this.paymentMethods = response.data.data || [];
+				console.log("MONEDA: "+this.currencyId);
+				if (this.currencyId == 0) {
+                    paymentMethods = paymentMethods.filter((method) => method.id !== 4);
+                } else {
+                    paymentMethods = paymentMethods.filter((method) => method.id !== 1 && method.id !== 2);
+                }
+                // Asignar los métodos de pago filtrados
+                this.paymentMethods = paymentMethods;
 			} catch (e) {
 				console.error("Error al cargar métodos de pago:", e);
 			}

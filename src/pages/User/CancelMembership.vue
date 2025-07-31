@@ -164,7 +164,16 @@
 				</v-card-text>
 			</v-card>
 		</v-dialog>
+		<v-snackbar
+			v-model="toast.toast"
+			:timeout="toast.timeout"
+			:color="toast.color"
+			dark
+		>
+			{{ toast.message }}
+		</v-snackbar>
 	</v-container>
+	
 </template>
 
 <script>
@@ -177,6 +186,12 @@ export default {
 			exp_date_pop: null,
 			del_id_susc: null,
 			del_id_part: null,
+			toast: {
+				toast: false,
+				message: "",
+				timeout: 3000,
+				color: "success",
+			},
 			plan: {},
 			dialogConfirmCancel: false,
 			exp_date_pop: null,
@@ -281,11 +296,16 @@ export default {
 				);
 				this.$store.commit("loader", false);
 				this.showToast("Suscripción cancelada correctamente!", "success");
-
+				this.$router.push({ path: "/cuenta/mi-perfil#tabs-info-membresia" });
 				this.getPartnerData(this.del_id_part);
 			} catch (e) {
 				console.error(e);
 			}
+		},
+		showToast(msg, color) {
+			this.toast.color = color;
+			this.toast.message = msg;
+			this.toast.toast = true;
 		},
 		async updatePlanAndRetention() {
 			try {
