@@ -55,4 +55,12 @@ export default [
 			),
 		meta: { requiresAuth: true, template: "SidebarTemplate" },
 	},
+	{
+		path: "/cuenta/pago-nuevo-plan",
+		component: () =>
+			import(
+				/* webpackChunkName: "apps-email-inbox" */ "../pages/User/PaymentNewPlan.vue"
+			),
+		meta: { requiresAuth: true, template: "SidebarTemplate" },
+	},
 ];

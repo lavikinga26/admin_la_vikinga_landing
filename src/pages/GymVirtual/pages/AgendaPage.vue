@@ -74,7 +74,7 @@
                         cycle
                         :show-arrows="false"
                         hide-delimiters
-                        height="190px"
+                        height="220px"
                         class="rounded-xl hidden-md-and-up">
                         <v-carousel-item
                             v-for="(item,i) in banners"
@@ -90,10 +90,10 @@
                                     <v-flex xs12>
                                         <v-row align="center">
                                             <v-col cols="12" md="10" xl="10" sm="12" xs="12" align="left">
-                                                <h2 v-show="item.title != null && item.title != '' " class="display-2 font-weight-bold mb-4 white--text ml-2" style="font-family: 'MachProCondBold'!important;" id="main-title"> {{ item.title }}</h2>
-                                                <h3 v-show="item.subtitle != null && item.subtitle != '' " class="font-weight-light white--text ml-2" id="main-subtitle">
+                                                <h3 v-show="item.title != null && item.title != '' " class="display-2 font-weight-bold mb-4 white--text ml-2" style="font-family: 'MachProCondBold'!important;" id="main-title"> {{ item.title }}</h3>
+                                                <h4 v-show="item.subtitle != null && item.subtitle != '' " class="font-weight-light white--text ml-2" id="main-subtitle">
                                                 {{item.subtitle}}
-                                                </h3>
+                                                </h4>
                                             </v-col>
                                             <v-col cols="12" md="2" xl="2" sm="12" xs="12" align="center">
                                                 <v-btn
@@ -121,10 +121,11 @@
                     <h2 class="text_box_title" v-if="clases_vivo.length >0">Próxima Clase</h2>
                     <v-card :img="base_url + clases_vivo[0].path+ clases_vivo[0].filename" height="350" class="box_gym_virtual" :href="clases_vivo[0].link_class" target="_blank" v-if="clases_vivo.length > 0">
                         <v-badge
-                        color="#E7004C"
-                        :content="getDateBadge(clases_vivo[0].horarios, 'es-ES', clases_vivo[0].hour_class)"
-                        inline
-                        class="badge_pink_class"
+                            color="#E7004C"
+                            :content="getDateBadge(clases_vivo[0].horarios, 'es-ES', clases_vivo[0].hour_class)"
+                            inline
+                            class="badge_pink_class"
+                            v-if="showRutinas"
                         ></v-badge>
                         <v-sheet style="background:transparent;">
                             <v-row>
@@ -168,12 +169,15 @@
                                 <v-col cols="12" md="4" sm="12" xs="12" v-for="(item, n) in clases_vivo.slice(1)" :key="n">
                                     <v-card height="320" class="box_gym_virtual" :img="base_url + item.path + item.filename" color="#0A2240" :href="item.link_class">
                                         <v-badge
-                                        color="#E7004C"
-                                        :content="getDateBadge(item.horarios, 'es-ES', item.hour_class)"
-                                        inline
-                                        class="badge_pink_class"
+                                            color="#E7004C"
+                                            :content="getDateBadge(item.horarios, 'es-ES', item.hour_class)"
+                                            inline
+                                            class="badge_pink_class"
+                                            v-if="showRutinas"
                                         ></v-badge>
-                                        <h4 class="font_box_prox_clase card_text_bottom">{{ item.nombreclase }}</h4>
+                                        <div>
+                                            <h4 class="font_box_prox_clase card_text_bottom" style="background: white; padding: 1px;">{{ item.nombreclase }}</h4>
+                                        </div>
                                     </v-card>
                                 </v-col>
                             </v-row>
@@ -183,8 +187,18 @@
                     
                 <v-row>
                     <v-col cols="12" xs="12" sm="12" md="6" lg="6">
-                    <h2 class="text_box_title mt-4">Rutinas</h2>
-                    <v-row class="rutina_download_tab mt-2 mr-4 ml-1 mb-2" v-for="(item, n) in filtrarRutinas(downloads_list)" :key="n">
+                    <h2 v-if="showRutinas" class="text_box_title mt-4">Rutinas</h2>
+                    <v-row v-if="showRutinas" class="rutina_download_tab mt-2 mr-4 ml-1 mb-2" v-for="(item, n) in filtrarRutinas(downloads_list)" :key="n">
+                        <v-col cols="10">
+                            <a :href="'https://apiweb.lavikingaoficial.com/api/download-file/' + item.code" target="_blank" style="text-decoration: none;"><h4 class="font_rutina pt-2 pl-1">{{ item.title }}</h4></a>
+                        </v-col>
+                        <v-col cols="2">
+                            <v-btn class="white_btn text-center" prepend-icon="save" :href="'https://apiweb.lavikingaoficial.com/api/download-file/' + item.code" target="_blank" style="float:right;"><v-icon size="large">mdi-file-download-outline</v-icon></v-btn>
+                        </v-col>
+                    </v-row>
+
+                    <h2 v-if="showRutinas==false" class="text_box_title mt-4">Recursos</h2>
+                    <v-row v-if="showRutinas==false" class="rutina_download_tab mt-2 mr-4 ml-1 mb-2" v-for="(item, n) in filtrarRecursos(downloads_list)" :key="n">
                         <v-col cols="10">
                             <a :href="'https://apiweb.lavikingaoficial.com/api/download-file/' + item.code" target="_blank" style="text-decoration: none;"><h4 class="font_rutina pt-2 pl-1">{{ item.title }}</h4></a>
                         </v-col>
@@ -206,9 +220,14 @@
                                         :content="getDateBadge(clases_grabadas[0].horarios, 'es-ES', clases_grabadas[0].hour_class)"
                                         inline
                                         class="badge_pink_class"
+                                        v-if="showRutinas"
                                     ></v-badge>
-                                    <h1 class="font_box_prox_clase card_text_bottom_focus" style="padding-top: 90px!important;">{{ clases_grabadas[0].nombreclase }}</h1>
-                                    <h1 class="font_box_prox_clase_white card_text_bottom" style="padding-top: 90px!important;">{{ clases_grabadas[0].focus }}</h1>
+                                    <div>
+                                        <h1 class="font_box_prox_clase card_text_bottom_focus" style="background: white; padding: 5px; margin-bottom: 11px;">{{ clases_grabadas[0].nombreclase }}</h1>
+                                    </div>
+                                    <div>
+                                        <h1 class="font_box_prox_clase_white card_text_bottom" style="background: #e30e4f; padding: 5px;">{{ clases_grabadas[0].focus }}</h1>
+                                    </div>
                                 </v-card>
                             </v-col>
                         </v-row>
@@ -220,9 +239,14 @@
                                         :content="getDateBadge(clases_grabadas[1].horarios, 'es-ES', clases_grabadas[1].hour_class)"
                                         inline
                                         class="badge_pink_class"
+                                        v-if="showRutinas"
                                     ></v-badge>
-                                    <h1 class="font_box_prox_clase card_text_bottom_focus" style="padding-top: 90px!important;">{{ clases_grabadas[1].nombreclase }}</h1>
-                                    <h1 class="font_box_prox_clase_white card_text_bottom" style="padding-top: 90px!important;">{{ clases_grabadas[1].focus }}</h1>
+                                    <div>
+                                        <h1 class="font_box_prox_clase card_text_bottom_focus" style="background: white; padding: 5px; margin-bottom: 11px;">{{ clases_grabadas[1].nombreclase }}</h1>
+                                    </div>
+                                    <div>
+                                        <h1 class="font_box_prox_clase_white card_text_bottom" style="background: #e30e4f; padding: 5px;">{{ clases_grabadas[1].focus }}</h1>
+                                    </div>
                                 </v-card>
                             </v-col>
                             <v-col cols="12" md="4" sm="12" xs="12" v-if="clases_grabadas[0]">
@@ -232,9 +256,14 @@
                                         :content="getDateBadge(clases_grabadas[2].horarios, 'es-ES', clases_grabadas[2].hour_class)"
                                         inline
                                         class="badge_pink_class"
+                                        v-if="showRutinas"
                                     ></v-badge>
-                                    <h1 class="font_box_prox_clase card_text_bottom_focus" style="padding-top: 90px!important;">{{ clases_grabadas[2].nombreclase }}</h1>
-                                    <h1 class="font_box_prox_clase_white card_text_bottom" style="padding-top: 90px!important;">{{ clases_grabadas[2].focus }}</h1>
+                                    <div>
+                                        <h1 class="font_box_prox_clase card_text_bottom_focus" style="background: white; padding: 5px; margin-bottom: 11px;">{{ clases_grabadas[2].nombreclase }}</h1>
+                                    </div>
+                                    <div>
+                                        <h1 class="font_box_prox_clase_white card_text_bottom" style="background: #e30e4f; padding: 5px;">{{ clases_grabadas[2].focus }}</h1>
+                                    </div>
                                 </v-card>
                             </v-col>
                             <v-col cols="12" md="4" sm="12" xs="12" v-if="clases_grabadas[0]">
@@ -244,9 +273,14 @@
                                         :content="getDateBadge(clases_grabadas[3].horarios, 'es-ES', clases_grabadas[3].hour_class)"
                                         inline
                                         class="badge_pink_class"
+                                        v-if="showRutinas"
                                     ></v-badge>
-                                    <h1 class="font_box_prox_clase card_text_bottom_focus" style="padding-top: 90px!important;">{{ clases_grabadas[3].nombreclase }}</h1>
-                                    <h1 class="font_box_prox_clase_white card_text_bottom" style="padding-top: 90px!important;">{{ clases_grabadas[3].focus }}</h1>
+                                    <div>
+                                        <h1 class="font_box_prox_clase card_text_bottom_focus" style="background: white; padding: 5px; margin-bottom: 11px;">{{ clases_grabadas[3].nombreclase }}</h1>
+                                    </div>
+                                    <div>
+                                        <h1 class="font_box_prox_clase_white card_text_bottom" style="background: #e30e4f; padding: 5px;">{{ clases_grabadas[3].focus }}</h1>
+                                    </div>
                                 </v-card>
                             </v-col>
 
@@ -259,6 +293,7 @@
                                             :content="getDateBadge(clases_grabadas[1].horarios, 'es-ES', clases_grabadas[1].hour_class)"
                                             inline
                                             class="badge_pink_class"
+                                            v-if="showRutinas"
                                         ></v-badge>
                                     <h1 class="font_box_prox_clase card_text_bottom_focus" style="padding-top: 90px!important;">{{ clases_grabadas[1].nombreclase }}</h1>
                                     <h1 class="font_box_prox_clase_white card_text_bottom" style="padding-top: 90px!important;">{{ clases_grabadas[1].focus }}</h1>
@@ -271,6 +306,7 @@
                                             :content="getDateBadge(clases_grabadas[2].horarios, 'es-ES', clases_grabadas[2].hour_class)"
                                             inline
                                             class="badge_pink_class"
+                                            v-if="showRutinas"
                                         ></v-badge>
                                     <h1 class="font_box_prox_clase card_text_bottom_focus" style="padding-top: 90px!important;">{{ clases_grabadas[2].nombreclase }}</h1>
                                     <h1 class="font_box_prox_clase_white card_text_bottom" style="padding-top: 90px!important;">{{ clases_grabadas[2].focus }}</h1>
@@ -602,15 +638,16 @@ export default {
         base_url: "",
         banners: [],
         timezone: null,
-        id_timezone: 0
+        id_timezone: 0,
+        showRutinas: true
     }),
-    mounted() {
+    async mounted() {
         let vm = this;
         moment.locale('es');
         vm.$store.commit('loader', true);
         this.actual_date = new Date();
         vm.getBaseUrl();
-        vm.auth();
+        await vm.auth();
         vm.$store.commit('loader', false);
         setInterval(() => { this.startTimer() }, 1000);
         vm.getSliders();
@@ -660,8 +697,17 @@ export default {
     },
     methods: {
         async getSliders(){
+            var tmpban = [];
             let response = await this.$API.sliders.list();
-            this.banners = response.data.data;
+            var bannerslist = response.data.data;
+            var planes = this.userPlans;
+            bannerslist.forEach(function (item, index) {
+                let busPlan = planes.find(c => c.course_id == item.plan_id);
+                if(busPlan != undefined){
+                    tmpban.push(item);
+                }
+            });
+            this.banners = tmpban;
             this.base_url = this.$baseURL;
         },
         goplan(){
@@ -754,6 +800,9 @@ export default {
         filtrarRutinas(groupList) {
             return groupList.filter((item) => item.name_category == "RUTINAS");
         },
+        filtrarRecursos(groupList) {
+            return groupList.filter((item) => item.name_category == "RECURSOS");
+        },
         showRatingDialog() {
             this.dialogRating = true;
         },
@@ -816,7 +865,7 @@ export default {
                 this.id_timezone = this.user.timezone.id_timezone;
                 this.userPlans = response.data.plans;
                 let fecha_actual = new Date();
-                
+                var flag = 0;
                 this.userPlans.map(function (item) {
                     let init_d = new Date(item.init_date);
                     let end_d = new Date(item.expiration_date);
@@ -830,6 +879,12 @@ export default {
 
                     if(fecha_actual <= new Date(item.expiration_date) && vm.has_active_plan == false){
                         vm.has_active_plan = true;
+                    }
+                    if(item.course_id == 8 && fecha_actual <= new Date(item.expiration_date) && flag == 0){
+                        vm.showRutinas = false;
+                    }else if(item.course_id != 8 && fecha_actual <= new Date(item.expiration_date)){
+                        vm.showRutinas = true;
+                        flag = 1;
                     }
                 });
                 if(vm.has_active_plan == true){
@@ -995,7 +1050,7 @@ export default {
 
             var filtered = Object.filter(dateStr, val => val.timezone == this.timezone);
             let fechaclase = Object.values(filtered)[0];
-            console.log(fechaclase.fecha);
+            //console.log(fechaclase.fecha);
             return fechaclase.fecha;
         },
         openPlayer(video_link) {

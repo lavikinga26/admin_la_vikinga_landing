@@ -34,7 +34,7 @@
                     <v-list-item-title :class="currentRoute == '/gym-virtual/clases-grabadas' ? 'font_menu_active' : 'font_menu'">Clases Grabadas</v-list-item-title>
                 </v-list-item>
 
-                <v-list-item link to="/gym-virtual/horario">
+                <v-list-item v-if="showMenu" link to="/gym-virtual/horario">
                     <v-list-item-icon>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <path d="M14.625 18H9.375M5 12.6268V7.7735C5 6.80275 5 6.317 5.19074 5.94622C5.35852 5.62008 5.62604 5.3551 5.95532 5.18892C6.32967 5 6.82008 5 7.80017 5H16.2002C17.1803 5 17.6696 5 18.044 5.18892C18.3733 5.3551 18.6417 5.62008 18.8094 5.94622C19 6.31664 19 6.80179 19 7.77066V12.6293C19 13.5982 19 14.0827 18.8094 14.4531C18.6417 14.7792 18.3733 15.0451 18.044 15.2113C17.67 15.4 17.1809 15.4 16.2027 15.4H7.7973C6.81912 15.4 6.3293 15.4 5.95532 15.2113C5.62604 15.0451 5.35852 14.7792 5.19074 14.4531C5 14.0823 5 13.5976 5 12.6268ZM14.1875 10.2L10.25 7.6V12.8L14.1875 10.2Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -43,7 +43,7 @@
                     <v-list-item-title :class="currentRoute == '/gym-virtual/horario' ? 'font_menu_active' : 'font_menu'">Horarios</v-list-item-title>
                 </v-list-item>
 
-                <v-list-item link to="/gym-virtual/retos">
+                <v-list-item v-if="showMenu" link to="/gym-virtual/retos">
                     <v-list-item-icon>
                         <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M11.2327 10.8269C11.0762 7.66218 13.0177 5.56453 13.0177 5.56453C12.2311 5.16826 11.6915 4.35273 11.6915 3.41007C11.6915 2.07926 12.7681 1 14.0957 1C15.4233 1 16.5 2.07926 16.5 3.41007C16.5 3.73331 16.4636 4.09712 16.2571 4.60834C16.2571 4.60834 17.2124 8.5237 14.8459 13.9957C14.6179 14.5218 14.1875 14.9465 13.6451 15.1304C12.841 15.4023 12.0625 15.1629 11.597 14.887C8.21864 14.9208 7.09611 13.4345 6.77095 12.7947C6.68865 12.6338 6.51055 12.5513 6.33516 12.5892C5.97088 12.6649 5.58905 12.6906 5.19509 12.6609C3.22526 12.508 1.63996 10.9 1.50909 8.92267C1.35393 6.57481 3.20637 4.62322 5.51485 4.62322C7.41586 4.62322 9.25077 6.08117 9.50577 8.05304L11.4837 8.48583" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -51,7 +51,7 @@
                     </v-list-item-icon>
                     <v-list-item-title :class="currentRoute == '/gym-virtual/retos' ? 'font_menu_active' : 'font_menu'">Retos</v-list-item-title>
                 </v-list-item>
-                <v-list-item link to="/gym-virtual/recursos">
+                <v-list-item v-if="showMenu" link to="/gym-virtual/recursos">
                     <v-list-item-icon>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <path d="M5 15.3333H9.94118M5 11.1667H12.4118M16.5294 10.3333V17M16.5294 17L19 14.5M16.5294 17L14.0588 14.5M5 7H14.8824" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -59,7 +59,7 @@
                     </v-list-item-icon>
                     <v-list-item-title :class="currentRoute == '/gym-virtual/recursos' ? 'font_menu_active' : 'font_menu'">Recursos</v-list-item-title>
                 </v-list-item>
-                <v-list-item link to="/gym-virtual/referidos">
+                <v-list-item v-if="showMenu" link to="/gym-virtual/referidos">
                     <v-list-item-icon>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M17 20C17 18.3431 14.7614 17 12 17C9.23858 17 7 18.3431 7 20M21 16.9999C21 15.7697 19.7659 14.7124 18 14.2495M3 16.9999C3 15.7697 4.2341 14.7124 6 14.2495M18 10.2361C18.6137 9.68679 19 8.8885 19 8C19 6.34315 17.6569 5 16 5C15.2316 5 14.5308 5.28885 14 5.76389M6 10.2361C5.38625 9.68679 5 8.8885 5 8C5 6.34315 6.34315 5 8 5C8.76835 5 9.46924 5.28885 10 5.76389M12 14C10.3431 14 9 12.6569 9 11C9 9.34315 10.3431 8 12 8C13.6569 8 15 9.34315 15 11C15 12.6569 13.6569 14 12 14Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -89,7 +89,7 @@
                 <v-list-item>
                     <v-list-item-title class="font_menu">{{ business_partner.name }} {{ business_partner.lastname }}</v-list-item-title>
                 </v-list-item>
-                <v-list-item  class="formlog formlogsel">
+                <v-list-item v-if="showMenu" class="formlog formlogsel">
                     <v-select :items="levels" v-model="id_level" label="Nivel" item-text="level"
                     placeholder="Seleciona" item-value="id_level" class="mt-8" color="#ffffff" outlined v-on:change="filterByLevel()"></v-select>
                 </v-list-item>
@@ -173,55 +173,57 @@
 </template>
 <script>
 import Loader from "../components/shared/Loader.vue"
-    export default {
-        name: "SidebarTemplate",
-        components: {
-            Loader
-        },
-        data: (e) => ({
-            fab: null,
-            color: "",
-            flat: null,
-            drawer: null,
-            business_partner: {},
-            logged_user: null,
-            logged_user_token: null,
-            levels: [],
-            timezones: [],
-            id_level: null,
-            base_url: null,
-            dialogRating: false,
-            rating: 0,
-            comentario_rating: "",
-            currentRoute: null,
-            id_timezone: 0
-        }),
-        created() {
-            this.getLoggedUser();
+export default {
+    name: "SidebarTemplate",
+    components: {
+        Loader
+    },
+    data: (e) => ({
+        fab: null,
+        color: "",
+        flat: null,
+        drawer: null,
+        business_partner: {},
+        logged_user: null,
+        logged_user_token: null,
+        levels: [],
+        timezones: [],
+        id_level: null,
+        base_url: null,
+        dialogRating: false,
+        rating: 0,
+        comentario_rating: "",
+        currentRoute: null,
+        id_timezone: 0,
+        userPlans: {},
+        showMenu: false
+    }),
+    created() {
+        this.getLoggedUser();
 
-            const top = window.pageYOffset || 0;
-            if (top <= 60) {
-                this.color = "primary";
-                this.flat = true;
-            }
-            this.currentRoute = this.$router.currentRoute.path;
+        const top = window.pageYOffset || 0;
+        if (top <= 60) {
+            this.color = "primary";
+            this.flat = true;
+        }
+        this.currentRoute = this.$router.currentRoute.path;
+    },
+    mounted() {
+        let vm = this;
+        vm.loadLevels();
+        vm.loadTimezones();
+        vm.getBaseUrl();
+    },
+    computed: {
+        isLogged() {
+            return this.$store.getters.isLoggedIn;
         },
-        mounted() {
-            let vm = this;
-            vm.loadLevels();
-            vm.loadTimezones();
-            vm.getBaseUrl();
+        StoreCart() {
+            return this.$store.getters.StoreCart;
         },
-        computed: {
-            isLogged() {
-                return this.$store.getters.isLoggedIn;
-            },
-            StoreCart() {
-                return this.$store.getters.StoreCart;
-            },
-            cartCount() {
-                return this.StoreCart.length;
-            },
+        cartCount() {
+            return this.StoreCart.length;
+        },
     },
     watch: {
         $route(to, from) {
@@ -298,7 +300,6 @@ import Loader from "../components/shared/Loader.vue"
         async getBaseUrl() {
             try {
                 const data = await this.$API.configuration.getBaseUrl();
-                console.log(data);
                 this.base_url = data.data;
             }
             catch (e) {
@@ -317,6 +318,17 @@ import Loader from "../components/shared/Loader.vue"
 
                 this.id_level = this.business_partner.id_level;
                 this.id_timezone = this.business_partner.id_timezone;
+
+                this.userPlans = this.business_partner.plans;
+                var fecha_actual = new Date();
+
+                this.userPlans.map(function (item) {
+                    if(item.course_id == 8){
+                        this.showMenu = false;
+                    }else if(item.course_id != 8){
+                        this.showMenu = true;
+                    }
+                }, this);
             }
         },
         myProfile() {

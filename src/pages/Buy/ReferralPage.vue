@@ -115,9 +115,42 @@
                   <h2 class="tit_h3_team_blue" style="margin-bottom: 10px;" v-if="usuario_logeado == false && usuario_logeado != null"> {{referralname.toUpperCase()}} TE HA INVITADO A UNIRTE<br/>AL DESAFÍO CON UN DESCUENTO DE HASTA S/ {{parseFloat(max_discount)}}:</h2>
                   <h2 class="tit_h3_team_blue" style="margin-bottom: 10px;" v-if="usuario_logeado == true && usuario_logeado != null">{{business_partner.name.toUpperCase()}}, {{referralname.toUpperCase()}} TE HA INVITADO A UNIRTE<br/>AL DESAFÍO CON UN DESCUENTO DE HASTA S/ {{parseFloat(max_discount)}}:</h2>
                   <v-card class="pa-5" elevation="4" width="420" v-if="usuario_logeado == false && usuario_logeado != null">
+                    <v-alert
+                      type="info"
+                      color="#E7004C"
+                      elevation="0"
+                      v-if="usuario_registrado"
+                    >
+                      Ya te encuentras registrado, ingresa tu contraseña.
+                    </v-alert>
                     <p>Ingresa tu email y logra el cambio físico que deseas</p>
                     <v-text-field label="Email" v-model="email" outlined></v-text-field>
-                    <v-btn block class="ma-0 secondary white--text" @click="nextStep">INICIAR</v-btn>
+                    <div v-if="usuario_registrado == true">Contraseña</div>
+                      <v-text-field
+                        v-if="usuario_registrado == true"
+                        outlined
+                        type="password"
+                        :rules="rules"
+                        v-model="password"
+                      ></v-text-field>
+                      <div class="text-right mb-4" v-if="usuario_registrado == true">
+                        <a
+                          href="/auth/olvide-contrasena"
+                          style="font-size: 0.8rem; color: #000; font-family:'Poppins-Regular';"
+                          ><b>¿Olvidaste tu contraseña?</b></a
+                        >
+                      </div>
+                      <v-btn
+                        class="text_btn_white_title"
+                        v-if="usuario_registrado"
+                        block
+                        depressed
+                        color="secondary"
+                        @click="loginUser"
+                      >
+                        INICIAR SESIÓN<v-icon>mdi-chevron-right</v-icon>
+                      </v-btn>
+                    <v-btn block class="ma-0 secondary white--text" @click="nextStep" v-if="!usuario_registrado">INICIAR</v-btn>
                   </v-card>
                   <v-card class="pa-5" elevation="4" width="420" v-if="usuario_logeado == true && usuario_logeado != null">
                     <v-btn block class="ma-0 secondary white--text" @click="nextStep">CONTINUAR</v-btn>
@@ -167,7 +200,20 @@ export default {
       plans: [],
       temp_plans: [],
       max_discount: 0,
-      allow_reffer: true
+      allow_reffer: true,
+      data_config: {},
+      usuario_registrado: false,
+      rules: [(v) => !!v || "Campo obligatorio"],
+      password: null,
+      loginForm: {
+        token_name: "",
+      },
+      toast: {
+        toast: false,
+        message: "",
+        timeout: 3000,
+        color: "success",
+      },
     };
   },
   async mounted() {
@@ -180,15 +226,54 @@ export default {
     await vm.getIpData();
 		vm.fetchIpData();
 
+    await vm.getConfiguracion();
+
     await vm.list();
 	},
   methods: {
-    nextStep() {
+    async loginUser() {
+      this.$store.commit("loader", true);
+      try {
+        this.loginForm.token_name = "LaVikinga2021";
+        this.loginForm.email = this.email;
+        this.loginForm.password = this.password;
+        const response = await this.$API.user.login(this.loginForm);
+        const user = response.data.data.user;
+        const token = response.data.data.token;
+
+        localStorage.setItem("user_data", JSON.stringify(user));
+        localStorage.setItem("token", token);
+        setTimeout(() => {
+          this.$store.commit("loader", false);
+          localStorage.emailRegistro = this.email;
+          window.location.replace("/proceso_compra/step2");
+          //this.$router.push({ path: '/gym-virtual/calendario' });
+        }, 3000);
+        //this.$router.go();
+      } catch (e) {
+        this.showToast(
+          "Correo electrónico y/o contraseña incorrecta",
+          "error"
+        );
+        this.$store.commit("loader", false);
+        console.error(e);
+      }
+		},
+    async nextStep() {
       if (this.usuario_logeado == true) {
 				this.$router.push({ path: "/proceso_compra/step2" });
 			} else {
-				localStorage.emailRegistro = this.email;
-				this.$router.push({ path: "/proceso_compra/step2" });
+        let payload = { email: this.email };
+        const response = await this.$API.order.validateEmail(payload);
+        let rsp = response.data.data;
+        if (rsp.success == true) {
+          
+          this.usuario_registrado = true;
+          console.log(this.usuario_registrado);
+        } else {
+          localStorage.emailRegistro = this.email;
+          window.location.replace("/proceso_compra/step2");
+        }
 			}
     },
     async getLoggedUser() {
@@ -241,16 +326,36 @@ export default {
 			})
 			.then(data => {
 				this.dataIP = data.ip;
+        console.log(this.dataIP);
 			})
 			.catch(error => {
 				console.error('Error:', error);
 			});
+		},
+    async getConfiguracion() {
+			try {
+				const data = await this.$API.configuration.configuration(this.dataIP);
+				this.data_config = data.data.data;
+        console.log(this.data_config);
+        if (this.data_config.countryCode === 'PE') {
+          this.currency = false;
+          this.currency_id = 0;
+        } else {
+          this.currency = true;
+          this.currency_id = 1;
+        }
+			} catch (e) {
+				console.error(e);
+			} finally {
+                this.loading = false;
+            }
 		},
 		async fetchIpData() {
       this.loading = true;
       this.error = null;
       try {
         this.ipData = this.data_config;
+        console.log(this.ipData);
         if (this.ipData?.countryCode === 'PE') {
           this.currency = false;
           this.currency_id = 0;
@@ -277,7 +382,7 @@ export default {
         var dscto = parseFloat(0);
 
         activeplans.forEach((item) => {
-          console.log(item);
+          console.log("MONEDA "+this.currency_id);
           if(parseFloat(item.referred_discount_pen) > dscto){
             dscto = parseFloat(item.referred_discount_pen);
           }

@@ -54,6 +54,9 @@
 													<th class="text-left">
 														Fecha de Pago/Renovación
 													</th>
+													<th class="text-left">
+														Monto
+													</th>
 													<th class="text-center">
 														Estado
 													</th>
@@ -74,6 +77,20 @@
 													<td v-if="item.fecha_prox_renovacion != null">
 														{{ item.fecha_prox_renovacion | formatDate }}
 													</td>
+													<td v-if="item.retentions.length > 0 && item.order_currency.length > 0">
+														<p v-if="item.order_currency[0].id_currency == 1" style="width: 60px;"><s>S/ {{ item.precio_soles }}</s><br/> S/ {{ item.retentions[0].retention_amount }}</p>
+														<p v-if="item.order_currency[0].id_currency == 2" style="width: 60px;"><s>$ {{ item.precio_dolares }}</s><br/> $ {{ item.retentions[1].retention_amount }}</p>
+													</td>
+													<td v-if="item.retentions.length == 0 && item.order_currency.length > 0">
+														<p v-if="item.order_currency[0].id_currency == 1" style="width: 60px;">S/ {{ item.precio_soles }}</p>
+														<p v-if="item.order_currency[0].id_currency == 2" style="width: 60px;">$ {{ item.precio_dolares }}</p>
+													</td>
+													<td v-if="item.retentions.length > 0 && item.order_currency.length == 0">
+														<p style="width: 60px;"><s>S/ {{ item.precio_soles }}</s><br/> S/ {{ item.retentions[0].retention_amount }}</p>
+													</td>
+													<td v-if="item.retentions.length == 0 && item.order_currency.length == 0">
+														<p style="width: 60px;">S/ {{ item.precio_soles }}</p>
+													</td>
 													<td v-if="item.fecha_prox_renovacion == null">-</td>
 													<td class="text-center">
 														<v-chip
@@ -88,11 +105,11 @@
 														{{ item.renovacion_automatica ? "Activa" : "-" }}
 													</td>
 													<td>
-														<!--<v-btn @click="showDeleteDialog(item.id_suscripcion, item.id_partner, item.expiration_date)" small class="mx-2" color="error" v-if="item.renovacion_automatica == 1">
-                                                <v-icon dark small>
-                                                mdi-cancel
-                                                </v-icon> Cancelar
-                                            </v-btn>-->
+													<v-btn @click="showDeleteDialog(item.id_suscripcion, item.id_partner, item.expiration_date)" small class="mx-2" color="error" v-if="item.renovacion_automatica == 1 && item.retentions.length > 0">
+														<v-icon dark small>
+														mdi-cancel
+														</v-icon> Cancelar Plan
+													</v-btn>
 
 														<v-btn
 															@click="
@@ -105,7 +122,13 @@
 															small
 															class="mx-2"
 															color="error"
+<<<<<<< HEAD
 															v-if="item.renovacion_automatica == 1"
+=======
+															v-if="
+																item.renovacion_automatica == 1 && item.retentions.length == 0 && (item.is_trial == 0 || item.trial_to_plan == 1)
+															"
+>>>>>>> feature/cancel-trial
 														>
 															<v-icon dark small>
 																mdi-cancel
@@ -113,7 +136,28 @@
 															Cancelar Plan
 														</v-btn>
 
+<<<<<<< HEAD
 											
+=======
+														<v-btn
+															@click="
+																cancelTrial(
+																	item.id_order,
+																	item.id_plan,
+																	item.id_suscripcion
+																)
+															"
+															small
+															class="mx-2"
+															color="error"
+															v-if="item.renovacion_automatica == 1 && item.is_trial == 1 && item.trial_to_plan == 0"
+														>
+															<v-icon dark small>
+																mdi-cancel
+															</v-icon>
+															Cancelar Trial
+														</v-btn>
+>>>>>>> feature/cancel-trial
 
 														<v-btn
 															@click="

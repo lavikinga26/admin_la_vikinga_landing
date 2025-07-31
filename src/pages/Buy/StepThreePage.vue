@@ -150,7 +150,7 @@
 
                 <v-alert type="info" color="#E7004C" elevation="0" class="mt-5" v-if="is_trial == 1">
                     Suscribiéndote a este plan tienes {{ cart[0].dias_trial }} días gratis, no se te cobrará nada hasta
-                    el <b>{{ prox_trial_pay }}</b>. Puedes cancelar cuando quieras.
+                    el <b>{{ prox_trial_pay }}</b>, ese día se te cobrará <b>{{ cart[0].currency }} {{ parseFloat(cart[0].price).toFixed(2) }}</b>. Puedes cancelar cuando quieras.
                 </v-alert>
 
                 <v-row class="mt-5" v-if="show_coupon_box == true && couponDisabled == false">
@@ -349,7 +349,7 @@ export default {
             return total
         },
         /*total() {
-            const total = this.subtotal - this.discount
+            const total = this.total - this.discount
 
             return total < 0 ? 0 : total
         },*/
@@ -418,8 +418,6 @@ export default {
             try {
                 let datosUser = JSON.parse(localStorage.getItem("datosUsuario"));
                 vm.order.discount = parseFloat(vm.discount).toFixed(2);
-                vm.order.total = vm.total
-                vm.order.subtotal = vm.subtotal;
                 vm.order.detail = vm.cart;
                 vm.order.name = datosUser.nombre;
                 vm.order.lastname = datosUser.apellidos;
@@ -438,11 +436,11 @@ export default {
                 vm.order.inv_address = vm.dom_fiscal;
                 vm.order.address = "-";
                 vm.order.country = datosUser.country;
-                vm.order.total = vm.total;
-                vm.order.subtotal = parseFloat(vm.total / 1.18).toFixed(2);
                 vm.order.ref_code = vm.ref_code;
-                vm.order.ref_discount = parseFloat(vm.cart[0].ref_discount).toFixed(2);
-                vm.order.igv = parseFloat(vm.total - (vm.total / 1.18)).toFixed(2);
+                vm.order.ref_discount = vm.cart[0].ref_discount != undefined && !isNaN(vm.cart[0].ref_discount) ? vm.cart[0].ref_discount : 0;
+                vm.order.total = parseFloat(vm.total-vm.discount-vm.order.ref_discount).toFixed(2);
+                vm.order.subtotal = parseFloat(vm.order.total / 1.18).toFixed(2);
+                vm.order.igv = parseFloat(vm.order.total - (vm.order.total / 1.18)).toFixed(2);
                 if (datosUser.bp_id != undefined && datosUser.bp_id != "") {
                     vm.order.bp_id = datosUser.bp_id;
                     vm.order.bd_id = datosUser.bp_id;
@@ -602,10 +600,10 @@ export default {
 
                         this.discount = (datos.discount_type == 1) ? this.subtotal * (dscamount / 100) : dscamount;
                         const element = this.cart;
-                        this.cart[0].priceTotal = this.cart[0].price - (this.cart[0].price * (dscamount / 100))
+                        this.cart[0].priceTotal = this.cart[0].price - (this.cart[0].price * (dscamount / 100));
                         flag = 1;
                         this.couponDisabled = true;
-
+                        this.showToast("Cupón valido", "success");
                     } else {
                         datos.id_plan = datos.id_plan.map(Number);
                         let index = this.cart.findIndex((element) => {
@@ -614,11 +612,10 @@ export default {
                         })
                         if (index != -1) {
                             if (this.couponDisabled != true) {
-                                this.discount = (datos.discount_type == 1) ? this.cart[0].price * (dscamount / 100) : dscamount;
-                                this.cart[0].price = this.cart[0].price - this.discount;
+                                this.discount = (datos.discount_type == 1) ? this.subtotal * (dscamount / 100) : dscamount;
+                                this.cart[0].priceTotal = this.cart[0].price - (this.cart[0].price * (dscamount / 100));
                                 this.couponDisabled = true;
                                 flag = 1;
-                                this.total = this.cart[0].price;
                                 this.showToast("Cupón valido", "success");
                             }
                         }
