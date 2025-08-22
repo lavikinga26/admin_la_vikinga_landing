@@ -145,7 +145,7 @@
                 <hr class="mt-2 mb-2" style="border: 1px dashed #000000;">
                 <v-row>
                     <v-col cols="8"><b>Total a pagar hoy</b></v-col>
-                    <v-col cols="4" class="text-right"><b>{{ cart[0].currency }} {{ parseFloat(total-discount).toFixed(2) }}</b></v-col>
+                    <v-col cols="4" class="text-right"><b>{{ cart[0].currency }} {{ parseFloat(total).toFixed(2) }}</b></v-col>
                 </v-row>
 
                 <v-alert type="info" color="#E7004C" elevation="0" class="mt-5" v-if="is_trial == 1">
@@ -266,7 +266,7 @@
         <v-dialog v-model="dialogConfirm" max-width="500px">
             <v-card>
             <v-card-title>Confirmar Suscripción</v-card-title>
-            <v-card-text>Al suscribirte a un plan con débito automático, autorizas el cobro del próximo mes en tu tarjeta de manera automática, 2 días antes del vencimiento.<br/>
+            <v-card-text>Al suscribirte a un plan con débito automático, autorizas el cobro del plan por {{ cart[0].currency }} {{ total }} el día de hoy y el próximo mes se debitará en tu tarjeta de manera automática, 2 días antes del vencimiento.<br/>
             ✅ Recuerda que puedes darte de baja en cualquier momento desde tu cuenta.<br/>
             ¿Aceptas adherirte al débito automático?</v-card-text>
             <v-card-actions>
@@ -600,7 +600,8 @@ export default {
 
                         this.discount = (datos.discount_type == 1) ? this.subtotal * (dscamount / 100) : dscamount;
                         const element = this.cart;
-                        this.cart[0].priceTotal = this.cart[0].price - (this.cart[0].price * (dscamount / 100));
+                        this.cart[0].price = this.cart[0].price - this.discount;
+                        this.total = this.cart[0].price;
                         flag = 1;
                         this.couponDisabled = true;
                         this.showToast("Cupón valido", "success");
@@ -613,7 +614,8 @@ export default {
                         if (index != -1) {
                             if (this.couponDisabled != true) {
                                 this.discount = (datos.discount_type == 1) ? this.subtotal * (dscamount / 100) : dscamount;
-                                this.cart[0].priceTotal = this.cart[0].price - (this.cart[0].price * (dscamount / 100));
+                                this.cart[0].price = this.cart[0].price - this.discount;
+                                this.total = this.cart[0].price;
                                 this.couponDisabled = true;
                                 flag = 1;
                                 this.showToast("Cupón valido", "success");

@@ -295,8 +295,8 @@
                                             class="badge_pink_class"
                                             v-if="showRutinas"
                                         ></v-badge>
-                                    <h1 class="font_box_prox_clase card_text_bottom_focus" style="padding-top: 90px!important;">{{ clases_grabadas[1].nombreclase }}</h1>
-                                    <h1 class="font_box_prox_clase_white card_text_bottom" style="padding-top: 90px!important;">{{ clases_grabadas[1].focus }}</h1>
+                                    <div><h1 class="font_box_prox_clase card_text_bottom_focus" style="background: white; padding: 5px; margin-bottom: 11px;">{{ clases_grabadas[1].nombreclase }}</h1></div>
+                                    <div><h1 class="font_box_prox_clase_white card_text_bottom" style="background: rgb(227, 14, 79); padding: 5px;">{{ clases_grabadas[1].focus }}</h1></div>
                                 </v-card>
                             </v-col>
                             <v-col cols="6" md="4" sm="6" xs="6" v-if="clases_grabadas[0]">
@@ -308,8 +308,8 @@
                                             class="badge_pink_class"
                                             v-if="showRutinas"
                                         ></v-badge>
-                                    <h1 class="font_box_prox_clase card_text_bottom_focus" style="padding-top: 90px!important;">{{ clases_grabadas[2].nombreclase }}</h1>
-                                    <h1 class="font_box_prox_clase_white card_text_bottom" style="padding-top: 90px!important;">{{ clases_grabadas[2].focus }}</h1>
+                                    <div><h1 class="font_box_prox_clase card_text_bottom_focus" style="background: white; padding: 5px; margin-bottom: 11px;">{{ clases_grabadas[2].nombreclase }}</h1></div>
+                                    <div><h1 class="font_box_prox_clase_white card_text_bottom" style="background: rgb(227, 14, 79); padding: 5px;">{{ clases_grabadas[2].focus }}</h1></div>
                                 </v-card>
                             </v-col>
 
@@ -877,7 +877,11 @@ export default {
                         vm.show_descarga_plan = true;
                     }
 
-                    if(fecha_actual <= new Date(item.expiration_date) && vm.has_active_plan == false){
+                    var dateExp = new Date(item.expiration_date+" 23:59:59");
+                    var day = 60 * 60 * 24 * 1000;
+                    var newExpDate = new Date(dateExp.getTime() + day);
+
+                    if(fecha_actual <= newExpDate && vm.has_active_plan == false){
                         vm.has_active_plan = true;
                     }
                     if(item.course_id == 8 && fecha_actual <= new Date(item.expiration_date) && flag == 0){
