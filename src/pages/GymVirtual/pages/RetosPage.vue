@@ -376,7 +376,11 @@ export default {
                 this.userPlans.map(function (item) {
                     let init_d = new Date(item.init_date);
                     let end_d = new Date(item.expiration_date);
-                    if(fecha_actual <= new Date(item.expiration_date) && vm.has_active_plan == false){
+                    var dateExp = new Date(item.expiration_date+" 23:59:59");
+                    var day = 60 * 60 * 24 * 1000;
+                    var newExpDate = new Date(dateExp.getTime() + day);
+
+                    if(fecha_actual <= newExpDate && vm.has_active_plan == false){
                         vm.has_active_plan = true;
                     }
                 });
