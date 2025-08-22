@@ -998,6 +998,18 @@ $font-family: "Poppins";
 	text-transform: uppercase !important;
 }
 
+.text_box_gym_sm_white {
+	color: white;
+	text-align: left;
+	font-feature-settings: "clig" off, "liga" off;
+	font-family: "MachProCondBold";
+	font-size: 30px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: 30px;
+	text-transform: uppercase !important;
+}
+
 .text_box_gym_sm_blue {
 	color: var(--1925-C, #0a2240);
 	font-feature-settings: "clig" off, "liga" off;

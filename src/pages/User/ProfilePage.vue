@@ -226,10 +226,9 @@
 						type="info"
 						color="#E7004C"
 						elevation="0"
-						v-if="user_cards.length === 1"
+						v-if="disable_card_delete === 1"
 					>
-						<b>IMPORTANTE:</b> Recuerda que para eliminar la tarjeta de
-						crédito/débito actual, debes añadir una nueva primero.
+						<b>IMPORTANTE:</b> Recuerda que para eliminar tu tarjeta primero debes cancelar tu membresía.
 					</v-alert>
 					<v-card class="rounded-xl" color="transparent">
 						<v-card-title class="text_title_white text_entrena txt_uppercase">
@@ -295,7 +294,7 @@
 													</td>
 													<td class="text-center">
 														<v-btn
-															@click="deleteCard(item.id_card)"
+															@click="showCardDelete(item.id_card)"
 															class="mx-2"
 															fab
 															dark
@@ -424,6 +423,30 @@
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
+
+		<v-dialog v-model="dialogDeleteCard" max-width="500px">
+			<v-card>
+				<v-card-title>Eliminar tarjeta</v-card-title>
+				<v-card-text>
+					Estas a punto de eliminar tu tarjeta.<br /><br />
+					¿Estás seguro?
+				</v-card-text>
+				<v-card-actions>
+					<v-btn color="error" text @click="dialogDeleteCard = false"
+						><v-icon dark small>
+							mdi-close
+						</v-icon>
+						No</v-btn
+					>
+					<v-btn color="success" text @click="deleteCard()"
+						><v-icon dark small>
+							mdi-check
+						</v-icon>
+						Si</v-btn
+					>
+				</v-card-actions>
+			</v-card>
+		</v-dialog>
 		<v-snackbar
 			v-model="toast.toast"
 			:timeout="toast.timeout"
@@ -458,6 +481,7 @@ export default {
 		show_btn_add: true,
 		dialogDelete: false,
 		dialogReactivate: false,
+		dialogDeleteCard: false,
 		toast: {
 			toast: false,
 			message: "",
@@ -474,6 +498,7 @@ export default {
 		del_id_susc: null,
 		del_id_part: null,
 		disable_card_delete: 0,
+		has_active_plan: false
 	}),
 	created() {
 		this.getBaseUrl();
@@ -560,6 +585,17 @@ export default {
 		async auth() {
 			try {
 				const response = await this.$API.auth.auth();
+				var userPlans = response.data.plans;
+				/*userPlans.map(function (item) {
+                    var dateExp = new Date(item.expiration_date+" 23:59:59");
+                    var day = 60 * 60 * 24 * 1000;
+                    var newExpDate = new Date(dateExp.getTime() + day);
+
+                    if(fecha_actual <= newExpDate && this.has_active_plan == false){
+                        vm.has_active_plan = true;
+                    }
+                });
+                vm.show_message_plan = vm.has_active_plan === true ? false:true;*/
 			} catch (e) {
 				localStorage.removeItem("user_data");
 				localStorage.removeItem("token");
@@ -604,7 +640,13 @@ export default {
 				console.error(e);
 			}
 		},
-		async deleteCard(id) {
+		showCardDelete(id){
+			this.dialogDeleteCard = true;
+			this.deleting_card = id;
+		},
+		async deleteCard() {
+			var id = this.deleting_card;
+			this.dialogDeleteCard = false;
 			try {
 				this.loading = true;
 				const response = await this.$API.business_partner.deleteCard(id);
