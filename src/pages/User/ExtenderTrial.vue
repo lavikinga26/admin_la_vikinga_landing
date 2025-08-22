@@ -14,7 +14,7 @@
 				<div class="card-container">
 					<h2 class="trial-title">AÚN ESTÁS EN PERÍODO DE PRUEBA</h2>
 
-					<div class="card green-border">
+					<!--<div class="card green-border">
 						<div class="card-content">
 							<div class="text-section">
 								<p class="card-title">Actualiza tu plan actual</p>
@@ -40,10 +40,20 @@
 								EXTENDER PRUEBA
 							</button>
 						</div>
-					</div>
+					</div>-->
 
 					<div>
-						<button class="button disabled">CANCELAR PRUEBA GRATUITA</button>
+						<v-btn 
+							class="text_btn_grey_title mt-5"
+							block
+							depressed 
+							@click="
+							showDeleteDialog(
+								plan_act.id_suscripcion,
+								plan_act.id_partner,
+								plan_act.expiration_date
+							)
+						">CANCELAR PRUEBA GRATUITA</v-btn>
 					</div>
 				</div>
 			</v-col>
@@ -62,7 +72,7 @@
 						el día <strong>25/05/2025</strong> por un monto de
 						<strong>S/75</strong> correspondiente al plan anual.
 					</p>
-					<button class="button dark">FINALIZAR</button>
+					<v-btn class="button dark" @click="finalizar()">FINALIZAR</v-btn>
 				</div>
 			</v-col>
 
@@ -78,12 +88,44 @@
 					<p class="message">
 						Has extendido más dias de prueba!
 					</p>
-					<button class="button dark" to="/cuenta/mi-perfil">
+					<v-btn class="button dark" @click="finalizar()">
 						FINALIZAR
-					</button>
+					</v-btn>
 				</div>
 			</v-col>
 		</v-row>
+
+		<v-dialog v-model="dialogDelete" max-width="500px">
+			<v-card>
+				<v-card-title>Cancelar Suscripción</v-card-title>
+				<v-card-text
+					>Estas a punto de cancelar la renovación automatica de tu plan. Luego
+					del {{ exp_date_pop | formatDate }} no tendrás más acceso a la
+					plataforma. <br /><br />
+					Si deseas, puedes dejar un comentario explicando el motivo de la
+					cancelación: <br /><br />
+					<v-text-field
+						label="Motivo de cancelación"
+						v-model="cancel_suscrip"
+					></v-text-field>
+					¿Estás seguro?
+				</v-card-text>
+				<v-card-actions>
+					<v-btn color="error" text @click="dialogDelete = false"
+						><v-icon dark small>
+							mdi-close
+						</v-icon>
+						No</v-btn
+					>
+					<v-btn color="success" text @click="cancelarSuscripcion()"
+						><v-icon dark small>
+							mdi-check
+						</v-icon>
+						Si</v-btn
+					>
+				</v-card-actions>
+			</v-card>
+		</v-dialog>
 	</v-container>
 </template>
 <script>
@@ -100,6 +142,17 @@ export default {
 			plan_act: null,
 			plan: {},
 			daysRemaining: 0,
+			dialogDelete: false,
+			exp_date_pop: null,
+			del_id_susc: null,
+			del_id_part: null,
+			cancel_suscrip: "",
+			toast: {
+				toast: false,
+				message: "",
+				timeout: 3000,
+				color: "success",
+			},
 		};
 	},
 	async mounted() {
@@ -109,6 +162,15 @@ export default {
 		await this.getPartnerData();
 	},
 	methods: {
+		finalizar(){
+			this.$router.push({ path: "/cuenta/mi-perfil#tabs-info-membresia" });
+		},
+		showDeleteDialog(id_suscripcion, id_partner, fecha_venc) {
+			this.dialogDelete = true;
+			this.exp_date_pop = fecha_venc;
+			this.del_id_susc = id_suscripcion;
+			this.del_id_part = id_partner;
+		},
 		goToPlanConfirmation() {
 			// this.view = "confirmation-plan";
 			// this.$route('/cuenta/elegir-plan')
@@ -174,6 +236,28 @@ export default {
 			const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
 			return diffDays;
+		},
+		async cancelarSuscripcion() {
+			try {
+				this.$store.commit("loader", true);
+				this.dialogDelete = false;
+				if (this.cancel_suscrip == "") this.cancel_suscrip = "-";
+				const response = await this.$API.business_partner.cancelSuscription(
+					this.del_id_susc,
+					this.cancel_suscrip
+				);
+				this.$store.commit("loader", false);
+				this.showToast("Suscripción cancelada correctamente!", "success");
+				this.$router.push({ path: "/cuenta/mi-perfil#tabs-info-membresia" });
+				this.getPartnerData(this.del_id_part);
+			} catch (e) {
+				console.error(e);
+			}
+		},
+		showToast(msg, color) {
+			this.toast.color = color;
+			this.toast.message = msg;
+			this.toast.toast = true;
 		},
 	},
 };

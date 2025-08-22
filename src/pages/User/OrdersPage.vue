@@ -130,6 +130,9 @@
 														<th class="text-left">
 															Fecha de Pago/Renovación
 														</th>
+														<th class="text-left">
+															Monto
+														</th>
 														<th class="text-center">
 															Estado
 														</th>

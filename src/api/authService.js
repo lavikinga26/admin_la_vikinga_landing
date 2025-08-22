@@ -10,7 +10,7 @@ export const baseURL = 'https://apiweb.lavikingaoficial.com/';
 //export const baseURL = 'https://vikinga.avance-inmobiliaria.com/';
 
 const headers = {
-	Accept: "application/json", //'application/json' ,
+	"Accept": "application/json", //'application/json' ,
 	"Content-Type": "application/json",
 	"Access-Control-Allow-Origin": "*",
 };

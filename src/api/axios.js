@@ -9,7 +9,7 @@ import axios from "axios";
  export const baseURL = 'https://apiweb.lavikingaoficial.com/';
 
 const headers = {
-	Accept: "application/json", //'*' ,
+	"Accept": "application/json", //'*' ,
 	"Content-Type": "application/json",
 	"Access-Control-Allow-Origin": "*",
 };

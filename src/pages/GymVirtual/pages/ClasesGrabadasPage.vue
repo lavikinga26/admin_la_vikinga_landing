@@ -12,11 +12,11 @@
             <v-row>
                 <v-col cols="12" md="6"><h1 class="text_plan_title_white">Clases grabadas</h1></v-col>
                 <v-col cols="12" md="3" class="select-clases formlogsel">
-                        <v-select v-model="id_staff" :items="staff" label="Coach" item-text="name" density="compact"
+                    <v-select v-model="id_staff" :items="staff" v-if="showRutinas" label="Coach" item-text="name" density="compact"
                             placeholder="Seleciona" item-value="id" color="#ffffff" outlined clearable v-on:change="getActivitiesRecordedFilters"></v-select>
                     </v-col>
                     <v-col cols="12" md="3" class="select-clases formlogsel">
-                        <v-select v-model="enfoque" :items="enfoqueItems" label="Enfoque" item-text="label"
+                        <v-select v-model="enfoque" :items="enfoqueItems" v-if="showRutinas" label="Enfoque" item-text="label"
                             placeholder="Seleciona" item-value="term" color="#ffffff" outlined clearable v-on:change="getActivitiesRecordedFilters"></v-select>
                     </v-col>
             </v-row>
@@ -28,9 +28,14 @@
                             :content="getDateBadge(clase._date, 'es-ES', clase.hour_class)"
                             inline
                             class="badge_pink_class"
+                            v-if="showRutinas"
                         ></v-badge>
-                        <div><h1 class="font_box_prox_clase card_text_bottom_focus" style="background: white; padding: 5px; margin-bottom: 11px;">{{ clase.nombreclase }}</h1></div>
-                        <div><h1 class="font_box_prox_clase_white card_text_bottom" style="background: rgb(227, 14, 79); padding: 5px;">{{ clase.focus }}</h1></div>
+                        <div>
+                            <h1 class="font_box_prox_clase card_text_bottom_focus" style="background: white; padding: 5px; margin-bottom: 11px;">{{ clase.nombreclase }}</h1>
+                        </div>
+                        <div>
+                            <h1 class="font_box_prox_clase_white card_text_bottom" style="background: #e30e4f; padding: 5px;">{{ clase.focus }}</h1>
+                        </div>
                         
                     </v-card>
                 </v-col>
@@ -123,7 +128,8 @@ export default {
             { label: "Piernas", term: "PIERNAS" },
             { label: "Taller", term: "TALLER" },
         ],
-        timezone: null
+        timezone: null,
+        showRutinas: true
     }),
     mounted() {
         this.auth();
@@ -161,6 +167,12 @@ export default {
 
                     if(fecha_actual <= newExpDate && vm.has_active_plan == false){
                         vm.has_active_plan = true;
+                    }
+
+                    if(item.course_id == 8 && fecha_actual <= new Date(item.expiration_date)){
+                        vm.showRutinas = false;
+                    }else if(item.course_id != 8 && fecha_actual <= new Date(item.expiration_date)){
+                        vm.showRutinas = true;
                     }
                 });
                 if(vm.has_active_plan==true){
