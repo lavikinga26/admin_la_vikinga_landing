@@ -122,13 +122,9 @@
 															small
 															class="mx-2"
 															color="error"
-<<<<<<< HEAD
-															v-if="item.renovacion_automatica == 1"
-=======
 															v-if="
 																item.renovacion_automatica == 1 && item.retentions.length == 0 && (item.is_trial == 0 || item.trial_to_plan == 1)
 															"
->>>>>>> feature/cancel-trial
 														>
 															<v-icon dark small>
 																mdi-cancel
@@ -136,9 +132,6 @@
 															Cancelar Plan
 														</v-btn>
 
-<<<<<<< HEAD
-											
-=======
 														<v-btn
 															@click="
 																cancelTrial(
@@ -157,7 +150,6 @@
 															</v-icon>
 															Cancelar Trial
 														</v-btn>
->>>>>>> feature/cancel-trial
 
 														<v-btn
 															@click="
