@@ -471,28 +471,103 @@ $font-family: "Poppins";
 	-webkit-filter: grayscale(0);
 }
 
-.flex-capture .field > input {
+/* Estilos específicos SOLO para el formulario de tarjetas en ProfilePage */
+#demo .flex-capture .field > input {
 	outline: none;
 	margin-left: 2em;
-	border-bottom: 1px solid #626262;
+	border: 1px solid rgba(255, 255, 255, 0.3) !important;
+	background-color: rgba(255, 255, 255, 0.9) !important;
+	color: #0a2240 !important;
+	padding: 8px 12px !important;
+	border-radius: 4px !important;
+	font-family: "Poppins" !important;
+	font-size: 14px !important;
 }
 
-.flex-capture .field > input:focus {
+#demo .flex-capture .field > input:focus {
 	outline: none;
 	margin-left: 2em;
-	border-bottom: 1px solid #e30e4f;
+	border: 2px solid #e30e4f !important;
+	background-color: rgba(255, 255, 255, 0.95) !important;
+	box-shadow: 0 0 5px rgba(227, 14, 79, 0.3) !important;
 }
 
-.flex-capture .field {
+#demo .flex-capture .field {
 	margin-top: 0.5em;
 }
 
-.flex-capture .submit > button {
+/* Estilos para los labels del formulario - SOLO en ProfilePage */
+#demo .flex-capture .field > label {
+	color: #ffffff !important;
+	font-family: "Poppins" !important;
+	font-size: 14px !important;
+	font-weight: 500 !important;
+	margin-bottom: 5px !important;
+	display: block !important;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Estilos para mensajes de error - SOLO en ProfilePage */
+#demo .flex-capture .field small.error-message {
+	color: #ffffff !important;
+	background-color: rgba(227, 14, 79, 0.9) !important;
+	padding: 4px 8px !important;
+	border-radius: 4px !important;
+	font-family: "Poppins" !important;
+	font-size: 12px !important;
+	font-weight: 500 !important;
+	margin-top: 4px !important;
+	display: block !important;
+	border-left: 3px solid #ffffff !important;
+}
+
+/* Ocultar elementos vacíos de error cuando no hay mensaje */
+#demo .flex-capture .field small.error-message:empty {
+	display: none !important;
+	background: none !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	border: none !important;
+}
+
+/* Estilos específicos para diferentes tipos de errores - SOLO en ProfilePage */
+#demo .flex-capture .field.has-error > label {
+	color: #ffcccc !important;
+}
+
+#demo .flex-capture .field.has-error > input {
+	border: 2px solid #ff6b6b !important;
+	background-color: rgba(255, 235, 235, 0.9) !important;
+}
+
+/* Eliminar elementos visuales no deseados - SOLO en ProfilePage */
+#demo .flex-capture .field::after,
+#demo .flex-capture .field::before {
+	display: none !important;
+}
+
+#demo .flex-capture .field > .marca {
+	display: none !important;
+}
+
+#demo .flex-capture .submit > button {
 	background: #e30e4f;
-	padding: 10px;
+	padding: 12px 24px;
 	color: #fff;
 	border-radius: 8px;
-	margin-top: 1em;
+	margin-top: 1.5em;
+	font-family: "Poppins" !important;
+	font-size: 14px !important;
+	font-weight: 500 !important;
+	border: none !important;
+	cursor: pointer !important;
+	transition: all 0.3s ease !important;
+}
+
+#demo .flex-capture .submit > button:hover {
+	background: #c50d45 !important;
+	transform: translateY(-1px) !important;
+	box-shadow: 0 4px 8px rgba(227, 14, 79, 0.3) !important;
 }
 
 .flex-capture form > pre {
