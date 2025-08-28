@@ -118,22 +118,11 @@
 					</v-stepper-header>
 				</v-stepper>
 			</v-sheet>
-			<div class="d-flex align-center justify-center mb-4 d-none d-md-flex">
-				<h1 class="title_pink mt-4 mr-4">ELIGE TU PLAN</h1>
+			<div class="d-flex align-center justify-center mb-4 flex-column flex-md-row">
+				<h1 class="title_pink mt-4 mr-md-4 mb-3 mb-md-0">ELIGE TU PLAN</h1>
 				<div class="toggle-switch">
 					<input v-model="currency" type="checkbox" id="switch" v-on:change="updCurrency()"/>
 					<label for="switch" class="switch-label">
-						<span class="switch-inner"></span>
-						<span class="switch-text-on">SOL</span>
-						<span class="switch-text-off">USD</span>
-					</label>
-				</div>
-			</div>
-			<div class="d-flex d-md-none flex-column align-center">
-				<h1 class="title_pink mt-4 mb-4">ELIGE TU PLAN</h1>
-				<div class="toggle-switch mb-3">
-					<input v-model="currency" type="checkbox" id="switch-mobile" v-on:change="updCurrency()"/>
-					<label for="switch-mobile" class="switch-label">
 						<span class="switch-inner"></span>
 						<span class="switch-text-on">SOL</span>
 						<span class="switch-text-off">USD</span>
