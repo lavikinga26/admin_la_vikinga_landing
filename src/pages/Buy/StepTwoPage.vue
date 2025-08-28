@@ -118,17 +118,26 @@
 					</v-stepper-header>
 				</v-stepper>
 			</v-sheet>
-			<div style="position: relative;">
+			<div class="d-flex align-center justify-center mb-4 d-none d-md-flex">
+				<h1 class="title_pink mt-4 mr-4">ELIGE TU PLAN</h1>
+				<div class="toggle-switch">
+					<input v-model="currency" type="checkbox" id="switch" v-on:change="updCurrency()"/>
+					<label for="switch" class="switch-label">
+						<span class="switch-inner"></span>
+						<span class="switch-text-on">SOL</span>
+						<span class="switch-text-off">USD</span>
+					</label>
+				</div>
+			</div>
+			<div class="d-flex d-md-none flex-column align-center">
 				<h1 class="title_pink mt-4 mb-4">ELIGE TU PLAN</h1>
-				<div style="position: absolute; right: 20px; top: 0; bottom: 0;">
-					<div class="toggle-switch">
-						<input v-model="currency" type="checkbox" id="switch" v-on:change="updCurrency()"/>
-						<label for="switch" class="switch-label">
-							<span class="switch-inner"></span>
-							<span class="switch-text-on">SOL</span>
-							<span class="switch-text-off">USD</span>
-						</label>
-					</div>
+				<div class="toggle-switch mb-3">
+					<input v-model="currency" type="checkbox" id="switch-mobile" v-on:change="updCurrency()"/>
+					<label for="switch-mobile" class="switch-label">
+						<span class="switch-inner"></span>
+						<span class="switch-text-on">SOL</span>
+						<span class="switch-text-off">USD</span>
+					</label>
 				</div>
 			</div>
 			<v-row class="mx-auto justify-center mb-4" elevation="'0'" color="#ffffff" light v-if="centrarPlanes == true">
@@ -515,7 +524,13 @@ export default {
 			this.$router.push({ path: "/auth/registrarse" });
 		},
 		volver() {
-			this.$router.push({ path: "/" });
+			if (localStorage.getItem("token")) {
+				// Usuario logueado: salir del flujo completamente
+				window.location.replace("https://lavikingaoficial.com/");
+			} else {
+				// Usuario no logueado: volver al step1 del flujo
+				this.$router.push({ path: "/proceso_compra" });
+			}
 		},
 		getPrice(prices, dsc_pen, dsc_usd) {
 			const currencyType = !this.currency ? "soles" : "dolar";
@@ -787,4 +802,5 @@ input[type="checkbox"]:checked + .switch-label .switch-text-on {
 input[type="checkbox"]:checked + .switch-label .switch-text-off {
 	color: #0a2240; /* Color del texto ON */
 }
+
 </style>
