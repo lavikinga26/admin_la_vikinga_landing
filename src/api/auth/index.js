@@ -159,6 +159,9 @@ export default {
 		getRetos() {
 			return callAuthAPI("get", "api/v1/business-partner/retosgym");
 		},
+		getRetosCategories() {
+			return callAuthAPI("get", "api/retos-categories/combo");
+		},
 		getRetosComprar() {
 			return callAuthAPI("get", "api/v1/retos/list");
 		},

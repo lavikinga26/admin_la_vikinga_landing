@@ -16,254 +16,72 @@
             </v-row>
 
             <v-row style="border: 2px solid #293E58; border-radius: 16px;margin-bottom: 10px;">
-                <v-col v-for="(item, indx) in groupList" :key="'col_' + indx" cols="12" md="4">
-                    <v-card min-height="200" v-if="indx == 0" min-width="200" class="box_rutina justify-center" :img="require('@/assets/img/gym_virtual/poto_en_la_nuca.jpg')" color="#0A2240" @click="showReto(indx)">
+                <v-col v-for="(item, indx) in retosCategories" :key="'col_' + indx" cols="12" md="4">
+                    <v-card min-height="200" min-width="200" class="box_rutina justify-center" :img="'https://apiweb.lavikingaoficial.com/storage/uploads/plan_files/' + item.img_path" color="#0A2240" @click="changeReto(creatSlug(item.name))">
                         <v-card-title>
                             <v-spacer />
                             <div class="text-center">
-                                <h1 class="text_box_gym_sm" style="margin-top: 20px;">{{item.field}}</h1>
-                            </div>
-                            <v-spacer />
-                        </v-card-title>
-                    </v-card>
-
-                    <v-card min-height="200" v-if="indx == 1" min-width="200" class="box_rutina justify-center" :img="require('@/assets/img/gym_virtual/vikinga_no_abandona.jpg')" color="#0A2240" @click="showReto(indx)">
-                        <v-card-title>
-                            <v-spacer />
-                            <div class="text-center">
-                                <h1 class="text_box_gym_sm" style="margin-top: 20px;">{{item.field}}</h1>
-                            </div>
-                            <v-spacer />
-                        </v-card-title>
-                    </v-card>
-
-                    <v-card min-height="200" v-if="indx == 2" min-width="200" class="box_rutina justify-center" :img="require('@/assets/img/gym_virtual/reto_nutricion.jpg')" color="#0A2240" @click="showReto(indx)">
-                        <v-card-title>
-                            <v-spacer />
-                            <div class="text-center">
-                                <h1 class="text_box_gym_sm" style="margin-top: 20px;">{{item.field}}</h1>
-                            </div>
-                            <v-spacer />
-                        </v-card-title>
-                    </v-card>
-
-                    <v-card min-height="200" v-if="indx == 3" min-width="200" class="box_rutina justify-center" :img="require('@/assets/img/gym_virtual/entrena_bebe.jpg')" color="#0A2240" @click="showReto(indx)">
-                        <v-card-title>
-                            <v-spacer />
-                            <div class="text-center">
-                                <h1 class="text_box_gym_sm" style="margin-top: 20px;">{{item.field}}</h1>
+                                <h1 class="text_box_gym_sm" style="margin-top: 20px;">{{item.name}}</h1>
                             </div>
                             <v-spacer />
                         </v-card-title>
                     </v-card>
                 </v-col>
             </v-row>
+
+            
             <v-row ref="retosdiv"></v-row>
-            <v-row class="pa-2" v-show="show_reto1">
-                    <v-col cols="12" md="3" v-for="(item, indx) in reto1" :key="indx">
-                        <v-card min-height="200" min-width="200" class="box_rutina" :img="require('@/assets/img/gym_virtual/poto_en_la_nuca.jpg')" color="#0A2240" :href="'https://apiweb.lavikingaoficial.com/api/download-file/' + item.code" v-if="item.link_video == null && item.filename != null && item.link_external == null">
-                            <h1 class="text_box_gym_sm align-left" style="padding-top: 10px!important; position: absolute; bottom:40px; margin-left: 8px;">{{ item.title }}</h1>
-                            <h4 style="padding: 0px 10px; color: #fff; font-family: 'Poppins-Regular'; font-size: 12px;position: absolute; bottom:0px;" v-if="item.description != 'null'">{{ item.description }}</h4>
-                            <v-btn
-                                fab
-                                small
-                                color="#fff"
-                                :href="'https://apiweb.lavikingaoficial.com/api/download-file/' + item.code"
-                                target="_blank"
-                                style="position: absolute; bottom:15px; right:10px; padding:5px;"
-                            >
-                            <v-icon color="#E7004C">
-                                mdi-tray-arrow-down
-                            </v-icon>
-                            </v-btn>
-                        </v-card>
-                        <v-card min-height="200" min-width="200" class="box_rutina" color="#0A2240" :img="require('@/assets/img/gym_virtual/poto_en_la_nuca.jpg')" @click="openPlayer(item.link_video)" v-if="item.link_video != null && item.filename == null && item.link_external == null">
-                            <h1 class="text_box_gym_sm align-left" style="padding-top: 10px!important; position: absolute; bottom:40px; margin-left: 8px;">{{ item.title }}</h1>
-                            <h4 style="padding: 0px 10px; color: #fff; font-family: 'Poppins-Regular'; font-size: 12px;position: absolute; bottom:0px;" v-if="item.description != 'null'">{{ item.description }}</h4>
-                            <v-btn
-                                fab
-                                small
-                                color="#fff"
-                                @click="openPlayer(item.link_video)"
-                                style="position: absolute; bottom:15px; right:10px; padding:5px;"
-                            >
-                            <v-icon color="#E7004C">
-                                mdi-play
-                            </v-icon>
-                            </v-btn>
-                        </v-card>
-                        <v-card min-height="200" min-width="200" class="box_rutina" color="#0A2240" :img="require('@/assets/img/gym_virtual/poto_en_la_nuca.jpg')" @click="openLink(item.link_external)" v-if="item.link_video == null && item.filename == null && item.link_external != null">
-                            <h1 class="text_box_gym_sm align-left" style="padding-top: 10px!important; position: absolute; bottom:40px; margin-left: 8px;">{{ item.title }}</h1>
-                            <h4 style="padding: 0px 10px; color: #fff; font-family: 'Poppins-Regular'; font-size: 12px;position: absolute; bottom:0px;" v-if="item.description != 'null'">{{ item.description }}</h4>
-                            <v-btn
-                                fab
-                                small
-                                color="#fff"
-                                @click="openLink(item.link_external)"
-                                style="position: absolute; bottom:15px; right:10px; padding:5px;"
-                            >
-                            <v-icon color="#E7004C">
-                                mdi-link
-                            </v-icon>
-                            </v-btn>
-                        </v-card>
-                    </v-col>
-                </v-row>
-
-
-                <v-row class="pa-2" v-show="show_reto2">
-                    <v-col cols="12" md="3" v-for="(item, indx) in reto2" :key="indx">
-                        <v-card min-height="200" min-width="200" class="box_rutina" :img="require('@/assets/img/gym_virtual/vikinga_no_abandona.jpg')" color="#0A2240" :href="'https://apiweb.lavikingaoficial.com/api/download-file/' + item.code" v-if="item.link_video == null && item.filename != null && item.link_external == null">
-                            <h1 class="text_box_gym_sm align-left" style="padding-top: 10px!important; position: absolute; bottom:40px; margin-left: 8px;">{{ item.title }}</h1>
-                            <h4 style="padding: 0px 10px; color: #fff; font-family: 'Poppins-Regular'; font-size: 12px;position: absolute; bottom:0px;" v-if="item.description != 'null'">{{ item.description }}</h4>
-                            <v-btn
+            <v-row class="pa-2">
+                <v-col cols="12" md="3" v-for="(item, indx) in retosFullList[selectedReto]" :key="indx">
+                    <v-card min-height="200" min-width="200" class="box_rutina" :img="'https://apiweb.lavikingaoficial.com/storage/uploads/downloadable/' + item.img_path" color="#0A2240" :href="'https://apiweb.lavikingaoficial.com/api/download-file/' + item.code" v-if="item.link_video == null && item.filename != null && item.link_external == null">
+                        <h1 class="text_box_gym_sm align-left" style="padding-top: 10px!important; position: absolute; bottom:40px; margin-left: 8px;">{{ item.title }}</h1>
+                        <h4 style="padding: 0px 10px; color: #fff; font-family: 'Poppins-Regular'; font-size: 12px;position: absolute; bottom:0px;" v-if="item.description != 'null'">{{ item.description }}</h4>
+                        <v-btn
                             fab
                             small
                             color="#fff"
                             :href="'https://apiweb.lavikingaoficial.com/api/download-file/' + item.code"
                             target="_blank"
                             style="position: absolute; bottom:15px; right:10px; padding:5px;"
-                            >
-                            <v-icon color="#E7004C">
-                                mdi-tray-arrow-down
-                            </v-icon>
-                            </v-btn>
-                        </v-card>
-                        <v-card min-height="200" min-width="200" class="box_rutina" color="#0A2240" :img="require('@/assets/img/gym_virtual/vikinga_no_abandona.jpg')" @click="openPlayer(item.link_video)" v-if="item.link_video != null && item.filename == null && item.link_external == null">
-                            <h1 class="text_box_gym_sm align-left" style="padding-top: 10px!important; position: absolute; bottom:40px; margin-left: 8px;">{{ item.title }}</h1>
-                            <h4 style="padding: 0px 10px; color: #fff; font-family: 'Poppins-Regular'; font-size: 12px;position: absolute; bottom:0px;" v-if="item.description != 'null'">{{ item.description }}</h4>
-                            <v-btn
+                        >
+                        <v-icon color="#E7004C">
+                            mdi-tray-arrow-down
+                        </v-icon>
+                        </v-btn>
+                    </v-card>
+                    <v-card min-height="200" min-width="200" class="box_rutina" color="#0A2240" :img="'https://apiweb.lavikingaoficial.com/storage/uploads/downloadable/' + item.img_path" @click="openPlayer(item.link_video)" v-if="item.link_video != null && item.filename == null && item.link_external == null">
+                        <h1 class="text_box_gym_sm align-left" style="padding-top: 10px!important; position: absolute; bottom:40px; margin-left: 8px;">{{ item.title }}</h1>
+                        <h4 style="padding: 0px 10px; color: #fff; font-family: 'Poppins-Regular'; font-size: 12px;position: absolute; bottom:0px;" v-if="item.description != 'null'">{{ item.description }}</h4>
+                        <v-btn
                             fab
                             small
                             color="#fff"
                             @click="openPlayer(item.link_video)"
                             style="position: absolute; bottom:15px; right:10px; padding:5px;"
-                            >
-                            <v-icon color="#E7004C">
-                                mdi-play
-                            </v-icon>
-                            </v-btn>
-                        </v-card>
-                        <v-card min-height="200" min-width="200" class="box_rutina" color="#0A2240" :img="require('@/assets/img/gym_virtual/vikinga_no_abandona.jpg')" @click="openLink(item.link_external)" v-if="item.id && (item.link_video == null || item.link_video == 'null') && item.filename == null && item.link_external != null">
-                            <h1 class="text_box_gym_sm align-left" style="padding-top: 10px!important; position: absolute; bottom:40px; margin-left: 8px;">{{ item.title }}</h1>
-                            <h4 style="padding: 0px 10px; color: #fff; font-family: 'Poppins-Regular'; font-size: 12px;position: absolute; bottom:0px;" v-if="item.description != 'null'">{{ item.description }}</h4>
-                            <v-btn
+                        >
+                        <v-icon color="#E7004C">
+                            mdi-play
+                        </v-icon>
+                        </v-btn>
+                    </v-card>
+                    <v-card min-height="200" min-width="200" class="box_rutina" color="#0A2240" :img="'https://apiweb.lavikingaoficial.com/storage/uploads/downloadable/' + item.img_path" @click="openLink(item.link_external)" v-if="item.link_video == null && item.filename == null && item.link_external != null">
+                        <h1 class="text_box_gym_sm align-left" style="padding-top: 10px!important; position: absolute; bottom:40px; margin-left: 8px;">{{ item.title }}</h1>
+                        <h4 style="padding: 0px 10px; color: #fff; font-family: 'Poppins-Regular'; font-size: 12px;position: absolute; bottom:0px;" v-if="item.description != 'null'">{{ item.description }}</h4>
+                        <v-btn
                             fab
                             small
                             color="#fff"
                             @click="openLink(item.link_external)"
                             style="position: absolute; bottom:15px; right:10px; padding:5px;"
-                            >
-                            <v-icon color="#E7004C">
-                                mdi-link
-                            </v-icon>
-                            </v-btn>
-                        </v-card>
-                    </v-col>
-                </v-row>
+                        >
+                        <v-icon color="#E7004C">
+                            mdi-link
+                        </v-icon>
+                        </v-btn>
+                    </v-card>
+                </v-col>
+            </v-row>
 
-
-                <v-row class="pa-2" v-show="show_reto3">
-                    <v-col cols="12" md="3" v-for="(item, indx) in reto3" :key="indx">
-                        <v-card min-height="200" min-width="200" class="box_rutina" :img="require('@/assets/img/gym_virtual/reto_nutricion.jpg')" color="#0A2240" :href="'https://apiweb.lavikingaoficial.com/api/download-file/' + item.code" v-if="item.link_video == null && item.filename != null && item.link_external == null">
-                            <h1 class="text_box_gym_sm align-left" style="padding-top: 10px!important; position: absolute; bottom:40px; margin-left: 8px;">{{ item.title }}</h1>
-                            <h4 style="padding: 0px 10px; color: #fff; font-family: 'Poppins-Regular'; font-size: 12px;position: absolute; bottom:0px;" v-if="item.description != 'null'">{{ item.description }}</h4>
-                            <v-btn
-                            fab
-                            small
-                            color="#fff"
-                            :href="'https://apiweb.lavikingaoficial.com/api/download-file/' + item.code"
-                            target="_blank"
-                            style="position: absolute; bottom:15px; right:10px; padding:5px;"
-                            >
-                            <v-icon color="#E7004C">
-                                mdi-tray-arrow-down
-                            </v-icon>
-                            </v-btn>
-                        </v-card>
-                        <v-card min-height="200" min-width="200" class="box_rutina" color="#0A2240" :img="require('@/assets/img/gym_virtual/reto_nutricion.jpg')" @click="openPlayer(item.link_video)" v-if="item.link_video != null && item.filename == null && item.link_external == null">
-                            <h1 class="text_box_gym_sm align-left" style="padding-top: 10px!important; position: absolute; bottom:40px; margin-left: 8px;">{{ item.title }}</h1>
-                            <h4 style="padding: 0px 10px; color: #fff; font-family: 'Poppins-Regular'; font-size: 12px;position: absolute; bottom:0px;" v-if="item.description != 'null'">{{ item.description }}</h4>
-                            <v-btn
-                            fab
-                            small
-                            color="#fff"
-                            @click="openPlayer(item.link_video)"
-                            style="position: absolute; bottom:15px; right:10px; padding:5px;"
-                            >
-                            <v-icon color="#E7004C">
-                                mdi-play
-                            </v-icon>
-                            </v-btn>
-                        </v-card>
-                        <v-card min-height="200" min-width="200" class="box_rutina" color="#0A2240" :img="require('@/assets/img/gym_virtual/reto_nutricion.jpg')" @click="openLink(item.link_external)" v-if="item.id && (item.link_video == null || item.link_video == 'null') && item.filename == null && item.link_external != null">
-                            <h1 class="text_box_gym_sm align-left" style="padding-top: 10px!important; position: absolute; bottom:40px; margin-left: 8px;">{{ item.title }}</h1>
-                            <h4 style="padding: 0px 10px; color: #fff; font-family: 'Poppins-Regular'; font-size: 12px;position: absolute; bottom:0px;" v-if="item.description != 'null'">{{ item.description }}</h4>
-                            <v-btn
-                            fab
-                            small
-                            color="#fff"
-                            @click="openLink(item.link_external)"
-                            style="position: absolute; bottom:15px; right:10px; padding:5px;"
-                            >
-                            <v-icon color="#E7004C">
-                                mdi-link
-                            </v-icon>
-                            </v-btn>
-                        </v-card>
-                    </v-col>
-                </v-row>
-
-                <v-row class="pa-2" v-show="show_reto4">
-                    <v-col cols="12" md="3" v-for="(item, indx) in reto4" :key="indx">
-                        <v-card min-height="200" min-width="200" class="box_rutina" :img="require('@/assets/img/gym_virtual/entrena_bebe.jpg')" color="#0A2240" :href="'https://apiweb.lavikingaoficial.com/api/download-file/' + item.code" v-if="item.link_video == null && item.filename != null && item.link_external == null">
-                            <h1 class="text_box_gym_sm align-left" style="padding-top: 10px!important; position: absolute; bottom:40px; margin-left: 8px;">{{ item.title }}</h1>
-                            <h4 style="padding: 0px 10px; color: #fff; font-family: 'Poppins-Regular'; font-size: 12px;position: absolute; bottom:0px;" v-if="item.description != 'null'">{{ item.description }}</h4>
-                            <v-btn
-                            fab
-                            small
-                            color="#fff"
-                            :href="'https://apiweb.lavikingaoficial.com/api/download-file/' + item.code"
-                            target="_blank"
-                            style="position: absolute; bottom:15px; right:10px; padding:5px;"
-                            >
-                            <v-icon color="#E7004C">
-                                mdi-tray-arrow-down
-                            </v-icon>
-                            </v-btn>
-                        </v-card>
-                        <v-card min-height="200" min-width="200" class="box_rutina" color="#0A2240" :img="require('@/assets/img/gym_virtual/entrena_bebe.jpg')" @click="openPlayer(item.link_video)" v-if="item.link_video != null && item.filename == null && item.link_external == null">
-                            <h1 class="text_box_gym_sm align-left" style="padding-top: 10px!important; position: absolute; bottom:40px; margin-left: 8px;">{{ item.title }}</h1>
-                            <h4 style="padding: 0px 10px; color: #fff; font-family: 'Poppins-Regular'; font-size: 12px;position: absolute; bottom:0px;" v-if="item.description != 'null'">{{ item.description }}</h4>
-                            <v-btn
-                            fab
-                            small
-                            color="#fff"
-                            @click="openPlayer(item.link_video)"
-                            style="position: absolute; bottom:15px; right:10px; padding:5px;"
-                            >
-                            <v-icon color="#E7004C">
-                                mdi-play
-                            </v-icon>
-                            </v-btn>
-                        </v-card>
-                        <v-card min-height="200" min-width="200" class="box_rutina" color="#0A2240" :img="require('@/assets/img/gym_virtual/entrena_bebe.jpg')" @click="openLink(item.link_external)" v-if="item.id && (item.link_video == null || item.link_video == 'null') && item.filename == null && item.link_external != null">
-                            <h1 class="text_box_gym_sm align-left" style="padding-top: 10px!important; position: absolute; bottom:40px; margin-left: 8px;">{{ item.title }}</h1>
-                            <h4 style="padding: 0px 10px; color: #fff; font-family: 'Poppins-Regular'; font-size: 12px;position: absolute; bottom:0px;" v-if="item.description != 'null'">{{ item.description }}</h4>
-                            <v-btn
-                            fab
-                            small
-                            color="#fff"
-                            @click="openLink(item.link_external)"
-                            style="position: absolute; bottom:15px; right:10px; padding:5px;"
-                            >
-                            <v-icon color="#E7004C">
-                                mdi-link
-                            </v-icon>
-                            </v-btn>
-                        </v-card>
-                    </v-col>
-                </v-row>
                 <v-row style="margin-bottom: 300px;"></v-row>
         </v-container>
         <v-snackbar v-model="toast.toast" :timeout="toast.timeout" :color="toast.color" dark>
@@ -337,10 +155,14 @@ export default {
         has_active_plan: false,
         show_message_plan: false,
         user: [],
-        userPlans: []
+        userPlans: [],
+        retosCategories: [],
+        retosFullList: [],
+        selectedReto: null
     }),
     mounted() {
         this.auth();
+        this.getCategories();
         this.getDownloads();
     },
     computed: {
@@ -391,6 +213,9 @@ export default {
                 window.location.replace('/auth/iniciar-sesion');
             }
         },
+        changeReto(reto){
+            this.selectedReto = reto;
+        },
         showReto(reto){
             let index = reto + 1;
             
@@ -435,6 +260,31 @@ export default {
             }
         },
 
+        async getCategories() {
+            this.$store.commit('loader', true);
+            try {
+                const response = await this.$API.business_partner.getRetosCategories();
+                
+                this.retosCategories = response.data;
+                this.$store.commit('loader', false);
+            } catch (e) {
+                this.$store.commit('loader', false);
+                console.error(e);
+            }
+        },
+
+        creatSlug(texto) {
+            // Eliminar tildes (acentos)
+            texto = texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+            // Convertir a minúsculas, eliminar espacios al principio y final, reemplazar caracteres no válidos
+            return texto
+                .toLowerCase()               // Convertir a minúsculas
+                .trim()                       // Eliminar espacios al principio y al final
+                .replace(/[\s\W-]+/g, '-')    // Reemplazar espacios y caracteres no alfanuméricos por guiones
+                .replace(/^-+|-+$/g, '');     // Eliminar guiones al principio o al final
+        },
+
         async getDownloads() {
             this.$store.commit('loader', true);
             try {
@@ -444,11 +294,18 @@ export default {
                 
                 //console.log(this.downloads_list.groupBy('name_category'))
                 this.groupList = this.retos_list.groupBy('name_category');
-                console.log(this.groupList);
-                this.reto1 = this.groupList[0].groupList;
+                
+                this.groupList.forEach(item => {
+                    let slug = this.creatSlug(item.field);
+                    this.retosFullList[slug] = item.groupList;
+                });
+
+                console.log(this.retosFullList);
+
+                /*this.reto1 = this.groupList[0].groupList;
                 this.reto2 = this.groupList[1].groupList;
                 this.reto3 = this.groupList[2].groupList;
-                this.reto4 = this.groupList[3].groupList;
+                this.reto4 = this.groupList[3].groupList;*/
                 this.$store.commit('loader', false);
             } catch (e) {
                 this.$store.commit('loader', false);
