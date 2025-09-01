@@ -17,44 +17,44 @@
 
             <v-row style="border: 2px solid #293E58; border-radius: 16px;margin-bottom: 10px;">
                 <v-col v-for="(item, indx) in groupList" :key="'col_' + indx" cols="12" md="4">
-                    <v-card min-height="200" v-if="indx == 0" min-width="200" class="box_rutina justify-center" :img="require('@/assets/img/gym_virtual/poto_en_la_nuca.jpg')" color="#0A2240" @click="showReto(indx)">
-                        <v-card-title>
-                            <v-spacer />
-                            <div class="text-center">
-                                <h1 class="text_box_gym_sm" style="margin-top: 20px;">{{item.field}}</h1>
+                    <v-card min-height="200" v-if="indx == 0" min-width="200" class="box_rutina reto-card-new" :img="require('@/assets/img/gym_virtual/poto_en_la_nuca.jpg')" color="#0A2240" @click="showReto(indx)">
+                        <div class="reto-content">
+                            <div class="red-vector-bottom">
+                                <img src="@/assets/img/gym_virtual/red-vector.png" class="vector-png" alt="vector">
+                                <div class="vector-texture-mask"></div>
+                                <h1 class="reto-title-bottom">{{item.field}}</h1>
                             </div>
-                            <v-spacer />
-                        </v-card-title>
+                        </div>
                     </v-card>
 
-                    <v-card min-height="200" v-if="indx == 1" min-width="200" class="box_rutina justify-center" :img="require('@/assets/img/gym_virtual/vikinga_no_abandona.jpg')" color="#0A2240" @click="showReto(indx)">
-                        <v-card-title>
-                            <v-spacer />
-                            <div class="text-center">
-                                <h1 class="text_box_gym_sm" style="margin-top: 20px;">{{item.field}}</h1>
+                    <v-card min-height="200" v-if="indx == 1" min-width="200" class="box_rutina reto-card-new" :img="require('@/assets/img/gym_virtual/vikinga_no_abandona.jpg')" color="#0A2240" @click="showReto(indx)">
+                        <div class="reto-content">
+                            <div class="red-vector-bottom">
+                                <img src="@/assets/img/gym_virtual/red-vector.png" class="vector-png" alt="vector">
+                                <div class="vector-texture-mask"></div>
+                                <h1 class="reto-title-bottom">{{item.field}}</h1>
                             </div>
-                            <v-spacer />
-                        </v-card-title>
+                        </div>
                     </v-card>
 
-                    <v-card min-height="200" v-if="indx == 2" min-width="200" class="box_rutina justify-center" :img="require('@/assets/img/gym_virtual/reto_nutricion.jpg')" color="#0A2240" @click="showReto(indx)">
-                        <v-card-title>
-                            <v-spacer />
-                            <div class="text-center">
-                                <h1 class="text_box_gym_sm" style="margin-top: 20px;">{{item.field}}</h1>
+                    <v-card min-height="200" v-if="indx == 2" min-width="200" class="box_rutina reto-card-new" :img="require('@/assets/img/gym_virtual/reto_nutricion.jpg')" color="#0A2240" @click="showReto(indx)">
+                        <div class="reto-content">
+                            <div class="red-vector-bottom">
+                                <img src="@/assets/img/gym_virtual/red-vector.png" class="vector-png" alt="vector">
+                                <div class="vector-texture-mask"></div>
+                                <h1 class="reto-title-bottom">{{item.field}}</h1>
                             </div>
-                            <v-spacer />
-                        </v-card-title>
+                        </div>
                     </v-card>
 
-                    <v-card min-height="200" v-if="indx == 3" min-width="200" class="box_rutina justify-center" :img="require('@/assets/img/gym_virtual/entrena_bebe.jpg')" color="#0A2240" @click="showReto(indx)">
-                        <v-card-title>
-                            <v-spacer />
-                            <div class="text-center">
-                                <h1 class="text_box_gym_sm" style="margin-top: 20px;">{{item.field}}</h1>
+                    <v-card min-height="200" v-if="indx == 3" min-width="200" class="box_rutina reto-card-new" :img="require('@/assets/img/gym_virtual/entrena_bebe.jpg')" color="#0A2240" @click="showReto(indx)">
+                        <div class="reto-content">
+                            <div class="red-vector-bottom">
+                                <img src="@/assets/img/gym_virtual/red-vector.png" class="vector-png" alt="vector">
+                                <div class="vector-texture-mask"></div>
+                                <h1 class="reto-title-bottom">{{item.field}}</h1>
                             </div>
-                            <v-spacer />
-                        </v-card-title>
+                        </div>
                     </v-card>
                 </v-col>
             </v-row>
@@ -481,5 +481,85 @@ export default {
 
 .activity-nutrition {
     background-color: #0480a4;
+}
+
+.reto-card-new.v-card {
+    position: relative;
+    overflow: hidden;
+    border: 3px solid #E7004C !important;
+    border-radius: 0 !important;
+}
+
+.reto-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    z-index: 1;
+}
+
+.reto-title-top {
+    color: white !important;
+    text-align: center;
+    margin: 20px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    z-index: 2;
+}
+
+.red-vector-bottom {
+    position: relative;
+    height: 60px;
+    width: calc(100% - 50px);
+    margin: 0 25px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 10px;
+}
+
+.vector-png {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 60px;
+    object-fit: fill;
+}
+
+.vector-texture-mask {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 60px;
+    background-image: url('~@/assets/img/gym_virtual/paper-texture.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    mask-image: url('~@/assets/img/gym_virtual/vector-mask.png');
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mix-blend-mode: multiply;
+    opacity: 0.9;
+    contrast: 1.3;
+    pointer-events: none;
+}
+
+.reto-title-bottom {
+    position: relative;
+    z-index: 3;
+    color: white !important;
+    text-align: center;
+    margin: 0;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-transform: uppercase !important;
+    transform: rotate(-2deg);
 }
 </style>
