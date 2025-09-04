@@ -215,6 +215,25 @@ export default {
         },
         changeReto(reto){
             this.selectedReto = reto;
+            
+            // Scroll automático en mobile
+            this.$nextTick(() => {
+                if (window.innerWidth <= 768) { // Solo en mobile
+                    const node = this.$refs['retosdiv'];
+                    if (node) {
+                        const yourHeight = 68; // Altura del header
+                        
+                        // Scroll suave hacia el elemento
+                        node.scrollIntoView({ behavior: "smooth" });
+                        
+                        // Ajustar por header fijo
+                        const scrolledY = window.scrollY;
+                        if (scrolledY) {
+                            window.scroll(0, scrolledY - yourHeight);
+                        }
+                    }
+                }
+            });
         },
         showReto(reto){
             let index = reto + 1;
