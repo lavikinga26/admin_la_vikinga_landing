@@ -438,9 +438,9 @@ export default {
                 vm.order.country = datosUser.country;
                 vm.order.ref_code = vm.ref_code;
                 vm.order.ref_discount = vm.cart[0].ref_discount != undefined && !isNaN(vm.cart[0].ref_discount) ? vm.cart[0].ref_discount : 0;
-                vm.order.total = parseFloat(vm.total-vm.discount-vm.order.ref_discount).toFixed(2);
-                vm.order.subtotal = parseFloat(vm.order.total / 1.18).toFixed(2);
-                vm.order.igv = parseFloat(vm.order.total - (vm.order.total / 1.18)).toFixed(2);
+                vm.order.total = parseFloat(vm.total).toFixed(2);
+                vm.order.subtotal = parseFloat(vm.total / 1.18).toFixed(2);
+                vm.order.igv = parseFloat(vm.total - (vm.total / 1.18)).toFixed(2);
                 if (datosUser.bp_id != undefined && datosUser.bp_id != "") {
                     vm.order.bp_id = datosUser.bp_id;
                     vm.order.bd_id = datosUser.bp_id;
