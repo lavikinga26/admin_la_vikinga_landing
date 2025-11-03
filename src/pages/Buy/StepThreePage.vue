@@ -156,10 +156,10 @@
                         <v-text-field dense v-model="coupon" class="register_form" outlined type="text"
                             placeholder="Cupón de descuento" hide-details></v-text-field>
                     </v-col>
-                    <v-col cols="4"><v-btn depressed class="btn_blue_form" 
+                    <v-col cols="4"><v-btn depressed class="btn_blue_form"
                             style="bottom:0!important;margin-top: 25px !important;" @click="aplicarCupon()">APLICAR
                             CUPÓN</v-btn></v-col>
-                    <v-col cols="12">
+                    <v-col cols="12" v-if="cart[0] && cart[0].currency_id === 1">
                         <v-checkbox v-model="had_invoice" label="Solicitar factura" hide-details
                             style="margin-top: 0px!important;"></v-checkbox>
                     </v-col>
@@ -367,6 +367,9 @@ export default {
         vm.getBaseUrl();
         vm.getPaymentMethods();
         vm.cart[0] = JSON.parse(localStorage.getItem('planSeleccionado'));
+        console.log('DEBUG CART[0]:', vm.cart[0]);
+        console.log('DEBUG currency:', vm.cart[0].currency);
+        console.log('DEBUG currency_id:', vm.cart[0].currency_id);
         vm.total = vm.cart[0] ? vm.cart[0].price : 0;
         var da_trial = new Date();
         da_trial.setDate(da_trial.getDate() + vm.cart[0].dias_trial);
