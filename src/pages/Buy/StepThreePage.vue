@@ -126,31 +126,28 @@
                 <v-row>
                     <v-col cols="8">{{ cart[0] ? cart[0].title : '' }}</v-col>
                     <v-col cols="4"  class="text-right">{{ cart[0].currency }} {{ cart[0] ?
-                        parseFloat(
-                            parseFloat(cart[0].price).toFixed(2) + 
-                            parseFloat(discount).toFixed(2)
-                        ).toFixed(0) :
+                        formatPrice(parseFloat(cart[0].price) + parseFloat(discount)) :
                         ''
                         }}</v-col>
                 </v-row>
                 <v-row v-if="cart[0].ref_code != null && cart[0].ref_code != undefined">
                     <v-col cols="8"><b>Descuento Referido</b></v-col>
-                    <v-col cols="4" class="text-right">{{ cart[0].currency }} {{ parseFloat(ref_des).toFixed(0) }}</v-col>
+                    <v-col cols="4" class="text-right">{{ cart[0].currency }} {{ formatPrice(ref_des) }}</v-col>
                 </v-row>
                 <v-row v-if="discount > 0">
                     <v-col cols="8"><b>Descuento</b></v-col>
-                    <v-col cols="4" class="text-right">{{ cart[0].currency }} {{ parseFloat(discount).toFixed(0) }}</v-col>
+                    <v-col cols="4" class="text-right">{{ cart[0].currency }} {{ formatPrice(discount) }}</v-col>
                 </v-row>
 
                 <hr class="mt-2 mb-2" style="border: 1px dashed #000000;">
                 <v-row>
                     <v-col cols="8"><b>Total a pagar hoy</b></v-col>
-                    <v-col cols="4" class="text-right"><b>{{ cart[0].currency }} {{ parseFloat(total).toFixed(2) }}</b></v-col>
+                    <v-col cols="4" class="text-right"><b>{{ cart[0].currency }} {{ formatPrice(total) }}</b></v-col>
                 </v-row>
 
                 <v-alert type="info" color="#E7004C" elevation="0" class="mt-5" v-if="is_trial == 1">
                     Suscribiéndote a este plan tienes {{ cart[0].dias_trial }} días gratis, no se te cobrará nada hasta
-                    el <b>{{ prox_trial_pay }}</b>, ese día se te cobrará <b>{{ cart[0].currency }} {{ parseFloat(cart[0].price).toFixed(2) }}</b>. Puedes cancelar cuando quieras.
+                    el <b>{{ prox_trial_pay }}</b>, ese día se te cobrará <b>{{ cart[0].currency }} {{ formatPrice(cart[0].price) }}</b>. Puedes cancelar cuando quieras.
                 </v-alert>
 
                 <v-row class="mt-5" v-if="show_coupon_box == true && couponDisabled == false">
@@ -266,7 +263,7 @@
         <v-dialog v-model="dialogConfirm" max-width="500px">
             <v-card>
             <v-card-title>Confirmar Suscripción</v-card-title>
-            <v-card-text>Al suscribirte a un plan con débito automático, autorizas el cobro del plan por {{ cart[0].currency }} {{ total }} el día de hoy y el próximo mes se debitará en tu tarjeta de manera automática, 2 días antes del vencimiento.<br/>
+            <v-card-text>Al suscribirte a un plan con débito automático, autorizas el cobro del plan por {{ cart[0].currency }} {{ formatPrice(total) }} el día de hoy y el próximo mes se debitará en tu tarjeta de manera automática, 2 días antes del vencimiento.<br/>
             ✅ Recuerda que puedes darte de baja en cualquier momento desde tu cuenta.<br/>
             ¿Aceptas adherirte al débito automático?</v-card-text>
             <v-card-actions>
@@ -377,13 +374,18 @@ export default {
         vm.ref_code = localStorage.getItem("ref_code");
         if(vm.ref_code != null && vm.ref_code != undefined){
 			vm.show_coupon_box = false;
-            vm.ref_des = parseFloat(vm.cart[0].ref_discount).toFixed(2);
+            vm.ref_des = parseFloat(vm.cart[0].ref_discount);
             let vtot = vm.cart[0].price;
             vm.cart[0].price = parseFloat(vtot) + parseFloat(vm.ref_des);
 		}
 
     },
     methods: {
+        formatPrice(price) {
+            // Convierte el precio a número y elimina .00 si no hay decimales significativos
+            const numPrice = parseFloat(price);
+            return numPrice % 1 === 0 ? numPrice.toFixed(0) : numPrice.toFixed(2);
+        },
         showModalConditions(){
             this.dialogConfirm = true;
         },

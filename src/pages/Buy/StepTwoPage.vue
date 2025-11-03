@@ -458,6 +458,11 @@ export default {
 		}
 	},
 	methods: {
+		formatPrice(price) {
+			// Convierte el precio a número y elimina .00 si no hay decimales significativos
+			const numPrice = parseFloat(price);
+			return numPrice % 1 === 0 ? numPrice.toFixed(0) : numPrice.toFixed(2);
+		},
 		updCurrency(){
 			this.currency_id = !this.currency ? 0 : 1;
 			console.log(this.currency_id);
@@ -527,9 +532,9 @@ export default {
 			const price = prices[this.currency_id];
 
 			if(this.ref_code != null && this.ref_code != undefined){
-				return price ? this.calcDiscountReferred(price.amount, dsc_pen, dsc_usd) : null; 
+				return price ? this.formatPrice(this.calcDiscountReferred(price.amount, dsc_pen, dsc_usd)) : null;
 			}else{
-				return price ? price.amount : null;
+				return price ? this.formatPrice(price.amount) : null;
 			}
 		},
 		getDiscount(prices, dsc_pen, dsc_usd) {
@@ -543,9 +548,9 @@ export default {
 			if(this.ref_code != null && this.ref_code != undefined){
 				let precioCalcDsct = price.old_amount != "0" && price.old_amount != "0.00" ? price.old_amount : price.amount;
 				const finalAmount = this.calcDiscountReferred(precioCalcDsct, dsc_pen, dsc_usd);
-				return this.currency_id == 0 ? "Dscto. Referido " + currencySymbol + parseFloat(dsc_pen).toFixed(2) : "Dscto. Referido " + currencySymbol + parseFloat(dsc_usd).toFixed(2);
+				return this.currency_id == 0 ? "Dscto. Referido " + currencySymbol + this.formatPrice(dsc_pen) : "Dscto. Referido " + currencySymbol + this.formatPrice(dsc_usd);
 			}else{
-				return price ? "Ahorra " + currencySymbol + parseFloat(finalAmount).toFixed(2) : null;
+				return price ? "Ahorra " + currencySymbol + this.formatPrice(finalAmount) : null;
 			}
 		},
 		getOldPrice(prices, dsc_pen, dsc_usd) {
@@ -555,9 +560,9 @@ export default {
 
 			const price = prices[this.currency_id];
 			if(this.ref_code != null && this.ref_code != undefined){
-				return price.amount;
+				return this.formatPrice(price.amount);
 			}else{
-				return price.old_amount ? currencySymbol + price.old_amount : null;
+				return price.old_amount ? currencySymbol + this.formatPrice(price.old_amount) : null;
 			}
 		},
 		calcDiscountReferred(price, dsc_pen, dsc_usd){
