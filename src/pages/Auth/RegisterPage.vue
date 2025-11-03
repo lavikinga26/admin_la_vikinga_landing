@@ -196,7 +196,7 @@
 							</v-col>
 						</v-row>
 						<v-row>
-							<v-col cols="12" md="6" class="pa-0 px-1">
+							<v-col cols="6" md="6" class="pa-0 px-1">
 								<v-btn
 									class="text_btn_white_title"
 									block
@@ -207,7 +207,7 @@
 									<v-icon>mdi-chevron-left</v-icon>VOLVER
 								</v-btn>
 							</v-col>
-							<v-col cols="12" md="6" class="pa-0 px-1">
+							<v-col cols="6" md="6" class="pa-0 px-1">
 								<v-btn
 									class="text_btn_white_title"
 									block
