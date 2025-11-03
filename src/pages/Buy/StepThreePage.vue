@@ -367,9 +367,6 @@ export default {
         vm.getBaseUrl();
         vm.getPaymentMethods();
         vm.cart[0] = JSON.parse(localStorage.getItem('planSeleccionado'));
-        console.log('DEBUG CART[0]:', vm.cart[0]);
-        console.log('DEBUG currency:', vm.cart[0].currency);
-        console.log('DEBUG currency_id:', vm.cart[0].currency_id);
         vm.total = vm.cart[0] ? vm.cart[0].price : 0;
         var da_trial = new Date();
         da_trial.setDate(da_trial.getDate() + vm.cart[0].dias_trial);
@@ -512,7 +509,12 @@ export default {
                 }
                 // Asignar los métodos de pago filtrados
                 this.paymentMethods = paymentMethods;
-                
+
+                // Marcar automáticamente el primer método de pago
+                if (this.paymentMethods.length > 0) {
+                    this.order.id_payment_method = this.paymentMethods[0].id;
+                }
+
                 let renovacion = this.cart.filter((item) => item.renovacion == 1);
                 if (renovacion.length > 0) {
                     this.show_transfer = false;
@@ -556,6 +558,11 @@ export default {
                     this.is_trial = 1;
                     this.subtotal = 0;
                     this.igv = 0;
+                }
+            } finally {
+                // Marcar automáticamente método de pago GRATIS si total es 0 y no hay trial
+                if ((this.total == 0 || this.total == 0.00) && this.is_trial == 0) {
+                    this.order.id_payment_method = '3';
                 }
                 /*localStorage.removeItem('user_data');
                 localStorage.removeItem('token');
