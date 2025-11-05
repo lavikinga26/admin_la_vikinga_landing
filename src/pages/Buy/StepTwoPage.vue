@@ -12,7 +12,7 @@
 				<p class="subtitle-white">En el Desfío Gym Virtual preparamos una Programación de  Entrenamiento basada en la fuerza y adaptada para 3 niveles de  entrenamiento.</p>
 			</div>
 			<img
-				src="@/assets/img/gym_virtual/register_img.png"
+				src="@/assets/img/gym_virtual/viking.png"
 				alt="Imagen Login"
 				style="width:100%; max-height:100vh;object-fit: cover;"
 			/>

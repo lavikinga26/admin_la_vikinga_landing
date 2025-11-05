@@ -176,7 +176,7 @@
                             class="px-2"
                             @click="abrirStripe()"
                             v-if="hide_btn==false">
-                            <span class="ma-3">Nueva Tarjeta</span>
+                            <span class="ma-3">Añadir tarjeta</span>
                         </v-btn>
 
                         <v-btn color="secondary"
@@ -327,8 +327,9 @@ export default {
                 vm.order = data.data.data.order;
                 const ucards = await this.$API.stripe.getUserCards(vm.order.customer);
                 vm.usercc = ucards.data.data.cards;
+                // Solo abrir el formulario automáticamente si NO tiene tarjetas guardadas
                 if(vm.usercc.length == 0){
-                    this.abrirPayme();
+                    this.abrirStripe();
                 }
                 vm.$store.commit('loader',false);
             }
