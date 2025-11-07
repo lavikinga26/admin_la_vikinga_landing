@@ -205,6 +205,9 @@
                 </v-card>
             </v-sheet>
         </v-col>
+        <v-snackbar v-model="toast.toast" :timeout="toast.timeout" :color="toast.color" dark>
+            {{ toast.message }}
+        </v-snackbar>
     </v-row>
 </template>
 <script>
@@ -274,23 +277,30 @@ export default {
         },
 
         async tokenCreated (token) {
-            this.card_data = token;
-            this.card_data.id_user = this.order.customer.id;
-            this.card_data.hash_order = this.slug;
-            const data = await this.$API.stripe.saveToken(this.card_data);
+            let vm = this;
+            try {
+                this.card_data = token;
+                this.card_data.id_user = this.order.customer.id;
+                this.card_data.hash_order = this.slug;
+                const data = await this.$API.stripe.saveToken(this.card_data);
 
-            let token_resul = data.data.data;
+                let token_resul = data.data.data;
 
-            if(token_resul.success == true){
-                token_resul.ucard.hash_order = this.slug;
-                token_resul.ucard.id_card = token_resul.id_card;
+                if(token_resul.success == true){
+                    token_resul.ucard.hash_order = this.slug;
+                    token_resul.ucard.id_card = token_resul.id_card;
 
-                const data_auth = await this.$API.stripe.authTransaction(token_resul.ucard);
+                    const data_auth = await this.$API.stripe.authTransaction(token_resul.ucard);
 
-                this.$router.push({ path: '/resultado-pago/'+this.slug });
-                vm.$store.commit('loader',false);
-            }else{
-                alert("Error al generar token.");
+                    this.$router.push({ path: '/resultado-pago/'+this.slug });
+                    vm.$store.commit('loader',false);
+                }else{
+                    vm.showToast("Hubo un error al procesar tu tarjeta. Por favor, verifica los datos e intenta nuevamente.", "error");
+                    vm.$store.commit('loader',false);
+                }
+            } catch(e) {
+                console.error(e);
+                vm.showToast("Hubo un error al procesar el pago. Por favor, intenta nuevamente.", "error");
                 vm.$store.commit('loader',false);
             }
         },
@@ -307,12 +317,13 @@ export default {
 
                 let datos_upd = {};
                 datos_upd.hash_order = vm.slug;
-                
+
                 this.$router.push({ path: '/resultado-pago/'+vm.slug });
                 vm.$store.commit('loader',false);
             }
             catch(e){
                 console.error(e);
+                vm.showToast("Hubo un error al procesar el pago. Por favor, intenta nuevamente.", "error");
                 vm.$store.commit('loader',false);
             }
         },

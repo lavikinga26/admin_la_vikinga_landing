@@ -196,6 +196,9 @@
                 </v-card>
             </v-sheet>
         </v-col>
+        <v-snackbar v-model="toast.toast" :timeout="toast.timeout" :color="toast.color" dark>
+            {{ toast.message }}
+        </v-snackbar>
     </v-row>
 </template>
 <script>
@@ -267,7 +270,7 @@ export default {
 
                 let datos_upd = {};
                 datos_upd.hash_order = vm.slug;
-                
+
                 this.$router.push({ path: '/resultado-pago/'+vm.slug });
 
                 /*if(auth_resul.success == true){
@@ -287,6 +290,7 @@ export default {
             }
             catch(e){
                 console.error(e);
+                vm.showToast("Hubo un error al procesar el pago. Por favor, intenta nuevamente.", "error");
                 vm.$store.commit('loader',false);
             }
         },
@@ -313,9 +317,8 @@ export default {
         },
 
         async reqCallback(response) {
+            let vm = this;
             try{
-                let vm = this;
-                
                 this.card_data = response;
                 //console.log(this.card_data);
                 this.card_data.id_user = this.order.customer.id;
@@ -334,14 +337,15 @@ export default {
                     vm.$store.commit('loader',false);
                     //console.log(data_auth);
                 }else{
-                    alert("Error al generar token.");
+                    vm.showToast("Hubo un error al procesar tu tarjeta. Por favor, verifica los datos e intenta nuevamente.", "error");
                     vm.$store.commit('loader',false);
                 }
-                
+
             }catch(e){
-                //this.$store.commit('loader',false);
                 console.error(e);
-            } 
+                vm.showToast("Hubo un error al procesar el pago. Por favor, intenta nuevamente.", "error");
+                vm.$store.commit('loader',false);
+            }
         },
 
         startCallback() {
