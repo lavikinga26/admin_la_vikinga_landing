@@ -63,4 +63,12 @@ export default [
 			),
 		meta: { requiresAuth: true, template: "SidebarTemplate" },
 	},
+	{
+		path: "/cuenta/compra-reto",
+		component: () =>
+			import(
+				/* webpackChunkName: "apps-email-inbox" */ "../pages/GymVirtual/pages/PaymentReto.vue"
+			),
+		meta: { requiresAuth: true, template: "SidebarTemplate" },
+	},
 ];

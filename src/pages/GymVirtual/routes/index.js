@@ -49,6 +49,33 @@ export default [
 		meta: { requiresAuth: true, template: "SidebarTemplate" },
 	},
 	{
+		path: "retos-pagar/:hash",
+		name: "retos-pagar",
+		component: () =>
+			import(
+				/* webpackChunkName: "apps-email-inbox" */ "@/pages/GymVirtual/pages/RetosPagarPage.vue"
+			),
+		meta: { requiresAuth: true, template: "SidebarTemplate" },
+	},
+	{
+		path: "retos-pagar-st/:hash",
+		name: "retos-pagar-st",
+		component: () =>
+			import(
+				/* webpackChunkName: "apps-email-inbox" */ "@/pages/GymVirtual/pages/StripeReto.vue"
+			),
+		meta: { requiresAuth: true, template: "SidebarTemplate" },
+	},
+	{
+		path: "retos-resultado-pago/:hash",
+		name: "retos-resultado-pago",
+		component: () =>
+			import(
+				/* webpackChunkName: "apps-email-inbox" */ "@/pages/GymVirtual/pages/RetosPagoResultadoPage.vue"
+			),
+		meta: { requiresAuth: true, template: "SidebarTemplate" },
+	},
+	{
 		path: "recursos",
 		name: "recursos",
 		component: () =>

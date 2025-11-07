@@ -46,6 +46,7 @@
 					class="rounded-lg"
 					style="background-color: rgba(255, 255, 255, 1); width:100%;"
 					outlined
+					v-if="plan_act != undefined && plan_act != null"
 				>
 					<div class="align-center justify-center pa-4">
 						<h1 class="text_main_class mt-2" style="text-align:center;">
@@ -124,6 +125,43 @@
 						</v-row>
 					</div>
 				</v-card>
+				<v-card
+					class="rounded-lg"
+					style="background-color: rgba(255, 255, 255, 1); width:100%;"
+					outlined
+					v-else
+				>
+					<div class="align-center justify-center pa-4">
+						<p
+							class="align-center textretencion"
+						>
+							Eres muy valiosa para nosotros y nos gustaría que te quedes en el desafío, pero si deseas cancelar tu membresía puedes hacerlo utilizando el botón que aparece en la parte inferior. Esperamos volver a verte en el desafío pronto!
+						</p>
+						<hr />
+						<v-row style="max-width: 500px; margin: auto;">
+							<v-col
+								cols="12"
+								md="12"
+								class="d-md-flex"
+								style="position: relative;"
+							>
+								<v-btn
+									@click="
+										showDeleteDialog(
+											plan.id_suscripcion,
+											plan.id_partner,
+											plan.expiration_date
+										)
+									"
+									class="text_btn_grey_title"
+									block
+									depressed
+									>Cancelar membresía</v-btn
+								>
+							</v-col>
+						</v-row>
+					</div>
+				</v-card>
 			</v-col>
 		</v-row>
 		<v-dialog v-model="dialogConfirmCancel" max-width="500px">
@@ -146,7 +184,7 @@
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
-		<v-dialog v-model="successModal" max-width="500px">
+		<v-dialog v-model="successModal" max-width="500px" v-if="plan_act != undefined && plan_act != null">
 			<v-card>
 				<v-card-text>
 					<div class="pt-8">

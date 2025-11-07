@@ -169,6 +169,9 @@ export default {
         saveToken(data){
             return callAPI('post', 'api/v1/payme/saveToken', { data: data });
         },
+        authTransactionRetos(data){
+            return callAPI('post', 'api/v1/payme/authTransactionRetos', { data: data });
+        },
         authTransaction(data){
             return callAPI('post', 'api/v1/payme/authTransaction', { data: data });
         },
@@ -180,6 +183,9 @@ export default {
         saveToken(data){
             return callAPI('post', 'api/v1/stripe/stripeSaveToken', { data: data });
         },
+        authTransactionRetos(data){
+            return callAPI('post', 'api/v1/stripe/authTransactionRetos', { data: data });
+        },
         authTransaction(data){
             return callAPI('post', 'api/v1/stripe/authTransaction', { data: data });
         },
@@ -188,6 +194,9 @@ export default {
         },
         authTransactionUserToken(data){
             return callAPI('post', 'api/v1/stripe/authTransactionUserToken', { data: data });
+        },
+        authTransactionUserTokenRetos(data){
+            return callAPI('post', 'api/v1/stripe/authTransactionUserTokenRetos', { data: data });
         },
     },
     testimonials:{

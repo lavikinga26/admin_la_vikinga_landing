@@ -79,7 +79,7 @@
 													</td>
 													<td v-if="item.retentions.length > 0 && item.order_currency.length > 0">
 														<p v-if="item.order_currency[0].id_currency == 1" style="width: 60px;"><s>S/ {{ item.precio_soles }}</s><br/> S/ {{ item.retentions[0].retention_amount }}</p>
-														<p v-if="item.order_currency[0].id_currency == 2" style="width: 60px;"><s>$ {{ item.precio_dolares }}</s><br/> $ {{ item.retentions[1].retention_amount }}</p>
+														<p v-if="item.order_currency[0].id_currency == 2" style="width: 60px;"><s>$ {{ item.precio_dolares }}</s><br/> $ {{ item.retentions[0].retention_amount }}</p>
 													</td>
 													<td v-if="item.retentions.length == 0 && item.order_currency.length > 0">
 														<p v-if="item.order_currency[0].id_currency == 1" style="width: 60px;">S/ {{ item.precio_soles }}</p>

@@ -1,97 +1,6 @@
 <template>
     <v-row>
-        <v-col
-			cols="12"
-			md="4"
-			class="d-none d-md-flex d-sm-none"
-			style="position: relative;"
-		>
-			<img
-				src="@/assets/img/gym_virtual/register-4.png"
-				alt="Imagen Login"
-				style="width:100%; max-height:100vh;object-fit: cover;"
-			/>
-			<v-sheet
-				style="position: absolute; left: 0; right: 0; bottom: 10px;"
-				class="mx-auto transparent"
-				elevation="0"
-				max-width="450"
-			>
-				<v-carousel cycle :show-arrows="false" hide-delimiters height="320">
-					<v-carousel-item class="ma-4">
-						<v-card class="rounded-lg" color="#0A2240" width="540" outlined>
-							<div class="align-center justify-center">
-								<p
-									class="pa-3 align-center white--text"
-									style="text-align:center; font-size: 13px;"
-								>
-									<v-rating
-										:value="5"
-										background-color="indigo"
-										color="yellow darken-3"
-										disabled
-									></v-rating>
-									Me gusta la buena vibra de los entrenadores y que sufren igual
-									o más que yo. Y que me acompañen a ir aumentando la carga
-									progresivamente, pero sobre todo a no dejar de moverme 💪.<br /><br />
-									<span style="font-weight:bold; color: #E7004C">Carolina</span>
-								</p>
-							</div>
-						</v-card>
-					</v-carousel-item>
-					<v-carousel-item class="ma-4">
-						<v-card class="rounded-lg" color="#0A2240" width="540" outlined>
-							<div class="align-center justify-center">
-								<p
-									class="pa-3 align-center white--text"
-									style="text-align:center;font-size: 13px;"
-								>
-									<v-rating
-										:value="5"
-										background-color="indigo"
-										color="yellow darken-3"
-										disabled
-									></v-rating>
-									Las clases son todas excelentes, y me ayudan las explicaciones
-									y correcciones. Amo las rutinas, y que sean grabadas así las
-									puedo hacer a la hora que mas me conviene. Y el tener el pdf
-									también me ayuda a que a veces lo hago cuando no tengo buena
-									señal, y lo puedo hacer sola por lo que me han enseñado.<br /><br />
-									<span style="font-weight:bold; color: #E7004C"
-										>Gabriela Francke</span
-									>
-								</p>
-							</div>
-						</v-card>
-					</v-carousel-item>
-					<v-carousel-item class="ma-4">
-						<v-card class="rounded-lg" color="#0A2240" width="540" outlined>
-							<div class="align-center justify-center">
-								<p
-									class="pa-3 align-center white--text"
-									style="text-align:center;font-size: 13px;"
-								>
-									<v-rating
-										:value="5"
-										background-color="indigo"
-										color="yellow darken-3"
-										disabled
-									></v-rating>
-									Me gusta todo, osea la intensidad, la exigencia, la paciencia
-									con la q Sol , Nico y Maggy nos motivan a entrenar, y sobre
-									todo enseñan, me han ayudado a ser más disciplinada aun no lo
-									soy al 100% pero estoy encaminada!!<br /><br />
-									<span style="font-weight:bold; color: #E7004C"
-										>Monica Hurtado</span
-									>
-								</p>
-							</div>
-						</v-card>
-					</v-carousel-item>
-				</v-carousel>
-			</v-sheet>
-		</v-col>
-        <v-col cols="12" md="8" style="height: 100vh; overflow-y:auto;">
+        <v-col cols="12" style="height: 100vh; overflow-y:auto; background: #fff;">
             <div class="d-flex justify-center" v-if="order.id_status == 1">
                 <v-card max-width="500" style="margin-top: 15%;" elevation="0" class="pa-2">
                     <div class="py-2 d-flex align-center">
@@ -99,29 +8,9 @@
                             <h4 class="title_pink" style="text-align:left!important;">
                                 Felicidades, {{ order.customer_name.split(' ')[0] }}
                             </h4><br>
-                            <h3 style="font-weight: 200;">La comunidad vikinga te da la bienvenida al Desafio Gym Virtual. Te hemos enviado un email de confirmación a {{ order.customer_email }}.</h3><br>
+                            <h3 style="font-weight: 200;">La comunidad vikinga te da la bienvenida al reto. Te hemos enviado un email de confirmación a {{ order.customer_email }}.</h3><br>
 
-                            <v-row class="mt-3">
-                                <!--<v-col cols="12" md="6" class="pa-0 px-1">
-                                    <label class="text_field_form">Tipo de Documento</label>
-                                    <v-select class="register_form" :rules="requiredRule" :items="documents" outlined
-                                        item-text="name" item-value="id" v-model="tipo_doc"></v-select>
-                                </v-col>
-                                <v-col cols="12" md="6" class="pa-0 px-1">
-                                    <label class="text_field_form">Nro. Documento</label>
-                                    <v-text-field :rules="nrodocRules" outlined 
-                                        class="register_form" autocomplete="null" v-model="nro_doc"></v-text-field>
-                                </v-col>-->
-                                <v-col cols="12" md="12" class="pa-0 px-1">
-                                    <label class="text_field_form">Nivel de entrenamiento</label>
-                                    <v-select :items="levels" v-model="id_level" label="Nivel" item-text="level" placeholder="Seleciona" item-value="id_level" color="#ffffff" outlined v-on:change="filterByLevel()"></v-select>
-                                </v-col>
-                                <v-col cols="12" >
-                                    <h5 style="font-weight: 200;">Te hemos enviado un email de confirmación a {{ order.customer_email }}.</h5><br>
-                                </v-col>
-                            </v-row>
-
-                            <v-btn link to="/gym-virtual/agenda" color="secondary" depressed>Guardar e ir al gym</v-btn>
+                            <v-btn link to="/gym-virtual/retos-comprar" color="secondary" depressed>Ver retos</v-btn>
                         </div>     
                         
                     </div>
@@ -168,7 +57,7 @@
 </template>
 <script>
 import axios from "axios";
-import API from "../../api/axios";
+import API from "../../../api/axios";
 export default {
     components: { 
         axios

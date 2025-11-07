@@ -2,7 +2,7 @@
     <div>
 
 
-        <Banner />
+        <!--<Banner />-->
 
         <div class="d-flex flex-grow-1 flex-column">
             <router-view :key="$route.fullPath" class="flex-grow-1"></router-view>

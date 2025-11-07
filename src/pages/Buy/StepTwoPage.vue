@@ -200,9 +200,8 @@
 																? 'text_plan_price_pink mb-2'
 																: 'text_plan_price_blue mb-2'
 														"
-														>{{ !currency ? "S/" : "$" }}
-														{{ getPrice(item.prices, item.referred_discount_pen,  item.referred_discount_usd) }}</span
-													>
+														>{{ !currency ? "S/" : "" }}
+														{{ getPrice(item.prices, item.referred_discount_pen,  item.referred_discount_usd) }}{{ !currency ? "" : " USD" }}</span>
 												</p>
 												<p
 													style="font-weight: bold; color: #e30e4f"
@@ -334,8 +333,8 @@
 																	? 'text_plan_price_pink mb-2'
 																	: 'text_plan_price_blue mb-2'
 															"
-															>{{ !currency ? "S/" : "$" }}
-															{{ getPrice(item.prices, item.referred_discount_pen,  item.referred_discount_usd) }}</span
+															>{{ !currency ? "S/" : "" }}
+															{{ getPrice(item.prices, item.referred_discount_pen,  item.referred_discount_usd) }}{{ !currency ? "" : " USD" }}</span
 														>
 													</p>
 													<p
