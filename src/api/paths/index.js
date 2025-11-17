@@ -155,6 +155,11 @@ export default {
             return callAPI('post', 'api/v1/coupon/validate', { data: data });
         },
     },
+    coupon_retos:{
+        validate(data){
+            return callAPI('post', 'api/v1/coupon/validate_reto', { data: data });
+        },
+    },
     sliders:{
         list(){
             return callAPI('get','api/v1/slider/list');

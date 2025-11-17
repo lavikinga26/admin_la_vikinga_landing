@@ -160,6 +160,10 @@
 								}}</v-col
 							>
 						</v-row>
+						<v-row v-if="discount > 0">
+							<v-col cols="8"><b>Descuento</b></v-col>
+							<v-col cols="4" class="text-right">{{ cart[0].currency }} {{ formatPrice(discount) }}</v-col>
+						</v-row>
 
 						<hr class="mt-2 mb-2" style="border: 1px dashed #000000;" />
 						<v-row>
@@ -431,7 +435,17 @@ export default {
 		this.getCompras();
 		//this.getPaymentMethods();
 	},
-	computed: {},
+	computed: {
+		subtotal() {
+            let total = 0
+
+            this.cart.forEach((c) => {
+                total += c.quantity * Number(c.price)
+            })
+
+            return total
+        },
+	},
 	created() {
 		Array.prototype.groupBy = function(field) {
 			let groupedArr = [];
@@ -451,6 +465,11 @@ export default {
 		};
 	},
 	methods: {
+		formatPrice(price) {
+            // Convierte el precio a número y elimina .00 si no hay decimales significativos
+            const numPrice = parseFloat(price);
+            return numPrice % 1 === 0 ? numPrice.toFixed(0) : numPrice.toFixed(2);
+        },
 		updCurrency(){
 			this.currency_id = !this.currency ? 0 : 1;
 		},
@@ -666,6 +685,58 @@ export default {
                 }
                 vm.$store.commit('loader', false);
 
+        },
+		async aplicarCupon() {
+            try {
+                let products = this.cart.map(({ id }) => id);
+                const response = await this.$API.coupon_retos.validate({ cupon: this.coupon, items: products });
+                let datos = response.data;
+                let flag = 0;
+                var dscamount = 0;
+                if (this.cart[0].currency_id == 1) {
+                    dscamount = datos.discount;
+                }else{
+                    dscamount = datos.discount_usd;
+                }
+
+                if (datos.available) {
+                    if (datos.id_retos === null) {
+
+                        this.discount = (datos.discount_type == 1) ? this.subtotal * (dscamount / 100) : dscamount;
+                        const element = this.cart;
+                        this.cart[0].price = this.cart[0].price - this.discount;
+                        this.total = this.cart[0].price;
+                        flag = 1;
+                        this.couponDisabled = true;
+                        this.showToast("Cupón valido", "success");
+                    } else {
+                        datos.id_retos = datos.id_retos.map(Number);
+                        let index = this.cart.findIndex((element) => {
+                            if (datos.id_retos.indexOf(element.id) != -1) { return true; }
+                            else { false }
+                        })
+                        if (index != -1) {
+                            if (this.couponDisabled != true) {
+                                this.discount = (datos.discount_type == 1) ? this.subtotal * (dscamount / 100) : dscamount;
+                                this.cart[0].price = this.cart[0].price - this.discount;
+                                this.total = this.cart[0].price;
+                                this.couponDisabled = true;
+                                flag = 1;
+                                this.showToast("Cupón valido", "success");
+                            }
+                        }
+                    }
+                }
+                if (flag == 0) {
+                    this.toast.color = "red";
+                    this.toast.message = "Cupón inválido.";
+                    this.toast.toast = true;
+                }
+
+            } catch (e) {
+                this.$store.commit('loader', false);
+                console.error(e);
+            }
         },
 	},
 };
