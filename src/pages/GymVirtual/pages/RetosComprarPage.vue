@@ -1,21 +1,6 @@
 <template>
 	<div>
-		<v-container class="mb-5" v-if="has_active_plan === false">
-			<v-row class="text-center">
-				<v-col cols="12" v-if="show_message_plan === true">
-					<h1 class="text-center text_box_title" style="margin-top: 10%;">
-						Ups! No cuentas con ningún plan activo!
-					</h1>
-					<v-btn
-						class="text_btn_white_title mt-5"
-						color="secondary"
-						@click="gohome"
-						>Renovar/adquirir plan</v-btn
-					>
-				</v-col>
-			</v-row>
-		</v-container>
-		<v-container class="pa-10" v-if="has_active_plan === true">
+		<v-container class="pa-10">
 			<v-row>
 				<v-col cols="11">
 					<h1 class="text_plan_title_white mb-6">Retos</h1>

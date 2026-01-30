@@ -115,6 +115,42 @@ export const routes = [{
     component: () => import(/* webpackChunkName: "apps-email-inbox" */ '../pages/Buy/ReferralPage.vue'),
     meta: { template: 'FullTemplate' }
 },
+{
+    path: '/retos',
+    name: 'apps-retos',
+    component: () => import(/* webpackChunkName: "apps-email-inbox" */ '../pages/BuyRetos/SelectReto.vue'),
+    meta: { template: 'FullTemplate' }
+},
+{
+    path: '/retos/step2',
+    name: 'apps-retos-step2',
+    component: () => import(/* webpackChunkName: "apps-email-inbox" */ '../pages/BuyRetos/StepTwo.vue'),
+    meta: { template: 'FullTemplate' }
+},
+{
+    path: '/retos/step3',
+    name: 'apps-retos-step3',
+    component: () => import(/* webpackChunkName: "apps-email-inbox" */ '../pages/BuyRetos/StepThree.vue'),
+    meta: { template: 'FullTemplate' }
+},
+{
+    path: '/retos/step4',
+    name: 'apps-retos-step4',
+    component: () => import(/* webpackChunkName: "apps-email-inbox" */ '../pages/BuyRetos/StepFour.vue'),
+    meta: { template: 'FullTemplate' }
+},
+{
+    path: '/retos/pago-payme/:hash',
+    name: 'apps-pagar-payme',
+    component: () => import(/* webpackChunkName: "apps-email-inbox" */ '../pages/BuyRetos/PaymentPayme.vue'),
+    meta: { template: 'FullTemplate' }
+},
+{
+    path: '/retos/pago-stripe/:hash',
+    name: 'apps-pagar-atripe',
+    component: () => import(/* webpackChunkName: "apps-email-inbox" */ '../pages/BuyRetos/PaymentStripe.vue'),
+    meta: { template: 'FullTemplate' }
+},
 
 ...UserRoutes,
 ...AuthRoutes,

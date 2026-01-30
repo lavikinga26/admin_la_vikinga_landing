@@ -639,7 +639,8 @@ export default {
         banners: [],
         timezone: null,
         id_timezone: 0,
-        showRutinas: true
+        showRutinas: true,
+        userRetosComprados: [],
     }),
     async mounted() {
         let vm = this;
@@ -651,6 +652,7 @@ export default {
         vm.$store.commit('loader', false);
         setInterval(() => { this.startTimer() }, 1000);
         vm.getSliders();
+        
     },
     computed: {
         columns() {
@@ -899,6 +901,7 @@ export default {
                 }
                 vm.show_message_plan = vm.has_active_plan === true ? false:true;
                 var planes = this.userPlans;
+                vm.getRetosComprados();
             } catch (e) {
                 localStorage.removeItem('user_data');
                 localStorage.removeItem('token');
@@ -1063,7 +1066,24 @@ export default {
         },
         convertTZ(date, tzString) {
             return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("es-ES", {timeZone: tzString}));   
-        }
+        },
+
+        async getRetosComprados() {
+			this.$store.commit("loader", true);
+			try {
+				const response = await this.$API.business_partner.retosCompradosList();
+
+				this.userRetosComprados = response.data;
+
+                if(this.has_active_plan==false && this.userRetosComprados.length > 0){
+                    this.$router.push({ path: '/gym-virtual/retos-comprar/' });
+                }
+				
+			} catch (e) {
+				this.$store.commit("loader", false);
+				console.error(e);
+			}
+		},
 
     }
 }

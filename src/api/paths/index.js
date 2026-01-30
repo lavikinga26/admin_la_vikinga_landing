@@ -102,6 +102,11 @@ export default {
             return callAPI('get', 'api/v1/plans/listAll');
         },
     },
+    retos:{
+        listAll(){
+            return callAPI('get', 'api/v1/retos/listRetos');
+        },
+    },
     workouts:{
         list(){
             return callAPI('get', 'api/v1/workouts/list');
