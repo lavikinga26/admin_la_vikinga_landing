@@ -6,7 +6,7 @@ import axios from "axios";
 //export const baseURL = "http://127.0.0.1:8000/";
 
 // export const baseURL = "https://vikinga.avance-inmobiliaria.com/";
- export const baseURL = 'https://admin_vikinga_back.on-forge.com/';
+ export const baseURL = 'https://admin.clanvikinga.com/';
 
 const headers = {
 	"Accept": "application/json", //'*' ,
