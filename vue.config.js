@@ -2,8 +2,21 @@ module.exports = {
   "transpileDependencies": [
     "vuetify"
   ],
-
- devServer: {
-  proxy: 'http://localhost:8080',
- }
+  productionSourceMap: false,
+  devServer: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8001',
+        changeOrigin: true,
+      },
+      '/sanctum': {
+        target: 'http://localhost:8001',
+        changeOrigin: true,
+      },
+      '/storage': {
+        target: 'http://localhost:8001',
+        changeOrigin: true,
+      },
+    }
+  }
 }

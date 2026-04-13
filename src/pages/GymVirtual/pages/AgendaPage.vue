@@ -9,6 +9,13 @@
             </v-row>
         </v-container>
         <v-container class="mb-5" v-if="has_active_plan === true">
+            <v-row v-if="showRetosLink" class="mb-2">
+                <v-col cols="12">
+                    <v-btn color="secondary" @click="$router.push({ path: '/gym-virtual/retos-comprar/' })">
+                        Mis Retos ({{ userRetosComprados.length }})
+                    </v-btn>
+                </v-col>
+            </v-row>
             <v-row v-if="id_level == null" class="hidden-md-and-down">
                 <v-col cols="12">
                     <div key="popup_level" class="text-left">
@@ -641,6 +648,7 @@ export default {
         id_timezone: 0,
         showRutinas: true,
         userRetosComprados: [],
+        showRetosLink: false,
     }),
     async mounted() {
         let vm = this;
@@ -1075,8 +1083,8 @@ export default {
 
 				this.userRetosComprados = response.data;
 
-                if(this.has_active_plan==false && this.userRetosComprados.length > 0){
-                    this.$router.push({ path: '/gym-virtual/retos-comprar/' });
+                if(this.userRetosComprados.length > 0){
+                    this.showRetosLink = true;
                 }
 				
 			} catch (e) {

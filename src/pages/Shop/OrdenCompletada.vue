@@ -187,6 +187,7 @@ export default {
 
         uploadSuccess: false,
 
+		documents: [],
 		levels: [
 			{ text: 'Principiante', value: '1' },
 			{ text: 'Intermedio', value: '2' },
@@ -312,6 +313,27 @@ export default {
 			} catch (e) {
 				this.$store.commit("loader", false);
 				console.error(e);
+			}
+		},
+		async nextStep() {
+			try {
+				this.$store.commit('loader', true);
+				if (this.userData.bp_id) {
+					await this.$API.business_partner.updateProfileInfo(this.userData.bp_id, {
+						id_document_type: this.userData.tipo_doc,
+						nro_doc: this.userData.nro_doc,
+						id_level: this.userData.id_level,
+					});
+				}
+				if (this.userData.id_level) {
+					await this.$API.business_partner.updateLevel(this.userData.id_level);
+				}
+				this.$store.commit('loader', false);
+				this.$router.push({ path: '/gym-virtual/agenda' });
+			} catch (e) {
+				this.$store.commit('loader', false);
+				console.error(e);
+				this.$router.push({ path: '/gym-virtual/agenda' });
 			}
 		},
 		async getLoggedUser() {
