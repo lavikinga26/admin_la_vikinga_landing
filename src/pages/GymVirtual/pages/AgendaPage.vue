@@ -1083,7 +1083,9 @@ export default {
 
 				this.userRetosComprados = response.data;
 
-                if(this.userRetosComprados.length > 0){
+                if(this.has_active_plan==false && this.userRetosComprados.length > 0){
+                    this.$router.push({ path: '/gym-virtual/retos-comprar/' });
+                } else if(this.userRetosComprados.length > 0){
                     this.showRetosLink = true;
                 }
 				
